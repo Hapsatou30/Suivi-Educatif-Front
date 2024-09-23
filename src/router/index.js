@@ -7,6 +7,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Login from '@/views/login.vue';
 import Dashboard from '@/views/Admin/dashboard.vue';
 import Sidebar_admin from '@/components/sidebar_admin.vue';
+import Topbar_admin from '@/components/topbar_admin.vue';
 
 
 // Définition des routes de l'application
@@ -15,7 +16,8 @@ const routes = [
     { path: '/', name: 'login', component: Login },
     { path: '/login', redirect: '/' },
     { path: '/dashboard', name: 'dashboard', component: Dashboard},
-    { path: '/sidebar_admin', name: 'sidebar_admin', component: Sidebar_admin}
+    { path: '/sidebar_admin', name: 'sidebar_admin', component: Sidebar_admin},
+    { path: '/topbar_admin', name: 'topbar_admin', component: Topbar_admin}
   
 ];
 

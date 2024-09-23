@@ -4,7 +4,7 @@
         <div class="col-lg-8 col-12">
           <div class="logo">
             <h1>BIENVENUE DANS</h1>
-            <img src="/public/images/1-removebg-preview.png" alt="logo" />
+            <img src="/public/images/logo_bleu.png" alt="logo" />
           </div>
           <div class="formulaire">
             <h2>Connexion</h2>
@@ -106,7 +106,6 @@
     height: 100%;
     margin: 0;
     overflow: hidden;
-    margin-top: 10px;
     background-color: #FAFAF7; /* Couleur de fond de la page */
   }
   

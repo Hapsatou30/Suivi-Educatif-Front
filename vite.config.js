@@ -8,6 +8,10 @@ export default defineConfig({
   plugins: [
     vue(),
   ],
+  optimizeDeps: {
+    exclude: ['axios'], 
+  },
+  
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))

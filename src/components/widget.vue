@@ -28,7 +28,7 @@
     justify-content: space-around;
   }
   
-  h3, .widget-number {
+  .widget-content h3, .widget-number {
     font-size: 24px;
     font-family: "Poppins", sans-serif;
     font-weight: 500;

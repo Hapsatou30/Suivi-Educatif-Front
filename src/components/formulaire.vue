@@ -48,7 +48,9 @@
         </div>
   
         <!-- Bouton de soumission -->
-        <button type="submit" class="btn-submit">{{ submitButtonLabel }}</button>
+        <div class="bouton">
+            <button type="submit" class="btn-submit">{{ submitButtonLabel }}</button>
+        </div>
       </form>
     </div>
   </template>
@@ -150,18 +152,26 @@
     font-size: 14px;
   }
   .btn-submit {
- 
-    background-color: #4CAF50;
+    background-color: #407CEE;
     color: white;
     border: none;
     border-radius: 12px;
     cursor: pointer;
     width: 200px;
     height: 58px;
+    font-size: 24px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
   }
   
   .btn-submit:hover {
-    background-color: #45a049;
+    background-color: #407CEE;
+    color: white;
   }
+ .bouton {
+    display: flex;
+    justify-content: end;
+    margin-right: 30px;
+ }
   </style>
   

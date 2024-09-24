@@ -16,7 +16,7 @@
 
     <div class="evaluations">
       <h2>Les évaluations du jour</h2>
-      <div>
+      <div class="tableau">
         <!-- Vérifier si la tableData est vide -->
         <tabEvaluations 
           v-if="paginatedData.length > 0"
@@ -29,7 +29,7 @@
       </div>
 
       <!-- Composant de pagination -->
-      <pagination
+      <pagination class="pagination"
         v-if="tableData.length > pageSize"
         :totalItems="tableData.length"
         :pageSize="pageSize"
@@ -122,17 +122,29 @@ onMounted(() => {
   text-decoration: none;
   color: black;
 }
-h3 {
+.addTeacher h3 {
   margin-left: 10px;
   font-size: 24px;
   font-weight: bold;
 }
+.evaluations h2{
+  font-size: 30px; /* Taille du titre */
+    margin-bottom: 20px; /* Marge inférieure */
+    text-align: start; /* Centrer le texte */
+    color: black; /* Couleur du texte */
+    font-family: "Poppins", sans-serif; /* Police utilisée */
+    font-weight: 500; 
+    margin-left: 300px;
+}
 .plus {
   font-size: 60px;
 }
+.tableau{
+  margin-left: 300px;
+  margin-right: 50px;
+}
 
-.evaluations {
-  margin-top: 40px;
+.pagination{
   margin-left: 300px;
   margin-right: 50px;
 }

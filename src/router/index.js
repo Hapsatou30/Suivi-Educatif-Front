@@ -6,14 +6,30 @@ import { createRouter, createWebHistory } from 'vue-router';
 // Importation des composants  et views utilisés dans les routes
 import Login from '@/views/login.vue';
 import Dashboard from '@/views/Admin/dashboard.vue';
+import Sidebar_admin from '@/components/sidebarAdmin.vue';
+import Topbar_admin from '@/components/topbarAdmin.vue';
+import Affiche from '@/components/affiche.vue';
+import Widget from '@/components/widget.vue';
 
 
 // Définition des routes de l'application
 const routes = [
-    // Route pour  la connexion
+  // Route pour  la connexion
     { path: '/', name: 'login', component: Login },
     { path: '/login', redirect: '/' },
-    { path: '/dashboard', name: 'dashboard', component: Dashboard}
+
+  //route pour les composants
+   
+    { path: '/sidebar_admin', name: 'sidebar_admin', component: Sidebar_admin},
+    { path: '/topbar_admin', name: 'topbar_admin', component: Topbar_admin},
+    { path: '/affiche', name: 'affiche', component: Affiche},
+    { path: '/widget', name: 'widget', component: Widget},
+
+    // Route pour les views admin
+    { path: '/dashboard', name: 'dashboard', component: Dashboard},
+
+    
+    
   
 ];
 

@@ -1,88 +1,84 @@
 <template>
-    <div class="d-flex justify-content-center align-items-center vh-100">
-      <div class="container row my-2">
-        <div class="col-lg-8 col-12">
-          <div class="logo">
-            <h1>BIENVENUE DANS</h1>
-            <img src="/public/images/1-removebg-preview.png" alt="logo" />
-          </div>
-          <div class="formulaire">
-            <h2>Connexion</h2>
-            <form @submit.prevent="login">
-              <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" v-model="email" class="form-control" id="email" placeholder="Votre Email" required />
-                 <!-- Message d'erreur pour l'email -->
-              <small v-if="emailError" class="text-danger">{{ emailError }}</small>
-              </div>
-              <div class="mb-3">
-                <label for="password" class="form-label">Mot de passe</label>
-                <input type="password" v-model="password" class="form-control" id="password" placeholder="Votre Mot de passe" required />
-                 <!-- Message d'erreur pour le mot de passe -->
-              <small v-if="passwordError" class="text-danger">{{ passwordError }}</small>
-              </div>
-              <button type="submit" class="btn-block btn-custom">Connexion</button>
-              <p v-if="error">{{ error }}</p> <!-- Affiche un message d'erreur si une erreur survient -->
-            </form>
-          </div>
+  <div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="container row my-2">
+      <div class="col-lg-8 col-12">
+        <div class="logo">
+          <h1>BIENVENUE DANS</h1>
+          <img src="/public/images/logo_bleu.png" alt="logo" />
         </div>
-        <div class="col-4 d-none d-lg-block">
-          <img src="/public/images/login.png" alt="personne machine" />
+        <div class="formulaire">
+          <h2>Connexion</h2>
+          <form @submit.prevent="login">
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" v-model="email" class="form-control" id="email" placeholder="Votre Email" required />
+              <small v-if="emailError" class="text-danger">{{ emailError }}</small>
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">Mot de passe</label>
+              <input type="password" v-model="password" class="form-control" id="password" placeholder="Votre Mot de passe" required />
+              <small v-if="passwordError" class="text-danger">{{ passwordError }}</small>
+            </div>
+            <button type="submit" class="btn-block btn-custom">Connexion</button>
+            <p v-if="error">{{ error }}</p>
+          </form>
         </div>
       </div>
+      <div class="col-4 d-none d-lg-block">
+        <img src="/public/images/login.png" alt="personne machine" />
+      </div>
     </div>
-   
-  </template>
-  
-  <script setup>
-  //importation des dependances
-  import { ref } from 'vue'; 
-  import { AuthService } from '@/services/AuthService';
-  
-  // Variables réactives
-  const email = ref('');
-  const password = ref('');
-  const error = ref('');
-  const emailError = ref('');
-  const passwordError = ref('');
-  
-  // Methode pour la  validation
-  const validateForm = () => {
-    let isValid = true;
-    
-    // Validation de l'email
-    if (!email.value) {
-      emailError.value = 'L\'email est obligatoire.';
-      isValid = false;
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
-      emailError.value = 'Veuillez entrer un email valide.';
-      isValid = false;
-    } else {
-      emailError.value = '';
-    }
-    
-    // Validation du mot de passe
-    if (!password.value) {
-      passwordError.value = 'Le mot de passe est obligatoire.';
-      isValid = false;
-    } else if (password.value.length < 8) {
-      passwordError.value = 'Le mot de passe doit contenir au moins 8 caractères.';
-      isValid = false;
-    } else {
-      passwordError.value = '';
-    }
-    
-    return isValid;
-    }
-  
-    //Methode pour la connexion
-    const login = async () => {
-  
-  console.log('Tentative de connexion avec : ', email.value, password.value); // Pour voir les valeurs saisies
-  if (!validateForm()) return; // Arrêter si le formulaire est invalide
+  </div>
+</template>
+
+<script setup>
+// Importation des dépendances
+import { ref } from 'vue'; 
+import { login as loginService } from '@/services/AuthService'; 
+
+// Variables réactives
+const email = ref('');
+const password = ref('');
+const error = ref('');
+const emailError = ref('');
+const passwordError = ref('');
+
+// Méthode pour la validation
+const validateForm = () => {
+  let isValid = true;
+
+  // Validation de l'email
+  if (!email.value) {
+    emailError.value = 'L\'email est obligatoire.';
+    isValid = false;
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+    emailError.value = 'Veuillez entrer un email valide.';
+    isValid = false;
+  } else {
+    emailError.value = '';
+  }
+
+  // Validation du mot de passe
+  if (!password.value) {
+    passwordError.value = 'Le mot de passe est obligatoire.';
+    isValid = false;
+  } else if (password.value.length < 8) {
+    passwordError.value = 'Le mot de passe doit contenir au moins 8 caractères.';
+    isValid = false;
+  } else {
+    passwordError.value = '';
+  }
+
+  return isValid;
+}
+
+// Méthode pour la connexion
+const login = async () => {
+  console.log('Tentative de connexion avec : ', email.value, password.value);
+  if (!validateForm()) return;
   try {
-    const response = await AuthService.login(email.value, password.value);
-    console.log('Réponse de l\'API : ', response);  // Pour voir la réponse API
+    const response = await loginService(email.value, password.value); 
+    // console.log('Réponse de l\'API : ', response);
     if (response.access_token) {
       localStorage.setItem('token', response.access_token);
       window.location.href = '/dashboard';
@@ -94,10 +90,9 @@
     error.value = 'Erreur lors de la connexion.';
     console.error('Erreur lors de la connexion', err);
   }
-  };
-  
-  
-  </script>
+};
+</script>
+
   
   
   <style>
@@ -105,9 +100,8 @@
   body, html {
     height: 100%;
     margin: 0;
-    overflow: hidden;
-    margin-top: 10px;
-    background-color: #FAFAF7; /* Couleur de fond de la page */
+    background-color: #FAFAF7;
+    font-family: "Poppins", sans-serif;
   }
   
   .container {

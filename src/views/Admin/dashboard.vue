@@ -19,20 +19,29 @@
       <div>
         <!-- Vérifier si la tableData est vide -->
         <tabEvaluations 
-          v-if="tableData.length > 0"
+          v-if="paginatedData.length > 0"
           :headers="['Matière', 'Professeur', 'Type', 'Heure', 'Classe', 'Durée(mins)']" 
-          :data="tableData" 
+          :data="paginatedData" 
         />
 
         <!-- Message affiché si la tableData est vide -->
         <p v-else class="no-evaluations-message">Aucune évaluation prévue pour aujourd'hui.</p>
       </div>
+
+      <!-- Composant de pagination -->
+      <pagination
+        v-if="tableData.length > pageSize"
+        :totalItems="tableData.length"
+        :pageSize="pageSize"
+        :currentPage="currentPage"
+        @pageChange="handlePageChange"
+      />
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import sidebar_admin from '@/components/sidebarAdmin.vue';
 import topbar_admin from '@/components/topbarAdmin.vue';
 import affiche from '@/components/affiche.vue';
@@ -42,13 +51,29 @@ import { getProfesseursCount } from '@/services/ProfesseurService';
 import { getClassesCount } from '@/services/ClasseService';
 import { Icon } from '@iconify/vue';
 import tabEvaluations from '@/components/tabEvaluations.vue';
+import pagination from '@/components/paginations.vue'; 
 import { getEvaluationsJour } from '@/services/Evaluations';
 
 const elevesCount = ref(0);
 const professeursCount = ref(0);
 const classesCount = ref(0);
 const tableData = ref([]);
+const currentPage = ref(1); // Page actuelle
+const pageSize = ref(5); // Nombre d'éléments par page
 
+// Calculer les données à afficher pour la page actuelle
+const paginatedData = computed(() => {
+  const start = (currentPage.value - 1) * pageSize.value;
+  const end = start + pageSize.value;
+  return tableData.value.slice(start, end);
+});
+
+// Fonction pour gérer le changement de page
+const handlePageChange = (page) => {
+  currentPage.value = page;
+};
+
+// Récupérer les données
 const fetchData = async () => {
   elevesCount.value = await getElevesCount();
   professeursCount.value = await getProfesseursCount();
@@ -68,7 +93,6 @@ const fetchData = async () => {
     console.log('Données du tableau :', tableData.value);
   }
 };
-
 
 onMounted(() => {
   fetchData();

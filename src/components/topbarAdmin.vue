@@ -69,8 +69,8 @@
   .left-section {
     display: flex;
     align-items: center;
-    width: 262px;
-    height: 58px;
+    width: 200px;
+    height: 50px;
     background-color: #F7AE00;
     color: white;
     border-radius: 12px;
@@ -89,11 +89,11 @@
   
   .icon {
     font-size: 30px;
-    margin-right: 20px;
+    margin-right: 10px;
   }
   
   .date {
-    font-size: 24px;
+    font-size: 20px;
     font-family: "Poppins", sans-serif;
     font-weight: 500;
   }

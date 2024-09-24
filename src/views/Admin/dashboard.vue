@@ -9,10 +9,10 @@
       <widget title="Classes" :number="classesCount" iconSrc="/public/images/Vector.svg" />
     </div>
 
-    <div class="addTeacher">
-      <Icon icon="ei:plus" class="plus" /> 
-      <h3>Ajouter un professeur</h3>
-    </div>
+    <router-link to="/professeurs" class="addTeacher">
+    <Icon icon="ei:plus" class="plus" />
+    <h3>Ajouter un professeur</h3>
+  </router-link>
 
     <div class="evaluations">
       <h2>Les évaluations du jour</h2>
@@ -118,6 +118,9 @@ onMounted(() => {
   justify-content: end;
   margin-top: 30px;
   margin-right: 50px;
+  cursor: pointer;
+  text-decoration: none;
+  color: black;
 }
 h3 {
   margin-left: 10px;

@@ -15,10 +15,8 @@ export const getEvaluationsJour = async () => {
         }
       });
   
-      // Afficher les données reçues pour le débogage
-      // console.log('Données reçues :', response.data); // Vérifie les données reçues de l'API
-  
-      return response.data.total; // Retourner le nombre total d'élèves
+      console.log('Données reçues :', response.data); // Vérifie les données reçues
+      return response.data.données;
     } catch (error) {
       // Gérer les erreurs lors de la récupération du nombre d'élèves
       console.error('Erreur:', error);

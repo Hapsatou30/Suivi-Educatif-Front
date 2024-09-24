@@ -46,12 +46,17 @@
   }
   
   th, td {
-    padding: 8px; /* Espacement interne des cellules */
-    text-align: center; /* Alignement du texte au centre */
+    padding: 20px; 
+    text-align: center; 
+    font-family: "Poppins", sans-serif;
+    font-size: 18px;
   }
   
   th {
-    background-color: white; /* Fond blanc pour les en-têtes */
+    background-color: white; 
+    font-family: "Poppins", sans-serif;
+    font-size: 20px;
+    color: #F7AE00;
   }
   
   .background {

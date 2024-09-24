@@ -40,7 +40,7 @@
     </div>
 
     <!-- Composant de pagination -->
-    <pagination class="pagination"
+    <pagination class="pagination1"
       v-if="tableData.length > pageSize"
       :totalItems="tableData.length"
       :pageSize="pageSize"
@@ -65,12 +65,18 @@ const currentPage = ref(1); // Page actuelle
 const pageSize = ref(5); // Nombre d'éléments par page
 
 // Calculer les données à afficher pour la page actuelle
+// Calculer les données à afficher pour la page actuelle
 const paginatedData = computed(() => {
   const start = (currentPage.value - 1) * pageSize.value;
   const end = start + pageSize.value;
-  return tableData.value.slice(start, end);
+  return tableData.value.slice(start, end).map(item => {
+    return {
+      matricule: item[0],
+      fullName: `${item[1]} ${item[2]}`, 
+        phone: item[3],
+    };
+  });
 });
-
 // Fonction pour gérer le changement de page
 const handlePageChange = (page) => {
   currentPage.value = page;
@@ -81,11 +87,10 @@ const fetchData = async () => {
   const response = await getProfesseurs();
   if (response && response.length > 0) {
     tableData.value = response.map(item => [
-      item.matricule, // Vérifiez que ces propriétés existent dans votre réponse
+      item.matricule, 
       item.prenom, 
       item.nom,
       item.telephone,
-      item.email,
     ]);
     console.log('Données du tableau :', tableData.value);
   } else {
@@ -122,9 +127,8 @@ onMounted(() => {
   margin-left: 300px;
   margin-right: 50px;
 }
-
-.pagination{
-  margin-left: 300px;
+.pagination1{
+  margin-left: 275px;
   margin-right: 50px;
 }
 </style>

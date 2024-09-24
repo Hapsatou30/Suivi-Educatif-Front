@@ -7,7 +7,7 @@
             <label :for="field.id">{{ field.label }}</label>
   
             <!-- Afficher un champ selon son type -->
-            <div v-if="field.type === 'text' || field.type === 'email' || field.type === 'password' || field.type === 'tel'">
+            <div v-if="field.type === 'text' || field.type === 'email' || field.type === 'password' || field.type === 'tel'|| field.type === 'number'">
               <input
                 :type="field.type"
                 :id="field.id"

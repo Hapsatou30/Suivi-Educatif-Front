@@ -3,11 +3,12 @@
   <topbar_admin />
   <div class="main-content">
     <affiche />
-      <div class="widgets-container">
-      <widget title="Élèves" :number="elevesCount" iconClass="ic:baseline-group" />
-      <widget title="Professeurs" :number="professeursCount" iconClass="ic:baseline-person" />
-      <widget title="Classes" :number="classesCount" iconClass="ic:baseline-class" />
-    </div>
+    <div class="widgets-container">
+  <widget title="Élèves" :number="elevesCount" iconClass="twemoji:man-student-medium-dark-skin-tone" />
+  <widget title="Professeurs" :number="professeursCount" iconClass="noto-v1:woman-teacher-dark-skin-tone" />
+  <widget title="Classes" :number="classesCount"  iconSrc="/public/images/Vector.svg" />
+</div>
+
   
   </div>
     

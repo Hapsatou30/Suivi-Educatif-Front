@@ -14,14 +14,22 @@ import Widget from '@/components/widget.vue';
 
 // Définition des routes de l'application
 const routes = [
-    // Route pour  la connexion
+  // Route pour  la connexion
     { path: '/', name: 'login', component: Login },
     { path: '/login', redirect: '/' },
-    { path: '/dashboard', name: 'dashboard', component: Dashboard},
+
+  //route pour les composants
+   
     { path: '/sidebar_admin', name: 'sidebar_admin', component: Sidebar_admin},
     { path: '/topbar_admin', name: 'topbar_admin', component: Topbar_admin},
     { path: '/affiche', name: 'affiche', component: Affiche},
-    { path: '/widget', name: 'widget', component: Widget}
+    { path: '/widget', name: 'widget', component: Widget},
+
+    // Route pour les views admin
+    { path: '/dashboard', name: 'dashboard', component: Dashboard},
+
+    
+    
   
 ];
 

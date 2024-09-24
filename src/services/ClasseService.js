@@ -1,24 +1,26 @@
-// services/classeService.js
 
-const apiUrl = 'http://127.0.0.1:8000/api'; 
+
+import { apiUrl } from '@/config/apiConfig'; // Importation de l'URL de l'API
+import axios from 'axios'; // Importation de la bibliothèque axios
 
 export const getClassesCount = async () => {
   try {
-    const token = localStorage.getItem('token'); // Récupérer le token
-    console.log('Token récupéré :', token);
-    const response = await fetch(`${apiUrl}/nombre-classes`,{ 
-        headers: {
-          Authorization: `Bearer ${token}` // Utiliser le token dans l'en-tête
-        }
-      });
-    
-    if (!response.ok) {
-      throw new Error('Erreur lors de la récupération du nombre de classes');
-    }
-    const data = await response.json();
-    console.log('Données reçues' , data);
-    return data.nombreClasses; // Assurez-vous que votre API renvoie { count: <nombre de classes> }
+    const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
+    // console.log('Token récupéré :', token);
+
+    // Récupération du nombre total de classes en utilisant axios.get
+    const response = await axios.get(`${apiUrl}/nombre-classes`, { 
+      headers: {
+        Authorization: `Bearer ${token}` // Utiliser le token dans l'en-tête pour l'authentification
+      }
+    });
+
+    // Afficher les données reçues pour le débogage
+    // console.log('Données reçues :', response.data); // Vérifie les données reçues de l'API
+
+    return response.data.nombreClasses; // Retourner le nombre total de classes
   } catch (error) {
+    // Gérer les erreurs lors de la récupération du nombre de classes
     console.error('Erreur:', error);
     return 0; // Valeur par défaut en cas d'erreur
   }

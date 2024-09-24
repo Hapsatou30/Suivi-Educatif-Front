@@ -8,30 +8,46 @@
         <div class="notifications">
             <Icon icon="mdi:bell-outline" class=" notification" />
         </div>
-        <div class="logout">
-            <Icon icon="humbleicons:logout" width="30" height="30" class=" deconnexion" />
-            Deconnexion
-        </div>
+        <div class="logout" @click="handleLogout"> 
+        <Icon icon="humbleicons:logout" width="30" height="30" class="deconnexion" />
+        Deconnexion
+      </div>
       </div>
     </div>
   </template>
   
   <script setup>
+  // Importation des dépendances
   import { Icon } from '@iconify/vue';
   import { ref, onMounted } from 'vue';
+  import { logout } from '@/services/AuthService';
 
-    const currentDate = ref('');
+  // Déclaration d'une variable réactive pour la date actuelle
+  const currentDate = ref('');
 
-    const formatDate = () => {
+  // Fonction pour formater la date au format souhaité
+  const formatDate = () => {
     const date = new Date();
-    const options = { day: 'numeric', month: 'short', year: 'numeric' };
-    return date.toLocaleDateString('fr-FR', options);
-    };
+    const options = { day: 'numeric', month: 'short', year: 'numeric' }; // Options de formatage
+    return date.toLocaleDateString('fr-FR', options); // Retourne la date formatée en français
+  };
 
-    onMounted(() => {
-    currentDate.value = formatDate();
-    });
-  </script>
+  // Méthode pour gérer la déconnexion
+  const handleLogout = async () => {
+    try {
+      await logout(); // Appel de la méthode de déconnexion
+      window.location.href = '/login'; // Redirection vers la page de connexion
+    } catch (error) {
+      console.error('Erreur lors de la déconnexion', error); // Gestion de l'erreur
+    }
+  };
+
+  // Utilisation de onMounted pour mettre à jour la date lors du montage du composant
+  onMounted(() => {
+    currentDate.value = formatDate(); // Mettre à jour la date actuelle
+  });
+</script>
+
   
   <style scoped>
   .topbar {

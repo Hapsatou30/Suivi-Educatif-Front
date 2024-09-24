@@ -12,8 +12,9 @@
 </template>
 
 <script setup>
+//importation des dépendances
 import { ref, onMounted } from 'vue';
-import { AnneeScolaireService } from '@/services/AnneeScolaireService'; // Mettez le bon chemin
+import { AnneeScolaireService } from '@/services/AnneeScolaireService'; 
 
 const anneeEnCours = ref(null); // Variable pour stocker l'année scolaire en cours
 

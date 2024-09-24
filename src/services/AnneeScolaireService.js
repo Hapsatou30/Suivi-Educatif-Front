@@ -1,4 +1,4 @@
-// services/AnneeScolaireService.js
+
 
 import { apiUrl } from '@/config/apiConfig'; // Importation de l'URL de l'API
 import axios from 'axios'; // Importation de la bibliothèque axios

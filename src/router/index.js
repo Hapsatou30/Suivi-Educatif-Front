@@ -6,8 +6,8 @@ import { createRouter, createWebHistory } from 'vue-router';
 // Importation des composants  et views utilisés dans les routes
 import Login from '@/views/login.vue';
 import Dashboard from '@/views/Admin/dashboard.vue';
-import Sidebar_admin from '@/components/sidebar_admin.vue';
-import Topbar_admin from '@/components/topbar_admin.vue';
+import Sidebar_admin from '@/components/sidebarAdmin.vue';
+import Topbar_admin from '@/components/topbarAdmin.vue';
 import Affiche from '@/components/affiche.vue';
 import Widget from '@/components/widget.vue';
 

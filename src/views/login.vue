@@ -100,8 +100,8 @@ const login = async () => {
   body, html {
     height: 100%;
     margin: 0;
-    overflow: hidden;
-    background-color: #FAFAF7; /* Couleur de fond de la page */
+    background-color: #FAFAF7;
+    font-family: "Poppins", sans-serif;
   }
   
   .container {

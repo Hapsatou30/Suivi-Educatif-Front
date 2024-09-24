@@ -9,20 +9,35 @@
   <widget title="Classes" :number="classesCount"  iconSrc="/public/images/Vector.svg" />
 </div>
 
+<div class="addTeacher">
+  <Icon icon="ei:plus"  class="plus"/> 
+  <h3>Ajouter un professeur</h3>
+</div>
   
+<div class="evaluations">
+  <h2>Les évaluastions du jour</h2>
+  <div>
+    <tabEvaluations 
+      :headers="['Matière', 'Professeur', 'Type', 'Date', 'Classe', 'Durée']" 
+      :data="tableData" 
+    />
+  </div>
+</div>
   </div>
     
   </template>
   
   <script setup>
   import { ref, onMounted } from 'vue';
-  import sidebar_admin from '@/components/sidebar_admin.vue';
-  import topbar_admin from '@/components/topbar_admin.vue';
+  import sidebar_admin from '@/components/sidebarAdmin.vue';
+  import topbar_admin from '@/components/topbarAdmin.vue';
   import affiche from '@/components/affiche.vue';
   import widget from '@/components/widget.vue';
   import { getElevesCount } from '@/services/EleveService';
   import { getProfesseursCount } from '@/services/ProfesseurService';
   import { getClassesCount } from '@/services/ClasseService';
+  import { Icon } from '@iconify/vue';
+  import tabEvaluations from '@/components/tabEvaluations.vue';
   
   const elevesCount = ref(0);
   const professeursCount = ref(0);
@@ -33,7 +48,11 @@
     professeursCount.value = await getProfesseursCount();
     classesCount.value = await getClassesCount();
   };
-  
+  const tableData = ref([
+  ['Alice', 30, 'Paris'],
+  ['Bob', 25, 'Londres'],
+  ['Charlie', 35, 'New York']
+]);
   onMounted(() => {
     fetchData();
   });
@@ -43,6 +62,7 @@
  
  .main-content { 
   margin-top: 120px;
+  
  
 }
 
@@ -50,10 +70,30 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 20px;
+  margin-top: 40px;
   margin-left: 300px;
   margin-right: 50px;
 }
+.addTeacher{
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  margin-top: 30px;
+  margin-right: 50px;
+}
+h3{
+  margin-left: 10px;
+  font-size: 24px;
+  font-weight: bold;
+}
+.plus{
+  font-size: 60px;
+}
 
+.evaluations{
+  margin-top: 40px;
+  margin-left: 300px;
+  margin-right: 50px;
+}
   </style>
   

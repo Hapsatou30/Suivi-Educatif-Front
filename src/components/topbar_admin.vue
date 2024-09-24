@@ -61,12 +61,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-left: 30px;
   }
   
   .right-section {
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-right: 50px;
   }
   
   .icon {

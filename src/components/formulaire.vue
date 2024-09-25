@@ -57,6 +57,8 @@
   
   <script setup>
   import { reactive, computed } from 'vue';
+  const emit = defineEmits();
+
   
   // Déclaration des props pour les champs et le texte du bouton
   const props = defineProps({
@@ -90,7 +92,9 @@
   // Fonction de soumission du formulaire
   const submitForm = () => {
     console.log('Formulaire soumis avec les données :', formData);
-  };
+    emit('submit', formData); // Émettez l'événement avec les données du formulaire
+};
+
   </script>
   
   <style scoped>

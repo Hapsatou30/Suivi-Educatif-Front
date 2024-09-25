@@ -12,14 +12,7 @@
     <h2>Formulaire pour ajouter des Professeurs</h2>
 
     <div class="form">
-      <Formulaire
-          :fields="[
-          { id: 'name', label: 'Nom', type: 'text', placeholder: 'Entrez votre nom', model: 'name', required: true },
-          { id: 'coef', label: 'Coefficient', type: 'number', placeholder: 'Entrez le coef ', model: 'coef', required: true },
-          { id: 'description', label: 'Description', type: 'textarea', placeholder: 'Entrez une description', model: 'description', required: false },
-          ]"
-          submitButtonLabel="Enregistrer"
-      />
+     
     </div>
 
     <div class="matieres">

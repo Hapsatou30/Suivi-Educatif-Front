@@ -2,6 +2,7 @@
     <sidebar_admin />
     <topbar_admin />
     <div class="main-content">
+
       <h2>Formulaire pour ajouter les années scolaires</h2>
       <div class="form-container mt-4">
         <form @submit.prevent="handleFormSubmit">
@@ -55,10 +56,12 @@
           @pageChange="handlePageChange"
         />
       </div>
+
     </div>
   </template>
   
   <script setup>
+
   import { ref, computed, onMounted } from 'vue';
   import sidebar_admin from '@/components/sidebarAdmin.vue';
   import topbar_admin from '@/components/topbarAdmin.vue';
@@ -250,5 +253,6 @@ margin-right: 50px;
 display: flex;
 justify-content: end;
 }
+
   </style>
   

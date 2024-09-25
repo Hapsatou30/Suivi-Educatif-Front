@@ -10,8 +10,14 @@ import Sidebar_admin from '@/components/sidebarAdmin.vue';
 import Topbar_admin from '@/components/topbarAdmin.vue';
 import Affiche from '@/components/affiche.vue';
 import Widget from '@/components/widget.vue';
+
 import Annee from '@/views/Admin/annee.vue';
 import Classe from '@/views/Admin/classe.vue';
+
+import Matiere from '@/views/Admin/matiere.vue';
+import Professeur from '@/views/Admin/professeur.vue';
+import Professeur_matiere from '@/views/Admin/profMatiere.vue';
+
 
 
 // Définition des routes de l'application
@@ -29,8 +35,14 @@ const routes = [
 
     // Route pour les views admin
     { path: '/dashboard', name: 'dashboard', component: Dashboard},
+
     { path: '/annees', name: 'annees', component: Annee},
-    { path: '/classes', name: 'classes', component: Classe}
+    { path: '/classes', name: 'classes', component: Classe},
+
+    { path: '/matieres', name: 'matiere', component: Matiere},
+    { path: '/professeurs', name: 'professeur', component: Professeur},
+    { path: '/prof_matiere', name: 'prof_matiere', component: Professeur_matiere},
+
 
     
     

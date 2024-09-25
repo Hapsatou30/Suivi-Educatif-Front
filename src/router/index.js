@@ -12,6 +12,7 @@ import Affiche from '@/components/affiche.vue';
 import Widget from '@/components/widget.vue';
 import Matiere from '@/views/Admin/matiere.vue';
 import Professeur from '@/views/Admin/professeur.vue';
+import Professeur_matiere from '@/views/Admin/profMatiere.vue';
 
 
 // Définition des routes de l'application
@@ -30,7 +31,8 @@ const routes = [
     // Route pour les views admin
     { path: '/dashboard', name: 'dashboard', component: Dashboard},
     { path: '/matieres', name: 'matiere', component: Matiere},
-    { path: '/professeurs', name: 'professeur', component: Professeur}
+    { path: '/professeurs', name: 'professeur', component: Professeur},
+    { path: '/prof_matiere', name: 'prof_matiere', component: Professeur_matiere},
 
     
     

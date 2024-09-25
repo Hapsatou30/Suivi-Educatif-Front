@@ -258,5 +258,7 @@ input::placeholder, textarea::placeholder {
 .pagination2 {
   margin-left: 275px;
   margin-right: 50px;
+  display: flex;
+  justify-content: end;
 }
 </style>

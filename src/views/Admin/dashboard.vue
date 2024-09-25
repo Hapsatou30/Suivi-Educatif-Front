@@ -147,5 +147,7 @@ onMounted(() => {
 .pagination{
   margin-left: 275px;
   margin-right: 50px;
+  display: flex;
+  justify-content: end;
 }
 </style>

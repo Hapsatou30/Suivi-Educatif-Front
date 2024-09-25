@@ -5,7 +5,7 @@
     <boutons
       title1="Matières" 
       title2="Professeurs"
-      page1="matiere"
+      page1="prof_matiere"
       page2="professeur"
     />
 
@@ -274,5 +274,7 @@ onMounted(() => {
 .pagination1{
   margin-left: 275px;
   margin-right: 50px;
+  display: flex;
+  justify-content: end;
 }
 </style>

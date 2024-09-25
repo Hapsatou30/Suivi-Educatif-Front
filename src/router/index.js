@@ -10,6 +10,8 @@ import Sidebar_admin from '@/components/sidebarAdmin.vue';
 import Topbar_admin from '@/components/topbarAdmin.vue';
 import Affiche from '@/components/affiche.vue';
 import Widget from '@/components/widget.vue';
+import Annee from '@/views/Admin/annee.vue';
+import Classe from '@/views/Admin/classe.vue';
 
 
 // Définition des routes de l'application
@@ -27,6 +29,8 @@ const routes = [
 
     // Route pour les views admin
     { path: '/dashboard', name: 'dashboard', component: Dashboard},
+    { path: '/annees', name: 'annees', component: Annee},
+    { path: '/classes', name: 'classes', component: Classe}
 
     
     

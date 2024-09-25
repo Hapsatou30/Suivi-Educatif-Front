@@ -15,7 +15,7 @@
           </router-link>
         </li>
         <li>
-          <router-link to="/classes" class="menu-link">
+          <router-link to="/annees" class="menu-link">
             <Icon icon="iwwa:year" /> Année scolaire
           </router-link>
         </li>

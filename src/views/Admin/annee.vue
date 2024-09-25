@@ -1,168 +1,175 @@
 <template>
-    <sidebar_admin />
-    <topbar_admin />
-    <div class="main-content">
+  <sidebar_admin />
+  <topbar_admin />
+  <div class="main-content">
+    <boutons
+      title1="Classes"
+      title2="Années Scolaires"
+      page1="classes"
+      page2="annees"
+    />
+    <h2>Formulaire pour ajouter les années scolaires</h2>
 
-      <h2>Formulaire pour ajouter les années scolaires</h2>
-      <div class="form-container mt-4">
-        <form @submit.prevent="handleFormSubmit">
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <label for="annee_debut" class="form-label">Année de début :</label>
-              <input 
-                type="text" 
-                class="form-control" 
-                v-model="formData.annee_debut" 
-                placeholder="Entrez l'année de début" 
-                required 
-              />
-            </div>
-            <div class="col-md-6">
-              <label for="annee_fin" class="form-label">Année de fin :</label>
-              <input 
-                type="text" 
-                class="form-control" 
-                v-model="formData.annee_fin" 
-                placeholder="Entrez l'année de fin" 
-                required 
-              />
-            </div>
+    <div class="form-container mt-4">
+      <form @submit.prevent="handleFormSubmit">
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="annee_debut" class="form-label">Année de début :</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              v-model="formData.annee_debut" 
+              placeholder="Entrez l'année de début" 
+              required 
+            />
           </div>
-  
-          <div class="bouton">
-            <button type="submit" class="btn btn-submit">Enregistrer</button>
+          <div class="col-md-6">
+            <label for="annee_fin" class="form-label">Année de fin :</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              v-model="formData.annee_fin" 
+              placeholder="Entrez l'année de fin" 
+              required 
+            />
           </div>
-        </form>
-      </div>
-  
-      <div class="annees">
-        <h3 style="font-size: 24px; ">Liste des Années scolaires</h3>
-  
-        <div class="tableau1">
-          <tabEvaluations 
-            v-if="paginatedData.length > 0"
-            :headers="['N°', 'Année de début', 'Année de fin', 'Action']"
-            :data="paginatedData"
-          />
-  
-          <p v-else class="no-evaluations-message">Aucune année trouvée.</p>
         </div>
-  
-        <pagination class="pagination1"
-          v-if="tableData.length > pageSize"
-          :totalItems="tableData.length"
-          :pageSize="pageSize"
-          :currentPage="currentPage"
-          @pageChange="handlePageChange"
+
+        <div class="bouton">
+          <button type="submit" class="btn btn-submit">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="annees">
+      <h3 style="font-size: 24px;">Liste des Années scolaires</h3>
+      <div class="tableau1">
+        <tabEvaluations 
+          v-if="paginatedData.length > 0"
+          :headers="['N°', 'Année de début', 'Année de fin', 'Action']"
+          :data="paginatedData"
         />
+        <p v-else class="no-evaluations-message">Aucune année trouvée.</p>
       </div>
 
+      <pagination class="pagination1"
+        v-if="tableData.length > pageSize"
+        :totalItems="tableData.length"
+        :pageSize="pageSize"
+        :currentPage="currentPage"
+        @pageChange="handlePageChange"
+      />
     </div>
-  </template>
-  
-  <script setup>
+  </div>
+</template>
 
-  import { ref, computed, onMounted } from 'vue';
-  import sidebar_admin from '@/components/sidebarAdmin.vue';
-  import topbar_admin from '@/components/topbarAdmin.vue';
-  import tabEvaluations from '@/components/tabEvaluations.vue';
-  import pagination from '@/components/paginations.vue'; 
-  import { getAnnees, ajouterAnnee } from '@/services/AnneeScolaireService'; 
-  import Swal from 'sweetalert2';
-  
-  const formData = ref({
-    annee_debut: '',
-    annee_fin: ''
-  });
-  
-  const tableData = ref([]);
-  const currentPage = ref(1);
-  const pageSize = ref(5);
-  
-  // Récupérer les données des années
-  const fetchData = async () => {
+<script setup>
+import { ref, computed, onMounted } from 'vue';
+import sidebar_admin from '@/components/sidebarAdmin.vue';
+import topbar_admin from '@/components/topbarAdmin.vue';
+import tabEvaluations from '@/components/tabEvaluations.vue';
+import pagination from '@/components/paginations.vue'; 
+import { getAnnees, ajouterAnnee } from '@/services/AnneeScolaireService'; 
+import Swal from 'sweetalert2';
+import boutons from '@/components/boutons.vue';
+
+const formData = ref({
+  annee_debut: '',
+  annee_fin: ''
+});
+
+const tableData = ref([]);
+const currentPage = ref(1);
+const pageSize = ref(5);
+
+// Récupérer les données des années
+const fetchData = async () => {
+  try {
     const response = await getAnnees();
     if (response && response.length > 0) {
-        tableData.value = response.map((item, index) => ({
-            numero: index + 1, // Ajout du numéro
-            annee_debut: item.annee_debut,
-            annee_fin: item.annee_fin,
-        }));
+      tableData.value = response.map((item, index) => ({
+        numero: index + 1,
+        annee_debut: item.annee_debut,
+        annee_fin: item.annee_fin,
+      }));
     } else {
-        console.log('Aucune année trouvée ou erreur lors de la récupération des données.');
+      tableData.value = []; // Réinitialiser si aucune donnée
+      console.log('Aucune année trouvée ou erreur lors de la récupération des données.');
     }
+  } catch (error) {
+    console.error('Erreur lors de la récupération des données :', error);
+  }
 };
 
-  
-  // Fonction pour gérer le changement de page
-  const handlePageChange = (page) => {
-    currentPage.value = page;
-  };
-  
-  // Données paginées
-  const paginatedData = computed(() => {
-    const start = (currentPage.value - 1) * pageSize.value;
-    const end = start + pageSize.value;
-    return tableData.value.slice(start, end);
-  });
-  
-  // Gestion de la soumission du formulaire
-  const handleFormSubmit = async () => {
-    try {
-      const response = await ajouterAnnee(formData.value);
-      if (response.status === 201) { 
-        Swal.fire({
-          icon: 'success',
-          title: 'Succès',
-          text: 'Année ajoutée avec succès !',
-          confirmButtonColor: '#407CEE',
-          timer: 2000,
-          timerProgressBar: true,
-          showConfirmButton: false
-        });
-  
-        await fetchData(); // Recharger les données après ajout
-        resetForm(); // Réinitialiser le formulaire
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Erreur',
-          text: 'Une erreur est survenue lors de l\'ajout de l\'année.',
-          confirmButtonColor: '#d33',
-          timer: 3000,
-          timerProgressBar: true,
-          showConfirmButton: false
-        });
-      }
-    } catch (error) {
+// Fonction pour gérer le changement de page
+const handlePageChange = (page) => {
+  currentPage.value = page;
+};
+
+// Données paginées
+const paginatedData = computed(() => {
+  const start = (currentPage.value - 1) * pageSize.value;
+  const end = start + pageSize.value;
+  return tableData.value.slice(start, end);
+});
+
+// Gestion de la soumission du formulaire
+const handleFormSubmit = async () => {
+  try {
+    const response = await ajouterAnnee(formData.value);
+    if (response.status === 201) { 
+      Swal.fire({
+        icon: 'success',
+        title: 'Succès',
+        text: 'Année ajoutée avec succès !',
+        confirmButtonColor: '#407CEE',
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false
+      });
+
+      await fetchData(); // Recharger les données après ajout
+      resetForm(); // Réinitialiser le formulaire
+    } else {
       Swal.fire({
         icon: 'error',
         title: 'Erreur',
-        text: 'Une erreur inattendue s\'est produite.',
+        text: 'Une erreur est survenue lors de l\'ajout de l\'année.',
         confirmButtonColor: '#d33',
         timer: 3000,
         timerProgressBar: true,
         showConfirmButton: false
       });
     }
+  } catch (error) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Erreur',
+      text: 'Une erreur inattendue s\'est produite.',
+      confirmButtonColor: '#d33',
+      timer: 3000,
+      timerProgressBar: true,
+      showConfirmButton: false
+    });
+  }
+};
+
+// Réinitialiser le formulaire après soumission
+const resetForm = () => {
+  formData.value = {
+    annee_debut: '',
+    annee_fin: ''
   };
-  
-  // Réinitialiser le formulaire après soumission
-  const resetForm = () => {
-    formData.value = {
-      annee_debut: '',
-      annee_fin: ''
-    };
-  };
-  
-  // Charger les données lors de l'initialisation du composant
-  onMounted(() => {
-    fetchData();
-  });
-  </script>
-  
-  <style>
-  .main-content { 
+};
+
+// Charger les données lors du montage du composant
+onMounted(() => {
+  fetchData();
+});
+</script>
+
+<style>
+.main-content { 
     margin-top: 120px;
   }
   .main-content h2 {
@@ -254,5 +261,4 @@ display: flex;
 justify-content: end;
 }
 
-  </style>
-  
+</style>

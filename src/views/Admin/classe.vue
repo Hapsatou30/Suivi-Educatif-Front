@@ -3,6 +3,12 @@
   <sidebar_admin />
   <topbar_admin />
   <div class="main-content">
+      <boutons
+      title1="Classes" 
+      title2="Années Scolaires"
+      page1="classes"
+      page2="annees"
+    />
     <h2>Formulaire pour ajouter des classes</h2>
     <div class="form-container mt-4">
       <form @submit.prevent="handleFormSubmit">
@@ -28,7 +34,7 @@
             />
           </div>
         </div>
-       <div class="row mb-3 d-flex" style="display: flex; align-items: center;">
+       <div class="row  d-flex" style="display: flex; align-items: center;">
         <div class="col-md-6">
             <label for="capacite" class="form-label">Capacité :</label>
             <input 
@@ -39,7 +45,7 @@
               required 
             />
           </div>
-        <div class=" col-md-6" style="display: flex; justify-content: end;">
+        <div class=" col-md-6 mt-4" style="display: flex; justify-content: end; ">
           <button type="submit" class="btn btn-submit">Enregistrer</button>
         </div>
        </div>
@@ -78,6 +84,7 @@ import tabEvaluations from '@/components/tabEvaluations.vue';
 import pagination from '@/components/paginations.vue'; 
 import { getClasses, ajouterClasse } from '@/services/ClasseService'; 
 import Swal from 'sweetalert2';
+import boutons from '@/components/boutons.vue';
 
 const formData = ref({
   nom: '',
@@ -138,7 +145,7 @@ const handleFormSubmit = async () => {
         title: 'Erreur',
         text: 'Une erreur est survenue lors de l\'ajout de la classe.',
         confirmButtonColor: '#d33',
-        timer: 3000,
+        timer: 2000,
         timerProgressBar: true,
         showConfirmButton: false
       });
@@ -218,19 +225,21 @@ input::placeholder {
   font-size: 12px;
 }
 
- .btn-submit {
+ .col-md-6 .btn-submit {
   background-color: #407CEE;
   color: white;
   border: none;
   border-radius: 12px;
   cursor: pointer;
+  padding: 8px;
   width: 200px;
   height: 58px;
   font-size: 24px;
   font-family: "Poppins", sans-serif;
   font-weight: 500;
+  margin-top: 10px;
 }
- .btn-submit:hover {
+ .col-md-6 .btn-submit:hover {
   background-color: #365F9B; /* Change la couleur au survol */
 }
 .classes {

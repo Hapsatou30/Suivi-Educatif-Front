@@ -88,13 +88,13 @@ const newMatiere = ref({
 const handleFormSubmit = async () => {
   try {
     const response = await ajouterMatiere(newMatiere.value);
-    if (response.status === 201) { // Vérifier si le statut est 201
+    if (response.status === 201) { 
       Swal.fire({
         icon: 'success',
         title: 'Succès',
         text: 'Matière ajoutée avec succès !',
         confirmButtonColor: '#407CEE',
-        timer: 3000,
+        timer: 2000,
         timerProgressBar: true,
         showConfirmButton: false
       });

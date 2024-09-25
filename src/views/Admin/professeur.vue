@@ -76,7 +76,6 @@ import tabEvaluations from '@/components/tabEvaluations.vue';
 import pagination from '@/components/paginations.vue'; 
 import { getProfesseurs, ajouterProfesseur } from '@/services/ProfesseurService';
 import Swal from 'sweetalert2';
-import { watch } from 'vue';
 
 const tableData = ref([]);
 const currentPage = ref(1);
@@ -93,13 +92,13 @@ const newProfesseur = ref({
 const handleFormSubmit = async () => {
   try {
     const response = await ajouterProfesseur(newProfesseur.value);
-    if (response.status === 201) { // Vérifier si le statut est 201
+    if (response.status === 201) { 
       Swal.fire({
         icon: 'success',
         title: 'Succès',
         text: 'Professeur ajouté avec succès !',
         confirmButtonColor: '#407CEE',
-        timer: 3000,
+        timer: 2000,
         timerProgressBar: true,
         showConfirmButton: false
       });
@@ -177,23 +176,7 @@ onMounted(() => {
 });
 </script>
 
-<style scoped>
-.form {
-  margin-bottom: 20px;
-}
-
-button {
-  background-color: #4862C4;
-  border: none;
-}
-
-button:hover {
-  background-color: #3656a4;
-}
-</style>
-
-
-<style>
+<style >
 .main-content { 
   margin-top: 120px;
 }
@@ -249,7 +232,7 @@ button:hover {
  
   input::placeholder, textarea::placeholder{
     color: #ccc;
-    font-size: 14px;
+    font-size: 12px;
   }
   .bouton .btn-submit {
     background-color: #407CEE;

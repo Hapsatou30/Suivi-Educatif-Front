@@ -23,3 +23,21 @@ export const getMatieres = async () => {
       return 0; // Valeur par défaut en cas d'erreur
     }
   };
+
+  export const ajouterMatiere = async (matiere) => {
+    try {
+      const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
+      const response = await axios.post(`${apiUrl}/matieres`, matiere, { 
+        headers: {
+          Authorization: `Bearer ${token}` // Utiliser le token dans l'en-tête pour l'authentification
+        }
+      });
+  
+      // Afficher la réponse pour le débogage
+      console.log('matiere ajouté :', response.data);
+      return response.data; // Renvoie toute la réponse pour analyse
+    } catch (error) {
+      console.error('Erreur lors de l\'ajout de la matiere :', error);
+      return null; // Valeur par défaut en cas d'erreur
+    }
+  };

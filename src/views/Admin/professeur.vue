@@ -64,6 +64,9 @@
               <button class="btn " @click="deleteProfesseur(row.id)" style="color: red;">
                 <Icon icon="mdi:trash-can-outline" /> 
               </button>
+              <button class="btn" @click="redirectToProfMatiere(row.id)" style="color: #F7AE00;">
+                <Icon icon="material-symbols:dictionary" /> 
+              </button>
             </div>
           </template>
         </tabEvaluations>
@@ -92,9 +95,11 @@ import pagination from '@/components/paginations.vue';
 import { getProfesseurs, ajouterProfesseur, modifierProfesseur, supprimerProfesseur } from '@/services/ProfesseurService'; 
 import Swal from 'sweetalert2';
 import { Icon } from '@iconify/vue';
+import { useRouter } from 'vue-router';
 
 import boutons from '@/components/boutons.vue';
 
+const router = useRouter();
 const newProfesseur = ref({
   nom: '',
   prenom: '',
@@ -243,6 +248,10 @@ const resetForm = () => {
   };
 };
 
+const redirectToProfMatiere = (id) => {
+  // Redirige vers la page prof_matiere avec l'id dans l'URL
+  router.push({ name: 'prof_matiere', params: { id } });
+};
 onMounted(fetchData);
 </script>
 

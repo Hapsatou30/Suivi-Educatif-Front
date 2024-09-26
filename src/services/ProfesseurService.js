@@ -48,6 +48,25 @@ export const getProfesseurs = async () => {
     return 0; // Valeur par défaut en cas d'erreur
   }
 };
+// Méthode pour récupérer les détails d'un professeur par son ID
+export const getProfesseurDetails = async (id) => {
+  try {
+    const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
+    const response = await axios.get(`${apiUrl}/professeur/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}` // Utiliser le token dans l'en-tête pour l'authentification
+      }
+    });
+
+    // Afficher les données reçues pour le débogage
+    console.log('Détails du professeur récupérés :', response.data); // Vérifie les données reçues de l'API
+
+    return response.data; // Retourner les détails du professeur
+  } catch (error) {
+    console.error('Erreur lors de la récupération des détails du professeur :', error);
+    return null; // Valeur par défaut en cas d'erreur
+  }
+};
 
 export const ajouterProfesseur = async (professeur) => {
   try {

@@ -66,4 +66,37 @@ export const ajouterProfesseur = async (professeur) => {
     return null; // Valeur par défaut en cas d'erreur
   }
 };
+export const modifierProfesseur = async (professeur) => {
+  try {
+    const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
+    const response = await axios.put(`${apiUrl}/professeur/${professeur.id}`, professeur, {
+      headers: {
+        Authorization: `Bearer ${token}` // Utiliser le token dans l'en-tête pour l'authentification
+      }
+    });
+    return response.data; // Renvoie les nouvelles données
+  } catch (error) {
+    throw error.response.data; // Lance l'erreur pour un traitement ultérieur
+  }
+};
+
+
+// Méthode pour supprimer uneprofesseur
+export const supprimerProfesseur = async (id) => {
+  try {
+    const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
+    const response = await axios.delete(`${apiUrl}/professeur/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}` // Utiliser le token dans l'en-tête pour l'authentification
+      }
+    });
+
+    console.log('professeurs supprimée :', response.data);
+    return response.data; // Renvoie les données de réponse
+  } catch (error) {
+    console.error('Erreur lors de la suppression du professeurs :', error);
+    return null; // Valeur par défaut en cas d'erreur
+  }
+};
+
 

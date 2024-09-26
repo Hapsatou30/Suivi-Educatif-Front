@@ -9,7 +9,7 @@
       page2="professeur"
     />
 
-    <h2>Formulaire pour ajouter/modifier des Matières</h2>
+    <h2>Formulaire pour ajouter des Matières</h2>
 
     <div class="form-container mt-4">
       <form @submit.prevent="handleFormSubmit">
@@ -249,12 +249,12 @@ onMounted(fetchData);
 </script>
 
 <style>
-/* Styles similaires à ceux du code d'origine */
-.tab-evaluations td:nth-child(5) { 
+
+.matieres .tab-evaluations td:nth-child(5) { 
   display: none; /* Masquer la colonne de l'ID */
 }
 
-.boutons {
+/* .boutons {
     background-color: transparent; 
     border: none;
     cursor: pointer;
@@ -263,7 +263,7 @@ onMounted(fetchData);
 }
 .boutons .btn {
   font-size: 24px;
-}
+} */
 
 .main-content { 
     margin-top: 120px;
@@ -328,7 +328,7 @@ textarea{
 .btn-submit:hover {
     background-color: #F5A623;
 }
-.tableau1 {
+.matieres .tableau1 {
     max-width: 1090px;
     border: 1px solid #ccc;
     border-radius: 5px;

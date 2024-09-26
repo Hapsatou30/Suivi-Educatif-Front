@@ -41,3 +41,47 @@ export const getMatieres = async () => {
       return null; // Valeur par défaut en cas d'erreur
     }
   };
+
+  export const modifierMatiere = async (nouvellesDonnees) => {
+    try {
+      const idValue = nouvellesDonnees.id; // Récupérer l'ID directement des nouvelles données
+      // console.log('ID de l\'année à modifier :', idValue); // Vérification de l'ID
+      // console.log('Nouvelles données :', nouvellesDonnees); // Vérification des nouvelles données
+  
+      const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
+      const response = await axios.put(`${apiUrl}/matieres/${idValue}`, {
+        nom: nouvellesDonnees.nom,
+        coefficient: nouvellesDonnees.coefficient,
+        description: nouvellesDonnees.description
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}` // Utiliser le token dans l'en-tête pour l'authentification
+        }
+      });
+  
+      console.log('Matiere modifiée :', response.data);
+      return response.data; // Renvoie les nouvelles données
+    } catch (error) {
+      console.error('Erreur lors de la modification de la Matiere :', error);
+      return null; // Valeur par défaut en cas d'erreur
+    }
+  };
+  
+  // Méthode pour supprimer une Matiere 
+  export const supprimerMatiere = async (id) => {
+    try {
+      const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
+      const response = await axios.delete(`${apiUrl}/matieres/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}` // Utiliser le token dans l'en-tête pour l'authentification
+        }
+      });
+  
+      console.log('Matiere supprimée :', response.data);
+      return response.data; // Renvoie les données de réponse
+    } catch (error) {
+      console.error('Erreur lors de la suppression de la matiere :', error);
+      return null; // Valeur par défaut en cas d'erreur
+    }
+  };
+  

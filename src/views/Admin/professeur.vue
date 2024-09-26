@@ -5,7 +5,7 @@
     <boutons
       title1="Matières" 
       title2="Professeurs"
-      page1="prof_matiere"
+      page1="matiere"
       page2="professeur"
     />
 

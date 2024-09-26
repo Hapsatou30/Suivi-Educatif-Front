@@ -95,3 +95,21 @@ export const modifierAnnee = async (nouvellesDonnees) => {
     return null; // Valeur par défaut en cas d'erreur
   }
 };
+
+// Méthode pour supprimer une année scolaire
+export const supprimerAnnee = async (id) => {
+  try {
+    const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
+    const response = await axios.delete(`${apiUrl}/annees-scolaires/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}` // Utiliser le token dans l'en-tête pour l'authentification
+      }
+    });
+
+    console.log('Année supprimée :', response.data);
+    return response.data; // Renvoie les données de réponse
+  } catch (error) {
+    console.error('Erreur lors de la suppression de l\'année :', error);
+    return null; // Valeur par défaut en cas d'erreur
+  }
+};

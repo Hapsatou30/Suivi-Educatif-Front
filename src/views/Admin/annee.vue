@@ -60,21 +60,29 @@
       <h3 style="font-size: 24px;">Liste des Années scolaires</h3>
       <div class="tableau1">
         <tabEvaluations 
-  v-if="paginatedData.length > 0"
-  class="tab-evaluations" 
-  :headers="['N°', 'Année de début', 'Année de fin', 'État', 'Action']"
-  :data="paginatedData.map(({ numero, annee_debut, annee_fin, etat, id }) => ({
-    numero,
-    annee_debut,
-    annee_fin,
-    etat,
-    id // Gardez l'ID pour la logique interne
-  }))"
->
-  <template #actions="{ row }">
-    <button class="btn btn-primary" @click="editAnnee(row)">Modifier</button>
-  </template>
-</tabEvaluations>
+          v-if="paginatedData.length > 0"
+          class="tab-evaluations" 
+          :headers="['N°', 'Année de début', 'Année de fin', 'État', 'Action']"
+          :data="paginatedData.map(({ numero, annee_debut, annee_fin, etat, id }) => ({
+            numero,
+            annee_debut,
+            annee_fin,
+            etat,
+            id 
+          }))"
+        >
+          <template #actions="{ row }">
+           <div class="boutons">
+            <button class="btn btn-custom" @click="editAnnee(row)" style=" color: #4862C4;">
+                     <Icon icon="mdi:pencil-outline" /> 
+            </button>
+          <button class="btn btn-custom1" @click="deleteAnnee(row.id)" style="color: red;">
+            <Icon icon="mdi:trash-can-outline" /> 
+         </button>
+           </div>
+          </template>
+        </tabEvaluations>
+
 
         <p v-else class="no-evaluations-message">Aucune année trouvée.</p>
       </div>
@@ -97,15 +105,16 @@ import sidebar_admin from '@/components/sidebarAdmin.vue';
 import topbar_admin from '@/components/topbarAdmin.vue';
 import tabEvaluations from '@/components/tabEvaluations.vue';
 import pagination from '@/components/paginations.vue'; 
-import { getAnnees, ajouterAnnee, modifierAnnee } from '@/services/AnneeScolaireService'; 
+import { getAnnees, ajouterAnnee, modifierAnnee, supprimerAnnee } from '@/services/AnneeScolaireService'; 
 import Swal from 'sweetalert2';
 import boutons from '@/components/boutons.vue';
+import { Icon } from '@iconify/vue';
 
 const formData = ref({
   annee_debut: '',
   annee_fin: '',
-  etat: 'Fermée', // Valeur par défaut pour l'état
-  id: null  // Initialiser l'ID à null
+  etat: 'Fermée', 
+  id: null  
 });
 
 const editAnnee = (row) => {
@@ -134,7 +143,7 @@ const fetchData = async () => {
         annee_debut: item.annee_debut,
         annee_fin: item.annee_fin,
         etat: item.etat,
-        id: item.id  // Garder l'ID pour la logique interne
+        id: item.id  
       }));
     } else {
       tableData.value = [];
@@ -158,24 +167,27 @@ const handleFormSubmit = async () => {
   try {
     const response = await (formData.value.id !== null ? modifierAnnee(formData.value) : ajouterAnnee(formData.value));
     console.log('Réponse du serveur:', response);
+
+    // Vérifiez si la réponse contient un message d'erreur
+    if (response && response.status && response.status !== 200) {
+      // Supposons que le message d'erreur soit dans `response.message`
+      throw new Error(response.message || 'Une erreur inattendue s\'est produite.');
+    }
+
     const successMessage = formData.value.id !== null ? 'Année modifiée avec succès !' : 'Année ajoutée avec succès !';
 
-    if (response) {
-      Swal.fire({
-        icon: 'success',
-        title: 'Succès',
-        text: successMessage,
-        confirmButtonColor: '#407CEE',
-        timer: 2000,
-        timerProgressBar: true,
-        showConfirmButton: false
-      });
+    Swal.fire({
+      icon: 'success',
+      title: 'Succès',
+      text: successMessage,
+      confirmButtonColor: '#407CEE',
+      timer: 2000,
+      timerProgressBar: true,
+      showConfirmButton: false
+    });
 
-      await fetchData();
-      resetForm();
-    } else {
-      throw new Error('Réponse vide');
-    }
+    await fetchData();
+    resetForm();
   } catch (error) {
     console.error('Erreur lors de la soumission du formulaire :', error);
     Swal.fire({
@@ -187,17 +199,65 @@ const handleFormSubmit = async () => {
       timerProgressBar: true,
       showConfirmButton: false
     });
+    resetForm();
   }
 };
+
+const deleteAnnee = async (id) => {
+  const confirmDelete = await Swal.fire({
+    title: 'Êtes-vous sûr ?',
+    text: "Cette action ne peut pas être annulée !",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Oui, supprimer !'
+  });
+
+  if (confirmDelete.isConfirmed) {
+    try {
+      await supprimerAnnee(id);
+      Swal.fire({
+        title: 'Supprimé !',
+        text: 'L\'année scolaire a été supprimée avec succès.',
+        icon: 'success',
+        timer: 3000,
+        timerProgressBar: true,
+        willClose: () => {
+          fetchData();
+        }
+      });
+    } catch (error) {
+      console.error('Erreur lors de la suppression :', error);
+      
+      // Vérifiez si l'erreur a une réponse et récupérez le message d'erreur de l'API
+      const errorMessage = error.response && error.response.data && error.response.data.message
+        ? error.response.data.message 
+        : error.message || 'Une erreur inattendue s\'est produite.';
+        
+      await Swal.fire({
+        icon: 'error',
+        title: 'Erreur',
+        text: errorMessage,
+        confirmButtonColor: '#d33',
+        timer: 3000,
+        timerProgressBar: true,
+        showConfirmButton: false
+      });
+    }
+  }
+};
+
 
 const resetForm = () => {
   formData.value = {
     annee_debut: '',
     annee_fin: '',
-    etat: 'Fermée', // Réinitialiser l'état à une valeur par défaut
-    id: null // Réinitialiser l'ID à null
+    etat: 'Fermée', 
+    id: null 
   };
 };
+
 
 onMounted(fetchData);
 </script>
@@ -205,8 +265,20 @@ onMounted(fetchData);
 
 <style>
 /* Masquer la colonne ID dans le tableau */
-.tab-evaluations td:nth-child(5) { /* Cible à la fois les cellules et les en-têtes */
+.tab-evaluations td:nth-child(5) { 
   display: none; /* Masquer la colonne de l'ID */
+}
+
+.boutons {
+    background-color: transparent; 
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+.boutons .btn{
+  font-size: 30px;
 }
 
 
@@ -278,6 +350,7 @@ onMounted(fetchData);
     margin-top: 50px;
     /* margin-left: 300px; */
     margin-right: 50px;
+   
     /* display: flex;
     flex-direction: column;
     align-items: center;
@@ -293,6 +366,7 @@ onMounted(fetchData);
   .tableau1{
     margin-left: 300px;
     margin-right: 50px;
+    width: 930px;
    
     }
 .pagination1{

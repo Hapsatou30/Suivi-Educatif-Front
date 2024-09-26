@@ -41,8 +41,8 @@ const routes = [
 
     { path: '/matieres', name: 'matiere', component: Matiere},
     { path: '/professeurs', name: 'professeur', component: Professeur},
-    { path: '/prof_matiere', name: 'prof_matiere', component: Professeur_matiere},
-
+    { path: '/prof_matiere/:id', name: 'prof_matiere', component: Professeur_matiere }
+    
 
     
     

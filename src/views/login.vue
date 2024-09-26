@@ -109,7 +109,7 @@ const login = async () => {
     border-radius: 20px; /* Bordure arrondie */
   }
   
-  .col-lg-8 {
+  .container .col-lg-8 {
     background-color: white; /* Couleur de fond pour la colonne principale */
     color: #407CEE; /* Couleur du texte */
     border-top-left-radius: 30px; /* Arrondir les coins supérieurs gauche */
@@ -181,16 +181,17 @@ const login = async () => {
     cursor: pointer; /* Curseur en forme de main sur le bouton */
   }
   
-  .col-4 {
+  .container .col-4 {
     background-color: #407cee; /* Couleur de fond pour la colonne d'image */
     border-top-right-radius: 30px; /* Arrondir le coin supérieur droit */
     border-bottom-right-radius: 30px; /* Arrondir le coin inférieur droit */
     display: flex; /* Utilise le flexbox pour centrer l'image */
     justify-content: center;
     align-items: center;
+    padding: 20px;
   }
   
-  .col-4 img {
+ .container .col-4 img {
     width: 500px; /* Largeur de l'image */
     height: 400px; /* Hauteur de l'image */
     object-fit: cover; /* Adapter l'image au conteneur */
@@ -215,7 +216,7 @@ const login = async () => {
       width: 100%; /* Prendre toute la largeur */
     }
   
-    .col-8 {
+   .container .col-8 {
       flex: 0 0 100%; /* Colonne principale prend toute la largeur */
       max-width: 100%; 
       background-color: white; /* Couleur de fond pour mobile */
@@ -247,7 +248,7 @@ const login = async () => {
       padding: 20px; /* Espacement interne */
     }
   
-    .col-4 {
+   .container .col-4 {
       display: none; /* Cacher l'image en mode mobile */
     }
   }

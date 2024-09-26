@@ -16,7 +16,7 @@ export const getMatieres = async () => {
       // Afficher les données reçues pour le débogage
        console.log('Données reçues :', response.data); // Vérifie les données reçues de l'API
   
-      return response.data.données; // Retourner le nombre total de professeurs
+      return response.data; // Retourner le nombre total de professeurs
     } catch (error) {
       // Gérer les erreurs lors de la récupération du nombre de professeurs
       console.error('Erreur:', error);

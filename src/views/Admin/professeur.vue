@@ -5,14 +5,13 @@
     <boutons
       title1="Matières" 
       title2="Professeurs"
-      page1="prof_matiere"
+      page1="matiere"
       page2="professeur"
     />
 
     <h2>Formulaire pour ajouter des Professeurs</h2>
 
-    <!-- Formulaire d'ajout de professeur avec Bootstrap -->
-    <div class="form-container  mt-4">
+    <div class="form-container mt-4">
       <form @submit.prevent="handleFormSubmit">
         <div class="row mb-3">
           <div class="col-md-6">
@@ -36,34 +35,51 @@
           </div>
         </div>
 
-       <div class="bouton">
-        <button type="submit" class="btn btn-submit">Enregistrer</button>
-       </div>
+        <div class="bouton">
+          <button type="submit" class="btn btn-submit">Enregistrer</button>
+        </div>
       </form>
     </div>
 
     <div class="professeurs">
       <h3>Liste des Professeurs</h3>
-    </div> 
+      <div class="tableau">
+        <tabEvaluations 
+          v-if="paginatedData.length > 0"
+          class="tab-evaluation" 
+          :headers="['Matricule', 'Prénom & Nom', 'Contact', 'Action']" 
+          :data="paginatedData.map(({ matricule, nom, prenom, telephone,email, id }) => ({
+            matricule,
+            nom: `${prenom} ${nom}`,
+            telephone,
+            email,
+            id 
+          }))"
+        >
+          <template #actions="{ row }">
+            <div class="boutons">
+              <button class="btn " @click="editProfesseur(row.id)" style="color: #4862C4;">
+                <Icon icon="mdi:pencil-outline" /> 
+              </button>
+              <button class="btn " @click="deleteProfesseur(row.id)" style="color: red;">
+                <Icon icon="mdi:trash-can-outline" /> 
+              </button>
+            </div>
+          </template>
+        </tabEvaluations>
 
-    <div class="tableau">
-      <tabEvaluations 
-        v-if="paginatedData.length > 0"
-        :headers="['Matricule', 'Prénom & Nom', 'Contact', 'Action']" 
-        :data="paginatedData"
+        <p v-else class="no-professeurs-message">Aucun professeur trouvé.</p>
+      </div>
+
+      <pagination 
+        class="paginate"
+        v-if="tableData.length > pageSize"
+        :totalItems="tableData.length"
+        :pageSize="pageSize"
+        :currentPage="currentPage"
+        @pageChange="handlePageChange"
       />
-
-
-      <p v-else class="no-evaluations-message">Aucun professeur trouvé.</p>
     </div>
-
-    <pagination class="pagination1"
-      v-if="tableData.length > pageSize"
-      :totalItems="tableData.length"
-      :pageSize="pageSize"
-      :currentPage="currentPage"
-      @pageChange="handlePageChange"
-    />
   </div>
 </template>
 
@@ -71,56 +87,85 @@
 import { ref, computed, onMounted } from 'vue';
 import sidebar_admin from '@/components/sidebarAdmin.vue';
 import topbar_admin from '@/components/topbarAdmin.vue';
-import boutons from '@/components/boutons.vue';
 import tabEvaluations from '@/components/tabEvaluations.vue';
 import pagination from '@/components/paginations.vue'; 
-import { getProfesseurs, ajouterProfesseur } from '@/services/ProfesseurService';
+import { getProfesseurs, ajouterProfesseur, modifierProfesseur, supprimerProfesseur } from '@/services/ProfesseurService'; 
 import Swal from 'sweetalert2';
+import { Icon } from '@iconify/vue';
+
+import boutons from '@/components/boutons.vue';
+
+const newProfesseur = ref({
+  nom: '',
+  prenom: '',
+  email: '',
+  telephone: '',
+  id: null  
+});
 
 const tableData = ref([]);
 const currentPage = ref(1);
 const pageSize = ref(5);
 
-// Nouveau professeur
-const newProfesseur = ref({
-  email: '',
-  nom: '',
-  prenom: '',
-  telephone: ''
+const fetchData = async () => {
+  try {
+    const response = await getProfesseurs();
+    tableData.value = response.map((item, index) => ({
+      matricule: item.matricule, 
+      nom: item.nom,
+      prenom: item.prenom,
+      telephone: item.telephone,
+      email: item.email,
+      id: item.id,
+      user_id: item.user_id  
+    }));
+    console.log("Données récupérées :", tableData.value); // Ajoutez ce log
+  } catch (error) {
+    console.error('Erreur lors de la récupération des données :', error);
+  }
+};
+
+
+const handlePageChange = (page) => {
+  currentPage.value = page;
+};
+
+const paginatedData = computed(() => {
+  const start = (currentPage.value - 1) * pageSize.value;
+  const end = start + pageSize.value;
+  return tableData.value.slice(start, end);
 });
 
 const handleFormSubmit = async () => {
   try {
-    const response = await ajouterProfesseur(newProfesseur.value);
-    if (response.status === 201) { 
-      Swal.fire({
-        icon: 'success',
-        title: 'Succès',
-        text: 'Professeur ajouté avec succès !',
-        confirmButtonColor: '#407CEE',
-        timer: 2000,
-        timerProgressBar: true,
-        showConfirmButton: false
-      });
+    console.log("Données à envoyer:", newProfesseur.value);
+    const response = await (newProfesseur.value.id !== null 
+      ? modifierProfesseur(newProfesseur.value) // Passer l'objet complet
+      : ajouterProfesseur(newProfesseur.value));
+    
+    console.log("Réponse du serveur:", response);
+    const successMessage = newProfesseur.value.id !== null 
+      ? 'Professeur modifié avec succès !' 
+      : 'Professeur ajouté avec succès !';
+    
+    Swal.fire({
+      icon: 'success',
+      title: 'Succès',
+      text: successMessage,
+      confirmButtonColor: '#407CEE',
+      timer: 2000,
+      timerProgressBar: true,
+      showConfirmButton: false
+    });
 
-      await fetchData();  // Recharger les données après ajout
-      resetForm(); // Réinitialiser le formulaire
-    } else {
-      Swal.fire({
-        icon: 'error',
-        title: 'Erreur',
-        text: 'Une erreur est survenue lors de l\'ajout du professeur.',
-        confirmButtonColor: '#d33',
-        timer: 3000,
-        timerProgressBar: true,
-        showConfirmButton: false
-      });
-    }
+    await fetchData();
+    resetForm();
   } catch (error) {
+    console.error('Erreur lors de la soumission du formulaire :', error);
     Swal.fire({
       icon: 'error',
       title: 'Erreur',
-      text: 'Une erreur inattendue s\'est produite.',
+      text: error.message || 'Une erreur inattendue s\'est produite.',
       confirmButtonColor: '#d33',
       timer: 3000,
       timerProgressBar: true,
@@ -129,54 +174,79 @@ const handleFormSubmit = async () => {
   }
 };
 
-// Réinitialiser le formulaire après soumission
-const resetForm = () => {
-  newProfesseur.value = {
-    email: '',
-    nom: '',
-    prenom: '',
-    telephone: ''
-  };
-};
 
-// Calculer les données à afficher pour la page actuelle
-const paginatedData = computed(() => {
-  const start = (currentPage.value - 1) * pageSize.value;
-  const end = start + pageSize.value;
-
-  return tableData.value.slice(start, end).map(item => ({
-    matricule: item[0],
-    fullName: `${item[1]} ${item[2]}`, 
-    phone: item[3],
-  }));
-});
-
-// Fonction pour gérer le changement de page
-const handlePageChange = (page) => {
-  currentPage.value = page;
-};
-
-// Récupérer les données
-const fetchData = async () => {
-  const response = await getProfesseurs();
-  if (response && response.length > 0) {
-    tableData.value = response.map(item => [
-      item.matricule, 
-      item.prenom, 
-      item.nom,
-      item.telephone,
-    ]);
-  } else {
-    console.log('Aucun professeur trouvé ou erreur lors de la récupération des données.');
+const editProfesseur = (id) => {
+  const row = tableData.value.find(item => item.id === id);
+  if (row) {
+    newProfesseur.value = {
+      id: row.id, 
+      nom: row.nom,
+      prenom: row.prenom,
+      email: row.email,
+      telephone: row.telephone,
+      user_id: row.user_id,
+      matricule: row.matricule
+    };
   }
 };
 
-onMounted(() => {
-  fetchData();
-});
+const deleteProfesseur = async (id) => {
+  const confirmDelete = await Swal.fire({
+    title: 'Êtes-vous sûr ?',
+    text: "Cette action ne peut pas être annulée !",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Oui, supprimer !'
+  });
+
+  if (confirmDelete.isConfirmed) {
+    try {
+      await supprimerProfesseur(id);
+      Swal.fire({
+        title: 'Supprimé !',
+        text: 'Le professeur a été supprimé avec succès.',
+        icon: 'success',
+        timer: 3000,
+        timerProgressBar: true,
+        willClose: () => {
+          fetchData();
+        }
+      });
+    } catch (error) {
+      console.error('Erreur lors de la suppression :', error);
+      const errorMessage = error.response && error.response.data && error.response.data.message
+        ? error.response.data.message 
+        : error.message || 'Une erreur inattendue s\'est produite.';
+        
+      await Swal.fire({
+        icon: 'error',
+        title: 'Erreur',
+        text: errorMessage,
+        confirmButtonColor: '#d33',
+        timer: 3000,
+        timerProgressBar: true,
+        showConfirmButton: false
+      });
+    }
+  }
+};
+
+const resetForm = () => {
+  newProfesseur.value = {
+    nom: '',
+    prenom: '',
+    email: '',
+    telephone: '',
+    id: null 
+  };
+};
+
+onMounted(fetchData);
 </script>
 
-<style >
+<style>
 .main-content { 
   margin-top: 120px;
 }
@@ -230,11 +300,11 @@ onMounted(() => {
     height: 58px;
   }
  
-  input::placeholder, textarea::placeholder{
+  input::placeholder{
     color: #ccc;
     font-size: 12px;
   }
-  .bouton .btn-submit {
+  /* .bouton .btn-submit {
     background-color: #407CEE;
     color: white;
     border: none;
@@ -251,30 +321,49 @@ onMounted(() => {
     color: white;
   }
   
-  .bouton .btn-submit:hover {
-    background-color: #407CEE;
-    color: white;
-  }
+  
  .bouton {
     display: flex;
     justify-content: end;
- }
+ } */
+ .bouton .btn-submit:hover {
+    background-color: #407CEE;
+    color: white;
+  }
 .professeurs {
   margin-top: 50px;
-  margin-left: 300px;
-  margin-right: 50px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.tableau{
-  margin-left: 300px;
+  flex-direction: column;
+  
+  margin-left: 275px;
   margin-right: 50px;
+  padding: 30px;
+ 
 }
-.pagination1{
+.professeurs h3{
+  color: black;
+  font-size: 24px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  
+}
+.professeurs .tableau {
+  width: 933px;
+}
+.professeurs .paginate{
   margin-left: 275px;
   margin-right: 50px;
   display: flex;
   justify-content: end;
 }
+/* Styles similaires à ceux du code d'origine */
+.professeurs .tab-evaluation td:nth-child(5),.professeurs .tab-evaluation td:nth-child(4) { 
+  display: none; /* Masquer la colonne de l'ID */
+}
+.professeurs .boutons{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 </style>
+

@@ -71,3 +71,45 @@ export const ajouterAnnee = async (annee) => {
     return null; // Valeur par défaut en cas d'erreur
   }
 };
+export const modifierAnnee = async (nouvellesDonnees) => {
+  try {
+    const idValue = nouvellesDonnees.id; // Récupérer l'ID directement des nouvelles données
+    // console.log('ID de l\'année à modifier :', idValue); // Vérification de l'ID
+    // console.log('Nouvelles données :', nouvellesDonnees); // Vérification des nouvelles données
+
+    const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
+    const response = await axios.put(`${apiUrl}/annees-scolaires/${idValue}`, {
+      annee_debut: nouvellesDonnees.annee_debut,
+      annee_fin: nouvellesDonnees.annee_fin,
+      etat: nouvellesDonnees.etat
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}` // Utiliser le token dans l'en-tête pour l'authentification
+      }
+    });
+
+    console.log('Année modifiée :', response.data);
+    return response.data; // Renvoie les nouvelles données
+  } catch (error) {
+    console.error('Erreur lors de la modification de l\'année :', error);
+    return null; // Valeur par défaut en cas d'erreur
+  }
+};
+
+// Méthode pour supprimer une année scolaire
+export const supprimerAnnee = async (id) => {
+  try {
+    const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
+    const response = await axios.delete(`${apiUrl}/annees-scolaires/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}` // Utiliser le token dans l'en-tête pour l'authentification
+      }
+    });
+
+    console.log('Année supprimée :', response.data);
+    return response.data; // Renvoie les données de réponse
+  } catch (error) {
+    console.error('Erreur lors de la suppression de l\'année :', error);
+    return null; // Valeur par défaut en cas d'erreur
+  }
+};

@@ -73,7 +73,7 @@
         >
           <template #actions="{ row }">
            <div class="boutons">
-            <button class="btn btn-custom" @click="editAnnee(row)" style=" color: #4862C4;">
+            <button class="btn btn-custom" @click="editAnnee(row.id)" style=" color: #4862C4;">
                      <Icon icon="mdi:pencil-outline" /> 
             </button>
           <button class="btn btn-custom1" @click="deleteAnnee(row.id)" style="color: red;">
@@ -117,16 +117,20 @@ const formData = ref({
   id: null  
 });
 
-const editAnnee = (row) => {
-  console.log('Modifier l\'année :', row);
-  formData.value = {
-    id: row.id, 
-    annee_debut: row.annee_debut,
-    annee_fin: row.annee_fin,
-    etat: row.etat
-  };
-  console.log('formData après modification:', formData.value);
+const editAnnee = (id) => {
+  console.log('Modifier l\'année avec l\'ID :', id);
+  const row = tableData.value.find(item => item.id === id);
+  if (row) {
+    formData.value = {
+      id: row.id, 
+      annee_debut: row.annee_debut,
+      annee_fin: row.annee_fin,
+      etat: row.etat
+    };
+    console.log('formData après modification:', formData.value);
+  }
 };
+
 
 const tableData = ref([]);
 const currentPage = ref(1);
@@ -272,13 +276,12 @@ onMounted(fetchData);
 .boutons {
     background-color: transparent; 
     border: none;
-    padding: 10px;
     cursor: pointer;
     display: flex;
     align-items: center;
 }
 .boutons .btn{
-  font-size: 30px;
+  font-size: 24px;
 }
 
 

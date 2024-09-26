@@ -1,10 +1,9 @@
 <template>
-
   <sidebar_admin />
   <topbar_admin />
   <div class="main-content">
-      <boutons
-      title1="Classes" 
+    <boutons
+      title1="Classes"
       title2="Années Scolaires"
       page1="classes"
       page2="annees"
@@ -34,8 +33,8 @@
             />
           </div>
         </div>
-       <div class="row  d-flex" style="display: flex; align-items: center;">
-        <div class="col-md-6">
+        <div class="row d-flex" style="display: flex; align-items: center;">
+          <div class="col-md-6">
             <label for="capacite" class="form-label">Capacité :</label>
             <input 
               type="number" 
@@ -45,10 +44,10 @@
               required 
             />
           </div>
-        <div class=" col-md-6 mt-4" style="display: flex; justify-content: end; ">
-          <button type="submit" class="btn btn-submit">Enregistrer</button>
+          <div class="col-md-6 mt-4" style="display: flex; justify-content: end;">
+            <button type="submit" class="btn btn-submit">Enregistrer</button>
+          </div>
         </div>
-       </div>
       </form>
     </div>
 
@@ -58,9 +57,26 @@
       <div class="tableau1">
         <tabEvaluations 
           v-if="paginatedData.length > 0"
-          :headers="['N°', 'Nom', 'Capacité', 'Action']"
-          :data="paginatedData"
-        />
+          :headers="['N°', 'Nom ', 'Capacité', 'Action']"
+          :data="paginatedData.map(({ numero, nom, capacite, id }) => ({
+            numero,
+            nom,
+            capacite,
+            id
+            
+          }))"
+        >
+          <template #actions="{ row }">
+            <div class="boutons">
+              <button class="btn " @click="editClasse(row.id)" style=" color: #4862C4;">
+                <Icon icon="mdi:pencil-outline" /> 
+              </button>
+              <button class="btn " @click="deleteClasse(row.id)" style="color: red;">
+                <Icon icon="mdi:trash-can-outline" /> 
+              </button>
+            </div>
+          </template>
+        </tabEvaluations>
 
         <p v-else class="no-evaluations-message">Aucune classe trouvée.</p>
       </div>
@@ -82,103 +98,161 @@ import sidebar_admin from '@/components/sidebarAdmin.vue';
 import topbar_admin from '@/components/topbarAdmin.vue';
 import tabEvaluations from '@/components/tabEvaluations.vue';
 import pagination from '@/components/paginations.vue'; 
-import { getClasses, ajouterClasse } from '@/services/ClasseService'; 
+import { getClasses, ajouterClasse, modifierClasse, supprimerClasse } from '@/services/ClasseService'; 
 import Swal from 'sweetalert2';
 import boutons from '@/components/boutons.vue';
+import { Icon } from '@iconify/vue';
 
 const formData = ref({
   nom: '',
   niveau: '',
-  capacite: ''
+  capacite: '',
+  id: null  
 });
+
+const editClasse = (id) => {
+  const row = tableData.value.find(item => item.id === id);
+  if (row) {
+    formData.value = {
+      id: row.id, 
+      nom: row.nom,
+      niveau: row.niveau,
+      capacite: row.capacite
+    };
+  }
+};
 
 const tableData = ref([]);
 const currentPage = ref(1);
 const pageSize = ref(5);
 
-// Récupérer les données des classes
 const fetchData = async () => {
-  const response = await getClasses();
-  if (response && response.length > 0) {
-      tableData.value = response.map((item, index) => ({
-          numero: index + 1, // Ajout du numéro
-          nom: item.nom,
-          capacite: item.capacite,
-      }));
-  } else {
-      console.log('Aucune classe trouvée ou erreur lors de la récupération des données.');
+  try {
+    const response = await getClasses();
+    tableData.value = response.map((item, index) => ({
+      numero: index + 1, 
+      nom: item.nom,
+      niveau: item.niveau,
+      capacite: item.capacite,
+      id: item.id  
+    }));
+  } catch (error) {
+    console.error('Erreur lors de la récupération des données :', error);
   }
 };
 
-// Fonction pour gérer le changement de page
 const handlePageChange = (page) => {
   currentPage.value = page;
 };
 
-// Données paginées
 const paginatedData = computed(() => {
   const start = (currentPage.value - 1) * pageSize.value;
   const end = start + pageSize.value;
   return tableData.value.slice(start, end);
 });
 
-// Gestion de la soumission du formulaire
 const handleFormSubmit = async () => {
   try {
-    const response = await ajouterClasse(formData.value);
-    if (response.status === 201) { 
-      Swal.fire({
-        icon: 'success',
-        title: 'Succès',
-        text: 'Classe ajoutée avec succès !',
-        confirmButtonColor: '#407CEE',
-        timer: 2000,
-        timerProgressBar: true,
-        showConfirmButton: false
-      });
+    const response = await (formData.value.id !== null ? modifierClasse(formData.value) : ajouterClasse(formData.value));
+    const successMessage = formData.value.id !== null ? 'Classe modifiée avec succès !' : 'Classe ajoutée avec succès !';
 
-      await fetchData(); // Recharger les données après ajout
-      resetForm(); // Réinitialiser le formulaire
-    } else {
-      Swal.fire({
-        icon: 'error',
-        title: 'Erreur',
-        text: 'Une erreur est survenue lors de l\'ajout de la classe.',
-        confirmButtonColor: '#d33',
-        timer: 2000,
-        timerProgressBar: true,
-        showConfirmButton: false
-      });
-    }
+    Swal.fire({
+      icon: 'success',
+      title: 'Succès',
+      text: successMessage,
+      confirmButtonColor: '#407CEE',
+      timer: 2000,
+      timerProgressBar: true,
+      showConfirmButton: false
+    });
+
+    await fetchData();
+    resetForm();
   } catch (error) {
+    console.error('Erreur lors de la soumission du formulaire :', error);
     Swal.fire({
       icon: 'error',
       title: 'Erreur',
-      text: 'Une erreur inattendue s\'est produite.',
+      text: error.message || 'Une erreur inattendue s\'est produite.',
       confirmButtonColor: '#d33',
       timer: 3000,
       timerProgressBar: true,
       showConfirmButton: false
     });
+    resetForm();
   }
 };
 
-// Réinitialiser le formulaire après soumission
+const deleteClasse = async (id) => {
+  const confirmDelete = await Swal.fire({
+    title: 'Êtes-vous sûr ?',
+    text: "Cette action ne peut pas être annulée !",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Oui, supprimer !'
+  });
+
+  if (confirmDelete.isConfirmed) {
+    try {
+      await supprimerClasse(id);
+      Swal.fire({
+        title: 'Supprimé !',
+        text: 'La classe a été supprimée avec succès.',
+        icon: 'success',
+        timer: 3000,
+        timerProgressBar: true,
+        willClose: () => {
+          fetchData();
+        }
+      });
+    } catch (error) {
+      console.error('Erreur lors de la suppression :', error);
+      const errorMessage = error.response?.data?.message || error.message || 'Une erreur inattendue s\'est produite.';
+      await Swal.fire({
+        icon: 'error',
+        title: 'Erreur',
+        text: errorMessage,
+        confirmButtonColor: '#d33',
+        timer: 3000,
+        timerProgressBar: true,
+        showConfirmButton: false
+      });
+    }
+  }
+};
+
 const resetForm = () => {
   formData.value = {
     nom: '',
     niveau: '',
-    capacite: ''
+    capacite: '',
+    id: null 
   };
 };
 
-// Charger les données lors de l'initialisation du composant
-onMounted(() => {
-  fetchData();
-});
+onMounted(fetchData);
 </script>
 
+
 <style scoped>
+/* Masquer la colonne ID dans le tableau */
+.tab-evaluations td:nth-child(4) { 
+  display: none; /* Masquer la colonne de l'ID */
+}
+
+
+.boutons {
+    background-color: transparent; 
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+.boutons .btn{
+  font-size: 24px;
+}
 .main-content { 
   margin-top: 120px;
 }

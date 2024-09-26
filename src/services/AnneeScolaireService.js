@@ -74,8 +74,8 @@ export const ajouterAnnee = async (annee) => {
 export const modifierAnnee = async (nouvellesDonnees) => {
   try {
     const idValue = nouvellesDonnees.id; // Récupérer l'ID directement des nouvelles données
-    console.log('ID de l\'année à modifier :', idValue); // Vérification de l'ID
-    console.log('Nouvelles données :', nouvellesDonnees); // Vérification des nouvelles données
+    // console.log('ID de l\'année à modifier :', idValue); // Vérification de l'ID
+    // console.log('Nouvelles données :', nouvellesDonnees); // Vérification des nouvelles données
 
     const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
     const response = await axios.put(`${apiUrl}/annees-scolaires/${idValue}`, {

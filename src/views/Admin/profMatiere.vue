@@ -15,7 +15,7 @@
     </div>
   </div>
 </template>
-
+  
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
@@ -24,9 +24,8 @@ import topbar_admin from '@/components/topbarAdmin.vue';
 import checkbox from '@/components/checkbox.vue';
 import { getMatieres } from '@/services/MatiereService';
 import { getProfesseurDetails } from '@/services/ProfesseurService';
-import { ajouterProfMatiere } from '@/services/ProfMatiere';
+import { ajouterProfMatiere, getProfMatiere } from '@/services/ProfMatiere';
 import Swal from 'sweetalert2';
-
 
 const router = useRouter();
 const route = useRoute();
@@ -35,11 +34,36 @@ const itemList = ref([]);
 const imageSource = ref('/public/images/teacher_subject.png');
 const professeurNomPrenom = ref('');
 const professeurId = route.params.id;
+const selectedMatieres = ref([]); // Référence pour stocker les IDs des matières sélectionnées
+const matieresAttribuees = ref([]); // Pour stocker les matières déjà attribuées
 
-// Référence pour stocker les IDs des matières sélectionnées
-const selectedMatieres = ref([]);
+// Fonction pour récupérer les matières attribuées
+// Récupérer les matières attribuées
+const fetchProfMatiere = async (id) => {
+  try {
+    const response = await getProfMatiere();
+    console.log('Données reçues de getProfMatiere:', response.données); 
 
-// Méthode pour récupérer les matières
+    if (response?.données) {
+      const idAsNumber = Number(id); // Convertir l'ID en nombre si nécessaire
+      const professeur = response.données.find(prof => prof.id === idAsNumber); 
+
+      if (professeur) {
+        // Stocker les matières attribuées pour utilisation dans fetchMatieres
+        matieresAttribuees.value = professeur.matieres.map(matiere => matiere.nom);
+        console.log('Matières attribuées au professeur:', matieresAttribuees.value);
+      } else {
+        console.warn('Aucun professeur trouvé avec cet ID.');
+      }
+    } else {
+      console.error('Aucune donnée reçue.');
+    }
+  } catch (error) {
+    console.error('Erreur lors de la récupération des matières du professeur :', error);
+  }
+};
+
+// Récupérer toutes les matières et cocher celles déjà attribuées
 const fetchMatieres = async () => {
   try {
     const response = await getMatieres();
@@ -48,12 +72,14 @@ const fetchMatieres = async () => {
       nom: matiere.nom,
       description: matiere.description,
       coefficient: matiere.coefficient,
+      checked: matieresAttribuees.value.includes(matiere.nom) // Cocher si la matière est déjà attribuée
     }));
-    console.log(itemList.value);
+    console.log('Liste des matières:', itemList.value);
   } catch (error) {
     console.error('Erreur lors de la récupération des matières :', error);
   }
 };
+
 
 // Méthode pour récupérer les détails d'un professeur
 const detailsProf = async (id) => {
@@ -81,7 +107,6 @@ const updateSelectedItems = (items) => {
 const attribuerMatiere = async () => {
   if (selectedMatieres.value.length > 0) {
     try {
-      // Envoyer les données à l'API pour attribuer les matières
       const response = await ajouterProfMatiere({
         professeur_id: professeurId, 
         matiere_ids: selectedMatieres.value, 
@@ -89,7 +114,6 @@ const attribuerMatiere = async () => {
 
       console.log("Réponse du serveur:", response);
 
-      // Vérification si l'API retourne un succès
       if (response && response.success) {
         Swal.fire({
           icon: 'success',
@@ -101,15 +125,13 @@ const attribuerMatiere = async () => {
           showConfirmButton: false
         });
 
-        // Après attribution, vous pouvez mettre à jour les données ou effectuer d'autres actions
-        await fetchMatieres(); // Optionnel : recharger les matières
+        await fetchMatieres();
       } else {
         throw new Error(response.message || 'Une erreur est survenue lors de l\'attribution.');
       }
     } catch (error) {
       console.error('Erreur lors de l\'attribution des matières :', error);
 
-      // Affichage d'une alerte d'erreur si quelque chose se passe mal
       Swal.fire({
         icon: 'error',
         title: 'Erreur',
@@ -121,7 +143,6 @@ const attribuerMatiere = async () => {
       });
     }
   } else {
-    // Affichage d'une alerte si aucune matière n'est sélectionnée
     Swal.fire({
       icon: 'warning',
       title: 'Aucune sélection',
@@ -131,11 +152,8 @@ const attribuerMatiere = async () => {
       timerProgressBar: true,
       showConfirmButton: false
     });
-    console.log('Aucune matière sélectionnée');
   }
 };
-
-
 
 // Méthode pour retourner à la page précédente
 const retour = () => {
@@ -143,10 +161,14 @@ const retour = () => {
 };
 
 onMounted(() => {
-  fetchMatieres();
+  console.log('ID du professeur:', professeurId);
   detailsProf(professeurId);
+  fetchProfMatiere(professeurId).then(fetchMatieres);
 });
+
 </script>
+
+
 
 
 

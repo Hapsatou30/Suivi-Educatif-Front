@@ -23,4 +23,27 @@ export const ajouterProfMatiere = async (profmat) => {
       return 0; // Valeur par défaut en cas d'erreur
     }
   };
+
+  export const getProfMatiere = async () => {
+    try {
+      const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
+      // console.log('Token récupéré :', token);
+  
+      // Récupération  des professeurs  avec leur matiere 
+      const response = await axios.get(`${apiUrl}/professeur-matieres`, { 
+        headers: {
+          Authorization: `Bearer ${token}` // Utiliser le token dans l'en-tête pour l'authentification
+        }
+      });
+  
+      // Afficher les données reçues pour le débogage
+       console.log('Données reçues :', response.data); // Vérifie les données reçues de l'API
+  
+      return response.data; // Retourner le nombre total de professeurs
+    } catch (error) {
+      // Gérer les erreurs lors de la récupération du nombre de professeurs
+      console.error('Erreur:', error);
+      return 0; // Valeur par défaut en cas d'erreur
+    }
+  };
   

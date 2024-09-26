@@ -45,6 +45,7 @@ const updateSelection = () => {
 </script>
 
 
+
 <style scoped>
 .img-fluid {
     max-width: 600px;

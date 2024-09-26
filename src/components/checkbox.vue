@@ -3,11 +3,15 @@
         <div class="col-6">
             <ul>
                 <li v-for="item in items" :key="item.id" class="list-item">
-                    <input type="checkbox" v-model="item.checked" class="checkbox" />
+                    <input 
+                        type="checkbox" 
+                        v-model="item.checked" 
+                        class="checkbox" 
+                        @change="updateSelection" 
+                    />
                     <span class="item-name">{{ item.nom }}</span>
                 </li>
             </ul>
-
         </div>
         <div class="col-6">
             <img :src="imageSrc" alt="Image Description" class="img-fluid" />
@@ -16,7 +20,7 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue';
+import { ref, watch, defineProps, defineEmits } from 'vue';
 
 // Définir les props que ce composant peut recevoir
 const props = defineProps({
@@ -29,7 +33,17 @@ const props = defineProps({
         required: true,
     },
 });
+
+// Émettre un événement au parent
+const emit = defineEmits(['update:selectedItems']);
+
+// Fonction pour émettre les items sélectionnés
+const updateSelection = () => {
+    const selectedItems = props.items.filter(item => item.checked).map(item => item.id);
+    emit('update:selectedItems', selectedItems);
+};
 </script>
+
 
 <style scoped>
 .img-fluid {

@@ -1,13 +1,13 @@
 import { apiUrl } from '@/config/apiConfig'; // Importation de l'URL de l'API
 import axios from 'axios'; // Importation de la bibliothèque axios
 
-export const getProfMatiere = async () => {
+export const ajouterProfMatiere = async (profmat) => {
     try {
       const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
       // console.log('Token récupéré :', token);
   
       // Récupération  des professeurs  avec leur matiere 
-      const response = await axios.get(`${apiUrl}/prof-matieres`, { 
+      const response = await axios.post(`${apiUrl}/professeur-matieres`, profmat, { 
         headers: {
           Authorization: `Bearer ${token}` // Utiliser le token dans l'en-tête pour l'authentification
         }

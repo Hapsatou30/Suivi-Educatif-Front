@@ -349,7 +349,7 @@ onMounted(fetchData);
     margin-top: 50px;
     margin-left: 300px; 
     margin-right: 50px;
-    width: 100%;
+   
    
   }
    .annees h3{
@@ -358,9 +358,9 @@ onMounted(fetchData);
      font-weight: 500;
      text-align: start;
    }
-  .tableau1{
+ .annees .tableau1{
     margin-right: 50px;
-    width: 91.8%;
+    width: 100%;
    
     }
 .pagination1{

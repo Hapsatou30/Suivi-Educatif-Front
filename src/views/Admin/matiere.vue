@@ -87,7 +87,7 @@
       </div>
 
       <pagination 
-        class="pagination1"
+        class="pagination2"
         v-if="tableData.length > pageSize"
         :totalItems="tableData.length"
         :pageSize="pageSize"
@@ -301,13 +301,15 @@ textarea{
 }
 
 .matieres .tableau1 {
-    width: 92.7%;
+    width: 80%;
+    margin-left: 300px;
 }
 .matieres{
   margin-top: 100px;
   display: flex;
   flex-direction: column;
   margin-right: 50px;
+ 
 
 }
 .matieres h3{
@@ -326,9 +328,9 @@ textarea{
   justify-content: center;
 }
 
-.professeurs .pagination1{
-  margin-right: 50px;
+.matieres .pagination2{
   display: flex;
   justify-content: end;
+
 }
 </style>

@@ -194,6 +194,7 @@ onMounted(() => {
   background-color: white; 
   padding-top: 150px;          
   margin-top: 0;     
+  overflow-x: hidden;
 }
 
 .button-container {

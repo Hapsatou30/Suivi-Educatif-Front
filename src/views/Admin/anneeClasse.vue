@@ -198,9 +198,12 @@ onMounted(() => {
   
   <style scoped>
  .main-content {
-  background-color: white; 
-  padding-top: 150px;          
-  margin-top: 0;     
+  background-color: white;
+  min-height: 100vh;  /* S'assure que la section couvre au moins 100% de la hauteur de la fenêtre */
+  padding-top: 150px;
+  margin-top: 0;
+  overflow-x: hidden;
+  
 }
 
 .button-container {

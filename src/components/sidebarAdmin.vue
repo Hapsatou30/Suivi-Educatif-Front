@@ -79,10 +79,11 @@
     list-style-type: none;
     padding: 0;
     margin-left: 2%;
+    margin-top: 50px;
   }
   
   .menu li {
-    margin: 12px 0;
+    margin: 20px 0;
   }
   
   .menu-link {

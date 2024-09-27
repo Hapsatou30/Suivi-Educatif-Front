@@ -377,5 +377,8 @@ onMounted(fetchData);
   align-items: center;
   justify-content: center;
 }
+.boutons .btn{
+  font-size: 30px;
+}
 </style>
 

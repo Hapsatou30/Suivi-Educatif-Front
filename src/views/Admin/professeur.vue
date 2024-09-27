@@ -282,7 +282,6 @@ onMounted(fetchData);
     padding: 30px;
   }
   
-  /* Mise en page avec deux colonnes */
   .row {
     display: flex;
     justify-content: space-between;
@@ -317,28 +316,7 @@ onMounted(fetchData);
     color: #ccc;
     font-size: 12px;
   }
-  /* .bouton .btn-submit {
-    background-color: #407CEE;
-    color: white;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    width: 200px;
-    height: 58px;
-    
-  }
-  .bouton .btn-submit{
-    font-size: 24px;
-    font-family: "Poppins", sans-serif;
-    font-weight: 500;
-    color: white;
-  }
-  
-  
- .bouton {
-    display: flex;
-    justify-content: end;
- } */
+ 
  .bouton .btn-submit:hover {
     background-color: #407CEE;
     color: white;
@@ -363,8 +341,7 @@ onMounted(fetchData);
  
 }
 .professeurs .paginate{
-  margin-left: 275px;
-  margin-right: 50px;
+ 
   display: flex;
   justify-content: end;
 }

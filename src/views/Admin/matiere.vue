@@ -265,6 +265,7 @@ onMounted(fetchData);
     margin-left: 300px;
 }
 .form-container {
+  max-width: 100%;
     border: 1px solid #F7AE00;
     border-radius: 12px;
     background-color: white;
@@ -301,13 +302,13 @@ textarea{
 }
 
 .matieres .tableau1 {
-    width: 80%;
-    margin-left: 300px;
+    width: 100%;
 }
 .matieres{
   margin-top: 100px;
   display: flex;
   flex-direction: column;
+  margin-left: 300px;
   margin-right: 50px;
  
 
@@ -316,8 +317,6 @@ textarea{
   font-size: 24px;
   font-family: "Poppins", sans-serif;
   font-weight: 500;
-  text-align: start;
-  margin-left: 300px;
 }
 .matieres .tab-evaluations td:nth-child(5) { 
   display: none; /* Masquer la colonne de l'ID */

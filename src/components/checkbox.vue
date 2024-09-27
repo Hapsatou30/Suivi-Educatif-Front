@@ -58,7 +58,7 @@ const updateSelection = () => {
     margin-left: 240px;
     margin-top: 50px;
     margin-right: 50px;
-    width: 100%;
+    width: 80%;
 }
 .list-item {
     display: flex;            

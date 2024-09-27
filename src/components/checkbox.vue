@@ -10,6 +10,7 @@
                         @change="updateSelection" 
                     />
                     <span class="item-name">{{ item.nom }}</span>
+                    <span>{{ item.professeur }} - {{ item.matiere }}</span>
                 </li>
             </ul>
         </div>

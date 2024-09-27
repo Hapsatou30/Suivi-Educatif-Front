@@ -131,6 +131,10 @@ onMounted(() => {
 const retour = () => {
   router.back();
 };
+const editClasse = (id) => {
+  // Redirige vers la page annee_classes avec l'id dans l'URL
+  router.push({ name: 'class_prof', params: { id } });
+};
 </script>
 
 <style scoped>

@@ -272,7 +272,7 @@ onMounted(fetchData);
     margin-left: 300px;
 }
 .form-container {
-    max-width: 1090px;
+    max-width: 100%;
     border: 1px solid #F7AE00;
     border-radius: 12px;
     background-color: white;
@@ -344,13 +344,11 @@ onMounted(fetchData);
     color: white;
   }
 .professeurs {
-  margin-top: 50px;
+  margin-top: 100px;
   display: flex;
   flex-direction: column;
-  
-  margin-left: 275px;
+  margin-left: 300px;
   margin-right: 50px;
-  padding: 30px;
  
 }
 .professeurs h3{
@@ -361,7 +359,8 @@ onMounted(fetchData);
   
 }
 .professeurs .tableau {
-  width: 933px;
+  width: 100%;
+ 
 }
 .professeurs .paginate{
   margin-left: 275px;

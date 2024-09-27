@@ -268,7 +268,7 @@ onMounted(fetchData);
   margin-left: 300px;
 }
 .form-container {
-  max-width: 1090px;
+  max-width: 100%;
   border: 1px solid #F7AE00;
   border-radius: 12px;
   background-color: white;

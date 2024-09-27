@@ -73,10 +73,10 @@
         >
           <template #actions="{ row }">
             <div class="boutons">
-              <button class="btn btn-custom" @click="editMatiere(row.id)" style="color: #4862C4;" title="Modifier la matière">
+              <button class="btn " @click="editMatiere(row.id)" style="color: #4862C4;" title="Modifier la matière">
                 <Icon icon="mdi:pencil-outline" /> 
               </button>
-              <button class="btn btn-custom1" @click="deleteMatiere(row.id)" style="color: red;" title="Supprimer la matière">
+              <button class="btn " @click="deleteMatiere(row.id)" style="color: red;" title="Supprimer la matière">
                 <Icon icon="mdi:trash-can-outline" /> 
               </button>
             </div>
@@ -253,21 +253,6 @@ onMounted(fetchData);
 
 <style>
 
-.matieres .tab-evaluations td:nth-child(5) { 
-  display: none; /* Masquer la colonne de l'ID */
-}
-
-/* .boutons {
-    background-color: transparent; 
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-}
-.boutons .btn {
-  font-size: 24px;
-} */
-
 .main-content { 
     margin-top: 120px;
 }
@@ -280,7 +265,6 @@ onMounted(fetchData);
     margin-left: 300px;
 }
 .form-container {
-    max-width: 1090px;
     border: 1px solid #F7AE00;
     border-radius: 12px;
     background-color: white;
@@ -315,30 +299,16 @@ textarea{
   border: 1px solid #ccc;
   
 }
-.bouton {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 20px;
-}
-.btn-submit {
-    background-color: #F7AE00;
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-.btn-submit:hover {
-    background-color: #F5A623;
-}
+
 .matieres .tableau1 {
-    max-width: 1090px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    overflow: hidden;
+    width: 92.7%;
 }
 .matieres{
-  margin-top: 50px;
+  margin-top: 100px;
+  display: flex;
+  flex-direction: column;
+  margin-right: 50px;
+
 }
 .matieres h3{
   font-size: 24px;
@@ -346,5 +316,19 @@ textarea{
   font-weight: 500;
   text-align: start;
   margin-left: 300px;
+}
+.matieres .tab-evaluations td:nth-child(5) { 
+  display: none; /* Masquer la colonne de l'ID */
+}
+
+.boutons{
+  display: flex;
+  justify-content: center;
+}
+
+.professeurs .pagination1{
+  margin-right: 50px;
+  display: flex;
+  justify-content: end;
 }
 </style>

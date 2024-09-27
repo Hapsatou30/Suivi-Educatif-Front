@@ -1,5 +1,5 @@
 <template>
-    <div class="row container">
+    <div class="row fluid">
         <div class="col-6">
             <ul>
                 <li v-for="item in items" :key="item.id" class="list-item">
@@ -55,10 +55,10 @@ const updateSelection = () => {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-left: 225px;
+    margin-left: 240px;
     margin-top: 50px;
     margin-right: 50px;
-    width: 800px;
+    width: 100%;
 }
 .list-item {
     display: flex;            

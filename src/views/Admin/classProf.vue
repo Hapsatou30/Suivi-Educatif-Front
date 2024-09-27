@@ -3,7 +3,7 @@
     <topbar_admin />
     <div class="main-content">
       <h2>
-        Attibution des Classes pour l’année :  {{ nomClasse }}
+        Attribution des matières avec le professeur  pour la classe:  {{ nomClasse }}
       </h2>
       <div class="check">
         <!-- Écoute de l'événement d'items sélectionnés depuis le composant checkbox -->
@@ -65,7 +65,7 @@ const fetchMatProf = async () => {
         id: profMat.id,
         matiere: profMat.matiere,
         professeur: profMat.professeur,
-        checked: profMatAttribue.value.includes(profMat.id) // Vérifie ici
+        checked: profMatAttribue.value.includes(profMat.id) 
       }));
 
       console.log('Liste des ProfMat:', itemList.value);
@@ -85,7 +85,7 @@ const fetchMatProf = async () => {
   const detailsAnneeClasse = async (id) => {
   try {
     const response = await getAnneeClasseDetails(id);
-    console.log('Réponse API brute:', response); // Vérifiez ce que retourne réellement l'API
+    console.log('Réponse API brute:', response); 
 
     // Vérification si response contient un objet valide
     if (response && response.donnees_classe) { // Corrigé ici pour accéder à 'donnees_classe'

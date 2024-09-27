@@ -37,26 +37,38 @@
   const selectedProfMat = ref([]); // Référence pour stocker les IDs des prof_mat sélectionnées
   const profMatAttribue = ref([]); // Pour stocker les prof_mat déjà attribuées
   
-  
- 
 
   
-  // Récupérer toutes les profMAth et cocher celles déjà attribuées
-  const fetchMatProf = async () => {
+
+ // Récupérer toutes les profMat attribuées à une classe spécifique
+ const fetchProfMatClasse = async () => {
+    const classeId = route.params.id; // Récupérer l'ID de la classe depuis les paramètres de la route
+    const profClasseData = await getProfClasse(classeId); // Appel de la méthode avec l'ID de classe
+
+    // Traiter les données reçues
+    if (profClasseData && profClasseData.success) {
+        profMatAttribue.value = profClasseData.data.map(profMat => profMat.prof_mat_id);
+        console.log('ProfMat attribuées à la classe:', profMatAttribue.value);
+    } else {
+        console.error('Erreur dans les données récupérées ou succès false.');
+    }
+};
+
+
+const fetchMatProf = async () => {
   try {
     const response = await getMatProf();
-    console.log('Réponse API brute:', response); // Affiche la réponse brute
+    console.log('Réponse API brute:', response);
 
-    // Vérifiez si response.données est un tableau
     if (response && Array.isArray(response.données)) {
-        itemList.value = response.données.map(profMat => ({
-            id: profMat.id,
-            matiere: profMat.matiere,
-            professeur: profMat.professeur,
-            // checked: profMatAttribue.value.includes(profMat.professeur)
-        }));
+      itemList.value = response.données.map(profMat => ({
+        id: profMat.id,
+        matiere: profMat.matiere,
+        professeur: profMat.professeur,
+        checked: profMatAttribue.value.includes(profMat.id) // Vérifie ici
+      }));
 
-      console.log('Liste des ProfMath1:', itemList.value);
+      console.log('Liste des ProfMat:', itemList.value);
     } else {
       console.error('La réponse n\'est pas un tableau.');
     }
@@ -65,7 +77,8 @@
   }
 };
 
-  
+
+
   
   
   // Méthode pour récupérer les détails d'une année
@@ -171,11 +184,15 @@
     router.back();
   };
   
-  onMounted(() => {
-    console.log('ID de l\'annee_Classe:', anneClasseId);
-    detailsAnneeClasse(anneClasseId);
-     fetchMatProf();
+ // Appel des méthodes dans onMounted
+onMounted(() => {
+  console.log('ID de la classe:', anneClasseId);
+  detailsAnneeClasse(anneClasseId);
+  
+  fetchProfMatClasse().then(() => {
+    fetchMatProf(); // Appeler fetchMatProf après avoir récupéré les profMat attribuées
   });
+});
     </script>
     
     <style scoped>

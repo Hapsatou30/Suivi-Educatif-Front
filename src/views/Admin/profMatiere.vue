@@ -37,7 +37,7 @@ const professeurId = route.params.id;
 const selectedMatieres = ref([]); // Référence pour stocker les IDs des matières sélectionnées
 const matieresAttribuees = ref([]); // Pour stocker les matières déjà attribuées
 
-// Fonction pour récupérer les matières attribuées
+
 // Récupérer les matières attribuées
 const fetchProfMatiere = async (id) => {
   try {
@@ -194,6 +194,7 @@ onMounted(() => {
   background-color: white; 
   padding-top: 150px;          
   margin-top: 0;     
+  overflow-x: hidden;
 }
 
 .button-container {

@@ -49,7 +49,25 @@ export const getClasses = async () => {
   }
 };
 
+// Méthode pour récupérer les détails d'une class par son ID
+export const getCLasseDetails = async (id) => {
+  try {
+    const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
+    const response = await axios.get(`${apiUrl}/classes/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}` // Utiliser le token dans l'en-tête pour l'authentification
+      }
+    });
 
+    // Afficher les données reçues pour le débogage
+    console.log('Détails de la classe récupérés :', response.data); // Vérifie les données reçues de l'API
+
+    return response.data; // Retourner les détails du classes
+  } catch (error) {
+    console.error('Erreur lors de la récupération des détails de la classe :', error);
+    return null; // Valeur par défaut en cas d'erreur
+  }
+};
 
 export const ajouterClasse = async (classe) => {
   try {

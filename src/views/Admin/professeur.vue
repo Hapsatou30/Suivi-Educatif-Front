@@ -58,13 +58,13 @@
         >
           <template #actions="{ row }">
             <div class="boutons">
-              <button class="btn " @click="editProfesseur(row.id)" style="color: #4862C4;">
+              <button class="btn " @click="editProfesseur(row.id)" style="color: #4862C4;" title="Modifier les informations du professeur">
                 <Icon icon="mdi:pencil-outline" /> 
               </button>
-              <button class="btn " @click="deleteProfesseur(row.id)" style="color: red;">
+              <button class="btn " @click="deleteProfesseur(row.id)" style="color: red;" title="Supprimer le professeur">
                 <Icon icon="mdi:trash-can-outline" /> 
               </button>
-              <button class="btn" @click="redirectToProfMatiere(row.id)" style="color: #F7AE00;">
+              <button class="btn" @click="redirectToProfMatiere(row.id)" style="color: #F7AE00;" title="Attribuer des matières">
                 <Icon icon="material-symbols:dictionary" /> 
               </button>
             </div>
@@ -272,7 +272,7 @@ onMounted(fetchData);
     margin-left: 300px;
 }
 .form-container {
-    max-width: 1090px;
+    max-width: 100%;
     border: 1px solid #F7AE00;
     border-radius: 12px;
     background-color: white;
@@ -282,7 +282,6 @@ onMounted(fetchData);
     padding: 30px;
   }
   
-  /* Mise en page avec deux colonnes */
   .row {
     display: flex;
     justify-content: space-between;
@@ -317,40 +316,17 @@ onMounted(fetchData);
     color: #ccc;
     font-size: 12px;
   }
-  /* .bouton .btn-submit {
-    background-color: #407CEE;
-    color: white;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    width: 200px;
-    height: 58px;
-    
-  }
-  .bouton .btn-submit{
-    font-size: 24px;
-    font-family: "Poppins", sans-serif;
-    font-weight: 500;
-    color: white;
-  }
-  
-  
- .bouton {
-    display: flex;
-    justify-content: end;
- } */
+ 
  .bouton .btn-submit:hover {
     background-color: #407CEE;
     color: white;
   }
 .professeurs {
-  margin-top: 50px;
+  margin-top: 100px;
   display: flex;
   flex-direction: column;
-  
-  margin-left: 275px;
+  margin-left: 300px;
   margin-right: 50px;
-  padding: 30px;
  
 }
 .professeurs h3{
@@ -361,11 +337,11 @@ onMounted(fetchData);
   
 }
 .professeurs .tableau {
-  width: 933px;
+  width: 100%;
+ 
 }
 .professeurs .paginate{
-  margin-left: 275px;
-  margin-right: 50px;
+ 
   display: flex;
   justify-content: end;
 }
@@ -378,5 +354,14 @@ onMounted(fetchData);
   align-items: center;
   justify-content: center;
 }
+.boutons .btn{
+  font-size: 30px;
+}
+p {
+  font-size: 18px;
+  color: red;
+  font-family: "Poppins", sans-serif;
+}
+
 </style>
 

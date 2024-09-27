@@ -73,10 +73,16 @@
         >
           <template #actions="{ row }">
            <div class="boutons">
-            <button class="btn btn-custom" @click="editAnnee(row.id)" style=" color: #4862C4;">
+            <button class="btn" @click="redirectToAnneeClasses(row.id)" style="color: #F7AE00;" title="Attribuer des classes">
+                <Icon icon="material-symbols:school" /> 
+              </button>
+            <button class="btn " @click="editAnnee(row.id)" style=" color: #4862C4;" title="Modifier l'année">
                      <Icon icon="mdi:pencil-outline" /> 
             </button>
-          <button class="btn btn-custom1" @click="deleteAnnee(row.id)" style="color: red;">
+            <button class="btn" @click="redirectToClassesList(row.id)" style="color: #F7AE00;" title="Liste des classes ouvertes">
+                <Icon icon="clarity:list-line" /> 
+              </button>
+          <button class="btn " @click="deleteAnnee(row.id)" style="color: red;" title="Supprimer l'année">
             <Icon icon="mdi:trash-can-outline" /> 
          </button>
            </div>
@@ -109,7 +115,9 @@ import { getAnnees, ajouterAnnee, modifierAnnee, supprimerAnnee } from '@/servic
 import Swal from 'sweetalert2';
 import boutons from '@/components/boutons.vue';
 import { Icon } from '@iconify/vue';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 const formData = ref({
   annee_debut: '',
   annee_fin: '',
@@ -261,7 +269,14 @@ const resetForm = () => {
     id: null 
   };
 };
-
+const redirectToAnneeClasses = (id) => {
+  // Redirige vers la page annee_classes avec l'id dans l'URL
+  router.push({ name: 'annee_classes', params: { id } });
+};
+const redirectToClassesList = (id) => {
+  // Redirige vers la page annee_classes avec l'id dans l'URL
+  router.push({ name: 'list_classes', params: { id } });
+};
 
 onMounted(fetchData);
 </script>
@@ -271,17 +286,6 @@ onMounted(fetchData);
 /* Masquer la colonne ID dans le tableau */
 .tab-evaluations td:nth-child(5) { 
   display: none; /* Masquer la colonne de l'ID */
-}
-
-.boutons {
-    background-color: transparent; 
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-}
-.boutons .btn{
-  font-size: 24px;
 }
 
 
@@ -297,7 +301,6 @@ onMounted(fetchData);
     margin-left: 300px;
   }
   .form-container {
-    max-width: 1090px;
     border: 1px solid #F7AE00;
     border-radius: 12px;
     background-color: white;
@@ -351,25 +354,20 @@ onMounted(fetchData);
   }
   .annees {
     margin-top: 50px;
-    /* margin-left: 300px; */
+    margin-left: 300px; 
     margin-right: 50px;
    
-    /* display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between; */
+   
   }
    .annees h3{
      font-size: 24px;
      font-family: "Poppins", sans-serif;
      font-weight: 500;
      text-align: start;
-     margin-left: 300px;
    }
-  .tableau1{
-    margin-left: 300px;
+ .annees .tableau1{
     margin-right: 50px;
-    width: 930px;
+    width: 100%;
    
     }
 .pagination1{
@@ -377,6 +375,11 @@ margin-left: 275px;
 margin-right: 50px;
 display: flex;
 justify-content: end;
+}
+p {
+  font-size: 18px;
+  color: red;
+  font-family: "Poppins", sans-serif;
 }
 
 </style>

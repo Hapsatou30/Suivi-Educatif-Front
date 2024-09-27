@@ -114,6 +114,7 @@ const login = async () => {
     color: #407CEE; /* Couleur du texte */
     border-top-left-radius: 30px; /* Arrondir les coins supérieurs gauche */
     border-bottom-left-radius: 30px; /* Arrondir les coins inférieurs gauche */
+    height: 90%;
   }
   
   .logo {
@@ -136,7 +137,7 @@ const login = async () => {
   }
   
   .formulaire {
-    margin-top: -30px; /* Marge pour superposer le formulaire */
+   margin-left: 8%;
     padding: 30px; /* Espacement interne */
     background-color: #f9f9f9; /* Couleur de fond du formulaire */
     border-radius: 20px; /* Bordure arrondie */
@@ -188,12 +189,13 @@ const login = async () => {
     display: flex; /* Utilise le flexbox pour centrer l'image */
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    height: 90%;
+    
   }
   
  .container .col-4 img {
     width: 500px; /* Largeur de l'image */
-    height: 400px; /* Hauteur de l'image */
+    height: auto; /* Hauteur de l'image */
     object-fit: cover; /* Adapter l'image au conteneur */
     margin-top: 70%; /* Marge supérieure */
     margin-left: -60%; /* Décalage à gauche */

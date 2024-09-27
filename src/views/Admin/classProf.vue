@@ -177,8 +177,6 @@ const fetchMatProf = async () => {
     }
   };
   
-  
-  
   // Méthode pour retourner à la page précédente
   const retour = () => {
     router.back();

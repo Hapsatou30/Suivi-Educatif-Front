@@ -135,6 +135,11 @@ const editClasse = (id) => {
   // Redirige vers la page annee_classes avec l'id dans l'URL
   router.push({ name: 'class_prof', params: { id } });
 };
+
+const seeClasse = (id) => {
+  // Redirige vers la page annee_classes avec l'id dans l'URL
+  router.push({ name: 'emplois_du_temps', params: { id } });
+};
 </script>
 
 <style scoped>

@@ -17,6 +17,7 @@ import Classe from '@/views/Admin/classe.vue';
 import Matiere from '@/views/Admin/matiere.vue';
 import Professeur from '@/views/Admin/professeur.vue';
 import Professeur_matiere from '@/views/Admin/profMatiere.vue';
+import AnneeClasse from '@/views/Admin/anneeClasse.vue';
 
 
 
@@ -38,6 +39,7 @@ const routes = [
 
     { path: '/annees', name: 'annees', component: Annee},
     { path: '/classes', name: 'classes', component: Classe},
+    { path: '/annee_classes/:id', name: 'annee_classes', component: AnneeClasse},
 
     { path: '/matieres', name: 'matiere', component: Matiere},
     { path: '/professeurs', name: 'professeur', component: Professeur},

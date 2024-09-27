@@ -73,10 +73,13 @@
         >
           <template #actions="{ row }">
            <div class="boutons">
-            <button class="btn btn-custom" @click="editAnnee(row.id)" style=" color: #4862C4;">
+            <button class="btn" @click="redirectToAnneeClasses(row.id)" style="color: #F7AE00;" title="Attribuer des classes">
+                <Icon icon="material-symbols:school" /> 
+              </button>
+            <button class="btn btn-custom" @click="editAnnee(row.id)" style=" color: #4862C4;" title="Modifier l'année">
                      <Icon icon="mdi:pencil-outline" /> 
             </button>
-          <button class="btn btn-custom1" @click="deleteAnnee(row.id)" style="color: red;">
+          <button class="btn btn-custom1" @click="deleteAnnee(row.id)" style="color: red;" title="Supprimer l'année">
             <Icon icon="mdi:trash-can-outline" /> 
          </button>
            </div>
@@ -109,7 +112,9 @@ import { getAnnees, ajouterAnnee, modifierAnnee, supprimerAnnee } from '@/servic
 import Swal from 'sweetalert2';
 import boutons from '@/components/boutons.vue';
 import { Icon } from '@iconify/vue';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 const formData = ref({
   annee_debut: '',
   annee_fin: '',
@@ -261,7 +266,10 @@ const resetForm = () => {
     id: null 
   };
 };
-
+const redirectToAnneeClasses = (id) => {
+  // Redirige vers la page annee_classes avec l'id dans l'URL
+  router.push({ name: 'annee_classes', params: { id } });
+};
 
 onMounted(fetchData);
 </script>

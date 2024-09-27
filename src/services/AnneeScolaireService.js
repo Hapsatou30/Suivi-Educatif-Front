@@ -35,7 +35,7 @@ export const getAnnees = async () => {
     const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
     // console.log('Token récupéré :', token);
 
-    // Récupération du nombre total de professeurs en utilisant axios.get
+    // Récupération du nombre total de annees-scolaires en utilisant axios.get
     const response = await axios.get(`${apiUrl}/annees-scolaires`, { 
       headers: {
         Authorization: `Bearer ${token}` // Utiliser le token dans l'en-tête pour l'authentification
@@ -45,14 +45,33 @@ export const getAnnees = async () => {
     // Afficher les données reçues pour le débogage
      console.log('Données reçues :', response.data); // Vérifie les données reçues de l'API
 
-    return response.data.données; // Retourner le nombre total de professeurs
+    return response.data.données; // Retourner le nombre total de annees-scolairess
   } catch (error) {
-    // Gérer les erreurs lors de la récupération du nombre de professeurs
+    // Gérer les erreurs lors de la récupération du nombre de annees-scolairess
     console.error('Erreur:', error);
     return 0; // Valeur par défaut en cas d'erreur
   }
 };
 
+// Méthode pour récupérer les détails d'un professeur par son ID
+export const getAnneeDetails = async (id) => {
+  try {
+    const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
+    const response = await axios.get(`${apiUrl}/annees-scolaires/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}` // Utiliser le token dans l'en-tête pour l'authentification
+      }
+    });
+
+    // Afficher les données reçues pour le débogage
+    console.log('Détails du annees-scolaires récupérés :', response.data); // Vérifie les données reçues de l'API
+
+    return response.data; // Retourner les détails du annees-scolaires
+  } catch (error) {
+    console.error('Erreur lors de la récupération des détails du annees-scolaires :', error);
+    return null; // Valeur par défaut en cas d'erreur
+  }
+};
 
 export const ajouterAnnee = async (annee) => {
   try {

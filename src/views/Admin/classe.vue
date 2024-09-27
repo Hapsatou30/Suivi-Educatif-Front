@@ -70,10 +70,10 @@
         >
           <template #actions="{ row }">
             <div class="boutons">
-              <button class="btn " @click="editClasse(row.id)" style=" color: #4862C4;">
+              <button class="btn " @click="editClasse(row.id)" style=" color: #4862C4;" title="Modifier la classe">
                 <Icon icon="mdi:pencil-outline" /> 
               </button>
-              <button class="btn " @click="deleteClasse(row.id)" style="color: red;">
+              <button class="btn " @click="deleteClasse(row.id)" style="color: red;" title="Supprimer la classe">
                 <Icon icon="mdi:trash-can-outline" /> 
               </button>
             </div>

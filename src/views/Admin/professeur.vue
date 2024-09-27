@@ -58,13 +58,13 @@
         >
           <template #actions="{ row }">
             <div class="boutons">
-              <button class="btn " @click="editProfesseur(row.id)" style="color: #4862C4;">
+              <button class="btn " @click="editProfesseur(row.id)" style="color: #4862C4;" title="Modifier les informations du professeur">
                 <Icon icon="mdi:pencil-outline" /> 
               </button>
-              <button class="btn " @click="deleteProfesseur(row.id)" style="color: red;">
+              <button class="btn " @click="deleteProfesseur(row.id)" style="color: red;" title="Supprimer le professeur">
                 <Icon icon="mdi:trash-can-outline" /> 
               </button>
-              <button class="btn" @click="redirectToProfMatiere(row.id)" style="color: #F7AE00;">
+              <button class="btn" @click="redirectToProfMatiere(row.id)" style="color: #F7AE00;" title="Attribuer des matières">
                 <Icon icon="material-symbols:dictionary" /> 
               </button>
             </div>

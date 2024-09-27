@@ -73,10 +73,10 @@
         >
           <template #actions="{ row }">
             <div class="boutons">
-              <button class="btn btn-custom" @click="editMatiere(row.id)" style="color: #4862C4;">
+              <button class="btn btn-custom" @click="editMatiere(row.id)" style="color: #4862C4;" title="Modifier la matière">
                 <Icon icon="mdi:pencil-outline" /> 
               </button>
-              <button class="btn btn-custom1" @click="deleteMatiere(row.id)" style="color: red;">
+              <button class="btn btn-custom1" @click="deleteMatiere(row.id)" style="color: red;" title="Supprimer la matière">
                 <Icon icon="mdi:trash-can-outline" /> 
               </button>
             </div>

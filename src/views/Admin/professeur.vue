@@ -145,26 +145,27 @@ const handleFormSubmit = async () => {
   try {
     console.log("Données à envoyer:", newProfesseur.value);
     const response = await (newProfesseur.value.id !== null 
-      ? modifierProfesseur(newProfesseur.value) // Passer l'objet complet
+      ? modifierProfesseur(newProfesseur.value) 
       : ajouterProfesseur(newProfesseur.value));
     
     console.log("Réponse du serveur:", response);
-    const successMessage = newProfesseur.value.id !== null 
-      ? 'Professeur modifié avec succès !' 
-      : 'Professeur ajouté avec succès !';
+    
+    if (response && response.données) {  // Assurez-vous que la réponse contient les données attendues
+      await fetchData();  // Récupérez de nouveau la liste des professeurs après la modification
+    }
     
     Swal.fire({
       icon: 'success',
       title: 'Succès',
-      text: successMessage,
+      text: 'Professeur modifié avec succès !',
       confirmButtonColor: '#407CEE',
       timer: 2000,
       timerProgressBar: true,
       showConfirmButton: false
     });
-
-    await fetchData();
+    
     resetForm();
+    
   } catch (error) {
     console.error('Erreur lors de la soumission du formulaire :', error);
     Swal.fire({
@@ -244,9 +245,12 @@ const resetForm = () => {
     prenom: '',
     email: '',
     telephone: '',
-    id: null 
+    id: null,
+    user_id: null,  // Ajoutez-le si nécessaire pour la modification
+    matricule: ''
   };
 };
+
 
 const redirectToProfMatiere = (id) => {
   // Redirige vers la page prof_matiere avec l'id dans l'URL

@@ -108,17 +108,18 @@ const attribuerMatiere = async () => {
   if (selectedMatieres.value.length > 0) {
     try {
       const response = await ajouterProfMatiere({
-        professeur_id: professeurId, 
-        matiere_ids: selectedMatieres.value, 
+        professeur_id: professeurId,
+        matiere_ids: selectedMatieres.value,
       });
 
       console.log("Réponse du serveur:", response);
 
+      // Vérifiez si la réponse inclut un champ "success"
       if (response && response.success) {
         Swal.fire({
           icon: 'success',
           title: 'Succès',
-          text: 'Les matières ont été attribuées avec succès !',
+          text: response.message || 'Les matières ont été attribuées avec succès !',
           confirmButtonColor: '#407CEE',
           timer: 2000,
           timerProgressBar: true,
@@ -127,20 +128,34 @@ const attribuerMatiere = async () => {
 
         await fetchMatieres();
       } else {
+        // Traitement des messages de succès qui sont considérés comme des erreurs
         throw new Error(response.message || 'Une erreur est survenue lors de l\'attribution.');
       }
     } catch (error) {
       console.error('Erreur lors de l\'attribution des matières :', error);
 
-      Swal.fire({
-        icon: 'error',
-        title: 'Erreur',
-        text: error.message || 'Une erreur inattendue s\'est produite.',
-        confirmButtonColor: '#d33',
-        timer: 3000,
-        timerProgressBar: true,
-        showConfirmButton: false
-      });
+      // Vérifiez si l'erreur provient d'un message de succès
+      if (error.message.includes('Matières synchronisées avec succès')) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Succès',
+          text: error.message,
+          confirmButtonColor: '#407CEE',
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false
+        });
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Erreur',
+          text: error.message || 'Une erreur inattendue s\'est produite.',
+          confirmButtonColor: '#d33',
+          timer: 3000,
+          timerProgressBar: true,
+          showConfirmButton: false
+        });
+      }
     }
   } else {
     Swal.fire({
@@ -154,6 +169,8 @@ const attribuerMatiere = async () => {
     });
   }
 };
+
+
 
 // Méthode pour retourner à la page précédente
 const retour = () => {

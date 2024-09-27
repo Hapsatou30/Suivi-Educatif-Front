@@ -57,11 +57,13 @@
       <div class="tableau1">
         <tabEvaluations 
           v-if="paginatedData.length > 0"
-          :headers="['N°', 'Nom ', 'Capacité', 'Action']"
-          :data="paginatedData.map(({ numero, nom, capacite, id }) => ({
+          class="tab-evaluations"
+          :headers="['N°', 'Nom ', 'Capacité', 'Niveau', 'Action']"
+          :data="paginatedData.map(({ numero, nom, capacite,niveau, id }) => ({
             numero,
             nom,
             capacite,
+            niveau,
             id
             
           }))"
@@ -238,7 +240,7 @@ onMounted(fetchData);
 
 <style scoped>
 /* Masquer la colonne ID dans le tableau */
-.tab-evaluations td:nth-child(4) { 
+.tab-evaluations td:nth-child(4)  { 
   display: none; /* Masquer la colonne de l'ID */
 }
 
@@ -249,6 +251,7 @@ onMounted(fetchData);
     cursor: pointer;
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 .boutons .btn{
   font-size: 24px;

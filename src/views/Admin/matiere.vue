@@ -133,23 +133,26 @@ const currentPage = ref(1);
 const pageSize = ref(5);
 
 const fetchData = async () => {
+  console.log('Fetching data...');
   try {
     const response = await getMatieres();
-    if (response && response.length > 0) {
-      tableData.value = response.map((item, index) => ({
-        numero: index + 1, 
-        nom: item.nom,
-        coefficient: item.coefficient,
-        description: item.description,
-        id: item.id  
-      }));
-    } else {
-      tableData.value = [];
-    }
+if (response && response.données && response.données.length > 0) {
+  tableData.value = response.données.map((item, index) => ({
+    numero: index + 1,
+    nom: item.nom,
+    coefficient: item.coefficient,
+    description: item.description,
+    id: item.id  
+  }));
+} else {
+  tableData.value = [];
+}
+
   } catch (error) {
     console.error('Erreur lors de la récupération des données :', error);
   }
 };
+
 
 const handlePageChange = (page) => {
   currentPage.value = page;

@@ -339,4 +339,10 @@ input::placeholder {
   display: flex;
   justify-content: end;
 }
+p {
+  font-size: 18px;
+  color: red;
+  font-family: "Poppins", sans-serif;
+}
+
 </style>

@@ -357,5 +357,11 @@ onMounted(fetchData);
 .boutons .btn{
   font-size: 30px;
 }
+p {
+  font-size: 18px;
+  color: red;
+  font-family: "Poppins", sans-serif;
+}
+
 </style>
 

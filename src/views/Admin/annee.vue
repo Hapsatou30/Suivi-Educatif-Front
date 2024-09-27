@@ -79,6 +79,9 @@
             <button class="btn " @click="editAnnee(row.id)" style=" color: #4862C4;" title="Modifier l'année">
                      <Icon icon="mdi:pencil-outline" /> 
             </button>
+            <button class="btn" @click="redirectToClassesList(row.id)" style="color: #F7AE00;" title="Liste des classes ouvertes">
+                <Icon icon="clarity:list-line" /> 
+              </button>
           <button class="btn " @click="deleteAnnee(row.id)" style="color: red;" title="Supprimer l'année">
             <Icon icon="mdi:trash-can-outline" /> 
          </button>
@@ -270,6 +273,10 @@ const redirectToAnneeClasses = (id) => {
   // Redirige vers la page annee_classes avec l'id dans l'URL
   router.push({ name: 'annee_classes', params: { id } });
 };
+const redirectToClassesList = (id) => {
+  // Redirige vers la page annee_classes avec l'id dans l'URL
+  router.push({ name: 'list_classes', params: { id } });
+};
 
 onMounted(fetchData);
 </script>
@@ -368,6 +375,11 @@ margin-left: 275px;
 margin-right: 50px;
 display: flex;
 justify-content: end;
+}
+p {
+  font-size: 18px;
+  color: red;
+  font-family: "Poppins", sans-serif;
 }
 
 </style>

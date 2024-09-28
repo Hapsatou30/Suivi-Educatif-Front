@@ -2,6 +2,10 @@
     <sidebar_admin />
     <topbar_admin />
     <div class="main-content">
+        <div class="mb-3" style="display: flex; align-items: end; justify-content: end ; margin-left: 300px; border-radius: 12px; margin-right: 50px;">
+            <input type="text" class="form-control" v-model="searchQuery" @input="searchParent" placeholder="Rechercher un parent (email ou téléphone)" style="width: 300px;" />
+        </div>
+
         <h2>Formulaire pour ajouter des eleves</h2>
         <div class="form-container mt-4">
             <form @submit.prevent="handleFormSubmit">
@@ -137,8 +141,8 @@ const route = useRoute();
 const tableData = ref([]); // Données des eleves
 const currentPage = ref(1); // Page actuelle de la pagination
 const pageSize = ref(5); // Nombre d'éléments par page
-// Variables réactives
 const currentStep = ref(1);
+const searchQuery = ref('');
 
 // Données réactives pour le formulaire
 const formData = ref({
@@ -188,7 +192,25 @@ const editStudent = (id) => {
         console.log('formData après modification:', formData.value);
     }
 };
+// Fonction pour rechercher un parent
+const searchParent = () => {
+    const parent = tableData.value.find(item => 
+        item.email_parent === searchQuery.value || 
+        item.telephone_parent === searchQuery.value
+    );
 
+    if (parent) {
+        // Préremplir les informations du parent dans le formulaire
+        formData.value.parent_nom = parent.nom_parent;
+        formData.value.parent_prenom = parent.prenom_parent;
+        formData.value.parent_email = parent.email_parent;
+        formData.value.parent_telephone = parent.telephone_parent;
+        formData.value.parent_adresse = parent.adresse_parent;
+    } else {
+        // Réinitialiser les informations du parent si aucun résultat n'est trouvé
+        resetParentForm();
+    }
+};
 
 // Fonction pour gérer la soumission du formulaire
 const handleFormSubmit = async () => {
@@ -259,10 +281,15 @@ const fetchData = async () => {
       email_parent: item.parent.email_parent,
       id: item.id
     }));
+
+    // Trier les élèves par ordre alphabétique du nom
+    tableData.value.sort((a, b) => a.nom.localeCompare(b.nom));
+
   } catch (error) {
     console.error('Erreur lors de la récupération des données :', error);
   }
 };
+
 
 
 // Méthode pour changer de page dans la pagination
@@ -321,6 +348,14 @@ const deleteStudent = async (id) => {
       });
     }
   }
+};
+// Fonction pour réinitialiser les informations du parent
+const resetParentForm = () => {
+    formData.value.parent_nom = '';
+    formData.value.parent_prenom = '';
+    formData.value.parent_email = '';
+    formData.value.parent_telephone = '';
+    formData.value.parent_adresse = '';
 };
 
 // Appeler les méthodes au montage du composant

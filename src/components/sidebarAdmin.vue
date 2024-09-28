@@ -20,7 +20,7 @@
           </router-link>
         </li>
         <li>
-          <router-link to="/eleves" class="menu-link">
+          <router-link to="/liste_eleves" class="menu-link">
             <Icon icon="ph:student" /> Élèves
           </router-link>
         </li>

@@ -1,26 +1,27 @@
 <template>
   <div>
-    <!-- Création d'une table -->
     <table>
       <thead>
         <tr>
-          <!-- Génération dynamique des en-têtes du tableau à partir de la propriété 'headers' -->
           <th v-for="(header, index) in headers" :key="index">{{ header }}</th>
         </tr>
       </thead>
       <tbody>
-        <!-- Génération dynamique des lignes du tableau à partir de la propriété 'data' -->
         <tr
           v-for="(row, rowIndex) in data"
           :key="rowIndex"
           :class="{'background': (rowIndex + 1) % 2 === 0, 'no-background': (rowIndex + 1) % 2 !== 0}"
         >
-          <!-- Génération des cellules de chaque ligne, sauf pour les actions -->
           <td v-for="(cell, cellIndex) in row" :key="cellIndex">{{ cell }}</td>
 
-          <!-- Si le slot "actions" est fourni, l'afficher dans la dernière cellule -->
+          <!-- Slot pour les actions -->
           <td v-if="$slots.actions">
             <slot name="actions" :row="row" />
+          </td>
+          
+          <!-- Slot pour l'action spécifique aux élèves -->
+          <td v-if="$slots.action">
+            <slot name="action" :col="row" />
           </td>
         </tr>
       </tbody>
@@ -31,18 +32,18 @@
 <script setup>
 import { defineProps } from 'vue';
 
-// Définir les propriétés du composant pour recevoir des données externes
 const props = defineProps({
   headers: {
-    type: Array, // Type attendu pour les en-têtes : tableau
-    required: true // Cette propriété est requise
+    type: Array,
+    required: true
   },
   data: {
-    type: Array, // Type attendu pour les données : tableau
-    required: true // Cette propriété est requise
+    type: Array,
+    required: true
   }
 });
 </script>
+
 
   
   <style scoped>

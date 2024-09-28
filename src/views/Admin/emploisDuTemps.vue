@@ -21,7 +21,7 @@
                     <div class="form-group" style="margin-bottom: 15px;">
                         <label for="jour" style="display: block; margin-bottom: 5px;">Jour:</label>
                         <select id="jour" v-model="horaire.jour" required
-                            style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                            style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 12px;">
                             <option value="" disabled>Choisissez un jour</option>
                             <option value="Lundi">Lundi</option>
                             <option value="Mardi">Mardi</option>
@@ -36,14 +36,14 @@
                     <div class="form-group" style="margin-bottom: 15px;">
                         <label for="heure_debut" style="display: block; margin-bottom: 5px;">Heure de début:</label>
                         <input type="time" id="heure_debut" v-model="horaire.heure_debut" required
-                            style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" />
+                            style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 12px;" />
                     </div>
 
                     <!-- Champ Heure de fin -->
                     <div class="form-group" style="margin-bottom: 15px;">
                         <label for="heure_fin" style="display: block; margin-bottom: 5px;">Heure de fin:</label>
                         <input type="time" id="heure_fin" v-model="horaire.heure_fin" required
-                            style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" />
+                            style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 12px;" />
                     </div>
 
                     <!-- Champ classe_prof_id (caché) -->
@@ -52,7 +52,7 @@
                     <!-- Bouton de soumission -->
                     <div class="form-group" style="text-align: right;">
                         <button type="submit"
-                            style="background-color: #4862C4; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">
+                            style="background-color: #4862C4; color: white; padding: 10px 20px; border: none; border-radius: 12px; cursor: pointer; width: 200px; font-size: 20px">
                             {{ isEditing ? 'Modifier' : 'Ajouter' }}
                         </button>
                     </div>
@@ -75,7 +75,7 @@
                     }))">
                     <template #actions="{ row }">
                         <div class="boutons">
-                            <button class="btn" @click="editAnnee(row)" style="color: #4862C4;"
+                            <button class="btn" @click="editHoraire(row)" style="color: #4862C4;"
                                 title="Ajouter / Modifier une horaire">
                                 <Icon icon="mdi:pencil-outline" />
                             </button>
@@ -110,21 +110,24 @@ import { Icon } from '@iconify/vue';
 import { useRouter, useRoute } from 'vue-router';
 import Swal from 'sweetalert2'; // Importer SweetAlert2
 
+// Initialisation des routeurs
 const router = useRouter();
 const route = useRoute();
 
-const nomClasse = ref('');
-const anneClasseId = route.params.id;
-const tableData = ref([]);
-const currentPage = ref(1);
-const pageSize = ref(5);
-const showModal = ref(false);
-const isEditing = ref(false);
-const horaire = ref({ jour: '', heure_debut: '', heure_fin: '', classe_prof_id: '' });
+// Variables réactives
+const nomClasse = ref(''); // Nom de la classe
+const anneClasseId = route.params.id; // ID de l'année de la classe récupéré à partir de la route
+const tableData = ref([]); // Données des horaires
+const currentPage = ref(1); // Page actuelle de la pagination
+const pageSize = ref(5); // Nombre d'éléments par page
+const showModal = ref(false); // État d'affichage du modal
+const isEditing = ref(false); // État de l'édition
+const horaire = ref({ jour: '', heure_debut: '', heure_fin: '', classe_prof_id: '' }); // Données de l'horaire
 
-// Méthode pour ouvrir le modal
-const editAnnee = (row) => {
+// Méthode pour ouvrir le modal d'édition ou d'ajout d'horaire
+const editHoraire = (row) => {
     if (row.horaire_id) {
+        // Si l'horaire existe, pré-remplir les champs
         horaire.value = {
             jour: row.jour,
             heure_debut: row.horaire.split(' - ')[0],
@@ -132,27 +135,30 @@ const editAnnee = (row) => {
             classe_prof_id: row.classe_prof_id,
             horaire_id: row.horaire_id 
         };
-        isEditing.value = true;
+        isEditing.value = true; // Mode édition
     } else {
+        // Sinon, initialiser pour un nouvel horaire
         horaire.value = { jour: '', heure_debut: '', heure_fin: '', classe_prof_id: row.classe_prof_id };
-        isEditing.value = false;
+        isEditing.value = false; // Mode ajout
     }
-    showModal.value = true;
+    showModal.value = true; // Ouvrir le modal
 };
 
 // Méthode pour fermer le modal
 const closeModal = () => {
-    showModal.value = false;
-    horaire.value = { jour: '', heure_debut: '', heure_fin: '', classe_prof_id: '' };
+    showModal.value = false; // Masquer le modal
+    horaire.value = { jour: '', heure_debut: '', heure_fin: '', classe_prof_id: '' }; // Réinitialiser les données de l'horaire
 };
 
+// Méthode pour ajouter un horaire
 const handleAjouterHoraire = async () => {
     try {
+        // Vérifier que tous les champs sont remplis
         if (horaire.value.jour && horaire.value.heure_debut && horaire.value.heure_fin) {
-            await ajouterHoraire(horaire.value);
-            closeModal();
-            getHorairesClasse(anneClasseId);
-            // Afficher l'alerte SweetAlert
+            await ajouterHoraire(horaire.value); // Appeler le service pour ajouter l'horaire
+            closeModal(); // Fermer le modal
+            getHorairesClasse(anneClasseId); // Récupérer les horaires de la classe
+            // Afficher une alerte SweetAlert
             Swal.fire({
                 title: 'Ajout réussi!',
                 text: 'L\'horaire a été ajouté avec succès.',
@@ -161,39 +167,43 @@ const handleAjouterHoraire = async () => {
                 showConfirmButton: false
             });
         } else {
-            console.error('Veuillez remplir tous les champs.');
+            console.error('Veuillez remplir tous les champs.'); // Afficher une erreur si les champs sont vides
         }
     } catch (error) {
-        console.error('Erreur lors de l\'ajout de l\'horaire:', error);
+        console.error('Erreur lors de l\'ajout de l\'horaire:', error); // Afficher l'erreur en cas de problème
     }
 };
 
+// Méthode pour modifier un horaire
 const handleModifierHoraire = async () => {
     try {
-        const { jour, heure_debut, heure_fin, horaire_id } = horaire.value;
+        const { jour, heure_debut, heure_fin, horaire_id } = horaire.value; // Déstructurer les valeurs de l'horaire
 
+        // Vérifier que tous les champs sont remplis et que l'ID de l'horaire est défini
         if (jour && heure_debut && heure_fin && horaire_id) {
-            await modifierHoraire(horaire.value);
-            closeModal();
-            getHorairesClasse(anneClasseId);
-            // Afficher l'alerte SweetAlert
+            await modifierHoraire(horaire.value); // Appeler le service pour modifier l'horaire
+            closeModal(); // Fermer le modal
+            getHorairesClasse(anneClasseId); // Récupérer les horaires de la classe
+            // Afficher une alerte SweetAlert
             Swal.fire({
                 title: 'Modification réussie!',
                 text: 'L\'horaire a été modifié avec succès.',
                 icon: 'success',
-                timer: 3000,
+                timer: 3000, // Afficher pendant 3 secondes
                 showConfirmButton: false
             });
         } else {
-            console.error('Veuillez remplir tous les champs avec des valeurs valides et vérifier que l\'ID de l\'horaire est défini.');
+            console.error('Veuillez remplir tous les champs avec des valeurs valides et vérifier que l\'ID de l\'horaire est défini.'); // Afficher une erreur si les champs sont vides ou invalides
         }
     } catch (error) {
-        console.error('Erreur lors de la modification de l\'horaire:', error);
+        console.error('Erreur lors de la modification de l\'horaire:', error); // Afficher l'erreur en cas de problème
     }
 };
 
+// Méthode pour supprimer un horaire
 const supprimerHoraires = async (horaireId) => {
     try {
+        // Afficher une alerte de confirmation avant la suppression
         const confirmation = await Swal.fire({
             title: 'Êtes-vous sûr?',
             text: "Vous ne pourrez pas revenir en arrière!",
@@ -204,66 +214,68 @@ const supprimerHoraires = async (horaireId) => {
         });
 
         if (confirmation.isConfirmed) {
-            await supprimerHoraire(horaireId);
-            getHorairesClasse(anneClasseId);
-            // Afficher l'alerte SweetAlert
+            await supprimerHoraire(horaireId); // Appeler le service pour supprimer l'horaire
+            getHorairesClasse(anneClasseId); // Récupérer les horaires de la classe
+            // Afficher une alerte SweetAlert
             Swal.fire({
                 title: 'Suppression réussie!',
                 text: 'L\'horaire a été supprimé avec succès.',
                 icon: 'success',
-                timer: 3000,
+                timer: 3000, // Afficher pendant 3 secondes
                 showConfirmButton: false
             });
         }
     } catch (error) {
-        console.error('Erreur lors de la suppression de l\'horaire:', error);
+        console.error('Erreur lors de la suppression de l\'horaire:', error); // Afficher l'erreur en cas de problème
     }
 };
 
-// Méthode pour récupérer les détails d'une année
+// Méthode pour récupérer les détails d'une année de classe
 const detailsAnneeClasse = async (id) => {
     try {
-        const response = await getAnneeClasseDetails(id);
+        const response = await getAnneeClasseDetails(id); // Appeler le service pour récupérer les détails
         if (response && response.donnees_classe) {
-            const classe = response.donnees_classe;
-            nomClasse.value = `${classe.nom}`;
+            const classe = response.donnees_classe; // Récupérer les données de la classe
+            nomClasse.value = `${classe.nom}`; // Assigner le nom de la classe à la variable réactive
         } else {
-            console.error('Aucun détail de la classe trouvé ou structure inattendue.');
+            console.error('Aucun détail de la classe trouvé ou structure inattendue.'); // Afficher une erreur si aucune donnée n'est trouvée
         }
     } catch (error) {
-        console.error('Erreur lors de la récupération des détails de la classe :', error);
+        console.error('Erreur lors de la récupération des détails de la classe :', error); // Afficher l'erreur en cas de problème
     }
 };
 
-// Méthode pour récupérer les horaires
+// Méthode pour récupérer les horaires de la classe
 const getHorairesClasse = async (id) => {
     try {
-        const response = await geHoraireClasse(id);
-        tableData.value = response.données;
+        const response = await geHoraireClasse(id); // Appeler le service pour récupérer les horaires
+        tableData.value = response.données; // Assigner les horaires récupérés à la variable réactive
     } catch (error) {
-        console.error('Erreur lors de la récupération des horaires :', error);
+        console.error('Erreur lors de la récupération des horaires :', error); // Afficher l'erreur en cas de problème
     }
 };
 
+// Méthode pour changer de page dans la pagination
 const handlePageChange = (page) => {
-    currentPage.value = page;
+    currentPage.value = page; // Mettre à jour la page actuelle
 };
 
+// Calculer les données paginées à afficher
 const paginatedData = computed(() => {
-    const start = (currentPage.value - 1) * pageSize.value;
-    const end = start + pageSize.value;
-    return tableData.value.slice(start, end);
+    const start = (currentPage.value - 1) * pageSize.value; // Calculer l'index de début
+    const end = start + pageSize.value; // Calculer l'index de fin
+    return tableData.value.slice(start, end); // Retourner les données pour la page actuelle
 });
 
-// Appel des méthodes dans onMounted
+// Appeler les méthodes au montage du composant
 onMounted(() => {
-    detailsAnneeClasse(anneClasseId);
-    getHorairesClasse(anneClasseId);
+    detailsAnneeClasse(anneClasseId); // Récupérer les détails de l'année de classe
+    getHorairesClasse(anneClasseId); // Récupérer les horaires de la classe
 });
 
 // Méthode pour retourner à la page précédente
 const retour = () => {
-    router.back();
+    router.back(); // Utiliser le routeur pour revenir en arrière
 };
 </script>
 

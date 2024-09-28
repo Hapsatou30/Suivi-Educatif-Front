@@ -124,7 +124,7 @@ import sidebar_admin from '@/components/sidebarAdmin.vue';
 import topbar_admin from '@/components/topbarAdmin.vue';
 import tabEvaluations from '@/components/tabEvaluations.vue';
 import pagination from '@/components/paginations.vue';
-import { getEleves, ajouterEleve, modifierEleve} from '@/services/EleveService';
+import { getEleves, ajouterEleve, modifierEleve,supprimerEleve} from '@/services/EleveService';
 import { Icon } from '@iconify/vue';
 import { useRouter, useRoute } from 'vue-router';
 import Swal from 'sweetalert2'; 
@@ -278,6 +278,50 @@ const paginatedData = computed(() => {
 });
 
 
+const deleteStudent = async (id) => {
+  const confirmDelete = await Swal.fire({
+    title: 'Êtes-vous sûr ?',
+    text: "Cette action ne peut pas être annulée !",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Oui, supprimer !'
+  });
+
+  if (confirmDelete.isConfirmed) {
+    try {
+      await supprimerEleve(id);
+      Swal.fire({
+        title: 'Supprimé !',
+        text: 'L\'élève a été supprimée avec succès.',
+        icon: 'success',
+        timer: 3000,
+        timerProgressBar: true,
+        willClose: () => {
+          fetchData();
+        }
+      });
+    } catch (error) {
+      console.error('Erreur lors de la suppression :', error);
+      
+      // Vérifiez si l'erreur a une réponse et récupérez le message d'erreur de l'API
+      const errorMessage = error.response && error.response.data && error.response.data.message
+        ? error.response.data.message 
+        : error.message || 'Une erreur inattendue s\'est produite.';
+        
+      await Swal.fire({
+        icon: 'error',
+        title: 'Erreur',
+        text: errorMessage,
+        confirmButtonColor: '#d33',
+        timer: 3000,
+        timerProgressBar: true,
+        showConfirmButton: false
+      });
+    }
+  }
+};
 
 // Appeler les méthodes au montage du composant
 onMounted(fetchData);

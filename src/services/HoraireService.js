@@ -58,7 +58,7 @@ export const ajouterHoraire = async (horaire) => {
 };
 
 // Méthode pour supprimer un horaire
-export const supprimerAnnee = async (id) => {
+export const supprimerHoraire = async (id) => {
     try {
         const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
         const response = await axios.delete(`${apiUrl}/horaires/${id}`, {

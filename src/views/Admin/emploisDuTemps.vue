@@ -80,10 +80,10 @@
                                 <Icon icon="mdi:pencil-outline" />
                             </button>
 
-                            <button class="btn" @click="deleteAnnee(row.horaire_id)" style="color: red;"
-                                title="Supprimer l'horaire">
+                            <button class="btn" @click="supprimerHoraires(row.horaire_id)" style="color: red;" title="Supprimer l'horaire">
                                 <Icon icon="mdi:trash-can-outline" />
                             </button>
+
                         </div>
                     </template>
                 </tabEvaluations>
@@ -104,7 +104,7 @@ import sidebar_admin from '@/components/sidebarAdmin.vue';
 import topbar_admin from '@/components/topbarAdmin.vue';
 import tabEvaluations from '@/components/tabEvaluations.vue';
 import pagination from '@/components/paginations.vue';
-import { geHoraireClasse, ajouterHoraire, modifierHoraire } from '@/services/HoraireService';
+import { geHoraireClasse, ajouterHoraire, modifierHoraire ,supprimerHoraire} from '@/services/HoraireService';
 import { getAnneeClasseDetails } from '@/services/AnneeClasseService';
 import { Icon } from '@iconify/vue';
 import { useRouter, useRoute } from 'vue-router';
@@ -222,6 +222,19 @@ const paginatedData = computed(() => {
     const end = start + pageSize.value;
     return tableData.value.slice(start, end);
 });
+const supprimerHoraires = async (horaireId) => {
+    try {
+        const confirmation = confirm("Êtes-vous sûr de vouloir supprimer cet horaire ?");
+        if (confirmation) {
+            // Appel à l'API pour supprimer l'horaire
+            await supprimerHoraire(horaireId); // Assure-toi d'importer cette méthode depuis ton service
+            getHorairesClasse(anneClasseId); // Rechargez les horaires
+        }
+    } catch (error) {
+        console.error('Erreur lors de la suppression de l\'horaire:', error);
+    }
+};
+
 
 // Appel des méthodes dans onMounted
 onMounted(() => {

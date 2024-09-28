@@ -24,7 +24,7 @@
               <button class="btn" @click="editClasse(row.id)" style=" color: #4862C4; font-size: 30px;" title="Attribuer des classes aux professeurs">
                 <Icon icon="mdi:pencil-outline" /> 
               </button>
-              <button class="btn" @click="seeClasse(row.id)" style="color: red; font-size: 40px;" title="voir les infos la classe">
+              <button class="btn" @click="seeClasse(row.id)" style="color: red; font-size: 40px;" title="Voir les horaires de cette classe">
                 <Icon icon="marketeq:eye" /> 
               </button>
             </div>
@@ -134,6 +134,11 @@ const retour = () => {
 const editClasse = (id) => {
   // Redirige vers la page annee_classes avec l'id dans l'URL
   router.push({ name: 'class_prof', params: { id } });
+};
+
+const seeClasse = (id) => {
+  // Redirige vers la page annee_classes avec l'id dans l'URL
+  router.push({ name: 'emplois_du_temps', params: { id } });
 };
 </script>
 

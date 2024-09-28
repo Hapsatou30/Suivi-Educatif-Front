@@ -20,6 +20,7 @@ import Professeur_matiere from '@/views/Admin/profMatiere.vue';
 import AnneeClasse from '@/views/Admin/anneeClasse.vue';
 import ListeClasse from '@/views/Admin/classesOuvertes.vue';
 import ClassProf from '@/views/Admin/classProf.vue';
+import EmploisDuTemps from '@/views/Admin/emploisDuTemps.vue';
 
 
 // Définition des routes de l'application
@@ -46,7 +47,9 @@ const routes = [
 
     { path: '/matieres', name: 'matiere', component: Matiere},
     { path: '/professeurs', name: 'professeur', component: Professeur},
-    { path: '/prof_matiere/:id', name: 'prof_matiere', component: Professeur_matiere }
+    { path: '/prof_matiere/:id', name: 'prof_matiere', component: Professeur_matiere },
+
+    { path: '/Emplois_du_temps/:id', name: 'emplois_du_temps', component: EmploisDuTemps}
     
 
     

@@ -81,7 +81,12 @@ export const modifierEleve = async (eleve) => {
   try {
       console.log('eleve avant modification:', eleve); // Pour débogage
       const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
-      const response = await axios.put(`${apiUrl}/eleves/${eleve}`, eleve, {
+      
+      // Assurez-vous que l'ID de l'élève est présent dans l'objet eleve
+      const id = eleve.id; // Récupérer l'ID de l'élève
+      
+      // Utiliser l'ID dans l'URL pour la requête PUT
+      const response = await axios.put(`${apiUrl}/eleves/${id}`, eleve, {
           headers: {
               Authorization: `Bearer ${token}` // Utiliser le token dans l'en-tête pour l'authentification
           }
@@ -94,4 +99,5 @@ export const modifierEleve = async (eleve) => {
       return null; // Valeur par défaut en cas d'erreur
   }
 };
+
 

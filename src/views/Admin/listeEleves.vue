@@ -83,9 +83,10 @@
                 </div>
             </form>
         </div>
-        <div class="horaires">
+        <div class="eleves">
+            <h3>Liste des eleves</h3>
             <div class="tableau1">
-                <tabEvaluations v-if="paginatedData.length > 0" class="tab-evaluations"
+                <tabEvaluations v-if="paginatedData.length > 0" class="tab-eleves"
                     :headers="['Prénom & Nom', 'Matricule', 'Nom_Parent', 'Téléphone', 'Action']" :data="paginatedData.map(({ prenom, nom, matricule, nom_parent, prenom_parent, telephone_parent,id
                      }) => ({
                         nom: `${prenom} ${nom}`,
@@ -96,7 +97,7 @@
                     }))">
                     <template #actions="{ row }">
                         <div class="boutons">
-                            <button class="btn " @click="addStudent(row.id)" style="color: #4862C4;" title="Ajouter / Modifier les informations d'un eleve">
+                            <button class="btn " @click="editStudent(row.id)" style="color: #4862C4;" title=" Modifier les informations d'un eleve">
                                 <Icon icon="mdi:pencil-outline" /> 
                             </button>
                             <button class="btn " @click="deleteStudent(row.id)" style="color: red;" title="Supprimer le professeur">
@@ -133,7 +134,7 @@ const router = useRouter();
 const route = useRoute();
 
 // Variables réactives
-const tableData = ref([]); // Données des horaires
+const tableData = ref([]); // Données des eleves
 const currentPage = ref(1); // Page actuelle de la pagination
 const pageSize = ref(5); // Nombre d'éléments par page
 // Variables réactives
@@ -155,6 +156,7 @@ const formData = ref({
   parent_adresse: ''
 });
 
+
 // Fonctions pour changer d'étape
 const nextStep = () => {
   if (currentStep.value < 2) currentStep.value++;
@@ -163,6 +165,30 @@ const nextStep = () => {
 const previousStep = () => {
   if (currentStep.value > 1) currentStep.value--;
 };
+const editStudent = (id) => {
+    console.log('Modifier l\'élève avec l\'ID :', id);
+    const row = tableData.value.find(item => item.id === id);
+    console.log('Données de l\'élève trouvées :', row); 
+    if (row) {
+        // Remplir les données du formulaire avec les informations de l'élève sélectionné
+        formData.value = {
+            nom: row.nom,
+            prenom: row.prenom,
+            email: row.email,
+            telephone: row.telephone,
+            date_naissance: row.date_naissance,
+            genre: row.genre,
+            parent_telephone: row.telephone_parent,
+            parent_nom: row.nom_parent, 
+            parent_prenom: row.prenom_parent, 
+            parent_email: row.email_parent, 
+            parent_adresse: row.adresse_parent, 
+            id: row.id, 
+        };
+        console.log('formData après modification:', formData.value);
+    }
+};
+
 
 // Fonction pour gérer la soumission du formulaire
 const handleFormSubmit = async () => {
@@ -181,7 +207,7 @@ const handleFormSubmit = async () => {
       timerProgressBar: true,
       showConfirmButton: false
     });
-
+    await fetchData();
     resetForm();
   } catch (error) {
     console.log(error.response.data);
@@ -196,6 +222,7 @@ const handleFormSubmit = async () => {
     });
   }
 };
+
 
 // Fonction pour réinitialiser le formulaire
 const resetForm = () => {
@@ -224,6 +251,7 @@ const fetchData = async () => {
       date_naissance: item.date_naissance,
       genre: item.genre,
       telephone: item.telephone,
+      email: item.email,
       nom_parent: item.parent.nom_parent,  
       prenom_parent: item.parent.prenom_parent, 
       telephone_parent: item.parent.telephone_parent, 
@@ -261,7 +289,9 @@ onMounted(fetchData);
 
 <style>
 
-
+.tab-eleves td:nth-child(5) { 
+  display: none; /* Masquer la colonne de l'ID */
+}
 
 .main-content {
     margin-top: 120px;
@@ -333,7 +363,7 @@ input::placeholder {
     color: white;
 }
 
-.horaires {
+.eleves {
     margin-top: 50px;
     margin-left: 300px;
     margin-right: 50px;
@@ -341,14 +371,14 @@ input::placeholder {
 
 }
 
-.horaires h3 {
+.eleves h3 {
     font-size: 24px;
     font-family: "Poppins", sans-serif;
     font-weight: 500;
     text-align: start;
 }
 
-.horaires .tableau1 {
+.eleves .tableau1 {
     margin-right: 50px;
     width: 100%;
 

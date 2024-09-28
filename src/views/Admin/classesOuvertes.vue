@@ -34,6 +34,9 @@
               <button class="btn" @click="redirectToStudentsList(col.id)"  style="color: black; font-size: 40px;" title="Voir la liste des élèves de cette classe">
                 <Icon icon="la:users" /> 
               </button>
+              <button class="btn" @click="redirectToAddStudents(col.id)"  style="color: black; font-size: 40px;" title="Ajouter des élèves dans cette classe">
+                <Icon icon="ei:plus" /> 
+              </button>
             </div>
           </template>
         </tabEvaluations>
@@ -148,10 +151,10 @@ const seeClasse = (id) => {
   router.push({ name: 'emplois_du_temps', params: { id } });
 };
 
-// const redirectToStudentsList = (id) => {
-//   // Redirige vers la page annee_classes avec l'id dans l'URL
-//   router.push({ name: 'liste_eleves', params: { id } });
-// };
+const redirectToAddStudents = (id) => {
+  // Redirige vers la page annee_classes avec l'id dans l'URL
+  router.push({ name: 'classe_eleves', params: { id } });
+};
 </script>
 
 <style scoped>

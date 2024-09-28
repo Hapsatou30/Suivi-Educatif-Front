@@ -281,10 +281,15 @@ const fetchData = async () => {
       email_parent: item.parent.email_parent,
       id: item.id
     }));
+
+    // Trier les élèves par ordre alphabétique du nom
+    tableData.value.sort((a, b) => a.nom.localeCompare(b.nom));
+
   } catch (error) {
     console.error('Erreur lors de la récupération des données :', error);
   }
 };
+
 
 
 // Méthode pour changer de page dans la pagination

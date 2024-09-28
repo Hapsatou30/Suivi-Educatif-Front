@@ -21,23 +21,22 @@ export const geHoraireClasse = async (anneeClasseId) => {
     }
 };
 
-// Méthode pour modifier un horaire
 export const modifierHoraire = async (horaire) => {
-    try {
-        const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
-        const response = await axios.put(`${apiUrl}/horaires/${horaire.horaire_id}`, horaire, {
-            headers: {
-                Authorization: `Bearer ${token}` // Utiliser le token dans l'en-tête pour l'authentification
-            }
-        });
+  try {
+      console.log('Horaire avant modification:', horaire); // Pour débogage
+      const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
+      const response = await axios.put(`${apiUrl}/horaires/${horaire.horaire_id}`, horaire, {
+          headers: {
+              Authorization: `Bearer ${token}` // Utiliser le token dans l'en-tête pour l'authentification
+          }
+      });
 
-        // Afficher la réponse pour le débogage
-        console.log('Horaire modifié :', response.data);
-        return response.data; // Renvoie les données de la réponse pour analyse
-    } catch (error) {
-        console.error('Erreur lors de la modification de l\'horaire :', error);
-        return null; // Valeur par défaut en cas d'erreur
-    }
+      console.log('Horaire modifié :', response.data);
+      return response.data; // Renvoie les données de la réponse pour analyse
+  } catch (error) {
+      console.error('Erreur lors de la modification de l\'horaire :', error.response ? error.response.data : error.message);
+      return null; // Valeur par défaut en cas d'erreur
+  }
 };
 
 export const ajouterHoraire = async (horaire) => {

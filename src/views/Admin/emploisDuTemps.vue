@@ -129,7 +129,8 @@ const editAnnee = (row) => {
             jour: row.jour,
             heure_debut: row.horaire.split(' - ')[0], // extraction de l'heure de début
             heure_fin: row.horaire.split(' - ')[1],   // extraction de l'heure de fin
-            classe_prof_id: row.classe_prof_id
+            classe_prof_id: row.classe_prof_id,
+            horaire_id: row.horaire_id 
         };
         isEditing.value = true; // Activer le mode édition
     } else {
@@ -167,21 +168,24 @@ const handleAjouterHoraire = async () => {
         console.error('Erreur lors de l\'ajout de l\'horaire:', error);
     }
 };
-
 const handleModifierHoraire = async () => {
     try {
-        // Vérifiez que tous les champs sont remplis
-        if (horaire.value.jour && horaire.value.heure_debut && horaire.value.heure_fin) {
+        const { jour, heure_debut, heure_fin, horaire_id } = horaire.value;
+        console.log('horaire.value:', horaire.value);
+
+        // Vérifiez que tous les champs sont remplis et que l'ID n'est pas undefined
+        if (jour && heure_debut && heure_fin && horaire_id) {
             await modifierHoraire(horaire.value);
             closeModal(); // Fermez le modal après la modification
             getHorairesClasse(anneClasseId); // Rechargez les horaires
         } else {
-            console.error('Veuillez remplir tous les champs.');
+            console.error('Veuillez remplir tous les champs avec des valeurs valides et vérifier que l\'ID de l\'horaire est défini.');
         }
     } catch (error) {
         console.error('Erreur lors de la modification de l\'horaire:', error);
     }
 };
+
 
 
 // Méthode pour récupérer les détails d'une année

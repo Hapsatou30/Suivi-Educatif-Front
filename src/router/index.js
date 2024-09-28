@@ -21,7 +21,7 @@ import AnneeClasse from '@/views/Admin/anneeClasse.vue';
 import ListeClasse from '@/views/Admin/classesOuvertes.vue';
 import ClassProf from '@/views/Admin/classProf.vue';
 import EmploisDuTemps from '@/views/Admin/emploisDuTemps.vue';
-
+import listeEleves from '@/views/Admin/listeEleves.vue';
 
 // Définition des routes de l'application
 const routes = [
@@ -44,12 +44,15 @@ const routes = [
     { path: '/annee_classes/:id', name: 'annee_classes', component: AnneeClasse},
     { path: '/list_classes/:id', name: 'list_classes', component: ListeClasse},
     { path:'/class_prof/:id', name: 'class_prof', component: ClassProf},
+    
 
     { path: '/matieres', name: 'matiere', component: Matiere},
     { path: '/professeurs', name: 'professeur', component: Professeur},
     { path: '/prof_matiere/:id', name: 'prof_matiere', component: Professeur_matiere },
 
-    { path: '/Emplois_du_temps/:id', name: 'emplois_du_temps', component: EmploisDuTemps}
+    { path: '/Emplois_du_temps/:id', name: 'emplois_du_temps', component: EmploisDuTemps},
+
+    { path: '/liste_eleves', name: 'liste_eleves', component: listeEleves},
     
 
     

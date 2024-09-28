@@ -79,10 +79,10 @@ export const ajouterClasse = async (classe) => {
     });
 
     // Afficher la réponse pour le débogage
-    console.log('matiere ajouté :', response.data);
+    console.log('classe ajouté :', response.data);
     return response.data; // Renvoie toute la réponse pour analyse
   } catch (error) {
-    console.error('Erreur lors de l\'ajout de la matiere :', error);
+    console.error('Erreur lors de l\'ajout de la classe :', error);
     return null; // Valeur par défaut en cas d'erreur
   }
 };

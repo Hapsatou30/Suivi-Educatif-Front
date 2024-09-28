@@ -9,7 +9,7 @@
         <tabEvaluations 
           v-if="paginatedData.length > 0"
           class="tab-evaluations"
-          :headers="['N°', 'Nom ', 'Capacité','Niveau', 'Matières']"
+          :headers="['N°', 'Nom ', 'Capacité','Niveau', 'Matières', 'Elèves']"
           :data="paginatedData.map(({ numero, nom, capacite, niveau, id }) => ({
             numero,
             nom,
@@ -26,6 +26,13 @@
               </button>
               <button class="btn" @click="seeClasse(row.id)" style="color: red; font-size: 40px;" title="Voir les horaires de cette classe">
                 <Icon icon="marketeq:eye" /> 
+              </button>
+            </div>
+          </template>
+          <template #action="{ col }">
+            <div class="boutons">
+              <button class="btn" @click="redirectToStudentsList(col.id)"  style="color: black; font-size: 40px;" title="Voir la liste des élèves de cette classe">
+                <Icon icon="la:users" /> 
               </button>
             </div>
           </template>
@@ -140,6 +147,11 @@ const seeClasse = (id) => {
   // Redirige vers la page annee_classes avec l'id dans l'URL
   router.push({ name: 'emplois_du_temps', params: { id } });
 };
+
+// const redirectToStudentsList = (id) => {
+//   // Redirige vers la page annee_classes avec l'id dans l'URL
+//   router.push({ name: 'liste_eleves', params: { id } });
+// };
 </script>
 
 <style scoped>

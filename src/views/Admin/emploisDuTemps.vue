@@ -104,10 +104,11 @@ import sidebar_admin from '@/components/sidebarAdmin.vue';
 import topbar_admin from '@/components/topbarAdmin.vue';
 import tabEvaluations from '@/components/tabEvaluations.vue';
 import pagination from '@/components/paginations.vue';
-import { geHoraireClasse, ajouterHoraire, modifierHoraire ,supprimerHoraire} from '@/services/HoraireService';
+import { geHoraireClasse, ajouterHoraire, modifierHoraire, supprimerHoraire } from '@/services/HoraireService';
 import { getAnneeClasseDetails } from '@/services/AnneeClasseService';
 import { Icon } from '@iconify/vue';
 import { useRouter, useRoute } from 'vue-router';
+import Swal from 'sweetalert2'; // Importer SweetAlert2
 
 const router = useRouter();
 const route = useRoute();
@@ -123,44 +124,42 @@ const horaire = ref({ jour: '', heure_debut: '', heure_fin: '', classe_prof_id: 
 
 // Méthode pour ouvrir le modal
 const editAnnee = (row) => {
-    // Si un horaire est déjà défini, pré-remplir les champs pour la modification
     if (row.horaire_id) {
         horaire.value = {
             jour: row.jour,
-            heure_debut: row.horaire.split(' - ')[0], // extraction de l'heure de début
-            heure_fin: row.horaire.split(' - ')[1],   // extraction de l'heure de fin
+            heure_debut: row.horaire.split(' - ')[0],
+            heure_fin: row.horaire.split(' - ')[1],
             classe_prof_id: row.classe_prof_id,
             horaire_id: row.horaire_id 
         };
-        isEditing.value = true; // Activer le mode édition
+        isEditing.value = true;
     } else {
-        // Sinon, c'est un nouvel ajout
-        horaire.value = {
-            jour: '',
-            heure_debut: '',
-            heure_fin: '',
-            classe_prof_id: row.classe_prof_id
-        };
-        isEditing.value = false; // Désactiver le mode édition
+        horaire.value = { jour: '', heure_debut: '', heure_fin: '', classe_prof_id: row.classe_prof_id };
+        isEditing.value = false;
     }
-    showModal.value = true; // Afficher le modal
+    showModal.value = true;
 };
-
 
 // Méthode pour fermer le modal
 const closeModal = () => {
-    showModal.value = false; // Cacher le modal
-    // Réinitialiser le formulaire
+    showModal.value = false;
     horaire.value = { jour: '', heure_debut: '', heure_fin: '', classe_prof_id: '' };
 };
 
 const handleAjouterHoraire = async () => {
     try {
-        // Vérifiez que tous les champs sont remplis
         if (horaire.value.jour && horaire.value.heure_debut && horaire.value.heure_fin) {
             await ajouterHoraire(horaire.value);
-            closeModal(); // Fermez le modal après l'ajout
-            getHorairesClasse(anneClasseId); // Rechargez les horaires
+            closeModal();
+            getHorairesClasse(anneClasseId);
+            // Afficher l'alerte SweetAlert
+            Swal.fire({
+                title: 'Ajout réussi!',
+                text: 'L\'horaire a été ajouté avec succès.',
+                icon: 'success',
+                timer: 3000, // Afficher pendant 3 secondes
+                showConfirmButton: false
+            });
         } else {
             console.error('Veuillez remplir tous les champs.');
         }
@@ -168,16 +167,23 @@ const handleAjouterHoraire = async () => {
         console.error('Erreur lors de l\'ajout de l\'horaire:', error);
     }
 };
+
 const handleModifierHoraire = async () => {
     try {
         const { jour, heure_debut, heure_fin, horaire_id } = horaire.value;
-        console.log('horaire.value:', horaire.value);
 
-        // Vérifiez que tous les champs sont remplis et que l'ID n'est pas undefined
         if (jour && heure_debut && heure_fin && horaire_id) {
             await modifierHoraire(horaire.value);
-            closeModal(); // Fermez le modal après la modification
-            getHorairesClasse(anneClasseId); // Rechargez les horaires
+            closeModal();
+            getHorairesClasse(anneClasseId);
+            // Afficher l'alerte SweetAlert
+            Swal.fire({
+                title: 'Modification réussie!',
+                text: 'L\'horaire a été modifié avec succès.',
+                icon: 'success',
+                timer: 3000,
+                showConfirmButton: false
+            });
         } else {
             console.error('Veuillez remplir tous les champs avec des valeurs valides et vérifier que l\'ID de l\'horaire est défini.');
         }
@@ -186,7 +192,33 @@ const handleModifierHoraire = async () => {
     }
 };
 
+const supprimerHoraires = async (horaireId) => {
+    try {
+        const confirmation = await Swal.fire({
+            title: 'Êtes-vous sûr?',
+            text: "Vous ne pourrez pas revenir en arrière!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Oui, supprimer!',
+            cancelButtonText: 'Annuler'
+        });
 
+        if (confirmation.isConfirmed) {
+            await supprimerHoraire(horaireId);
+            getHorairesClasse(anneClasseId);
+            // Afficher l'alerte SweetAlert
+            Swal.fire({
+                title: 'Suppression réussie!',
+                text: 'L\'horaire a été supprimé avec succès.',
+                icon: 'success',
+                timer: 3000,
+                showConfirmButton: false
+            });
+        }
+    } catch (error) {
+        console.error('Erreur lors de la suppression de l\'horaire:', error);
+    }
+};
 
 // Méthode pour récupérer les détails d'une année
 const detailsAnneeClasse = async (id) => {
@@ -222,24 +254,11 @@ const paginatedData = computed(() => {
     const end = start + pageSize.value;
     return tableData.value.slice(start, end);
 });
-const supprimerHoraires = async (horaireId) => {
-    try {
-        const confirmation = confirm("Êtes-vous sûr de vouloir supprimer cet horaire ?");
-        if (confirmation) {
-            // Appel à l'API pour supprimer l'horaire
-            await supprimerHoraire(horaireId); // Assure-toi d'importer cette méthode depuis ton service
-            getHorairesClasse(anneClasseId); // Rechargez les horaires
-        }
-    } catch (error) {
-        console.error('Erreur lors de la suppression de l\'horaire:', error);
-    }
-};
-
 
 // Appel des méthodes dans onMounted
 onMounted(() => {
     detailsAnneeClasse(anneClasseId);
-    getHorairesClasse(anneClasseId); // Récupération des horaires
+    getHorairesClasse(anneClasseId);
 });
 
 // Méthode pour retourner à la page précédente
@@ -247,6 +266,7 @@ const retour = () => {
     router.back();
 };
 </script>
+
 
 
 <style>

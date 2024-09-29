@@ -155,6 +155,10 @@ const redirectToAddStudents = (id) => {
   // Redirige vers la page annee_classes avec l'id dans l'URL
   router.push({ name: 'classe_eleves', params: { id } });
 };
+const redirectToStudentsList = (id) => {
+  // Redirige vers la page annee_classes avec l'id dans l'URL
+  router.push({ name: 'eleves_classe', params: { id } });
+};
 </script>
 
 <style scoped>

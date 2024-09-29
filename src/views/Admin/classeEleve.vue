@@ -41,9 +41,13 @@ const eleveAttribue = ref([]); // Pour stocker les élèves déjà attribués
 const detailsAnneeClasse = async (id) => {
     try {
         const response = await getAnneeClasseDetails(id);
-        if (response && response.données_classe) {
-            const classe = response.donnees_classe;
-            nomClasse.value = `${classe.nom}`;
+        console.log('Réponse API brute:', response);
+
+        // Vérification si response contient un objet valide
+        if (response && response.donnees_classe) { // Corrigé ici pour accéder à 'donnees_classe'
+            const classe = response.donnees_classe; // Corrigé ici pour accéder à 'donnees_classe'
+            console.log('Détails de la classe:', classe);
+            nomClasse.value = `${classe.nom}`; // Mise à jour de la variable ici
         } else {
             console.error('Aucun détail de la classe trouvé ou structure inattendue.');
         }

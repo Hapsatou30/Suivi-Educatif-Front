@@ -3,9 +3,24 @@
   <topBarProf />
   <div class="main-content">
     <affiche />
-    <div class="widgets-container">
-      <widget title="Classes" :number="classesCount" iconSrc="/public/images/Vector.svg" />
-      <widget title="Matières" :number="matiereCount" iconSrc="/public/images/Icon.svg" />
+    <div class="row">
+      <div class="col-6">
+        <div class="widgets-container">
+          <widget title="Classes" :number="classesCount" iconSrc="/public/images/Vector.svg" />
+          <widget title="Matières" :number="matiereCount" iconSrc="/public/images/Icon.svg" />
+        </div>
+      </div>
+      <div class="col-6">
+        <h3>Emploi du temps d’aujourd’hui</h3>
+        <tabEvaluations 
+          v-if="paginatedData.length > 0"
+          :headers="['Horaire', 'Matiere', 'Classe']" 
+          :data="paginatedData" 
+        />
+
+        <!-- Message affiché si la tableData est vide -->
+        <p v-else class="no-evaluations-message">Aucune évaluation prévue pour aujourd'hui.</p>
+      </div>
     </div>
   </div>
 </template>
@@ -19,11 +34,13 @@ import widget from '@/components/widget.vue';
 import { getNbrClasseProf } from '@/services/ClasseProfs';
 import { profile } from '@/services/AuthService';
 import { getNbrMatiere } from '@/services/MatiereService';
+import tabEvaluations from '@/components/tabEvaluations.vue';
 
 // Variables réactives
 const classesCount = ref(0);
 const matiereCount = ref(0);
 const professeurId = ref('');
+const tableData = ref([]);
 
 // Fonction pour récupérer les informations de profil de l'utilisateur connecté
 const fetchProfile = async () => {
@@ -67,6 +84,18 @@ onMounted(async () => {
   justify-content: space-between;
   margin-top: 40px;
   margin-left: 300px;
-  margin-right: 50px;
 }
+.main-content .row{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+.main-content .row .col-6 .widgets-container{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 50px;
+}
+
 </style>

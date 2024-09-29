@@ -24,6 +24,9 @@ import EmploisDuTemps from '@/views/Admin/emploisDuTemps.vue';
 import listeEleves from '@/views/Admin/listeEleves.vue';
 import ClasseEleve from '@/views/Admin/classeEleve.vue';
 import ElevesCLasse from '@/views/Admin/elevesCLasses.vue';
+import GestionNotes from '@/views/Admin/gestionNotes.vue';
+import NoteMatieres from '@/views/Admin/noteMatieres.vue';
+import NotesMatiere from '@/views/Admin/notesMatiere.vue';
 
 // Définition des routes de l'application
 const routes = [
@@ -59,6 +62,13 @@ const routes = [
     { path: '/classe_eleves/:id', name: 'classe_eleves', component: ClasseEleve},
 
     { path: '/eleves_classe/:id', name: 'eleves_classe', component: ElevesCLasse},
+
+
+    { path: '/gestion_notes', name: 'gestion_notes', component:GestionNotes},
+
+    { path: '/notes_matieres/:id', name: 'notes_matieres', component:NoteMatieres},
+
+    { path:'/notes/:id', name: 'notes', component:NotesMatiere},
   
 
     

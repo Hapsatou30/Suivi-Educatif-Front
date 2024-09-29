@@ -25,7 +25,7 @@
           </router-link>
         </li>
         <li>
-          <router-link to="/notes" class="menu-link">
+          <router-link to="/gestion_notes" class="menu-link">
             <Icon icon="clarity:note-line" /> Notes
           </router-link>
         </li>

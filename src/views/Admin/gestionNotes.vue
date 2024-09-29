@@ -46,13 +46,15 @@
   
   <script setup>
   import { ref, computed, onMounted } from 'vue';
+  import { useRouter, useRoute } from 'vue-router';
   import sidebar_admin from '@/components/sidebarAdmin.vue';
   import topbar_admin from '@/components/topbarAdmin.vue';
   import tabEvaluations from '@/components/tabEvaluations.vue';
   import pagination from '@/components/paginations.vue'; 
   import { getAnneClasses } from '@/services/AnneeClasseService';
   import { Icon } from '@iconify/vue';
-  
+
+  const router = useRouter();
  
   const tableData = ref([]);
   const currentPage = ref(1);
@@ -96,9 +98,9 @@
     return tableData.value.slice(start, end);
   });
 
-  const redirectToStudentsList = (id) => {
+  const redirectToSubeject = (id) => {
   // Redirige vers la page annee_classes avec l'id dans l'URL
-  router.push({ name: 'eleves_classe', params: { id } });
+  router.push({ name: 'notes_matieres', params: { id } });
 };
   
   onMounted(fetchData);

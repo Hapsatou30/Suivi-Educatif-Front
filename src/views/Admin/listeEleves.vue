@@ -2,8 +2,10 @@
     <sidebar_admin />
     <topbar_admin />
     <div class="main-content">
-        <div class="mb-3" style="display: flex; align-items: end; justify-content: end ; margin-left: 300px; border-radius: 12px; margin-right: 50px;">
-            <input type="text" class="form-control" v-model="searchQuery" @input="searchParent" placeholder="Rechercher un parent (email ou téléphone)" style="width: 300px;" />
+        <div class="mb-3"
+            style="display: flex; align-items: end; justify-content: end ; margin-left: 300px; border-radius: 12px; margin-right: 50px;">
+            <input type="text" class="form-control" v-model="searchQuery" @input="searchParent"
+                placeholder="Rechercher un parent (email ou téléphone)" style="width: 300px;" />
         </div>
 
         <h2>Formulaire pour ajouter des eleves</h2>
@@ -15,27 +17,32 @@
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="nom_parent" class="form-label">Nom du parent :</label>
-                            <input type="text" class="form-control" v-model="formData.parent_nom" placeholder="Entrez le nom du parent" required />
+                            <input type="text" class="form-control" v-model="formData.parent_nom"
+                                placeholder="Entrez le nom du parent" required />
                         </div>
                         <div class="col-md-6">
                             <label for="prenom_parent" class="form-label">Prénom du parent :</label>
-                            <input type="text" class="form-control" v-model="formData.parent_prenom" placeholder="Entrez le prénom du parent" required />
+                            <input type="text" class="form-control" v-model="formData.parent_prenom"
+                                placeholder="Entrez le prénom du parent" required />
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="email_parent" class="form-label">Email du parent :</label>
-                            <input type="email" class="form-control" v-model="formData.parent_email" placeholder="Entrez l'email du parent" required />
+                            <input type="email" class="form-control" v-model="formData.parent_email"
+                                placeholder="Entrez l'email du parent" required />
                         </div>
                         <div class="col-md-6">
                             <label for="telephone_parent" class="form-label">Téléphone du parent :</label>
-                            <input type="text" class="form-control" v-model="formData.parent_telephone" placeholder="Entrez le téléphone du parent" required />
+                            <input type="text" class="form-control" v-model="formData.parent_telephone"
+                                placeholder="Entrez le téléphone du parent" required />
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="adresse_parent" class="form-label">Adresse du parent :</label>
-                            <input type="text" class="form-control" v-model="formData.parent_adresse" placeholder="Entrez l'adresse du parent" required />
+                            <input type="text" class="form-control" v-model="formData.parent_adresse"
+                                placeholder="Entrez l'adresse du parent" required />
                         </div>
                         <div class="suivant col-md-6" style="margin-top: 30px; display: flex; justify-content: end;">
                             <button type="button" class="btn" @click="nextStep">Suivant</button>
@@ -49,21 +56,25 @@
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="nom_eleve" class="form-label">Nom de l'élève :</label>
-                            <input type="text" class="form-control" v-model="formData.nom" placeholder="Entrez le nom de l'élève" required />
+                            <input type="text" class="form-control" v-model="formData.nom"
+                                placeholder="Entrez le nom de l'élève" required />
                         </div>
                         <div class="col-md-6">
                             <label for="prenom_eleve" class="form-label">Prénom de l'élève :</label>
-                            <input type="text" class="form-control" v-model="formData.prenom" placeholder="Entrez le prénom de l'élève" required />
+                            <input type="text" class="form-control" v-model="formData.prenom"
+                                placeholder="Entrez le prénom de l'élève" required />
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="email_eleve" class="form-label">Email de l'élève :</label>
-                            <input type="email" class="form-control" v-model="formData.email" placeholder="Entrez l'email de l'élève" required />
+                            <input type="email" class="form-control" v-model="formData.email"
+                                placeholder="Entrez l'email de l'élève" required />
                         </div>
                         <div class="col-md-6">
                             <label for="telephone_eleve" class="form-label">Téléphone de l'élève :</label>
-                            <input type="text" class="form-control" v-model="formData.telephone" placeholder="Entrez le téléphone de l'élève" required />
+                            <input type="text" class="form-control" v-model="formData.telephone"
+                                placeholder="Entrez le téléphone de l'élève" required />
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -91,8 +102,8 @@
             <h3>Liste des eleves</h3>
             <div class="tableau1">
                 <tabEvaluations v-if="paginatedData.length > 0" class="tab-eleves"
-                    :headers="['Prénom & Nom', 'Matricule', 'Nom_Parent', 'Téléphone', 'Action']" :data="paginatedData.map(({ prenom, nom, matricule, nom_parent, prenom_parent, telephone_parent,id
-                     }) => ({
+                    :headers="['Prénom & Nom', 'Matricule', 'Nom_Parent', 'Téléphone', 'Action']" :data="paginatedData.map(({ prenom, nom, matricule, nom_parent, prenom_parent, telephone_parent, id
+                    }) => ({
                         nom: `${prenom} ${nom}`,
                         matricule,
                         nom_parent: `${prenom_parent} ${nom_parent}`,
@@ -101,14 +112,17 @@
                     }))">
                     <template #actions="{ row }">
                         <div class="boutons">
-                            <button class="btn " @click="editStudent(row.id)" style="color: #4862C4;" title=" Modifier les informations d'un eleve">
-                                <Icon icon="mdi:pencil-outline" /> 
+                            <button class="btn " @click="editStudent(row.id)" style="color: #4862C4;"
+                                title=" Modifier les informations d'un eleve">
+                                <Icon icon="mdi:pencil-outline" />
                             </button>
-                            <button class="btn " @click="deleteStudent(row.id)" style="color: red;" title="Supprimer le professeur">
-                                <Icon icon="mdi:trash-can-outline" /> 
+                            <button class="btn " @click="deleteStudent(row.id)" style="color: red;"
+                                title="Supprimer le professeur">
+                                <Icon icon="mdi:trash-can-outline" />
                             </button>
-                            <button class="btn" @click="seeStudent(row.id)" style="color: red; font-size: 40px;" title="Voir les details de cet élève">
-                                <Icon icon="marketeq:eye" /> 
+                            <button class="btn" @click="attribuerClasse(row)"
+                                style="color: #4862C4; font-size: 40px;" title="Ajouter dans une classe">
+                                <Icon icon="material-symbols:school" />
                             </button>
                         </div>
                     </template>
@@ -119,7 +133,29 @@
             <pagination class="pagination1" v-if="tableData.length > pageSize" :totalItems="tableData.length"
                 :pageSize="pageSize" :currentPage="currentPage" @pageChange="handlePageChange" />
         </div>
-        
+        <div v-if="showModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1000; display: flex; justify-content: center; align-items: center;">
+    <div style="position: relative; width: 90%; max-width: 500px; padding: 20px; background: white; border-radius: 8px; z-index: 1001; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+        <h3>Formulaire de sélection de classe</h3>
+        <span class="close" @click="closeModal" style="position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer;">&times;</span>
+
+        <form @submit.prevent="enregistrerClasse">
+            <div class="form-group">
+                <label for="classe">Sélectionnez une classe :</label>
+                <select id="classe" v-model="classeSelectionnee" class="form-control">
+                    <option value="" disabled>Choisissez une classe</option>
+                    <option v-for="classe in classes" :key="classe.id" :value="classe.id">{{ classe.nom }}</option>
+                </select>
+            </div>
+
+            <div class="form-group" style="margin-top: 20px;">
+                <button type="submit" class="btn btn-primary">Enregistrer</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
     </div>
 </template>
 <script setup>
@@ -128,10 +164,12 @@ import sidebar_admin from '@/components/sidebarAdmin.vue';
 import topbar_admin from '@/components/topbarAdmin.vue';
 import tabEvaluations from '@/components/tabEvaluations.vue';
 import pagination from '@/components/paginations.vue';
-import { getEleves, ajouterEleve, modifierEleve,supprimerEleve} from '@/services/EleveService';
+import { getEleves, ajouterEleve, modifierEleve, supprimerEleve } from '@/services/EleveService';
 import { Icon } from '@iconify/vue';
 import { useRouter, useRoute } from 'vue-router';
-import Swal from 'sweetalert2'; 
+import Swal from 'sweetalert2';
+import { getAnneClasses } from '@/services/AnneeClasseService';
+import { ajouterEleveClasse } from '@/services/ClasseEleve';
 
 // Initialisation des routeurs
 const router = useRouter();
@@ -144,35 +182,108 @@ const pageSize = ref(5); // Nombre d'éléments par page
 const currentStep = ref(1);
 const searchQuery = ref('');
 
+const showModal = ref(false);
+const classeSelectionnee = ref(''); // Classe sélectionnée
+const classes = ref([]); // Liste des classes
+
+// Élève sélectionné
+const eleveSelectionne = ref(null);
+
+
+// Méthode pour ouvrir le modal
+const attribuerClasse = (eleve) => {
+    eleveSelectionne.value = eleve; // Définir l'élève actuellement sélectionné
+    showModal.value = true; // Ouvrir le modal
+};
+
+// Méthode pour fermer le modal
+const closeModal = () => {
+    showModal.value = false; // Fermer le modal
+};
+
+// Méthode pour récupérer les classes à partir de l'API
+const fetchClasses = async () => {
+  try {
+    const response = await getAnneClasses();
+    const annees = response.données.filter(annee => annee.etat === 'En_cours' || annee.etat === 'Ouverte');
+    classes.value = annees.length > 0 ? annees[0].classes : [];
+  } catch (error) {
+    console.error('Erreur lors de la récupération des classes:', error);
+  }
+};
+
+// Méthode pour enregistrer la classe sélectionnée
+const enregistrerClasse = async () => {
+    if (!classeSelectionnee.value || !eleveSelectionne.value) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Erreur',
+            text: 'Veuillez sélectionner une classe.',
+            confirmButtonColor: '#d33',
+        });
+        return;
+    }
+
+    try {
+        // Envoi des données à l'API
+        await ajouterEleveClasse({
+        eleve_id: eleveSelectionne.value.id,
+        annee_classe_id: classeSelectionnee.value
+    });
+
+        Swal.fire({
+            icon: 'success',
+            title: 'Succès',
+            text: 'Classe attribuée avec succès !',
+            confirmButtonColor: '#407CEE',
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false
+        });
+
+        closeModal();
+        classeSelectionnee.value = ''; // Réinitialiser la sélection de classe
+    } catch (error) {
+        console.error('Erreur lors de l\'attribution de la classe :', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Erreur',
+            text: error.message || 'Une erreur inattendue s\'est produite.',
+            confirmButtonColor: '#d33',
+        });
+    }
+};
+
+
 // Données réactives pour le formulaire
 const formData = ref({
-  nom: '',
-  prenom: '',
-  email: '',
-  telephone: '',
-  photo: '', // Si nécessaire pour ajouter une photo
-  date_naissance: '',
-  genre: '',
-  parent_telephone: '',
-  parent_nom: '',
-  parent_prenom: '',
-  parent_email: '',
-  parent_adresse: ''
+    nom: '',
+    prenom: '',
+    email: '',
+    telephone: '',
+    photo: '', // Si nécessaire pour ajouter une photo
+    date_naissance: '',
+    genre: '',
+    parent_telephone: '',
+    parent_nom: '',
+    parent_prenom: '',
+    parent_email: '',
+    parent_adresse: ''
 });
 
 
 // Fonctions pour changer d'étape
 const nextStep = () => {
-  if (currentStep.value < 2) currentStep.value++;
+    if (currentStep.value < 2) currentStep.value++;
 };
 
 const previousStep = () => {
-  if (currentStep.value > 1) currentStep.value--;
+    if (currentStep.value > 1) currentStep.value--;
 };
 const editStudent = (id) => {
     console.log('Modifier l\'élève avec l\'ID :', id);
     const row = tableData.value.find(item => item.id === id);
-    console.log('Données de l\'élève trouvées :', row); 
+    console.log('Données de l\'élève trouvées :', row);
     if (row) {
         // Remplir les données du formulaire avec les informations de l'élève sélectionné
         formData.value = {
@@ -183,19 +294,19 @@ const editStudent = (id) => {
             date_naissance: row.date_naissance,
             genre: row.genre,
             parent_telephone: row.telephone_parent,
-            parent_nom: row.nom_parent, 
-            parent_prenom: row.prenom_parent, 
-            parent_email: row.email_parent, 
-            parent_adresse: row.adresse_parent, 
-            id: row.id, 
+            parent_nom: row.nom_parent,
+            parent_prenom: row.prenom_parent,
+            parent_email: row.email_parent,
+            parent_adresse: row.adresse_parent,
+            id: row.id,
         };
         console.log('formData après modification:', formData.value);
     }
 };
 // Fonction pour rechercher un parent
 const searchParent = () => {
-    const parent = tableData.value.find(item => 
-        item.email_parent === searchQuery.value || 
+    const parent = tableData.value.find(item =>
+        item.email_parent === searchQuery.value ||
         item.telephone_parent === searchQuery.value
     );
 
@@ -214,80 +325,80 @@ const searchParent = () => {
 
 // Fonction pour gérer la soumission du formulaire
 const handleFormSubmit = async () => {
-  try {
-    const response = await (formData.value.id ? modifierEleve(formData.value) : ajouterEleve(formData.value));
-    console.log('Élève envoyé:', formData.value);
+    try {
+        const response = await (formData.value.id ? modifierEleve(formData.value) : ajouterEleve(formData.value));
+        console.log('Élève envoyé:', formData.value);
 
-    const successMessage = formData.value.id ? 'Élève modifié avec succès !' : 'Élève ajouté avec succès !';
+        const successMessage = formData.value.id ? 'Élève modifié avec succès !' : 'Élève ajouté avec succès !';
 
-    Swal.fire({
-      icon: 'success',
-      title: 'Succès',
-      text: successMessage,
-      confirmButtonColor: '#407CEE',
-      timer: 2000,
-      timerProgressBar: true,
-      showConfirmButton: false
-    });
-    await fetchData();
-    resetForm();
-  } catch (error) {
-    console.log(error.response.data);
-    Swal.fire({
-      icon: 'error',
-      title: 'Erreur',
-      text: error.message || 'Une erreur inattendue s\'est produite.',
-      confirmButtonColor: '#d33',
-      timer: 3000,
-      timerProgressBar: true,
-      showConfirmButton: false
-    });
-  }
+        Swal.fire({
+            icon: 'success',
+            title: 'Succès',
+            text: successMessage,
+            confirmButtonColor: '#407CEE',
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false
+        });
+        await fetchData();
+        resetForm();
+    } catch (error) {
+        console.log(error.response.data);
+        Swal.fire({
+            icon: 'error',
+            title: 'Erreur',
+            text: error.message || 'Une erreur inattendue s\'est produite.',
+            confirmButtonColor: '#d33',
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false
+        });
+    }
 };
 
 
 // Fonction pour réinitialiser le formulaire
 const resetForm = () => {
-  formData.value = {
-    nom: '',
-    prenom: '',
-    email: '',
-    telephone: '',
-    photo: '',
-    date_naissance: '',
-    genre: '',
-    parent_telephone: '',
-    parent_nom: '',
-    parent_prenom: '',
-    parent_email: '',
-    parent_adresse: ''
-  };
+    formData.value = {
+        nom: '',
+        prenom: '',
+        email: '',
+        telephone: '',
+        photo: '',
+        date_naissance: '',
+        genre: '',
+        parent_telephone: '',
+        parent_nom: '',
+        parent_prenom: '',
+        parent_email: '',
+        parent_adresse: ''
+    };
 };
 const fetchData = async () => {
-  try {
-    const response = await getEleves();
-    tableData.value = response.map((item) => ({
-      prenom: item.prenom,
-      nom: item.nom,
-      matricule: item.matricule,
-      date_naissance: item.date_naissance,
-      genre: item.genre,
-      telephone: item.telephone,
-      email: item.email,
-      nom_parent: item.parent.nom_parent,  
-      prenom_parent: item.parent.prenom_parent, 
-      telephone_parent: item.parent.telephone_parent, 
-      adresse_parent: item.parent.adresse_parent,
-      email_parent: item.parent.email_parent,
-      id: item.id
-    }));
+    try {
+        const response = await getEleves();
+        tableData.value = response.map((item) => ({
+            prenom: item.prenom,
+            nom: item.nom,
+            matricule: item.matricule,
+            date_naissance: item.date_naissance,
+            genre: item.genre,
+            telephone: item.telephone,
+            email: item.email,
+            nom_parent: item.parent.nom_parent,
+            prenom_parent: item.parent.prenom_parent,
+            telephone_parent: item.parent.telephone_parent,
+            adresse_parent: item.parent.adresse_parent,
+            email_parent: item.parent.email_parent,
+            id: item.id
+        }));
 
-    // Trier les élèves par ordre alphabétique du nom
-    tableData.value.sort((a, b) => a.nom.localeCompare(b.nom));
+        // Trier les élèves par ordre alphabétique du nom
+        tableData.value.sort((a, b) => a.nom.localeCompare(b.nom));
 
-  } catch (error) {
-    console.error('Erreur lors de la récupération des données :', error);
-  }
+    } catch (error) {
+        console.error('Erreur lors de la récupération des données :', error);
+    }
 };
 
 
@@ -306,48 +417,48 @@ const paginatedData = computed(() => {
 
 
 const deleteStudent = async (id) => {
-  const confirmDelete = await Swal.fire({
-    title: 'Êtes-vous sûr ?',
-    text: "Cette action ne peut pas être annulée !",
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#d33',
-    cancelButtonColor: '#3085d6',
-    confirmButtonText: 'Oui, supprimer !'
-  });
-
-  if (confirmDelete.isConfirmed) {
-    try {
-      await supprimerEleve(id);
-      Swal.fire({
-        title: 'Supprimé !',
-        text: 'L\'élève a été supprimée avec succès.',
-        icon: 'success',
-        timer: 3000,
-        timerProgressBar: true,
-        willClose: () => {
-          fetchData();
-        }
-      });
-    } catch (error) {
-      console.error('Erreur lors de la suppression :', error);
-      
-      // Vérifiez si l'erreur a une réponse et récupérez le message d'erreur de l'API
-      const errorMessage = error.response && error.response.data && error.response.data.message
-        ? error.response.data.message 
-        : error.message || 'Une erreur inattendue s\'est produite.';
-        
-      await Swal.fire({
-        icon: 'error',
-        title: 'Erreur',
-        text: errorMessage,
+    const confirmDelete = await Swal.fire({
+        title: 'Êtes-vous sûr ?',
+        text: "Cette action ne peut pas être annulée !",
+        icon: 'warning',
+        showCancelButton: true,
         confirmButtonColor: '#d33',
-        timer: 3000,
-        timerProgressBar: true,
-        showConfirmButton: false
-      });
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Oui, supprimer !'
+    });
+
+    if (confirmDelete.isConfirmed) {
+        try {
+            await supprimerEleve(id);
+            Swal.fire({
+                title: 'Supprimé !',
+                text: 'L\'élève a été supprimée avec succès.',
+                icon: 'success',
+                timer: 3000,
+                timerProgressBar: true,
+                willClose: () => {
+                    fetchData();
+                }
+            });
+        } catch (error) {
+            console.error('Erreur lors de la suppression :', error);
+
+            // Vérifiez si l'erreur a une réponse et récupérez le message d'erreur de l'API
+            const errorMessage = error.response && error.response.data && error.response.data.message
+                ? error.response.data.message
+                : error.message || 'Une erreur inattendue s\'est produite.';
+
+            await Swal.fire({
+                icon: 'error',
+                title: 'Erreur',
+                text: errorMessage,
+                confirmButtonColor: '#d33',
+                timer: 3000,
+                timerProgressBar: true,
+                showConfirmButton: false
+            });
+        }
     }
-  }
 };
 // Fonction pour réinitialiser les informations du parent
 const resetParentForm = () => {
@@ -360,6 +471,7 @@ const resetParentForm = () => {
 
 // Appeler les méthodes au montage du composant
 onMounted(fetchData);
+onMounted(fetchClasses);
 
 
 </script>
@@ -367,9 +479,9 @@ onMounted(fetchData);
 
 
 <style>
-
-.tab-eleves td:nth-child(5) { 
-  display: none; /* Masquer la colonne de l'ID */
+.tab-eleves td:nth-child(5) {
+    display: none;
+    /* Masquer la colonne de l'ID */
 }
 
 .main-content {
@@ -477,7 +589,8 @@ p {
 }
 
 
-.bouton .btn-secondary, .bouton .btn-secondary:hover {
+.bouton .btn-secondary,
+.bouton .btn-secondary:hover {
     background-color: transparent;
     color: white;
     border: 1px solid #F7AE00;
@@ -489,6 +602,6 @@ p {
     font-family: "Poppins", sans-serif;
     font-weight: 500;
     color: #F7AE00;
-   
+
 }
 </style>

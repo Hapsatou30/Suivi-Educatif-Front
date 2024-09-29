@@ -22,6 +22,8 @@ import ListeClasse from '@/views/Admin/classesOuvertes.vue';
 import ClassProf from '@/views/Admin/classProf.vue';
 import EmploisDuTemps from '@/views/Admin/emploisDuTemps.vue';
 import listeEleves from '@/views/Admin/listeEleves.vue';
+import ClasseEleve from '@/views/Admin/classeEleve.vue';
+import ElevesCLasse from '@/views/Admin/elevesCLasses.vue';
 
 // Définition des routes de l'application
 const routes = [
@@ -53,7 +55,11 @@ const routes = [
     { path: '/Emplois_du_temps/:id', name: 'emplois_du_temps', component: EmploisDuTemps},
 
     { path: '/liste_eleves', name: 'liste_eleves', component: listeEleves},
-    
+
+    { path: '/classe_eleves/:id', name: 'classe_eleves', component: ClasseEleve},
+
+    { path: '/eleves_classe/:id', name: 'eleves_classe', component: ElevesCLasse},
+  
 
     
     

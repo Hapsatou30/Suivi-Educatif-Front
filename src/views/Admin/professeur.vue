@@ -140,45 +140,47 @@ const paginatedData = computed(() => {
   const end = start + pageSize.value;
   return tableData.value.slice(start, end);
 });
-
 const handleFormSubmit = async () => {
-  try {
-    console.log("Données à envoyer:", newProfesseur.value);
-    const response = await (newProfesseur.value.id !== null 
-      ? modifierProfesseur(newProfesseur.value) 
-      : ajouterProfesseur(newProfesseur.value));
-    
-    console.log("Réponse du serveur:", response);
-    
-    if (response && response.données) {  // Assurez-vous que la réponse contient les données attendues
-      await fetchData();  // Récupérez de nouveau la liste des professeurs après la modification
+    try {
+        console.log("Données à envoyer:", newProfesseur.value);
+        const response = await (newProfesseur.value.id !== null 
+          ? modifierProfesseur(newProfesseur.value) 
+          : ajouterProfesseur(newProfesseur.value));
+        
+        console.log("Réponse du serveur:", response);
+        
+        if (response) {  // Vérification modifiée
+          await fetchData();  // Récupérez de nouveau la liste des professeurs après la modification
+        } else {
+          console.error("La réponse du serveur est vide ou invalide.");
+        }
+        
+        Swal.fire({
+          icon: 'success',
+          title: 'Succès',
+          text: 'Professeur modifié avec succès !',
+          confirmButtonColor: '#407CEE',
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false
+        });
+        
+        resetForm();
+        
+    } catch (error) {
+        console.error('Erreur lors de la soumission du formulaire :', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Erreur',
+          text: error.message || 'Une erreur inattendue s\'est produite.',
+          confirmButtonColor: '#d33',
+          timer: 3000,
+          timerProgressBar: true,
+          showConfirmButton: false
+        });
     }
-    
-    Swal.fire({
-      icon: 'success',
-      title: 'Succès',
-      text: 'Professeur modifié avec succès !',
-      confirmButtonColor: '#407CEE',
-      timer: 2000,
-      timerProgressBar: true,
-      showConfirmButton: false
-    });
-    
-    resetForm();
-    
-  } catch (error) {
-    console.error('Erreur lors de la soumission du formulaire :', error);
-    Swal.fire({
-      icon: 'error',
-      title: 'Erreur',
-      text: error.message || 'Une erreur inattendue s\'est produite.',
-      confirmButtonColor: '#d33',
-      timer: 3000,
-      timerProgressBar: true,
-      showConfirmButton: false
-    });
-  }
 };
+
 
 
 const editProfesseur = (id) => {

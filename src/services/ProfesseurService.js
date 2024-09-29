@@ -85,33 +85,31 @@ export const ajouterProfesseur = async (professeur) => {
     return null; // Valeur par défaut en cas d'erreur
   }
 };
+
 export const modifierProfesseur = async (professeur) => {
   try {
-    const idValue = professeur.id; // Récupérer l'ID directement des nouvelles données
-    const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
-
-    const response = await axios.put(`${apiUrl}/professeur/${idValue}`, {
-      nom: professeur.nom,
-      prenom: professeur.prenom,
-      telephone: professeur.telephone,
-      email: professeur.email,
-      matricule: professeur.matricule, 
-      user_id: professeur.user_id,
-      password: professeur.password,
-    }, {
+    const token = localStorage.getItem('token');
+    console.log('Envoi des données au serveur :', professeur); 
+    
+    const response = await axios.put(`${apiUrl}/professeur/${professeur.id}`, professeur, {
       headers: {
-        Authorization: `Bearer ${token}` // Utiliser le token dans l'en-tête pour l'authentification
+        Authorization: `Bearer ${token}`
       }
     });
-
+    
     console.log('Professeur modifié :', response.data);
-    return response.data; // Renvoie les nouvelles données
+    return response.data;
   } catch (error) {
-    console.error('Erreur lors de la modification du professeur :', error);
-    throw error.response.data; // Lance l'erreur pour un traitement ultérieur
+    console.error('Erreur lors de la modification du professeur :', error.response ? error.response.data : error.message);
+
+    if (error.response && error.response.data.errors) {
+      // Afficher les erreurs spécifiques de validation
+      console.error('Détails des erreurs:', error.response.data.errors);
+    }
+    
+    return null;
   }
 };
-
 
 
 // Méthode pour supprimer uneprofesseur

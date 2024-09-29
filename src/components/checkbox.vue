@@ -13,7 +13,7 @@
                         {{ item.prenom }}
                     </span>
                     <span class="item-name">{{ item.nom }}</span>
-                    <span class="item-name">{{ item.professeur }}  {{ item.matiere }}</span>
+                    <span class="item-name">{{ item.professeur }} -> {{ item.matiere }}</span>
                     
                 </li>
             </ul>

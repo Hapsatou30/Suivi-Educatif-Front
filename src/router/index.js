@@ -26,6 +26,7 @@ import ClasseEleve from '@/views/Admin/classeEleve.vue';
 import ElevesCLasse from '@/views/Admin/elevesCLasses.vue';
 import GestionNotes from '@/views/Admin/gestionNotes.vue';
 import NoteMatieres from '@/views/Admin/noteMatieres.vue';
+import NotesMatiere from '@/views/Admin/notesMatiere.vue';
 
 // Définition des routes de l'application
 const routes = [
@@ -66,6 +67,8 @@ const routes = [
     { path: '/gestion_notes', name: 'gestion_notes', component:GestionNotes},
 
     { path: '/notes_matieres/:id', name: 'notes_matieres', component:NoteMatieres},
+
+    { path:'/notes/:id', name: 'notes', component:NotesMatiere},
   
 
     

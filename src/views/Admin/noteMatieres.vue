@@ -9,13 +9,13 @@
 
             <div class="tableau1">
                 <tabEvaluations v-if="paginatedData.length > 0" class="tab-evaluations"
-                    :headers="['Matière ', 'Professeur', 'Note',]" :data="paginatedData.map(({ nom_professeur, prenom_professeur, matiere }) => ({
+                    :headers="[ 'Professeur', 'Matière ', 'Note',]" :data="paginatedData.map(({ nom_professeur, prenom_professeur, matiere }) => ({
                         professeur: `${prenom_professeur} ${nom_professeur}`,
                         matiere,
                     }))">
                     <template #actions="{ row }">
                         <div class="boutons">
-                            <button class="btn " @click="redirectToSubeject(row.id)"
+                            <button class="btn " @click="redirectToNotes(row.id)"
                                 style="color: #4862C4; font-size: 40px;" title="Voir les notes par matières">
                                 <Icon icon="marketeq:eye" />
                             </button>
@@ -29,9 +29,9 @@
             <pagination class="pagination1" v-if="tableData.length > pageSize" :totalItems="tableData.length"
                 :pageSize="pageSize" :currentPage="currentPage" @pageChange="handlePageChange" />
         </div>
-        <div class="button-container">
-            <button @click="retour" class="btn btn-secondary">Retour</button>
-        </div>
+        <div class="retour">
+      <button @click="retour" class="btn btn-secondary">Retour</button>
+     </div>
     </div>
 </template>
 
@@ -96,10 +96,9 @@ const paginatedData = computed(() => {
     const end = start + pageSize.value;
     return tableData.value.slice(start, end);
 });
-
-const redirectToSubeject = (id) => {
+const redirectToNotes = (id) => {
     // Redirige vers la page annee_classes avec l'id dans l'URL
-    router.push({ name: 'notes_matieres', params: { id } });
+    router.push({ name: 'notes', params: { id } });
 };
 
 // Méthode pour récupérer les détails d'une année
@@ -177,5 +176,25 @@ p {
   font-size: 18px;
   color: red;
   font-family: "Poppins", sans-serif;
+}
+.retour{
+  display: flex;
+  justify-content: end;
+  margin-right: 50px;
+  margin-bottom: 20px;
+}
+.retour .btn-secondary, .retour .btn-secondary:hover {
+    background-color: transparent;
+    color: white;
+    border: 1px solid #F7AE00;
+    border-radius: 12px;
+    cursor: pointer;
+    width: 200px;
+    height: 58px;
+    font-size: 24px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    color: #F7AE00;
+   
 }
 </style>

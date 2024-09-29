@@ -120,7 +120,7 @@
                                 title="Supprimer le professeur">
                                 <Icon icon="mdi:trash-can-outline" />
                             </button>
-                            <button class="btn" @click="attribuerClasse(row)"
+                            <button class="btn" @click="attribuerClasse(row)" :disabled="estDejaDansClasse(row)"
                                 style="color: #4862C4; font-size: 40px;" title="Ajouter dans une classe">
                                 <Icon icon="material-symbols:school" />
                             </button>
@@ -133,26 +133,32 @@
             <pagination class="pagination1" v-if="tableData.length > pageSize" :totalItems="tableData.length"
                 :pageSize="pageSize" :currentPage="currentPage" @pageChange="handlePageChange" />
         </div>
-        <div v-if="showModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1000; display: flex; justify-content: center; align-items: center;">
-    <div style="position: relative; width: 90%; max-width: 500px; padding: 20px; background: white; border-radius: 8px; z-index: 1001; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
-        <h3>Formulaire de sélection de classe</h3>
-        <span class="close" @click="closeModal" style="position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer;">&times;</span>
+        <div v-if="showModal"
+            style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1000; display: flex; justify-content: center; align-items: center;">
+            <div
+                style="position: relative; width: 90%; max-width: 500px; padding: 20px; background: white; border-radius: 8px; z-index: 1001; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+                <h3>Ajouter dans une classe</h3>
+                <span class="close" @click="closeModal"
+                    style="position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer;">&times;</span>
 
-        <form @submit.prevent="enregistrerClasse">
-            <div class="form-group">
-                <label for="classe">Sélectionnez une classe :</label>
-                <select id="classe" v-model="classeSelectionnee" class="form-control">
-                    <option value="" disabled>Choisissez une classe</option>
-                    <option v-for="classe in classes" :key="classe.id" :value="classe.id">{{ classe.nom }}</option>
-                </select>
-            </div>
+                <form @submit.prevent="enregistrerClasse">
+                    <div class="form-group"  style="margin-bottom: 15px;">
+                        <label for="classe">Sélectionnez une classe :</label>
+                        <select id="classe" v-model="classeSelectionnee" class="form-control"
+                        style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 12px;">
+                            <option value="" disabled>Choisissez une classe</option>
+                            <option v-for="classe in classes" :key="classe.id" :value="classe.id">{{ classe.nom }}
+                            </option>
+                        </select>
+                    </div>
 
-            <div class="form-group" style="margin-top: 20px;">
-                <button type="submit" class="btn btn-primary">Enregistrer</button>
+                    <div class="form-group" style="margin-top: 20px;  display: flex; justify-content: end">
+                        <button type="submit"                             style="background-color: #4862C4; color: white; padding: 10px 20px; border: none; border-radius: 12px; cursor: pointer; width: 200px; font-size: 20px;"
+                        class="btn btn-primary">Enregistrer</button>
+                    </div>
+                </form>
             </div>
-        </form>
-    </div>
-</div>
+        </div>
 
 
 
@@ -169,7 +175,7 @@ import { Icon } from '@iconify/vue';
 import { useRouter, useRoute } from 'vue-router';
 import Swal from 'sweetalert2';
 import { getAnneClasses } from '@/services/AnneeClasseService';
-import { ajouterEleveClasse } from '@/services/ClasseEleve';
+import { ajouterEleveClasse, getEleveClasse } from '@/services/ClasseEleve';
 
 // Initialisation des routeurs
 const router = useRouter();
@@ -185,11 +191,25 @@ const searchQuery = ref('');
 const showModal = ref(false);
 const classeSelectionnee = ref(''); // Classe sélectionnée
 const classes = ref([]); // Liste des classes
+const eleveSelectionne = ref(null); // Élève sélectionné
+const elevesAvecClasse = ref([]); // Stocker les élèves qui ont déjà une classe
 
-// Élève sélectionné
-const eleveSelectionne = ref(null);
+// Méthode pour récupérer les élèves avec leur classe
+const fetchElevesAvecClasse = async () => {
+    try {
+        const response = await getEleveClasse();
+        elevesAvecClasse.value = response.données.reduce((acc, annee) => {
+            return acc.concat(annee.eleves);
+        }, []);
+    } catch (error) {
+        console.error('Erreur lors de la récupération des élèves avec classe:', error);
+    }
+};
 
-
+// Méthode pour vérifier si un élève a déjà une classe
+const estDejaDansClasse = (eleve) => {
+    return elevesAvecClasse.value.some(e => e.id === eleve.id);
+};
 // Méthode pour ouvrir le modal
 const attribuerClasse = (eleve) => {
     eleveSelectionne.value = eleve; // Définir l'élève actuellement sélectionné
@@ -203,13 +223,13 @@ const closeModal = () => {
 
 // Méthode pour récupérer les classes à partir de l'API
 const fetchClasses = async () => {
-  try {
-    const response = await getAnneClasses();
-    const annees = response.données.filter(annee => annee.etat === 'En_cours' || annee.etat === 'Ouverte');
-    classes.value = annees.length > 0 ? annees[0].classes : [];
-  } catch (error) {
-    console.error('Erreur lors de la récupération des classes:', error);
-  }
+    try {
+        const response = await getAnneClasses();
+        const annees = response.données.filter(annee => annee.etat === 'En_cours' || annee.etat === 'Ouverte');
+        classes.value = annees.length > 0 ? annees[0].classes : [];
+    } catch (error) {
+        console.error('Erreur lors de la récupération des classes:', error);
+    }
 };
 
 // Méthode pour enregistrer la classe sélectionnée
@@ -227,9 +247,9 @@ const enregistrerClasse = async () => {
     try {
         // Envoi des données à l'API
         await ajouterEleveClasse({
-        eleve_id: eleveSelectionne.value.id,
-        annee_classe_id: classeSelectionnee.value
-    });
+            eleve_id: eleveSelectionne.value.id,
+            annee_classe_id: classeSelectionnee.value
+        });
 
         Swal.fire({
             icon: 'success',
@@ -472,6 +492,7 @@ const resetParentForm = () => {
 // Appeler les méthodes au montage du composant
 onMounted(fetchData);
 onMounted(fetchClasses);
+onMounted(fetchElevesAvecClasse); // Appeler la méthode pour récupérer les élèves avec classe
 
 
 </script>

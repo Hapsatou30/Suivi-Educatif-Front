@@ -19,7 +19,7 @@ export const getElevesCount = async () => {
     // Afficher les données reçues pour le débogage
     // console.log('Données reçues :', response.data); // Vérifie les données reçues de l'API
 
-    return response.data.total; // Retourner le nombre total d'élèves
+    return response.data.nombre_eleves_total; // Retourner le nombre total d'élèves
   } catch (error) {
     // Gérer les erreurs lors de la récupération du nombre d'élèves
     console.error('Erreur:', error);

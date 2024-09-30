@@ -153,26 +153,55 @@ const closeModal = () => {
 // Méthode pour ajouter un horaire
 const handleAjouterHoraire = async () => {
     try {
+        const { jour, heure_debut, heure_fin } = horaire.value; // Déstructurer les valeurs de l'horaire
+
         // Vérifier que tous les champs sont remplis
-        if (horaire.value.jour && horaire.value.heure_debut && horaire.value.heure_fin) {
-            await ajouterHoraire(horaire.value); // Appeler le service pour ajouter l'horaire
-            closeModal(); // Fermer le modal
-            getHorairesClasse(anneClasseId); // Récupérer les horaires de la classe
-            // Afficher une alerte SweetAlert
+        if (jour && heure_debut && heure_fin) {
+            const response = await ajouterHoraire(horaire.value); // Appeler le service pour ajouter l'horaire
+            
+            // Vérifier si la réponse contient une erreur
+            if (response && response.error) {
+                Swal.fire({
+                    title: 'Erreur!',
+                    text: response.error, // Afficher le message d'erreur de l'API
+                    icon: 'error',
+                    timer: 3000,
+                    showConfirmButton: false
+                });
+            } else {
+                closeModal(); // Fermer le modal
+                getHorairesClasse(anneClasseId); // Récupérer les horaires de la classe
+                // Afficher une alerte SweetAlert pour la réussite
+                Swal.fire({
+                    title: 'Ajout réussi!',
+                    text: 'L\'horaire a été ajouté avec succès.',
+                    icon: 'success',
+                    timer: 3000, // Afficher pendant 3 secondes
+                    showConfirmButton: false
+                });
+            }
+        } else {
+            console.error('Veuillez remplir tous les champs avec des valeurs valides.'); // Afficher une erreur si les champs sont vides ou invalides
             Swal.fire({
-                title: 'Ajout réussi!',
-                text: 'L\'horaire a été ajouté avec succès.',
-                icon: 'success',
-                timer: 3000, // Afficher pendant 3 secondes
+                title: 'Erreur!',
+                text: 'Veuillez remplir tous les champs avec des valeurs valides.',
+                icon: 'error',
+                timer: 3000,
                 showConfirmButton: false
             });
-        } else {
-            console.error('Veuillez remplir tous les champs.'); // Afficher une erreur si les champs sont vides
         }
     } catch (error) {
         console.error('Erreur lors de l\'ajout de l\'horaire:', error); // Afficher l'erreur en cas de problème
+        Swal.fire({
+            title: 'Erreur!',
+            text: 'Une erreur est survenue lors de l\'ajout de l\'horaire.',
+            icon: 'error',
+            timer: 3000,
+            showConfirmButton: false
+        });
     }
 };
+
 
 // Méthode pour modifier un horaire
 const handleModifierHoraire = async () => {
@@ -181,24 +210,51 @@ const handleModifierHoraire = async () => {
 
         // Vérifier que tous les champs sont remplis et que l'ID de l'horaire est défini
         if (jour && heure_debut && heure_fin && horaire_id) {
-            await modifierHoraire(horaire.value); // Appeler le service pour modifier l'horaire
-            closeModal(); // Fermer le modal
-            getHorairesClasse(anneClasseId); // Récupérer les horaires de la classe
-            // Afficher une alerte SweetAlert
-            Swal.fire({
-                title: 'Modification réussie!',
-                text: 'L\'horaire a été modifié avec succès.',
-                icon: 'success',
-                timer: 3000, // Afficher pendant 3 secondes
-                showConfirmButton: false
-            });
+            const response = await modifierHoraire(horaire.value); // Appeler le service pour modifier l'horaire
+            
+            // Vérifier si la réponse contient une erreur
+            if (response && response.error) {
+                Swal.fire({
+                    title: 'Erreur!',
+                    text: response.error, // Afficher le message d'erreur de l'API
+                    icon: 'error',
+                    timer: 3000,
+                    showConfirmButton: false
+                });
+            } else {
+                closeModal(); // Fermer le modal
+                getHorairesClasse(anneClasseId); // Récupérer les horaires de la classe
+                // Afficher une alerte SweetAlert pour la réussite
+                Swal.fire({
+                    title: 'Modification réussie!',
+                    text: 'L\'horaire a été modifié avec succès.',
+                    icon: 'success',
+                    timer: 3000, // Afficher pendant 3 secondes
+                    showConfirmButton: false
+                });
+            }
         } else {
             console.error('Veuillez remplir tous les champs avec des valeurs valides et vérifier que l\'ID de l\'horaire est défini.'); // Afficher une erreur si les champs sont vides ou invalides
+            Swal.fire({
+                title: 'Erreur!',
+                text: 'Veuillez remplir tous les champs avec des valeurs valides.',
+                icon: 'error',
+                timer: 3000,
+                showConfirmButton: false
+            });
         }
     } catch (error) {
         console.error('Erreur lors de la modification de l\'horaire:', error); // Afficher l'erreur en cas de problème
+        Swal.fire({
+            title: 'Erreur!',
+            text: 'Une erreur est survenue lors de la modification de l\'horaire.',
+            icon: 'error',
+            timer: 3000,
+            showConfirmButton: false
+        });
     }
 };
+
 
 // Méthode pour supprimer un horaire
 const supprimerHoraires = async (horaireId) => {

@@ -35,7 +35,9 @@
 // Importation des dépendances
 import { ref } from 'vue'; 
 import { login as loginService } from '@/services/AuthService'; 
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 // Variables réactives
 const email = ref('');
 const password = ref('');
@@ -73,24 +75,50 @@ const validateForm = () => {
 }
 
 // Méthode pour la connexion
+// Méthode pour la connexion
 const login = async () => {
   console.log('Tentative de connexion avec : ', email.value, password.value);
+  
+  // Vérification du formulaire
   if (!validateForm()) return;
+
   try {
+    // Appel à l'API pour l'authentification
     const response = await loginService(email.value, password.value); 
-    // console.log('Réponse de l\'API : ', response);
+    console.log('Réponse de l\'API : ', response);
+
+    // Si le token d'authentification est reçu
     if (response.access_token) {
       localStorage.setItem('token', response.access_token);
-      window.location.href = '/dashboard';
+      
+      // Récupération des rôles
+      const roles = response.roles;
+      console.log('Rôles de l\'utilisateur : ', roles);
+
+      // Stockage des rôles dans localStorage
+      localStorage.setItem('userRole', JSON.stringify(roles));
+
+      // Gestion des redirections
+      if (roles.includes('admin')) {
+        router.push('/dashboard');
+      } else if (roles.includes('professeur')) {
+        router.push('/dashboard_prof');
+      } else {
+        router.push('/login');
+      }
     } else {
       error.value = 'Token non reçu.';
       console.log('Erreur: Token non reçu');
     }
+
   } catch (err) {
     error.value = 'Erreur lors de la connexion.';
     console.error('Erreur lors de la connexion', err);
   }
 };
+
+
+
 </script>
 
   

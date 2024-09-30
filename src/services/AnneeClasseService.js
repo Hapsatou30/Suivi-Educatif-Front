@@ -30,6 +30,7 @@ export const ajouterAnneClasses = async (anneeclasse) => {
   export const getAnneClasses  = async () => {
     try {
       const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
+   
       // console.log('Token récupéré :', token);
   
       // Récupération  des professeurs  avec leur matiere 

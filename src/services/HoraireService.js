@@ -77,3 +77,23 @@ export const supprimerHoraire = async (id) => {
         return null; // Valeur par défaut en cas d'erreur
     }
 };
+
+export const geHoraireProf = async (professeurId) => {
+    try {
+        const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
+
+        // Récupération du nombre total de professeurs en utilisant axios.get
+        const response = await axios.get(`${apiUrl}/professeur/${professeurId}/horaires`, { 
+            headers: {
+                Authorization: `Bearer ${token}` // Utiliser le token dans l'en-tête pour l'authentification
+            }
+        });
+
+        console.log('Données reçues depuis l\'API:', response.data.données); 
+        return response.data; // Retourner le nombre total de professeurs
+    } catch (error) {
+        // Gérer les erreurs lors de la récupération du nombre de professeurs
+        console.error('Erreur:', error);
+        return 0; // Valeur par défaut en cas d'erreur
+    }
+};

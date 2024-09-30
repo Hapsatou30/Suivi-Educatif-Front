@@ -9,17 +9,21 @@
           <widget title="Classes" :number="classesCount" iconSrc="/public/images/Vector.svg" />
           <widget title="Matières" :number="matiereCount" iconSrc="/public/images/Icon.svg" />
         </div>
-      </div>
-      <div class="col-6">
-        <h3>Emploi du temps d’aujourd’hui</h3>
+        <div class="emploisDuTemps" style="background-color: white;">
+          <h3>Emploi du temps d’aujourd’hui</h3>
         <tabEvaluations 
           v-if="tableData.length > 0"
-          :headers="['Horaire', 'Matiere', 'Classe']" 
+          :headers="[]" 
           :data="tableData" 
+          class="custom-table"
         />
 
         <!-- Message affiché si la tableData est vide -->
-        <p v-else class="no-evaluations-message">Aucune évaluation prévue pour aujourd'hui.</p>
+        <p v-else class="no-evaluations-message">Vous n'avez pas de cours  aujourd'hui.</p>
+        </div>
+      </div>
+      <div class="col-6">
+       
       </div>
     </div>
   </div>
@@ -106,24 +110,66 @@ onMounted(async () => {
   margin-top: 120px;
 }
 
-.widgets-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 40px;
-  margin-left: 300px;
-}
 .main-content .row{
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  margin-left: 300px;
+  margin-top: 40px;
+}
+.main-content .row .col-6{
+  width: 50%;
+
 }
 .main-content .row .col-6 .widgets-container{
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 50px;
+  margin-bottom: 80px;
+}
+::v-deep  .emploisDuTemps{
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+}
+::v-deep table {
+    width: 100%;
+    border-collapse: separate; /* Permet l'utilisation de border-spacing */
+    border-spacing: 0 20px; /* 15px d'espace horizontal et 10px d'espace vertical */
+  }
+  
+
+::v-deep .custom-table th,
+::v-deep .custom-table td {
+  padding: 10px;
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+  gap: 100px;
+  margin-bottom: 10px;
+  border: none;
+  text-align: justify;
 }
 
+::v-deep .custom-table td:nth-child(-n+1),
+::v-deep .custom-table th:nth-child(-n+1) {
+  background-color: #F7AE00; 
+  width: 115px;
+  border-radius: 8px;
+}
+
+/* Style pour les dernières colonnes (par exemple les 2 dernières) */
+::v-deep .custom-table td:nth-last-child(-n+1){
+  font-size: 12px; /* Petite police pour les dernières colonnes */
+  color: #407CEE; /* Texte en bleu */
+}
+ 
+::v-deep  .no-background {
+    background-color: white;
+    border-left: 3px solid transparent; 
+  }
+  ::v-deep  .background {
+    background-color: white;
+  }
+  
 </style>

@@ -188,11 +188,12 @@ onMounted(async () => {
   background-color: #F7AE00;
   width: 115px;
   border-radius: 8px;
+  color: white
 }
 
 /* Style pour les dernières colonnes (par exemple les 2 dernières) */
 ::v-deep .custom-table td:nth-last-child(-n+1) {
-  font-size: 12px;
+  font-size: 13px;
   /* Petite police pour les dernières colonnes */
   color: #407CEE;
   /* Texte en bleu */

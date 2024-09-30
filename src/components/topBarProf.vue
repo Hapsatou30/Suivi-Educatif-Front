@@ -1,7 +1,7 @@
 <template>
     <div class="topbar">
       <div class="left-section">
-        <h2>Bonjour, {{ prenomUser }}</h2>
+        <h4>Bonjour, {{ prenomUser }}</h4>
       </div>
       <div class="right-section ">
         <div class="notifications">
@@ -59,8 +59,8 @@
     z-index: 10;
     border-bottom: 1px dashed #F7AE00;
   }
-  .topbar  .left-section h2{
-    font-size: 25px; 
+  .topbar  .left-section h4{
+    font-size: 18px; 
     color: #F7AE00; 
     font-family: "Poppins", sans-serif;
     font-weight: 500; 

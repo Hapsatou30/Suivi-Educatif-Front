@@ -31,6 +31,8 @@ import DashboardProf from '@/views/Professeurs/dashboardProf.vue';
 import SidebarProf from '@/components/sidebarProf.vue';
 import TopBarProf from '@/components/topBarProf.vue';
 import GestionAbsences from '@/views/Professeurs/gestionAbsences.vue';
+import FichePresence from '@/views/Professeurs/fichePresence.vue';
+
 
 // Routes non protégées (accessible à tous)
 const publicRoutes = [
@@ -69,6 +71,7 @@ const professorRoutes = [
   { path: '/sidebar_prof', name: 'sidebar_prof', component:SidebarProf},
   { path: '/topbar_prof', name: 'topbar_prof', component:TopBarProf},
   { path: '/gestion_absences', name: 'gestion_absences', component:GestionAbsences},
+  { path: '/fiche_de_presence/:id/:nomClasse', name: 'fiche_de_presence',component:FichePresence},
 ];
 
 // Création du tableau des routes combinées

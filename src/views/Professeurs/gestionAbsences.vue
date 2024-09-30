@@ -1,50 +1,51 @@
 <template>
-   <sidebarProf />
-   <topBarProf />
-    <div class="main-content">
-      <h2>Mes Classes </h2>
-  
-      <div class="classes">
-        <div class="tableau1">
-          <tabEvaluations 
-  v-if="paginatedData.length > 0"
-  class="tab-evaluations"
-  :headers="[ 'Nom de la classe ','Matières', 'Capacité', 'Action']"
-  :data="paginatedData">
-  <template #actions="{ row }">
-    <div class="boutons">
-      <button class="btn" @click="seeClasse(row.id)" style="color: red; font-size: 40px;" title="Voir les horaires de cette classe">
-        <Icon icon="marketeq:eye" /> 
-      </button>
-    </div>
-  </template>
-</tabEvaluations>
+  <sidebarProf />
+  <topBarProf />
+  <div class="main-content">
+    <h2>Mes Classes </h2>
+
+    <div class="classes">
+      <div class="tableau1">
+        <tabEvaluations v-if="paginatedData.length > 0" class="tab-classes"
+          :headers="['Nom de la classe ', 'Matières', 'Capacité', 'Action']" 
+          :data="paginatedData.map(({ nom_classe, nom_matiere, capacite, annee_classe_id }) => ({
+            nom_classe,
+            nom_matiere,
+            capacite,
+            annee_classe_id
+            
+          }))"
+          
+          >
+          <template #actions="{ row }">
+            <div class="boutons">
+              <button class="btn" @click="seeClasse(row.annee_classe_id, row.nom_classe)" style="color: red; font-size: 40px;" title="Voir les horaires de cette classe">
+                <Icon icon="marketeq:eye" />
+              </button>
+            </div>
+          </template>
+        </tabEvaluations>
 
 
         <p v-else class="no-evaluations-message">Aucune classe trouvée.</p>
       </div>
 
-      <pagination class="pagination1"
-        v-if="tableData.length > pageSize"
-        :totalItems="tableData.length"
-        :pageSize="pageSize"
-        :currentPage="currentPage"
-        @pageChange="handlePageChange"
-      />
-      </div>
-     <div class="retour">
-      <button @click="retour" class="btn btn-secondary">Retour</button>
-     </div>
+      <pagination class="pagination1" v-if="tableData.length > pageSize" :totalItems="tableData.length"
+        :pageSize="pageSize" :currentPage="currentPage" @pageChange="handlePageChange" />
     </div>
-  </template>
+    <div class="retour">
+      <button @click="retour" class="btn btn-secondary">Retour</button>
+    </div>
+  </div>
+</template>
 
-  <script setup>
+<script setup>
 import { ref, computed, onMounted } from 'vue';
 import sidebarProf from '@/components/sidebarProf.vue';
 import topBarProf from '@/components/topBarProf.vue';
 import tabEvaluations from '@/components/tabEvaluations.vue';
-import pagination from '@/components/paginations.vue'; 
-import {  useRoute, useRouter } from 'vue-router';
+import pagination from '@/components/paginations.vue';
+import { useRoute, useRouter } from 'vue-router';
 import { getListeClasseProf } from '@/services/ClasseProfs';
 import { profile } from '@/services/AuthService';
 import { Icon } from '@iconify/vue';
@@ -100,7 +101,7 @@ const paginatedData = computed(() => {
 
 onMounted(async () => {
   await fetchProfile();
-  await fetchData(); 
+  await fetchData();
 });
 
 
@@ -110,10 +111,11 @@ const retour = () => {
 };
 
 
-const seeClasse = (id) => {
-  // Redirige vers la page annee_classes avec l'id dans l'URL
-  router.push({ name: 'emplois_du_temps', params: { id } });
+const seeClasse = (id, nomClasse) => {
+  console.log('ID de la classe:', id, 'Nom de la classe:', nomClasse);
+  router.push({ name: 'fiche_de_presence', params: { id, nomClasse } });
 };
+
 
 
 
@@ -121,28 +123,29 @@ const seeClasse = (id) => {
 
 <style scoped>
 /* Masquer la colonne ID dans le tableau */
-.classes .tableau1 .tab-evaluations td:nth-child(3)  { 
-  display: none; /* Masquer la colonne de l'ID */
-}
-.classes .tableau1 .tab-evaluations td:nth-child(4)  { 
-  display: none; 
+::v-deep .classes .tableau1 .tab-classes td:nth-child(4) {
+  display: none;
+  /* Masquer la colonne de l'ID */
 }
 
 
 .boutons {
-    background-color: transparent; 
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.boutons .btn{
+
+.boutons .btn {
   font-size: 24px;
 }
-.main-content { 
+
+.main-content {
   margin-top: 120px;
 }
+
 .main-content h2 {
   color: black;
   font-size: 24px;
@@ -155,47 +158,53 @@ const seeClasse = (id) => {
 .classes {
   margin-top: 50px;
 }
-.classes h3{
+
+.classes h3 {
   font-size: 24px;
   font-family: "Poppins", sans-serif;
   font-weight: 500;
   text-align: start;
   margin-left: 300px;
 }
+
 .tableau1 {
   margin-left: 300px;
   margin-right: 50px;
 }
+
 .pagination1 {
   margin-left: 275px;
   margin-right: 50px;
   display: flex;
   justify-content: end;
 }
-.retour{
+
+.retour {
   display: flex;
   justify-content: end;
   margin-right: 50px;
   margin-bottom: 20px;
 }
-.retour .btn-secondary, .retour .btn-secondary:hover {
-    background-color: transparent;
-    color: white;
-    border: 1px solid #F7AE00;
-    border-radius: 12px;
-    cursor: pointer;
-    width: 200px;
-    height: 58px;
-    font-size: 24px;
-    font-family: "Poppins", sans-serif;
-    font-weight: 500;
-    color: #F7AE00;
-   
+
+.retour .btn-secondary,
+.retour .btn-secondary:hover {
+  background-color: transparent;
+  color: white;
+  border: 1px solid #F7AE00;
+  border-radius: 12px;
+  cursor: pointer;
+  width: 200px;
+  height: 58px;
+  font-size: 24px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  color: #F7AE00;
+
 }
+
 .classes p {
   font-size: 18px;
   color: red;
   font-family: "Poppins", sans-serif;
 }
-
 </style>

@@ -4,23 +4,25 @@
         <thead>
           <tr>
             <th>Horaires</th>
-            <th>Lundi</th>
-            <th>Mardi</th>
-            <th>Mercredi</th>
-            <th>Jeudi</th>
-            <th>Vendredi</th>
+            <th v-for="(jour, dayIndex) in jours" :key="dayIndex">{{ jour }}</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(horaire, index) in horaires" :key="index">
+          <tr v-for="(horaire, horaireIndex) in horaires" :key="horaireIndex">
+            <!-- Colonne des horaires -->
             <td>{{ horaire.temps }}</td>
+  
+            <!-- Colonnes des jours -->
             <td v-for="(jour, dayIndex) in jours" :key="dayIndex">
-              <div v-if="data[dayIndex] && data[dayIndex][index]?.length > 0" class="carte">
-                <div v-for="item in data[dayIndex][index]" :key="item.id">
+              <!-- Vérifie si la case contient des données -->
+              <div v-if="data[horaireIndex] && data[horaireIndex][dayIndex]?.length > 0" class="carte">
+                <!-- Affichage des matières et classes -->
+                <div v-for="item in data[horaireIndex][dayIndex]" :key="item.id">
                   <h4>{{ item.Matiere }}</h4>
                   <p>{{ item.classe }}</p>
                 </div>
               </div>
+              <!-- Si pas de données, afficher un séparateur -->
               <div v-else>
                 -------
               </div>
@@ -49,7 +51,6 @@
     },
   };
   </script>
-  
   <style scoped>
   .tableau-horaires {
     width: 100%;

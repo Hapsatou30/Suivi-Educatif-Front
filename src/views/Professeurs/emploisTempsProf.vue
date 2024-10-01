@@ -52,11 +52,14 @@ const fetchHoraires = async (professeurId) => {
     const donneesTemp = [[], [], [], [], []]; // Réinitialisation du tableau
 
     horairesProf.forEach(horaire => {
-      const jourIndex = joursDeLaSemaine.value.indexOf(horaire.jour);
+      const jourIndex = joursDeLaSemaine.value.indexOf(horaire.jour.trim()); // Supprime les espaces
       const tempsIndex = horaires.value.findIndex(h => h.temps === `${horaire.heure_debut.slice(0, 5)} - ${horaire.heure_fin.slice(0, 5)}`);
 
+      // Ajout de log pour déboguer
+      console.log(`Horaire: ${horaire.nom_matiere}, Jour: ${horaire.jour}, Heure: ${horaire.heure_debut.slice(0, 5)} - ${horaire.heure_fin.slice(0, 5)}`);
+      console.log(`JourIndex: ${jourIndex}, TempsIndex: ${tempsIndex}`);
+
       if (jourIndex !== -1 && tempsIndex !== -1) {
-        // Ajouter les données au bon emplacement dans la matrice
         if (!donneesTemp[tempsIndex][jourIndex]) {
           donneesTemp[tempsIndex][jourIndex] = [];
         }
@@ -65,9 +68,12 @@ const fetchHoraires = async (professeurId) => {
           Matiere: horaire.nom_matiere,
           classe: horaire.classe
         });
+      } else {
+        console.warn(`L'horaire ${horaire.nom_matiere} n'a pas pu être placé correctement.`);
       }
     });
 
+    console.log('Données finales pour la matrice:', donneesTemp);
     donnees.value = donneesTemp; // Mettre à jour la matrice avec les nouvelles données
   } catch (error) {
     console.error('Erreur lors de la récupération des horaires:', error);

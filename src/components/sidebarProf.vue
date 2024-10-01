@@ -20,7 +20,7 @@
           </router-link>
         </li>
         <li>
-          <router-link to="/presence" class="menu-link">
+          <router-link to="/gestion_absences" class="menu-link">
             <Icon icon="healthicons:i-training-class" />Fiche de présence
           </router-link>
         </li>

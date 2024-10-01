@@ -12,7 +12,12 @@
           :key="rowIndex"
           :class="{'background': (rowIndex + 1) % 2 === 0, 'no-background': (rowIndex + 1) % 2 !== 0}"
         >
-          <td v-for="(cell, cellIndex) in row" :key="cellIndex">{{ cell }}</td>
+          <td v-if="$slots.photo">
+            <slot name="photo" :photo="row.photo" />
+          </td>
+          <td v-for="(cell, cellIndex) in row" :key="cellIndex" v-if="cellIndex !== 0">
+            {{ cell }}
+          </td>
 
           <!-- Slot pour les actions -->
           <td v-if="$slots.actions">

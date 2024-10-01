@@ -66,3 +66,26 @@ export const getNbrClasseProf = async (professeurId) => {
       return null; // Valeur par défaut en cas d'erreur
   }
 };
+
+export const getListeClasseProf = async (professeurId) => {
+  try {
+      const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
+
+      // Récupération des professeurs avec leur matière en utilisant le classeId
+      const response = await axios.get(`${apiUrl}/professeur/${professeurId}/liste_classes`, { 
+          headers: {
+              Authorization: `Bearer ${token}` // Utiliser le token dans l'en-tête pour l'authentification
+          }
+      });
+
+      // Afficher les données reçues pour le débogage
+      console.log('Données reçues liste classe: du prof', response.data); // Vérifie les données reçues de l'API
+
+      // Retourner l'objet complet
+      return response.data; // Assurez-vous de retourner la réponse complète
+  } catch (error) {
+      // Gérer les erreurs lors de la récupération des professeurs
+      console.error('Erreur:', error);
+      return null; // Valeur par défaut en cas d'erreur
+  }
+};

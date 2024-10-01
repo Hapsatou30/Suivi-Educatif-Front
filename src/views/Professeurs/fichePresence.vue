@@ -8,22 +8,24 @@
         <div class="eleves">
             <div class="tableau">
                 <tabEvaluations v-if="paginatedData.length > 0" class="tab-eleves"
-                    :headers="['Photo', 'Prénom & Nom', 'Matricule', 'Absence']" :data="paginatedData.map(({ photo, prenom, nom, matricule, date_naissance, id }) => ({
+                    :headers="['Photo', 'Prénom & Nom', 'Matricule', 'Absence']" :data="paginatedData.map(({ photo, prenom, nom, matricule, id, absent }) => ({
                         photo,
                         eleve: `${prenom} ${nom}`,
                         matricule,
-                        date_naissance,
-                        id
+                        id,
+                        absent
                     }))">
+
+                    <!-- Affichage des photos -->
                     <template #photo="{ photo }">
                         <img :src="photo" alt="Photo de l'élève" width="50" height="50" style="border-radius: 50%;" />
                     </template>
 
+                    <!-- Affichage des cases à cocher pour l'absence -->
                     <template #actions="{ row }">
                         <input type="checkbox" :id="`select-classe-${row.id}`" :checked="row.absent"
-                            @change="handleCheckboxChange(row.id, $event.target.checked)" title="Marquer comme absence"
+                            @change="handleCheckboxChange(row.id, $event.target.checked)" title="Marquer comme absent"
                             style="width: 30px;" />
-
                     </template>
 
                 </tabEvaluations>
@@ -31,23 +33,27 @@
                 <p v-else class="no-evaluations-message">Aucun élève trouvé.</p>
             </div>
 
+            <!-- Pagination -->
             <pagination class="pagination1" v-if="tableData.length > pageSize" :totalItems="tableData.length"
                 :pageSize="pageSize" :currentPage="currentPage" @pageChange="handlePageChange" />
         </div>
+
+        <!-- Section pour afficher l'historique des absences -->
         <div class="absences">
             <h2 style=" margin-bottom: 50px;">Historique des Absences</h2>
             <div class="tableau-absences">
                 <tabEvaluations v-if="Data.length > 0" class="tab-absences"
-                    :headers="['Prénom & Nom', 'Date d\'absence', 'Justification']"
-                    :data="Data.map(({ classe_eleve: { eleve }, date_presence, justification, id }) => ({
-                    eleve: `${eleve.prenom} ${eleve.nom}`,
-                    date_presence,
-                    justification: justification || 'Aucune',
-                    id
+                    :headers="['Prénom & Nom', 'Date d\'absence', 'Justification']" :data="Data.map(({ classe_eleve: { eleve }, date_presence, justification, id }) => ({
+                        eleve: `${eleve.prenom} ${eleve.nom}`,
+                        date_presence,
+                        justification: justification || 'Aucune',
+                        id
                     }))">
                 </tabEvaluations>
             </div>
         </div>
+
+        <!-- Bouton retour -->
         <div class="retour">
             <button @click="retour" class="btn btn-secondary">Retour</button>
         </div>
@@ -70,27 +76,31 @@ const router = useRouter();
 const route = useRoute();
 
 // Variables réactives
-const tableData = ref([]); // Données des eleves
+const tableData = ref([]); // Données des élèves
 const currentPage = ref(1); // Page actuelle de la pagination
 const pageSize = ref(5); // Nombre d'éléments par page
 const classeProf_id = route.params.classeProf_id;
 const annee_classe_id = route.params.annee_classe_id;
 const nom_classe = route.params.nom_classe;
-const Data = ref([]);
+const Data = ref([]); // Historique des absences
 
+// Récupération des données des élèves
 const fetchData = async () => {
     try {
+        // Récupérer les élèves de la classe
         const response = await getEleveClasse(annee_classe_id);
         const classeCible = response.données.find(classe => classe.id === parseInt(annee_classe_id));
         const elevesClasse = [];
+        const today = new Date().toISOString().split('T')[0]; // Date d'aujourd'hui au format yyyy-mm-dd
 
         if (classeCible && classeCible.eleves) {
-            classeCible.eleves.forEach(eleve => {
-                const today = new Date().toISOString().split('T')[0]; // Date actuelle au format yyyy-mm-dd
+            // Récupérer l'historique des absences d'aujourd'hui
+            const absencesToday = Data.value.filter(absence => absence.date_presence === today);
 
-                // Si la date de dernière absence est différente d'aujourd'hui, réinitialiser à false
-                const lastCheckedDate = eleve.lastCheckedDate || today;
-                const isNewDay = lastCheckedDate !== today;
+            classeCible.eleves.forEach(eleve => {
+                // Vérifier si cet élève est absent aujourd'hui et récupérer son absenceId
+                const absence = absencesToday.find(abs => abs.classe_eleve.eleve.id === eleve.id);
+                const isAbsentToday = !!absence; // Vérifie si une absence existe pour aujourd'hui
 
                 elevesClasse.push({
                     id: eleve.id,
@@ -99,8 +109,8 @@ const fetchData = async () => {
                     matricule: eleve.matricule,
                     date_naissance: eleve.date_naissance,
                     photo: eleve.photo || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF5-3YjBcXTqKUlOAeUUtuOLKgQSma2wGG1g&s',
-                    absent: isNewDay ? false : eleve.absent, // Réinitialiser si c'est un nouveau jour
-                    lastCheckedDate: today, // Met à jour la dernière date de vérification
+                    absent: isAbsentToday, // Si l'élève est absent aujourd'hui, cocher la case
+                    absenceId: isAbsentToday ? absence.id : null, // Stocker l'ID de l'absence pour la suppression
                 });
             });
         }
@@ -111,13 +121,14 @@ const fetchData = async () => {
         console.error('Erreur lors de la récupération des données :', error);
     }
 };
+
+
+// Fonction de gestion des cases à cocher
 const handleCheckboxChange = (eleveId, isAbsent) => {
     const eleve = tableData.value.find(eleve => eleve.id === eleveId);
 
     if (eleve) {
-        console.log(`Checkbox clicked for eleveId: ${eleveId}, isAbsent: ${isAbsent}, current absent state: ${eleve.absent}`);
-
-        if (isAbsent && !eleve.absent) {  // Ajouter l'absence
+        if (isAbsent && !eleve.absent) {  // Ajouter une absence
             postAbsences({
                 date_absence: new Date().toISOString().split('T')[0],
                 status: "absent",
@@ -132,6 +143,8 @@ const handleCheckboxChange = (eleveId, isAbsent) => {
                     showConfirmButton: false,
                     timer: 1500
                 });
+                 // Mettre à jour l'historique après ajout de l'absence
+                 fetchAbsences().then(() => fetchData());
             }).catch(error => {
                 Swal.fire({
                     icon: 'error',
@@ -139,9 +152,8 @@ const handleCheckboxChange = (eleveId, isAbsent) => {
                     text: `Une erreur est survenue lors de l'enregistrement.`,
                 });
             });
-        } else if (!isAbsent && eleve.absent) {  // Supprimer l'absence
+        } else if (!isAbsent && eleve.absent) {  // Supprimer une absence
             if (eleve.absenceId) {
-                console.log('supprimer : ', eleve.absenceId);  // Vérifiez que cette ligne est affichée
                 supprimerAbsence(eleve.absenceId).then(() => {
                     delete eleve.absenceId;
                     eleve.absent = false;
@@ -151,6 +163,8 @@ const handleCheckboxChange = (eleveId, isAbsent) => {
                         showConfirmButton: false,
                         timer: 1500
                     });
+                     // Mettre à jour l'historique après ajout de l'absence
+                fetchAbsences().then(() => fetchData());
                 }).catch(error => {
                     Swal.fire({
                         icon: 'error',
@@ -169,7 +183,7 @@ const handleCheckboxChange = (eleveId, isAbsent) => {
     }
 };
 
-// Fonction pour récupérer les absences d'une classeProf
+// Récupérer les absences d'une classe
 const fetchAbsences = async () => {
     try {
         const response = await getAbsenceClasseProf(classeProf_id);
@@ -178,30 +192,30 @@ const fetchAbsences = async () => {
         console.error("Erreur lors de la récupération des absences :", error);
     }
 };
+
 // Méthode pour changer de page dans la pagination
 const handlePageChange = (page) => {
-    currentPage.value = page; // Mettre à jour la page actuelle
+    currentPage.value = page;
 };
 
-// Calculer les données paginées à afficher
+// Calculer les données paginées
 const paginatedData = computed(() => {
-    const start = (currentPage.value - 1) * pageSize.value; // Calculer l'index de début
-    const end = start + pageSize.value; // Calculer l'index de fin
-    return tableData.value.slice(start, end); // Retourner les données pour la page actuelle
+    const start = (currentPage.value - 1) * pageSize.value;
+    const end = start + pageSize.value;
+    return tableData.value.slice(start, end);
 });
-
 
 // Méthode pour retourner à la page précédente
 const retour = () => {
-    router.back(); // Utiliser le routeur pour revenir en arrière
+    router.back();
 };
-// Appel des méthodes dans onMounted
+
+// Appel des méthodes au montage du composant
 onMounted(() => {
-    fetchData(); 
-    fetchAbsences();
+    fetchAbsences().then(() => {
+        fetchData();
+    });
 });
-
-
 
 </script>
 
@@ -216,12 +230,14 @@ onMounted(() => {
 .eleves .tableau .tab-eleves td:nth-child(6) {
     display: none;
 }
+
 .absences .tableau-absences .tab-absences td:nth-child(4) {
     display: none;
 }
+
 .tableau-absences {
-  margin-left: 300px;
-  margin-right: 50px;
+    margin-left: 300px;
+    margin-right: 50px;
 }
 
 

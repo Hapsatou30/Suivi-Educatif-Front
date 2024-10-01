@@ -45,10 +45,10 @@ export const supprimerAbsence = async (absenceId) => {
 };
 
 // Méthode pour récupérer les détails d'un professeur par son ID
-export const getAbsence = async (classeEleveId) => {
+export const getAbsenceClasseProf = async (classProfId) => {
   try {
     const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
-    const response = await axios.get(`${apiUrl}/absences/${classeEleveId}`, {
+    const response = await axios.get(`${apiUrl}/absences/${classProfId}`, {
       headers: {
         Authorization: `Bearer ${token}` // Utiliser le token dans l'en-tête pour l'authentification
       }

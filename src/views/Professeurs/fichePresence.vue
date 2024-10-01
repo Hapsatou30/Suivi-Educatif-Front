@@ -72,6 +72,12 @@ const fetchData = async () => {
 
         if (classeCible && classeCible.eleves) {
             classeCible.eleves.forEach(eleve => {
+                const today = new Date().toISOString().split('T')[0]; // Date actuelle au format yyyy-mm-dd
+                
+                // Si la date de dernière absence est différente d'aujourd'hui, réinitialiser à false
+                const lastCheckedDate = eleve.lastCheckedDate || today;
+                const isNewDay = lastCheckedDate !== today;
+
                 elevesClasse.push({
                     id: eleve.id,
                     prenom: eleve.prenom,
@@ -79,7 +85,8 @@ const fetchData = async () => {
                     matricule: eleve.matricule,
                     date_naissance: eleve.date_naissance,
                     photo: eleve.photo || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF5-3YjBcXTqKUlOAeUUtuOLKgQSma2wGG1g&s',
-                    absent: false, 
+                    absent: isNewDay ? false : eleve.absent, // Réinitialiser si c'est un nouveau jour
+                    lastCheckedDate: today, // Met à jour la dernière date de vérification
                 });
             });
         }
@@ -90,6 +97,7 @@ const fetchData = async () => {
         console.error('Erreur lors de la récupération des données :', error);
     }
 };
+
 
 
 
@@ -173,10 +181,6 @@ const handleCheckboxChange = (eleveId, isAbsent) => {
         }
     }
 };
-
-
-
-
 
 
 </script>

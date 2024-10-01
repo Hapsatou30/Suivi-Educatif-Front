@@ -8,8 +8,7 @@
         <div class="eleves">
             <div class="tableau">
                 <tabEvaluations v-if="paginatedData.length > 0" class="tab-eleves"
-                    :headers="['Photo', 'Prénom & Nom', 'Matricule', 'Absence']" 
-                    :data="paginatedData.map(({ photo, prenom, nom, matricule, date_naissance , id}) => ({
+                    :headers="['Photo', 'Prénom & Nom', 'Matricule', 'Absence']" :data="paginatedData.map(({ photo, prenom, nom, matricule, date_naissance, id }) => ({
                         photo,
                         eleve: `${prenom} ${nom}`,
                         matricule,
@@ -22,10 +21,10 @@
 
                     <template #actions="{ row }">
                         <input type="checkbox" :id="`select-classe-${row.id}`" :checked="row.absent"
-                        @change="handleCheckboxChange(row.id, $event.target.checked)" 
-                        title="Marquer comme absence" style="width: 30px;" />
+                            @change="handleCheckboxChange(row.id, $event.target.checked)" title="Marquer comme absence"
+                            style="width: 30px;" />
 
-                </template>
+                    </template>
 
                 </tabEvaluations>
 
@@ -34,6 +33,20 @@
 
             <pagination class="pagination1" v-if="tableData.length > pageSize" :totalItems="tableData.length"
                 :pageSize="pageSize" :currentPage="currentPage" @pageChange="handlePageChange" />
+        </div>
+        <div class="absences">
+            <h2 style=" margin-bottom: 50px;">Historique des Absences</h2>
+            <div class="tableau-absences">
+                <tabEvaluations v-if="Data.length > 0" class="tab-absences"
+                    :headers="['Prénom & Nom', 'Date d\'absence', 'Justification']"
+                    :data="Data.map(({ classe_eleve: { eleve }, date_presence, justification, id }) => ({
+                    eleve: `${eleve.prenom} ${eleve.nom}`,
+                    date_presence,
+                    justification: justification || 'Aucune',
+                    id
+                    }))">
+                </tabEvaluations>
+            </div>
         </div>
         <div class="retour">
             <button @click="retour" class="btn btn-secondary">Retour</button>
@@ -49,7 +62,7 @@ import topBarProf from '@/components/topBarProf.vue';
 import tabEvaluations from '@/components/tabEvaluations.vue';
 import pagination from '@/components/paginations.vue';
 import { getEleveClasse } from '@/services/ClasseEleve';
-import { postAbsences,supprimerAbsence } from '@/services/AbsenceService';
+import { postAbsences, supprimerAbsence, getAbsenceClasseProf } from '@/services/AbsenceService';
 import Swal from 'sweetalert2';
 
 // Initialisation des routeurs
@@ -63,6 +76,7 @@ const pageSize = ref(5); // Nombre d'éléments par page
 const classeProf_id = route.params.classeProf_id;
 const annee_classe_id = route.params.annee_classe_id;
 const nom_classe = route.params.nom_classe;
+const Data = ref([]);
 
 const fetchData = async () => {
     try {
@@ -73,7 +87,7 @@ const fetchData = async () => {
         if (classeCible && classeCible.eleves) {
             classeCible.eleves.forEach(eleve => {
                 const today = new Date().toISOString().split('T')[0]; // Date actuelle au format yyyy-mm-dd
-                
+
                 // Si la date de dernière absence est différente d'aujourd'hui, réinitialiser à false
                 const lastCheckedDate = eleve.lastCheckedDate || today;
                 const isNewDay = lastCheckedDate !== today;
@@ -97,36 +111,9 @@ const fetchData = async () => {
         console.error('Erreur lors de la récupération des données :', error);
     }
 };
-
-
-
-
-
-// Méthode pour changer de page dans la pagination
-const handlePageChange = (page) => {
-    currentPage.value = page; // Mettre à jour la page actuelle
-};
-
-// Calculer les données paginées à afficher
-const paginatedData = computed(() => {
-    const start = (currentPage.value - 1) * pageSize.value; // Calculer l'index de début
-    const end = start + pageSize.value; // Calculer l'index de fin
-    return tableData.value.slice(start, end); // Retourner les données pour la page actuelle
-});
-
-
-// Méthode pour retourner à la page précédente
-const retour = () => {
-    router.back(); // Utiliser le routeur pour revenir en arrière
-};
-// Appel des méthodes dans onMounted
-onMounted(() => {
-    fetchData(); // Récupérer les données des élèves au chargement de la page
-});
-
 const handleCheckboxChange = (eleveId, isAbsent) => {
     const eleve = tableData.value.find(eleve => eleve.id === eleveId);
-    
+
     if (eleve) {
         console.log(`Checkbox clicked for eleveId: ${eleveId}, isAbsent: ${isAbsent}, current absent state: ${eleve.absent}`);
 
@@ -182,6 +169,39 @@ const handleCheckboxChange = (eleveId, isAbsent) => {
     }
 };
 
+// Fonction pour récupérer les absences d'une classeProf
+const fetchAbsences = async () => {
+    try {
+        const response = await getAbsenceClasseProf(classeProf_id);
+        Data.value = response.data;
+    } catch (error) {
+        console.error("Erreur lors de la récupération des absences :", error);
+    }
+};
+// Méthode pour changer de page dans la pagination
+const handlePageChange = (page) => {
+    currentPage.value = page; // Mettre à jour la page actuelle
+};
+
+// Calculer les données paginées à afficher
+const paginatedData = computed(() => {
+    const start = (currentPage.value - 1) * pageSize.value; // Calculer l'index de début
+    const end = start + pageSize.value; // Calculer l'index de fin
+    return tableData.value.slice(start, end); // Retourner les données pour la page actuelle
+});
+
+
+// Méthode pour retourner à la page précédente
+const retour = () => {
+    router.back(); // Utiliser le routeur pour revenir en arrière
+};
+// Appel des méthodes dans onMounted
+onMounted(() => {
+    fetchData(); 
+    fetchAbsences();
+});
+
+
 
 </script>
 
@@ -192,8 +212,16 @@ const handleCheckboxChange = (eleveId, isAbsent) => {
 .eleves .tableau .tab-eleves td:nth-child(2) {
     display: none;
 }
+
 .eleves .tableau .tab-eleves td:nth-child(6) {
     display: none;
+}
+.absences .tableau-absences .tab-absences td:nth-child(4) {
+    display: none;
+}
+.tableau-absences {
+  margin-left: 300px;
+  margin-right: 50px;
 }
 
 
@@ -210,7 +238,9 @@ const handleCheckboxChange = (eleveId, isAbsent) => {
     margin-left: 300px;
 }
 
-
+.absences {
+    margin-top: 100px;
+}
 
 .pagination1 {
     margin-left: 275px;

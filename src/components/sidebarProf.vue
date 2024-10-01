@@ -84,6 +84,7 @@
     padding: 05px;
     font-family: "Poppins", sans-serif;
     font-weight: 400;
+    width: 226px;
   }
   
   .menu-link .iconify, .material-symbols-outlined {

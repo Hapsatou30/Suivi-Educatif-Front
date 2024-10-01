@@ -79,7 +79,15 @@
   }
   
   .tableau-horaires th {
-    background-color: #f4f4f4;
+   font-size: 24px;
+   color: black;
+   font-family: "Poppins", sans-serif; /* Police utilisée */
+    font-weight: 500; 
+  }
+  .tableau-horaires td{
+    font-size: 18px;
+    font-family: "Poppins", sans-serif; /* Police utilisée */
+    font-weight: 300; 
   }
   </style>
   

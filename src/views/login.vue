@@ -16,7 +16,8 @@
             </div>
             <div class="mb-3">
               <label for="password" class="form-label">Mot de passe</label>
-              <input type="password" v-model="password" class="form-control" id="password" placeholder="Votre Mot de passe" required />
+              <input type="password" v-model="password" class="form-control" id="password"
+                placeholder="Votre Mot de passe" required />
               <small v-if="passwordError" class="text-danger">{{ passwordError }}</small>
             </div>
             <button type="submit" class="btn-block btn-custom">Connexion</button>
@@ -33,8 +34,8 @@
 
 <script setup>
 // Importation des dépendances
-import { ref } from 'vue'; 
-import { login as loginService } from '@/services/AuthService'; 
+import { ref } from 'vue';
+import { login as loginService } from '@/services/AuthService';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
@@ -78,19 +79,19 @@ const validateForm = () => {
 // Méthode pour la connexion
 const login = async () => {
   console.log('Tentative de connexion avec : ', email.value, password.value);
-  
+
   // Vérification du formulaire
   if (!validateForm()) return;
 
   try {
     // Appel à l'API pour l'authentification
-    const response = await loginService(email.value, password.value); 
+    const response = await loginService(email.value, password.value);
     console.log('Réponse de l\'API : ', response);
 
     // Si le token d'authentification est reçu
     if (response.access_token) {
       localStorage.setItem('token', response.access_token);
-      
+
       // Récupération des rôles
       const roles = response.roles;
       console.log('Rôles de l\'utilisateur : ', roles);
@@ -121,166 +122,233 @@ const login = async () => {
 
 </script>
 
-  
-  
-  <style>
-  /* Styles généraux */
-  body, html {
-    height: 100%;
-    margin: 0;
-    background-color: #FAFAF7;
-    font-family: "Poppins", sans-serif;
+
+
+<style>
+/* Styles généraux */
+body,
+html {
+  height: 100%;
+  margin: 0;
+  background-color: #FAFAF7;
+  font-family: "Poppins", sans-serif;
+}
+
+.container {
+  min-height: 100vh; /* Assure une hauteur minimale égale à la fenêtre */
+  height: 100%; /* Garde la hauteur à 100% */
+  border-radius: 20px;
+}
+
+
+.container .col-lg-8 {
+  background-color: white;
+  /* Couleur de fond pour la colonne principale */
+  color: #407CEE;
+  /* Couleur du texte */
+  border-top-left-radius: 30px;
+  /* Arrondir les coins supérieurs gauche */
+  border-bottom-left-radius: 30px;
+  /* Arrondir les coins inférieurs gauche */
+  height: 90%;
+}
+
+.logo {
+  display: flex;
+  /* Utilise le flexbox pour centrer le logo */
+  justify-content: center;
+  align-items: center;
+}
+
+.logo h1 {
+  font-size: 36px;
+  /* Taille du texte */
+  margin-top: 110px;
+  /* Marge supérieure */
+  font-family: "Poppins", sans-serif;
+  /* Police utilisée */
+  font-weight: 600;
+  /* Épaisseur de la police */
+  color: #407CEE;
+  /* Couleur du texte */
+}
+
+.logo img {
+  width: 371px;
+  /* Largeur de l'image du logo */
+  height: 279px;
+  /* Hauteur de l'image du logo */
+}
+
+.formulaire {
+  margin-left: 8%;
+  padding: 30px;
+  /* Espacement interne */
+  background-color: #f9f9f9;
+  /* Couleur de fond du formulaire */
+  border-radius: 20px;
+  /* Bordure arrondie */
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+  /* Ombre portée */
+  max-width: 450px;
+  /* Largeur maximale du formulaire */
+  margin-bottom: 30px;
+  /* Marge inférieure */
+}
+
+.formulaire h2 {
+  font-size: 30px;
+  /* Taille du titre */
+  margin-bottom: 20px;
+  /* Marge inférieure */
+  text-align: center;
+  /* Centrer le texte */
+  color: black;
+  /* Couleur du texte */
+  font-family: "Poppins", sans-serif;
+  /* Police utilisée */
+  font-weight: 500;
+  /* Épaisseur de la police */
+}
+
+.form-label {
+  font-size: 18px;
+  /* Taille des labels */
+  margin-bottom: 15px;
+  /* Marge inférieure */
+  font-family: "Poppins", sans-serif;
+  /* Police utilisée */
+  color: black;
+  /* Couleur du texte */
+}
+
+.form-control {
+  width: 100%;
+  /* Largeur complète pour les champs de formulaire */
+  height: 58px;
+  /* Hauteur des champs */
+}
+
+input {
+  border-radius: 12px;
+  /* Bordure arrondie pour les champs de saisie */
+}
+
+.btn-custom {
+  background-color: #407cee;
+  /* Couleur de fond du bouton */
+  color: white;
+  /* Couleur du texte */
+  border: none;
+  /* Pas de bordure */
+  width: 100%;
+  /* Largeur complète */
+  height: 58px;
+  /* Hauteur du bouton */
+  border-radius: 12px;
+  /* Bordure arrondie */
+  font-size: 24px;
+  /* Taille de la police */
+  cursor: pointer;
+  /* Curseur en forme de main sur le bouton */
+}
+
+.container .col-4 {
+  background-color: #407cee;
+  /* Couleur de fond pour la colonne d'image */
+  border-top-right-radius: 30px;
+  /* Arrondir le coin supérieur droit */
+  border-bottom-right-radius: 30px;
+  /* Arrondir le coin inférieur droit */
+  display: flex;
+  /* Utilise le flexbox pour centrer l'image */
+  justify-content: center;
+  align-items: center;
+  height: 90%;
+
+}
+
+.container .col-4 img {
+  width: 500px;
+  height: auto;
+  object-fit: cover;
+  margin-top: 70%;
+  margin-left: -50%;
+}
+
+/* Styles pour mobile */
+@media screen and (max-width: 576px) {
+  body {
+    margin-top: 0;
+    /* Supprime la marge supérieure sur mobile */
+    overflow: scroll;
+    /* Permet le défilement */
   }
-  
+
   .container {
-    height: 100%; /* Conteneur prenant toute la hauteur */
-    border-radius: 20px; /* Bordure arrondie */
+    height: 100%;
+    /* Conteneur prenant toute la hauteur */
+    display: flex;
+    /* Utilise le flexbox pour aligner le contenu */
+    justify-content: center;
+    align-items: center;
+    border-radius: 0;
+    /* Pas de bordure pour un alignement complet */
+    padding: 0;
+    /* Pas de padding */
+    width: 100%;
+    /* Prendre toute la largeur */
   }
-  
-  .container .col-lg-8 {
-    background-color: white; /* Couleur de fond pour la colonne principale */
-    color: #407CEE; /* Couleur du texte */
-    border-top-left-radius: 30px; /* Arrondir les coins supérieurs gauche */
-    border-bottom-left-radius: 30px; /* Arrondir les coins inférieurs gauche */
-    height: 90%;
+
+  .container .col-8 {
+    flex: 0 0 100%;
+    /* Colonne principale prend toute la largeur */
+    max-width: 100%;
+    background-color: white;
+    /* Couleur de fond pour mobile */
+    color: #407CEE;
+    /* Couleur du texte */
+    border-radius: 0;
+    /* Pas de bordure arrondie */
+    padding: 15px;
+    /* Espacement interne */
   }
-  
+
   .logo {
-    display: flex; /* Utilise le flexbox pour centrer le logo */
+    flex-direction: column;
+    /* Aligner le logo verticalement */
     justify-content: center;
     align-items: center;
+    text-align: center;
+    /* Centrer le texte */
   }
-  
+
   .logo h1 {
-    font-size: 36px; /* Taille du texte */
-    margin-top: 109px; /* Marge supérieure */
-    font-family: "Poppins", sans-serif; /* Police utilisée */
-    font-weight: 600; /* Épaisseur de la police */
-    color: #407CEE; /* Couleur du texte */
+    font-size: 30px;
+    /* Taille du titre sur mobile */
+    margin-top: 50px;
+    /* Marge supérieure */
   }
-  
+
   .logo img {
-    width: 371px; /* Largeur de l'image du logo */
-    height: 279px; /* Hauteur de l'image du logo */
+    width: 250px;
+    /* Largeur de l'image du logo sur mobile */
+    height: auto;
+    /* Hauteur automatique */
+    margin-top: -50px;
+    /* Marge pour superposer */
   }
-  
+
   .formulaire {
-   margin-left: 8%;
-    padding: 30px; /* Espacement interne */
-    background-color: #f9f9f9; /* Couleur de fond du formulaire */
-    border-radius: 20px; /* Bordure arrondie */
-    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1); /* Ombre portée */
-    max-width: 450px; /* Largeur maximale du formulaire */
-    margin-bottom: 30px; /* Marge inférieure */
+    width: 100%;
+    /* Largeur complète pour le formulaire */
+    padding: 20px;
+    /* Espacement interne */
   }
-  
-  .formulaire h2 {
-    font-size: 30px; /* Taille du titre */
-    margin-bottom: 20px; /* Marge inférieure */
-    text-align: center; /* Centrer le texte */
-    color: black; /* Couleur du texte */
-    font-family: "Poppins", sans-serif; /* Police utilisée */
-    font-weight: 500; /* Épaisseur de la police */
-  }
-  
-  .form-label {
-    font-size: 18px; /* Taille des labels */
-    margin-bottom: 15px; /* Marge inférieure */
-    font-family: "Poppins", sans-serif; /* Police utilisée */
-    color: black; /* Couleur du texte */
-  }
-  
-  .form-control {
-    width: 100%; /* Largeur complète pour les champs de formulaire */
-    height: 58px; /* Hauteur des champs */
-  }
-  
-  input {
-    border-radius: 12px; /* Bordure arrondie pour les champs de saisie */
-  }
-  
-  .btn-custom {
-    background-color: #407cee; /* Couleur de fond du bouton */
-    color: white; /* Couleur du texte */
-    border: none; /* Pas de bordure */
-    width: 100%; /* Largeur complète */
-    height: 58px; /* Hauteur du bouton */
-    border-radius: 12px; /* Bordure arrondie */
-    font-size: 24px; /* Taille de la police */
-    cursor: pointer; /* Curseur en forme de main sur le bouton */
-  }
-  
+
   .container .col-4 {
-    background-color: #407cee; /* Couleur de fond pour la colonne d'image */
-    border-top-right-radius: 30px; /* Arrondir le coin supérieur droit */
-    border-bottom-right-radius: 30px; /* Arrondir le coin inférieur droit */
-    display: flex; /* Utilise le flexbox pour centrer l'image */
-    justify-content: center;
-    align-items: center;
-    height: 90%;
-    
+    display: none;
+    /* Cacher l'image en mode mobile */
   }
-  
- .container .col-4 img {
-    width: 500px; /* Largeur de l'image */
-    height: auto; /* Hauteur de l'image */
-    object-fit: cover; /* Adapter l'image au conteneur */
-    margin-top: 70%; /* Marge supérieure */
-    margin-left: -60%; /* Décalage à gauche */
-  }
-  
-  /* Styles pour mobile */
-  @media screen and (max-width: 576px) {
-    body {
-      margin-top: 0; /* Supprime la marge supérieure sur mobile */
-      overflow: scroll; /* Permet le défilement */
-    }
-  
-    .container {
-      height: 100%; /* Conteneur prenant toute la hauteur */
-      display: flex; /* Utilise le flexbox pour aligner le contenu */
-      justify-content: center;
-      align-items: center;
-      border-radius: 0; /* Pas de bordure pour un alignement complet */
-      padding: 0; /* Pas de padding */
-      width: 100%; /* Prendre toute la largeur */
-    }
-  
-   .container .col-8 {
-      flex: 0 0 100%; /* Colonne principale prend toute la largeur */
-      max-width: 100%; 
-      background-color: white; /* Couleur de fond pour mobile */
-      color: #407CEE; /* Couleur du texte */
-      border-radius: 0; /* Pas de bordure arrondie */
-      padding: 15px; /* Espacement interne */
-    }
-  
-    .logo {
-      flex-direction: column; /* Aligner le logo verticalement */
-      justify-content: center;
-      align-items: center;
-      text-align: center; /* Centrer le texte */
-    }
-  
-    .logo h1 {
-      font-size: 30px; /* Taille du titre sur mobile */
-      margin-top: 50px; /* Marge supérieure */
-    }
-  
-    .logo img {
-      width: 250px; /* Largeur de l'image du logo sur mobile */
-      height: auto; /* Hauteur automatique */
-      margin-top: -50px; /* Marge pour superposer */
-    }
-  
-    .formulaire {
-      width: 100%; /* Largeur complète pour le formulaire */
-      padding: 20px; /* Espacement interne */
-    }
-  
-   .container .col-4 {
-      display: none; /* Cacher l'image en mode mobile */
-    }
-  }
-  </style>
-  
+}
+</style>

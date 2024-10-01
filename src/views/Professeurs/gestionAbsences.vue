@@ -7,11 +7,12 @@
     <div class="classes">
       <div class="tableau1">
         <tabEvaluations v-if="paginatedData.length > 0" class="tab-classes"
-          :headers="['Nom de la classe ', 'Matières', 'Capacité', 'Action']" 
-          :data="paginatedData.map(({ nom_classe, nom_matiere, capacite, annee_classe_id }) => ({
+          :headers="['Nom de la classe ', 'Matières', 'Nombre Eleve', 'Action']" 
+          :data="paginatedData.map(({ nom_classe, nom_matiere, capacite, classeProf_id ,annee_classe_id}) => ({
             nom_classe,
             nom_matiere,
             capacite,
+            classeProf_id,
             annee_classe_id
             
           }))"
@@ -19,7 +20,7 @@
           >
           <template #actions="{ row }">
             <div class="boutons">
-              <button class="btn" @click="seeClasse(row.annee_classe_id, row.nom_classe)" style="color: red; font-size: 40px;" title="Voir les horaires de cette classe">
+              <button class="btn" @click="seeClasse(row.classeProf_id, row.annee_classe_id, row.nom_classe)" style="color: red; font-size: 40px;" title="Voir les horaires de cette classe">
                 <Icon icon="marketeq:eye" />
               </button>
             </div>
@@ -111,10 +112,18 @@ const retour = () => {
 };
 
 
-const seeClasse = (id, nomClasse) => {
-  console.log('ID de la classe:', id, 'Nom de la classe:', nomClasse);
-  router.push({ name: 'fiche_de_presence', params: { id, nomClasse } });
+const seeClasse = (classeProf_id, annee_classe_id, nom_classe) => {
+  console.log('ID de la classe prof:', classeProf_id, 'ID de l\'année de classe:', annee_classe_id, 'Nom de la classe:', nom_classe);
+  router.push({ 
+    name: 'fiche_de_presence', 
+    params: { 
+      classeProf_id, 
+      annee_classe_id, 
+      nom_classe 
+    } 
+  });
 };
+
 
 
 
@@ -124,6 +133,10 @@ const seeClasse = (id, nomClasse) => {
 <style scoped>
 /* Masquer la colonne ID dans le tableau */
 ::v-deep .classes .tableau1 .tab-classes td:nth-child(4) {
+  display: none;
+  /* Masquer la colonne de l'ID */
+}
+::v-deep .classes .tableau1 .tab-classes td:nth-child(5) {
   display: none;
   /* Masquer la colonne de l'ID */
 }

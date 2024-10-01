@@ -6,7 +6,7 @@
     <div class="row">
       <div class="col-6">
         <div class="widgets-container">
-          <widget title="Classes" :number="classesCount" iconSrc="/public/images/Vector.svg" />
+          <widget title="Cours" :number="classesCount" iconSrc="/public/images/Vector.svg" />
           <widget title="Matières" :number="matiereCount" iconSrc="/public/images/Icon.svg" />
         </div>
         <div class="emploisDuTemps" style="background-color: white;">

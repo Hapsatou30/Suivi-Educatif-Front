@@ -71,7 +71,12 @@ const professorRoutes = [
   { path: '/sidebar_prof', name: 'sidebar_prof', component:SidebarProf},
   { path: '/topbar_prof', name: 'topbar_prof', component:TopBarProf},
   { path: '/gestion_absences', name: 'gestion_absences', component:GestionAbsences},
-  { path: '/fiche_de_presence/:id/:nomClasse', name: 'fiche_de_presence',component:FichePresence},
+  {
+    path: '/fiche_de_presence/:classeProf_id/:annee_classe_id/:nom_classe',
+    name: 'fiche_de_presence',
+    component:FichePresence
+  }
+  
 ];
 
 // Création du tableau des routes combinées

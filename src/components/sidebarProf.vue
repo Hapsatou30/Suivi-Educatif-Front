@@ -30,7 +30,7 @@
           </router-link>
         </li>
         <li>
-          <router-link to="/emplois" class="menu-link">
+          <router-link to="/emplois_du_temps_prof" class="menu-link">
             <Icon icon="cil:calendar" /> Emplois du temps
           </router-link>
         </li>

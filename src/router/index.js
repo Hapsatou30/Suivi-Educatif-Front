@@ -32,6 +32,8 @@ import SidebarProf from '@/components/sidebarProf.vue';
 import TopBarProf from '@/components/topBarProf.vue';
 import GestionAbsences from '@/views/Professeurs/gestionAbsences.vue';
 import FichePresence from '@/views/Professeurs/fichePresence.vue';
+import Matrice from '@/components/matrice.vue';
+import EmploisDuTempsProf from '@/views/Professeurs/emploisTempsProf.vue';
 
 
 // Routes non protégées (accessible à tous)
@@ -40,7 +42,7 @@ const publicRoutes = [
   { path: '/login', redirect: '/' },
   { path: '/affiche', name: 'affiche', component: Affiche},
   { path: '/widget', name: 'widget', component: Widget},
-
+  { path: '/matrice', name: 'matrice', component: Matrice},
 ];
 
 // Routes protégées pour les administrateurs
@@ -75,7 +77,8 @@ const professorRoutes = [
     path: '/fiche_de_presence/:classeProf_id/:annee_classe_id/:nom_classe',
     name: 'fiche_de_presence',
     component:FichePresence
-  }
+  },
+  { path: '/emplois_du_temps_prof' , name: 'emplois_du_temps_prof', component:EmploisDuTempsProf},
   
 ];
 

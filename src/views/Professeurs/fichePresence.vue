@@ -42,18 +42,23 @@
         <div class="absences">
             <h2 style=" margin-bottom: 50px;">Historique des Absences</h2>
             <div class="tableau-absences">
-                <tabEvaluations v-if="Data.length > 0" class="tab-absences"
-                    :headers="['Prénom & Nom', 'Date d\'absence', 'Justification']" :data="Data.map(({ classe_eleve: { eleve }, date_presence, justification, id }) => ({
+                <tabEvaluations v-if="paginatedAbsencesData.length > 0" class="tab-absences"
+                    :headers="['Prénom & Nom', 'Date d\'absence', 'Justification']" :data="paginatedAbsencesData.map(({ classe_eleve: { eleve }, date_presence, justification, id }) => ({
                         eleve: `${eleve.prenom} ${eleve.nom}`,
                         date_presence,
                         justification: justification || 'Aucune',
                         id
                     }))">
                 </tabEvaluations>
+
+                <p v-else class="no-evaluations-message">Aucun historique d'absence trouvé.</p>
             </div>
+
+            <pagination class="pagination1" v-if="Data.length > absencesPageSize" :totalItems="Data.length"
+                :pageSize="absencesPageSize" :currentPage="currentAbsencesPage"
+                @pageChange="handleAbsencesPageChange" />
         </div>
 
-        <!-- Bouton retour -->
         <div class="retour">
             <button @click="retour" class="btn btn-secondary">Retour</button>
         </div>
@@ -83,6 +88,9 @@ const classeProf_id = route.params.classeProf_id;
 const annee_classe_id = route.params.annee_classe_id;
 const nom_classe = route.params.nom_classe;
 const Data = ref([]); // Historique des absences
+const currentAbsencesPage = ref(1); // Page actuelle pour l'historique des absences
+const absencesPageSize = ref(5); // Nombre d'éléments par page pour l'historique
+
 
 // Récupération des données des élèves
 const fetchData = async () => {
@@ -128,7 +136,7 @@ const handleCheckboxChange = (eleveId, isAbsent) => {
     const eleve = tableData.value.find(eleve => eleve.id === eleveId);
 
     if (eleve) {
-        if (isAbsent && !eleve.absent) {  // Ajouter une absence
+        if (isAbsent && !eleve.absent) {  
             postAbsences({
                 date_absence: new Date().toISOString().split('T')[0],
                 status: "absent",
@@ -143,8 +151,8 @@ const handleCheckboxChange = (eleveId, isAbsent) => {
                     showConfirmButton: false,
                     timer: 1500
                 });
-                 // Mettre à jour l'historique après ajout de l'absence
-                 fetchAbsences().then(() => fetchData());
+                // Mettre à jour l'historique après ajout de l'absence
+                fetchAbsences().then(() => fetchData());
             }).catch(error => {
                 Swal.fire({
                     icon: 'error',
@@ -163,8 +171,8 @@ const handleCheckboxChange = (eleveId, isAbsent) => {
                         showConfirmButton: false,
                         timer: 1500
                     });
-                     // Mettre à jour l'historique après ajout de l'absence
-                fetchAbsences().then(() => fetchData());
+                    // Mettre à jour l'historique après ajout de l'absence
+                    fetchAbsences().then(() => fetchData());
                 }).catch(error => {
                     Swal.fire({
                         icon: 'error',
@@ -198,6 +206,7 @@ const handlePageChange = (page) => {
     currentPage.value = page;
 };
 
+
 // Calculer les données paginées
 const paginatedData = computed(() => {
     const start = (currentPage.value - 1) * pageSize.value;
@@ -209,6 +218,15 @@ const paginatedData = computed(() => {
 const retour = () => {
     router.back();
 };
+const handleAbsencesPageChange = (page) => {
+    currentAbsencesPage.value = page;
+};
+
+const paginatedAbsencesData = computed(() => {
+    const start = (currentAbsencesPage.value - 1) * absencesPageSize.value;
+    const end = start + absencesPageSize.value;
+    return Data.value.slice(start, end);
+});
 
 // Appel des méthodes au montage du composant
 onMounted(() => {

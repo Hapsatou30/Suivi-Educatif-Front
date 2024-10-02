@@ -2,6 +2,9 @@
   <sidebarProf />
   <topBarProf />
   <div class="main-content">
+    <h1 style="text-align: center; margin-left: 300px; margin-bottom: 50px;">
+      Mon Emplois du temps
+    </h1>
     <matrice :horaires="horaires" :data="donnees" :jours="joursDeLaSemaine" :classeColors="classeColors" />
   </div>
 </template>

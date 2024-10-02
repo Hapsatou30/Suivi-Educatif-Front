@@ -109,6 +109,7 @@ const fetchData = async () => {
                 // Vérifier si cet élève est absent aujourd'hui et récupérer son absenceId
                 const absence = absencesToday.find(abs => abs.classe_eleve.eleve.id === eleve.id);
                 const isAbsentToday = !!absence; // Vérifie si une absence existe pour aujourd'hui
+                console.log('Absences Today:', absencesToday);
 
                 elevesClasse.push({
                     id: eleve.id,
@@ -138,13 +139,13 @@ const handleCheckboxChange = (eleveId, isAbsent) => {
     if (eleve) {
         if (isAbsent && !eleve.absent) {  
             postAbsences({
-                date_absence: new Date().toISOString().split('T')[0],
                 status: "absent",
                 classe_eleve_id: eleveId,
                 classe_prof_id: classeProf_id,
             }).then(response => {
                 eleve.absenceId = response.data.id;
                 eleve.absent = true;
+
                 Swal.fire({
                     icon: 'success',
                     title: `L'absence de l'élève ${eleve.prenom} ${eleve.nom} a été enregistrée.`,

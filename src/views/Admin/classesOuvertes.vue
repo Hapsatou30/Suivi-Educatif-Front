@@ -21,7 +21,7 @@
         >
           <template #actions="{ row }">
             <div class="boutons">
-              <button class="btn" @click="editClasse(row.id)" style=" color: #4862C4; font-size: 30px;" title="Attribuer des classes aux professeurs">
+              <button class="btn" @click="editClasse(row.id)" style=" color: #4862C4; font-size: 30px;" title="Attribuer des professeurs à cette classe">
                 <Icon icon="mdi:pencil-outline" /> 
               </button>
               <button class="btn" @click="seeClasse(row.id)" style="color: red; font-size: 40px;" title="Voir les horaires de cette classe">

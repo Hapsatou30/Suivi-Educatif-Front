@@ -6,6 +6,13 @@
             Gestion des horaires pour la classe de : {{ nomClasse }}
         </h2>
 
+        <!-- Bouton pour ouvrir le modal d'ajout -->
+        <div style="text-align: right; margin-bottom: 20px;">
+            <button @click="openAddModal" style="background-color: #F7AE00; color: white; padding: 10px 20px; border: none; border-radius: 12px; cursor: pointer; margin-right: 50px; font-size: 24px;" >
+                Ajouter un horaire
+            </button>
+        </div>
+
         <!-- Modal -->
         <div v-if="showModal"
             style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1000; display: flex; justify-content: center; align-items: center;">
@@ -17,6 +24,18 @@
 
                 <!-- Formulaire -->
                 <form @submit.prevent="isEditing ? handleModifierHoraire() : handleAjouterHoraire()">
+                    <!-- Champ Professeur et Matière -->
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <label for="classe_prof_id" style="display: block; margin-bottom: 5px;">Professeur et Matière:</label>
+                        <select id="classe_prof_id" v-model="horaire.classe_prof_id" required
+                            style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 12px;">
+                            <option value="" disabled>Choisissez un professeur et une matière</option>
+                            <!-- Parcourir la liste des professeurs avec leur matière -->
+                            <option v-for="prof in uniqueProfesseursMatieres" :key="prof.classe_prof_id" :value="prof.classe_prof_id">
+                                {{ prof.professeur }}  -> {{ prof.matiere }}
+                            </option>
+                        </select>
+                    </div>
                     <!-- Champ Jour -->
                     <div class="form-group" style="margin-bottom: 15px;">
                         <label for="jour" style="display: block; margin-bottom: 5px;">Jour:</label>
@@ -30,21 +49,34 @@
                             <option value="Vendredi">Vendredi</option>
                         </select>
                     </div>
-
-
                     <!-- Champ Heure de début -->
                     <div class="form-group" style="margin-bottom: 15px;">
                         <label for="heure_debut" style="display: block; margin-bottom: 5px;">Heure de début:</label>
-                        <input type="time" id="heure_debut" v-model="horaire.heure_debut" required
-                            style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 12px;" />
+                        <select id="heure_debut"  v-model="horaire.heure_debut" required
+                            style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 12px;">
+                            <option value="">Sélectionnez l'heure de début</option>
+                            <option value="08:00">08:00</option>
+                            <option value="10:15">10:15</option>
+                            <option value="12:15">12:15</option>
+                            <option value="14:15">14:15</option>
+                            <option value="16:15">16:15</option>
+                        </select>
                     </div>
 
                     <!-- Champ Heure de fin -->
                     <div class="form-group" style="margin-bottom: 15px;">
                         <label for="heure_fin" style="display: block; margin-bottom: 5px;">Heure de fin:</label>
-                        <input type="time" id="heure_fin" v-model="horaire.heure_fin" required
-                            style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 12px;" />
+                        <select id="heure_fin" v-model="horaire.heure_fin" required
+                            style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 12px;">
+                            <option value="">Sélectionnez l'heure de fin</option>
+                            <option value="10:00">10:00</option>
+                            <option value="12:00">12:00</option>
+                            <option value="14:00">14:00</option>
+                            <option value="16:00">16:00</option>
+                            <option value="18:00">18:00</option>
+                        </select>
                     </div>
+
 
                     <!-- Champ classe_prof_id (caché) -->
                     <input type="hidden" v-model="horaire.classe_prof_id" />
@@ -60,12 +92,12 @@
             </div>
         </div>
 
-
-
+        <!-- Tableau des horaires -->
         <div class="horaires">
             <div class="tableau1">
                 <tabEvaluations v-if="paginatedData.length > 0" class="tab-evaluations"
-                    :headers="['Matière', 'Professeur', 'Horaire', 'Jour', 'Action']" :data="paginatedData.map(({ matiere, professeur, horaire, jour, horaire_id, classe_prof_id }) => ({
+                    :headers="['Matière', 'Professeur', 'Horaire', 'Jour', 'Action']" 
+                    :data="paginatedData.map(({ matiere, professeur, horaire, jour, horaire_id, classe_prof_id }) => ({
                         matiere,
                         professeur,
                         horaire,
@@ -75,24 +107,27 @@
                     }))">
                     <template #actions="{ row }">
                         <div class="boutons">
-                            <button class="btn" @click="editHoraire(row)" style="color: #4862C4;"
-                                title="Ajouter / Modifier une horaire">
+                            <!-- Bouton de modification -->
+                            <button class="btn" @click="editHoraire(row)" style="color: #4862C4;" title="Modifier l'horaire">
                                 <Icon icon="mdi:pencil-outline" />
                             </button>
 
+                            <!-- Bouton de suppression -->
                             <button class="btn" @click="supprimerHoraires(row.horaire_id)" style="color: red;" title="Supprimer l'horaire">
                                 <Icon icon="mdi:trash-can-outline" />
                             </button>
-
                         </div>
                     </template>
                 </tabEvaluations>
                 <p v-else class="no-evaluations-message">Aucune horaire trouvée.</p>
             </div>
 
+            <!-- Pagination -->
             <pagination class="pagination1" v-if="tableData.length > pageSize" :totalItems="tableData.length"
                 :pageSize="pageSize" :currentPage="currentPage" @pageChange="handlePageChange" />
         </div>
+
+        <!-- Bouton de retour -->
         <div class="retour">
             <button @click="retour" class="btn btn-secondary">Retour</button>
         </div>
@@ -128,12 +163,17 @@ const horaire = ref({ jour: '', heure_debut: '', heure_fin: '', classe_prof_id: 
 const editHoraire = (row) => {
     if (row.horaire_id) {
         // Si l'horaire existe, pré-remplir les champs
+        const horaires = row.horaire.split(' - '); // Diviser la chaîne en heures
+        const heureDebut = horaires[0]; // Heure de début
+        const heureFin = horaires[1]; // Heure de fin
+
+        // Assurez-vous que les heures sont au format correct si nécessaire
         horaire.value = {
             jour: row.jour,
-            heure_debut: row.horaire.split(' - ')[0],
-            heure_fin: row.horaire.split(' - ')[1],
+            heure_debut: formatTime(heureDebut), // Formatage si nécessaire
+            heure_fin: formatTime(heureFin),     // Formatage si nécessaire
             classe_prof_id: row.classe_prof_id,
-            horaire_id: row.horaire_id 
+            horaire_id: row.horaire_id
         };
         isEditing.value = true; // Mode édition
     } else {
@@ -144,11 +184,42 @@ const editHoraire = (row) => {
     showModal.value = true; // Ouvrir le modal
 };
 
+// Fonction de formatage de l'heure
+const formatTime = (time) => {
+    // Vérifiez si le format est déjà correct (H:i:ss), 
+    const parts = time.split(':');
+    if (parts.length === 3) {
+        return `${parts[0]}:${parts[1]}`; // Retourne juste l'heure et les minutes
+    }
+    return time; // Retourne tel quel si le format est correct
+};
+
+
+// Ouvrir le modal pour l'ajout d'un horaire
+const openAddModal = () => {
+    horaire.value = { jour: '', heure_debut: '', heure_fin: '', classe_prof_id: '' };
+    isEditing.value = false;
+    showModal.value = true;
+};
+
+
 // Méthode pour fermer le modal
 const closeModal = () => {
     showModal.value = false; // Masquer le modal
     horaire.value = { jour: '', heure_debut: '', heure_fin: '', classe_prof_id: '' }; // Réinitialiser les données de l'horaire
 };
+const uniqueProfesseursMatieres = computed(() => {
+    //Un Set est une structure de données JavaScript qui ne permet de stocker que des valeurs uniques.
+    const uniqueSet = new Set();
+    return tableData.value.filter(prof => {
+        const key = `${prof.professeur} -> ${prof.matiere}`;
+        if (!uniqueSet.has(key)) {
+            uniqueSet.add(key);
+            return true; // Garde cette combinaison si elle est unique
+        }
+        return false; // Ignore cette combinaison si elle est déjà ajoutée
+    });
+});
 
 // Méthode pour ajouter un horaire
 const handleAjouterHoraire = async () => {

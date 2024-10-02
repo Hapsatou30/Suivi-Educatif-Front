@@ -14,19 +14,24 @@
   
             <!-- Colonnes des jours -->
             <td v-for="(jour, dayIndex) in jours" :key="dayIndex">
-              <!-- Vérifie si la case contient des données -->
-              <div v-if="data[horaireIndex] && data[horaireIndex][dayIndex]?.length > 0" class="carte">
-                <!-- Affichage des matières et classes -->
-                <div v-for="item in data[horaireIndex][dayIndex]" :key="item.id">
-                  <h4>{{ item.Matiere }}</h4>
-                  <p>{{ item.classe }}</p>
-                </div>
-              </div>
-              <!-- Si pas de données, afficher un séparateur -->
-              <div v-else>
-                -------
-              </div>
-            </td>
+  <!-- Vérifie si la case contient des données -->
+  <div v-if="data[horaireIndex] && data[horaireIndex][dayIndex]?.length > 0" 
+       class="carte" 
+       :style="{ backgroundColor: classeColors[data[horaireIndex][dayIndex][0].classe] }">
+    
+    <!-- Affichage des matières et classes -->
+    <div v-for="item in data[horaireIndex][dayIndex]" :key="item.id">
+      <h4>{{ item.Matiere }}</h4>
+      <p>{{ item.classe }}</p>
+    </div>
+  </div>
+
+  <!-- Si pas de données, afficher un séparateur -->
+  <div v-else>
+    -------
+  </div>
+</td>
+
           </tr>
         </tbody>
       </table>
@@ -48,6 +53,10 @@
         type: Array,
         required: true,
       },
+      classeColors: {
+    type: Object,
+    required: true,
+  },
     },
   };
   </script>

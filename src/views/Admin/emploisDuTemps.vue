@@ -49,20 +49,34 @@
                             <option value="Vendredi">Vendredi</option>
                         </select>
                     </div>
-
                     <!-- Champ Heure de début -->
                     <div class="form-group" style="margin-bottom: 15px;">
                         <label for="heure_debut" style="display: block; margin-bottom: 5px;">Heure de début:</label>
-                        <input type="time" id="heure_debut" v-model="horaire.heure_debut" required
-                            style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 12px;" />
+                        <select id="heure_debut"  v-model="horaire.heure_debut" required
+                            style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 12px;">
+                            <option value="">Sélectionnez l'heure de début</option>
+                            <option value="08:00">08:00</option>
+                            <option value="10:15">10:15</option>
+                            <option value="12:15">12:15</option>
+                            <option value="14:15">14:15</option>
+                            <option value="16:15">16:15</option>
+                        </select>
                     </div>
 
                     <!-- Champ Heure de fin -->
                     <div class="form-group" style="margin-bottom: 15px;">
                         <label for="heure_fin" style="display: block; margin-bottom: 5px;">Heure de fin:</label>
-                        <input type="time" id="heure_fin" v-model="horaire.heure_fin" required
-                            style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 12px;" />
+                        <select id="heure_fin" v-model="horaire.heure_fin" required
+                            style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 12px;">
+                            <option value="">Sélectionnez l'heure de fin</option>
+                            <option value="10:00">10:00</option>
+                            <option value="12:00">12:00</option>
+                            <option value="14:00">14:00</option>
+                            <option value="16:00">16:00</option>
+                            <option value="18:00">18:00</option>
+                        </select>
                     </div>
+
 
                     <!-- Champ classe_prof_id (caché) -->
                     <input type="hidden" v-model="horaire.classe_prof_id" />
@@ -149,12 +163,17 @@ const horaire = ref({ jour: '', heure_debut: '', heure_fin: '', classe_prof_id: 
 const editHoraire = (row) => {
     if (row.horaire_id) {
         // Si l'horaire existe, pré-remplir les champs
+        const horaires = row.horaire.split(' - '); // Diviser la chaîne en heures
+        const heureDebut = horaires[0]; // Heure de début
+        const heureFin = horaires[1]; // Heure de fin
+
+        // Assurez-vous que les heures sont au format correct si nécessaire
         horaire.value = {
             jour: row.jour,
-            heure_debut: row.horaire.split(' - ')[0],
-            heure_fin: row.horaire.split(' - ')[1],
+            heure_debut: formatTime(heureDebut), // Formatage si nécessaire
+            heure_fin: formatTime(heureFin),     // Formatage si nécessaire
             classe_prof_id: row.classe_prof_id,
-            horaire_id: row.horaire_id 
+            horaire_id: row.horaire_id
         };
         isEditing.value = true; // Mode édition
     } else {
@@ -164,6 +183,17 @@ const editHoraire = (row) => {
     }
     showModal.value = true; // Ouvrir le modal
 };
+
+// Fonction de formatage de l'heure
+const formatTime = (time) => {
+    // Vérifiez si le format est déjà correct (H:i:ss), 
+    const parts = time.split(':');
+    if (parts.length === 3) {
+        return `${parts[0]}:${parts[1]}`; // Retourne juste l'heure et les minutes
+    }
+    return time; // Retourne tel quel si le format est correct
+};
+
 
 // Ouvrir le modal pour l'ajout d'un horaire
 const openAddModal = () => {

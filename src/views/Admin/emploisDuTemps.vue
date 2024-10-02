@@ -6,6 +6,13 @@
             Gestion des horaires pour la classe de : {{ nomClasse }}
         </h2>
 
+        <!-- Bouton pour ouvrir le modal d'ajout -->
+        <div style="text-align: right; margin-bottom: 20px;">
+            <button @click="openAddModal" style="background-color: #F7AE00; color: white; padding: 10px 20px; border: none; border-radius: 12px; cursor: pointer; margin-right: 50px; font-size: 24px;" >
+                Ajouter un horaire
+            </button>
+        </div>
+
         <!-- Modal -->
         <div v-if="showModal"
             style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1000; display: flex; justify-content: center; align-items: center;">
@@ -17,6 +24,19 @@
 
                 <!-- Formulaire -->
                 <form @submit.prevent="isEditing ? handleModifierHoraire() : handleAjouterHoraire()">
+                    <!-- Champ Professeur et Matière -->
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <label for="classe_prof_id" style="display: block; margin-bottom: 5px;">Professeur et Matière:</label>
+                        <select id="classe_prof_id" v-model="horaire.classe_prof_id" required
+                            style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 12px;">
+                            <option value="" disabled>Choisissez un professeur et une matière</option>
+                            <!-- Parcourir la liste des professeurs avec leur matière -->
+                            <option v-for="prof in tableData" :key="prof.classe_prof_id" :value="prof.classe_prof_id">
+                                {{ prof.professeur }}  -> {{ prof.matiere }}
+                            </option>
+
+                        </select>
+                    </div>
                     <!-- Champ Jour -->
                     <div class="form-group" style="margin-bottom: 15px;">
                         <label for="jour" style="display: block; margin-bottom: 5px;">Jour:</label>
@@ -30,7 +50,6 @@
                             <option value="Vendredi">Vendredi</option>
                         </select>
                     </div>
-
 
                     <!-- Champ Heure de début -->
                     <div class="form-group" style="margin-bottom: 15px;">
@@ -60,12 +79,12 @@
             </div>
         </div>
 
-
-
+        <!-- Tableau des horaires -->
         <div class="horaires">
             <div class="tableau1">
                 <tabEvaluations v-if="paginatedData.length > 0" class="tab-evaluations"
-                    :headers="['Matière', 'Professeur', 'Horaire', 'Jour', 'Action']" :data="paginatedData.map(({ matiere, professeur, horaire, jour, horaire_id, classe_prof_id }) => ({
+                    :headers="['Matière', 'Professeur', 'Horaire', 'Jour', 'Action']" 
+                    :data="paginatedData.map(({ matiere, professeur, horaire, jour, horaire_id, classe_prof_id }) => ({
                         matiere,
                         professeur,
                         horaire,
@@ -75,24 +94,27 @@
                     }))">
                     <template #actions="{ row }">
                         <div class="boutons">
-                            <button class="btn" @click="editHoraire(row)" style="color: #4862C4;"
-                                title="Ajouter / Modifier une horaire">
+                            <!-- Bouton de modification -->
+                            <button class="btn" @click="editHoraire(row)" style="color: #4862C4;" title="Modifier l'horaire">
                                 <Icon icon="mdi:pencil-outline" />
                             </button>
 
+                            <!-- Bouton de suppression -->
                             <button class="btn" @click="supprimerHoraires(row.horaire_id)" style="color: red;" title="Supprimer l'horaire">
                                 <Icon icon="mdi:trash-can-outline" />
                             </button>
-
                         </div>
                     </template>
                 </tabEvaluations>
                 <p v-else class="no-evaluations-message">Aucune horaire trouvée.</p>
             </div>
 
+            <!-- Pagination -->
             <pagination class="pagination1" v-if="tableData.length > pageSize" :totalItems="tableData.length"
                 :pageSize="pageSize" :currentPage="currentPage" @pageChange="handlePageChange" />
         </div>
+
+        <!-- Bouton de retour -->
         <div class="retour">
             <button @click="retour" class="btn btn-secondary">Retour</button>
         </div>
@@ -143,6 +165,14 @@ const editHoraire = (row) => {
     }
     showModal.value = true; // Ouvrir le modal
 };
+
+// Ouvrir le modal pour l'ajout d'un horaire
+const openAddModal = () => {
+    horaire.value = { jour: '', heure_debut: '', heure_fin: '', classe_prof_id: '' };
+    isEditing.value = false;
+    showModal.value = true;
+};
+
 
 // Méthode pour fermer le modal
 const closeModal = () => {

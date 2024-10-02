@@ -56,8 +56,8 @@ const fetchHoraires = async (professeurId) => {
       const tempsIndex = horaires.value.findIndex(h => h.temps === `${horaire.heure_debut.slice(0, 5)} - ${horaire.heure_fin.slice(0, 5)}`);
 
       // Ajout de log pour déboguer
-      console.log(`Horaire: ${horaire.nom_matiere}, Jour: ${horaire.jour}, Heure: ${horaire.heure_debut.slice(0, 5)} - ${horaire.heure_fin.slice(0, 5)}`);
-      console.log(`JourIndex: ${jourIndex}, TempsIndex: ${tempsIndex}`);
+    //   console.log(`Horaire: ${horaire.nom_matiere}, Jour: ${horaire.jour}, Heure: ${horaire.heure_debut.slice(0, 5)} - ${horaire.heure_fin.slice(0, 5)}`);
+    //   console.log(`JourIndex: ${jourIndex}, TempsIndex: ${tempsIndex}`);
 
       if (jourIndex !== -1 && tempsIndex !== -1) {
         if (!donneesTemp[tempsIndex][jourIndex]) {

@@ -31,10 +31,9 @@
                             style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 12px;">
                             <option value="" disabled>Choisissez un professeur et une matière</option>
                             <!-- Parcourir la liste des professeurs avec leur matière -->
-                            <option v-for="prof in tableData" :key="prof.classe_prof_id" :value="prof.classe_prof_id">
+                            <option v-for="prof in uniqueProfesseursMatieres" :key="prof.classe_prof_id" :value="prof.classe_prof_id">
                                 {{ prof.professeur }}  -> {{ prof.matiere }}
                             </option>
-
                         </select>
                     </div>
                     <!-- Champ Jour -->
@@ -179,6 +178,18 @@ const closeModal = () => {
     showModal.value = false; // Masquer le modal
     horaire.value = { jour: '', heure_debut: '', heure_fin: '', classe_prof_id: '' }; // Réinitialiser les données de l'horaire
 };
+const uniqueProfesseursMatieres = computed(() => {
+    //Un Set est une structure de données JavaScript qui ne permet de stocker que des valeurs uniques.
+    const uniqueSet = new Set();
+    return tableData.value.filter(prof => {
+        const key = `${prof.professeur} -> ${prof.matiere}`;
+        if (!uniqueSet.has(key)) {
+            uniqueSet.add(key);
+            return true; // Garde cette combinaison si elle est unique
+        }
+        return false; // Ignore cette combinaison si elle est déjà ajoutée
+    });
+});
 
 // Méthode pour ajouter un horaire
 const handleAjouterHoraire = async () => {

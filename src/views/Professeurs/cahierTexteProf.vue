@@ -37,6 +37,51 @@
         </div>
       </div>
     </div>
+    <div class="cahiers">
+            <div class="tableau">
+                <tabEvaluations v-if="paginatedData.length > 0" class="tab-cahiers"
+                    :headers="['Matiere', 'Professeur','Date', 'Titre', 'Action']"
+                    :data="paginatedData.map(({
+                      matiere,
+                      professeur,
+                      date,
+                      titre,
+                      id
+                    })=>({
+                      matiere,
+                      professeur,
+                      date,
+                      titre,
+                      id
+                    })
+                    )
+                    
+                    ">
+                      <template #actions="{ row }">
+                        <div class="boutons">
+                          <button class="btn " @click="editMatiere(row.id)" style="color: #4862C4;" title="Modifier la matière">
+                            <Icon icon="mdi:pencil-outline" /> 
+                          </button>
+                          <button class="btn " @click="deleteMatiere(row.id)" style="color: red;" title="Supprimer la matière">
+                            <Icon icon="mdi:trash-can-outline" /> 
+                          </button>
+                        </div>
+                      </template>
+                </tabEvaluations>
+
+                <p v-else class="no-evaluations-message">pas de cahier de texte.</p>
+            </div>
+
+            <!-- Pagination -->
+            <pagination 
+        class="pagination2"
+        v-if="tableData.length > pageSize"
+        :totalItems="tableData.length"
+        :pageSize="pageSize"
+        :currentPage="currentPage"
+        @pageChange="handlePageChange"
+      />
+        </div>
 
     <div class="retour">
       <button @click="retour" class="btn btn-secondary">Retour</button>
@@ -50,7 +95,8 @@ import sidebarProf from '@/components/sidebarProf.vue';
 import topBarProf from '@/components/topBarProf.vue';
 import tabEvaluations from '@/components/tabEvaluations.vue';
 import pagination from '@/components/paginations.vue';
-import Swal from 'sweetalert2';
+import { getCahierTexte } from '@/services/CahierDeTexte';
+import { Icon } from '@iconify/vue';
 
 // Initialisation des routeurs
 const router = useRouter();
@@ -61,16 +107,46 @@ const imageCahier =ref('/public/images/image.png');
 const classeProf_id = route.params.classeProf_id;
 const annee_classe_id = route.params.annee_classe_id;
 const nom_classe = route.params.nom_classe;
+const tableData = ref([]);
+const currentPage = ref(1);
+const pageSize = ref(5);
+
+// Méthode pour récupérer les cahiers de texte
+const fetchCahierTexte = async () => {
+  try {
+    const response = await getCahierTexte(annee_classe_id);
+    tableData.value = response.données.map(item => ({
+      matiere: item.matiere,
+      professeur: item.professeur,
+      date: item.date,
+      titre: item.titre,
+      resume: item.resume
+    }));
+  } catch (error) {
+    console.error('Erreur lors du chargement des cahiers de texte :', error);
+  }
+};
 
 
+const handlePageChange = (page) => {
+  currentPage.value = page;
+};
 
+const paginatedData = computed(() => {
+  const start = (currentPage.value - 1) * pageSize.value;
+  const end = start + pageSize.value;
+  return tableData.value.slice(start, end);
+});
 
 // Méthode pour retourner à la page précédente
 const retour = () => {
     router.back();
 };
 
-
+// Récupérer les cahiers de texte lors du montage du composant
+onMounted(() => {
+  fetchCahierTexte();
+});
 </script>
 
 
@@ -78,16 +154,16 @@ const retour = () => {
 
 <style scoped>
 .cahier-text{
-  margin-left: 270px;
+  margin-left: 290px;
   margin-right: 50px;
-  width: 100%;
+  width: 90%;
 }
 .image-container {
   position: relative;
 }
 
 .image-background {
-  width: 100%;
+  width: 98%;
   height: auto;
   border-radius: 12px;
 }
@@ -97,8 +173,6 @@ const retour = () => {
   top: 0;
   left: 0;
   width: 100%;
-  margin-left: auto;
-  margin-right: auto;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -179,6 +253,18 @@ label{
   .bouton .btn-submit:hover {
     background-color: #F7AE00; /* Change la couleur au survol */
   }
+.cahiers{
+  margin-right: 50px;
+  width: 100%;
+}
+::v-deep .cahiers .tableau .tab-cahiers td:nth-child(5) {
+ display: none;
+}
+
+.tab-cahiers {
+    margin-left: 300px;
+    margin-right: 50px;
+}
 .retour {
   display: flex;
   justify-content: end;
@@ -186,7 +272,11 @@ label{
   margin-bottom: 20px;
   margin-top: 50px;
 }
-
+p {
+    font-size: 18px;
+    color: red;
+    font-family: "Poppins", sans-serif;
+}
 .retour .btn-secondary,
 .retour .btn-secondary:hover {
   background-color: transparent;
@@ -198,5 +288,10 @@ label{
   height: 58px;
   font-size: 24px;
   color: #F7AE00;
+}
+ .pagination2{
+ 
+ display: flex;
+ justify-content: end;
 }
 </style>

@@ -114,7 +114,7 @@ import sidebarProf from '@/components/sidebarProf.vue';
 import topBarProf from '@/components/topBarProf.vue';
 import tabEvaluations from '@/components/tabEvaluations.vue';
 import pagination from '@/components/paginations.vue';
-import { getCahierTexte, ajouterCahierTexte, modifierCahierTexte, getCahierTexteById } from '@/services/CahierDeTexte';
+import { getCahierTexte, ajouterCahierTexte, modifierCahierTexte, getCahierTexteById, supprimerClasse } from '@/services/CahierDeTexte';
 import { Icon } from '@iconify/vue';
 import Swal from 'sweetalert2';
 
@@ -159,6 +159,9 @@ const fetchData = async () => {
   }
 }
 
+
+
+
 const handleFormSubmit = async () => {
   try {
     console.log('Données du formulaire :', formData.value); // Ajout pour le débogage
@@ -167,10 +170,22 @@ const handleFormSubmit = async () => {
         throw new Error('L\'ID du cahier de texte est manquant.');
       }
       await modifierCahierTexte(formData.value);
-      Swal.fire('Succès', 'Cahier de texte mis à jour avec succès !', 'success');
+      Swal.fire({
+        title: 'Succès',
+        text: 'Cahier de texte mis à jour avec succès !',
+        icon: 'success',
+        timer: 3000, // Affiche l'alerte pendant 3 secondes
+        showConfirmButton: false
+      });
     } else {
       await ajouterCahierTexte(formData.value);
-      Swal.fire('Succès', 'Cahier de texte ajouté avec succès !', 'success');
+      Swal.fire({
+        title: 'Succès',
+        text: 'Cahier de texte ajouté avec succès !',
+        icon: 'success',
+        timer: 3000,
+        showConfirmButton: false
+      });
     }
     resetForm();
     await fetchData();
@@ -180,13 +195,12 @@ const handleFormSubmit = async () => {
   }
 };
 
-
 const editCahier = async (id) => {
   const cahier = await getCahierTexteById(id);
   // Vérifiez que vous accédez correctement aux propriétés des données
   formData.value = {
-    titre: cahier.données.titre,  // Vérifiez que c'est bien cahier.données
-    date: cahier.données.date,     // Vérifiez ici également
+    titre: cahier.données.titre,
+    date: cahier.données.date,
     resume: cahier.données.resume,
     ressource: cahier.données.ressource,
     id: cahier.données.id
@@ -200,35 +214,62 @@ const editCahier = async (id) => {
   }
 };
 
+const deleteCahier = async (id) => {
+  const confirm = await Swal.fire({
+    title: 'Êtes-vous sûr ?',
+    text: "Vous ne pourrez pas revenir en arrière !",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Oui, supprimer !'
+  });
 
-const handlePageChange = (page) => {
-  currentPage.value = page;
+  if (confirm.isConfirmed) {
+    try {
+      await supprimerClasse(id);
+      Swal.fire({
+        title: 'Supprimé !',
+        text: 'Le cahier de texte a été supprimé.',
+        icon: 'success',
+        timer: 3000,
+        showConfirmButton: false
+      });
+      await fetchData(); // Recharger les données
+    } catch (error) {
+      Swal.fire('Erreur', 'Erreur lors de la suppression du cahier de texte.', 'error');
+      console.error('Erreur lors de la suppression :', error);
+    }
+  }
 };
-
-const paginatedData = computed(() => {
-  const start = (currentPage.value - 1) * pageSize.value;
-  const end = start + pageSize.value;
-  return tableData.value.slice(start, end);
-});
 
 const resetForm = () => {
   formData.value = {
     titre: '',
-    date: today, // Réinitialiser avec la date d'aujourd'hui
+    date: today,
     resume: '',
     ressource: '',
-    classe_prof_id: classeProf_id,
     id: null
   };
   isEditMode.value = false;
 };
 
+onMounted(fetchData);
+
 const retour = () => {
-  router.back();
+  router.go(-1);
 };
 
-// Appel initial pour charger les données
-onMounted(fetchData);
+// Pagination
+const paginatedData = computed(() => {
+  const start = (currentPage.value - 1) * pageSize.value;
+  return tableData.value.slice(start, start + pageSize.value);
+});
+
+const handlePageChange = (newPage) => {
+  currentPage.value = newPage;
+};
+
 </script>
 
 

@@ -76,3 +76,19 @@ export const ajouterCahierTexte = async (cahier_texte) => {
     }
   };
   
+  export const supprimerClasse = async (id) => {
+    try {
+      const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
+      const response = await axios.delete(`${apiUrl}/cahiers-texte/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}` // Utiliser le token dans l'en-tête pour l'authentification
+        }
+      });
+  
+      console.log('Classe supprimée :', response.data);
+      return response.data; // Renvoie les données de réponse
+    } catch (error) {
+      console.error('Erreur lors de la suppression de la Classe :', error);
+      return null; // Valeur par défaut en cas d'erreur
+    }
+  };

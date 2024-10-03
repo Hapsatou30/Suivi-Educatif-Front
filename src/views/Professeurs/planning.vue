@@ -4,15 +4,13 @@
     <div class="main-content planning">
         <h1>Planifier un Devoir ou un Examen</h1>
         <div class="row">
-            <div class="col-4">
+            <div class="col-6">
                 <!-- Ajoutez ici votre calendrier interactif -->
-                <div id="calendar">
-                    <!-- Exemple de calendrier, remplacez ceci par votre calendrier interactif -->
-                    <h3>Calendrier</h3>
-                    <p>Calendrier interactif ici</p>
+                <div id="calendar" class="calendar-container">
+                    <FullCalendar :options="calendarOptions" />
                 </div>
             </div>
-            <div class="col-8  forms" style="background-color: white;">
+            <div class="col-6 forms" style="background-color: white;">
                 <!-- Formulaire à droite -->
                 <form @submit.prevent="submitForm">
                     <div class="form-group">
@@ -31,16 +29,14 @@
                             <label for="classe" class="form-label">Classe</label>
                             <select id="classe" v-model="formData.classe" class="form-select" required>
                                 <option value="" disabled selected>Choisissez une classe</option>
-                                <option v-for="classe in classes" :key="classe.id" :value="classe.id">{{ classe.nom }}
-                                </option>
+                                <option v-for="classe in classes" :key="classe.id" :value="classe.id">{{ classe.nom }}</option>
                             </select>
                         </div>
                         <div class="mb-3">
                             <label for="matiere" class="form-label">Matiere</label>
                             <select id="matiere" v-model="formData.matiere" class="form-select" required>
                                 <option value="" disabled selected>Choisissez une matiere</option>
-                                <option v-for="matiere in matieres" :key="matiere.id" :value="matiere.id">{{ matiere.nom
-                                    }}</option>
+                                <option v-for="matiere in matieres" :key="matiere.id" :value="matiere.id">{{ matiere.nom }}</option>
                             </select>
                         </div>
                     </div>
@@ -49,16 +45,13 @@
                             <label>Type d'Évaluation</label><br>
                             <div class="radio-group">
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="inlineRadioOptions"
-                                        id="inlineRadio1" value="option1">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
                                     <label class="form-check-label" for="inlineRadio1">Devoir</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="inlineRadioOptions"
-                                        id="inlineRadio2" value="option2">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
                                     <label class="form-check-label" for="inlineRadio2">Examen</label>
                                 </div>
-
                             </div>
                         </div>
                         <div class="mb-3">
@@ -80,6 +73,34 @@
 import { ref } from 'vue';
 import sidebarProf from '@/components/sidebarProf.vue';
 import topBarProf from '@/components/topBarProf.vue';
+import FullCalendar from '@fullcalendar/vue3';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import dayjs from 'dayjs';
+import 'dayjs/locale/fr';
+
+// Configurer dayjs pour utiliser le français
+dayjs.locale('fr');
+
+const calendarOptions = ref({
+    plugins: [dayGridPlugin, interactionPlugin],
+    initialView: 'dayGridMonth',
+    locale: 'fr',
+    events: [
+        { title: 'Devoir de Maths', date: '2024-10-05' },
+        { title: 'Examen d\'Anglais', date: '2024-10-12' },
+    ],
+    // Masquer les weekends
+    dayRender(info) {
+        const dayOfWeek = info.date.getDay();
+        if (dayOfWeek === 0 || dayOfWeek === 6) { // Dimanche ou Samedi
+            info.el.style.display = 'none'; // Masquer le jour
+        }
+    },
+    dateClick(info) {
+        alert('Date cliquée: ' + info.dateStr);
+    }
+});
 
 // Données du formulaire
 const formData = ref({
@@ -94,14 +115,12 @@ const formData = ref({
 const classes = ref([
     { id: 1, nom: 'Classe 1' },
     { id: 2, nom: 'Classe 2' },
-    // Ajoutez d'autres classes ici
 ]);
 
 const matieres = ref([
     { id: 1, nom: 'Anglais' },
     { id: 2, nom: 'Math' },
 ]);
-
 
 const submitForm = () => {
     console.log('Formulaire soumis :', formData.value);
@@ -121,8 +140,8 @@ const submitForm = () => {
 }
 
 .planning .row {
-    margin-left: 300px;
-    margin-right: 50px;
+    margin-left: 265px;
+    margin-right: 38px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -131,11 +150,11 @@ const submitForm = () => {
 
 .planning .row .forms {
     background-color: white;
-    padding: 30px;
-    border-radius: 12px
+    padding: 20px;
+    border-radius: 12px;
 }
 
-.planning .row .col-8 .form-group {
+.planning .row .col-6 .form-group {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -143,19 +162,18 @@ const submitForm = () => {
     margin-top: 20px;
 }
 
-.planning .row .col-8 .form-group .form-control,
-.planning .row .col-8 .form-group .form-select {
-    width: 320px;
+.planning .row .col-6 .form-group .form-control,
+.planning .row .col-6 .form-group .form-select {
+    width: 280px;
 }
+
+
 
 /* Styles pour les boutons radio */
 .radio-group {
     display: flex;
-    /* Aligne les éléments horizontalement */
     gap: 20px;
-    /* Espace entre les éléments */
     margin-top: 10px;
-    /* Espace au-dessus du groupe de boutons */
 }
 
 .form-control,
@@ -172,24 +190,18 @@ select {
 
 input[type="time"] {
     appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
     background-color: transparent;
     color: #F7AE00;
 }
 
-input[type="radio"]:checked+label {
+input[type="radio"]:checked + label {
     color: #407CEE;
-    /* Couleur du texte lorsque sélectionné */
     font-weight: bold;
-    /* Met en gras le label sélectionné */
 }
 
 label:hover {
     cursor: pointer;
-    /* Change le curseur lors du survol */
     color: #407CEE;
-    /* Couleur au survol */
 }
 
 .btn-submit {
@@ -209,6 +221,18 @@ label:hover {
 
 .btn-submit:hover {
     background-color: #F7AE00;
-    color: white
+    color: white;
+}
+::v-deep .fc .fc-daygrid-day-number {
+  padding: 4px;
+  position: relative;
+  z-index: 4;
+  color: #000000;
+}
+::v-deep .fc .fc-daygrid-day-number:hover {
+  padding: 4px;
+  position: relative;
+  z-index: 4;
+  color: #407CEE;
 }
 </style>

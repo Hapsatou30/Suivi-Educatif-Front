@@ -4,80 +4,87 @@
     <div class="main-content planning">
         <h1>Planifier un Devoir ou un Examen</h1>
         <div class="row">
-      <div class="col-6">
-        <!-- Calendrier interactif -->
-        <div id="calendar" class="calendar-container">
-          <FullCalendar :options="calendarOptions" />
-        </div>
-      </div>
-      <div class="col-6 forms" style="background-color: white;">
-        <!-- Formulaire pour ajouter une évaluation -->
-        <form @submit.prevent="submitForm">
-          <div class="form-group">
-            <div class="mb-3">
-              <label for="nomEvaluation" class="form-label">Nom de l'Évaluation</label>
-              <input type="text" id="nomEvaluation" v-model="formData.nom" class="form-control" placeholder="Nom évaluation" required />
-            </div>
-            <div class="mb-3">
-              <label for="heure" class="form-label">Heure</label>
-              <input type="time" id="heure" v-model="formData.heure" class="form-control" required />
-            </div>
-          </div>
-            <div class="form-group">
-            <div class="mb-3">
-              <label for="classe" class="form-label">Classe</label>
-              <select id="classe" v-model="formData.classe_prof_id" class="form-select" required>
-                <option value="" disabled selected>Choisissez une classe</option>
-                <option v-for="classe in classes" :key="classe.classeProf_id" :value="classe.classeProf_id">{{ classe.nom_classe }}</option>
-              </select>
-            </div>
-            <div class="mb-3">
-              <label for="matiere" class="form-label">Matière</label>
-              <select id="matiere" v-model="formData.matiere_id" class="form-select" required>
-                <option value="" disabled selected>Choisissez une matière</option>
-                <option v-for="matiere in matieres" :key="matiere.id" :value="matiere.id">{{ matiere.nom }}</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="mb-3">
-              <label>Type d'Évaluation</label><br />
-              <div class="radio-group">
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" v-model="formData.type_evaluation" value="Devoir" required />
-                  <label class="form-check-label">Devoir</label>
+            <div class="col-6">
+                <!-- Calendrier interactif -->
+                <div id="calendar" class="calendar-container">
+                    <FullCalendar :options="calendarOptions" />
                 </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" v-model="formData.type_evaluation" value="Examen" required />
-                  <label class="form-check-label">Examen</label>
-                </div>
-              </div>
             </div>
-            <div class="mb-3">
-              <label for="duree" class="form-label">Durée (en minutes)</label>
-              <input type="number" id="duree" v-model="formData.duree" class="form-control" required />
-            </div>
-          </div>
+            <div class="col-6 forms" style="background-color: white;">
+                <!-- Formulaire pour ajouter une évaluation -->
+                <form @submit.prevent="submitForm">
+                    <div class="form-group">
+                        <div class="mb-3">
+                            <label for="nomEvaluation" class="form-label">Nom de l'Évaluation</label>
+                            <input type="text" id="nomEvaluation" v-model="formData.nom" class="form-control"
+                                placeholder="Nom évaluation" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="heure" class="form-label">Heure</label>
+                            <input type="time" id="heure" v-model="formData.heure" class="form-control" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="mb-3">
+                            <label for="classe" class="form-label">Classe</label>
+                            <select id="classe" v-model="formData.classe_prof_id" class="form-select" required>
+                                <option value="" disabled selected>Choisissez une classe</option>
+                                <option v-for="classe in classes" :key="classe.classeProf_id"
+                                    :value="classe.classeProf_id">{{ classe.nom_classe }}. '' .{{ classe.nom_matiere }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="date" class="form-label">Date</label>
+                            <input type="date" id="date" v-model="formData.date" class="form-control" required
+                                readonly />
+                        </div>
 
-          <div class="mt-4" style="display: flex; justify-content: end;">
-            <button type="submit" class="btn btn-submit">Enregistrer</button>
-          </div>
-        </form>
-      </div>
-    </div>
+                    </div>
+                    <div class="form-group">
+
+
+                        <div class="mb-3">
+                            <label for="duree" class="form-label">Durée (en minutes)</label>
+                            <input type="number" id="duree" v-model="formData.duree" class="form-control" required />
+                        </div>
+                        <div class="mb-3">
+                            <label>Type d'Évaluation</label><br />
+                            <div class="radio-group">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" v-model="formData.type_evaluation"
+                                        value="Devoir" required />
+                                    <label class="form-check-label">Devoir</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" v-model="formData.type_evaluation"
+                                        value="Examen" required />
+                                    <label class="form-check-label">Examen</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4" style="display: flex; justify-content: end;">
+                        <button type="submit" class="btn btn-submit">Enregistrer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
 
         <div class="mon_planning">
             <h2>Mon Planning</h2>
             <div class="tableau1">
                 <tabEvaluations v-if="paginatedData.length > 0" class="tab-planning1"
                     :headers="['Matière ', 'Date', 'Heure', 'Durée(mins)', 'Evaluation', 'Classe', 'Action']"
-                    :data="paginatedData.map(({ matiere, date, heure, duree,type_evaluation, classe, id }) => ({ matiere, date, heure, duree,type_evaluation, classe, id }))">
+                    :data="paginatedData.map(({ matiere, date, heure, duree, type_evaluation, classe, id }) => ({ matiere, date, heure, duree, type_evaluation, classe, id }))">
                     <template #actions="{ row }">
                         <div class="boutons">
-                            <button class="btn" @click="editPlanning(row.id)" style="color: #407CEE;" title="Modifier le cahier de texte">
+                            <button class="btn" @click="editPlanning(row.id)" style="color: #407CEE;"
+                                title="Modifier le cahier de texte">
                                 <Icon icon="mdi:pencil-outline" />
                             </button>
-                            <button class="btn" @click="deletePlanning(row.id)" style="color: red;" title="Supprimer le cahier de texte">
+                            <button class="btn" @click="deletePlanning(row.id)" style="color: red;"
+                                title="Supprimer le cahier de texte">
                                 <Icon icon="mdi:trash-can-outline" />
                             </button>
                         </div>
@@ -85,7 +92,8 @@
                 </tabEvaluations>
                 <p v-else class="no-evaluations-message">Aucune évaluation à venir.</p>
             </div>
-            <pagination class="pagination1"  v-if="tableData.length > pageSize" :totalItems="tableData.length" :pageSize="pageSize" :currentPage="currentPage" @pageChange="handlePageChange" />
+            <pagination class="pagination1" v-if="tableData.length > pageSize" :totalItems="tableData.length"
+                :pageSize="pageSize" :currentPage="currentPage" @pageChange="handlePageChange" />
         </div>
 
         <div class="mon_planning">
@@ -93,11 +101,13 @@
             <div class="tableau1">
                 <tabEvaluations v-if="paginatedOtherProf.length > 0" class="tab-planning1"
                     :headers="['Matière', 'Date', 'Heure', 'Durée (mins)', 'Classe', 'Professeur']"
-                    :data="paginatedOtherProf.map(({ matiere, date, heure, duree, classe, professeur, id}) => ({ matiere, date, heure, duree, classe, professeur, id }))">
+                    :data="paginatedOtherProf.map(({ matiere, date, heure, duree, classe, professeur, id }) => ({ matiere, date, heure, duree, classe, professeur, id }))">
                 </tabEvaluations>
                 <p v-else class="no-evaluations-message">Aucune évaluation trouvée.</p>
             </div>
-            <pagination  class="pagination1" v-if="otherProfEvaluations.length > pageSize" :totalItems="otherProfEvaluations.length" :pageSize="pageSize" :currentPage="currentPageOther" @pageChange="handlePageChangeOther" />
+            <pagination class="pagination1" v-if="otherProfEvaluations.length > pageSize"
+                :totalItems="otherProfEvaluations.length" :pageSize="pageSize" :currentPage="currentPageOther"
+                @pageChange="handlePageChangeOther" />
         </div>
 
         <div class="retour">
@@ -115,10 +125,10 @@ import pagination from '@/components/paginations.vue';
 import FullCalendar from '@fullcalendar/vue3';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import { getEvaluationsParProf, getEvaluations , supprimerEvaluation,} from '@/services/Evaluations';
+import { getEvaluationsParProf, getEvaluations, supprimerEvaluation, ajouterEvaluation } from '@/services/Evaluations';
 import { profile } from '@/services/AuthService';
 import { getListeClasseProf } from '@/services/ClasseProfs';
-import { getListeMatieres } from '@/services/MatiereService';
+// import { getListeMatieres } from '@/services/MatiereService';
 import { Icon } from '@iconify/vue';
 import Swal from 'sweetalert2';
 import dayjs from 'dayjs';
@@ -128,14 +138,23 @@ dayjs.locale('fr');
 
 
 const calendarOptions = ref({
-  plugins: [dayGridPlugin, interactionPlugin],
-  initialView: 'dayGridMonth',
-  locale: 'fr',
-  events: [],
-  dateClick(info) {
-    alert('Date cliquée: ' + info.dateStr);
-  }
+    plugins: [dayGridPlugin, interactionPlugin],
+    initialView: 'dayGridMonth',
+    locale: 'fr',
+    events: [],
+    dateClick(info) {
+        formData.value.date = info.dateStr;
+    },
+    eventClick(info) {
+        Swal.fire({
+            title: info.event.title,
+            text: `Type: ${info.event.extendedProps.type}\nClasse: ${info.event.extendedProps.classe}`,
+            icon: 'info'
+        });
+    }
 });
+
+
 const professeurId = ref('');
 const tableData = ref([]);
 const currentPage = ref(1);
@@ -144,74 +163,85 @@ const otherProfEvaluations = ref([]);
 const currentPageOther = ref(1);
 const classes = ref([]);
 
-const matieres = ref([]);
+
 
 // Données du formulaire
 const formData = ref({
-  nom: '',
-  heure: '',
-  classe_prof_id: '',
-  matiere_id: '',
-  duree: '',
-  type_evaluation: ''
+    nom: '',
+    heure: '',
+    classe_prof_id: '',
+    matiere_id: '',
+    duree: '',
+    type_evaluation: '',
+    date: ''
 });
 
 
 
 // Récupération de la liste des classes
 const fetchClasse = async () => {
-  try {
-    const response = await getListeClasseProf(professeurId.value);
-    if (response.status === 200) {
-      // Filtrer pour obtenir des classes uniques par nom_classe
-      const uniqueClasses = Array.from(new Set(response.classes.map(classe => classe.nom_classe)))
-        .map(nom_classe => {
-          return response.classes.find(classe => classe.nom_classe === nom_classe);
-        });
-      
-      classes.value = uniqueClasses; // Stocker les classes sans doublons
-    } else {
-      console.error('Erreur lors de la récupération des classes:', response.message);
+    try {
+        const response = await getListeClasseProf(professeurId.value);
+        if (response.status === 200) {
+
+            classes.value = response.classes; // Stocker les classes sans doublons
+        } else {
+            console.error('Erreur lors de la récupération des classes:', response.message);
+        }
+    } catch (error) {
+        console.error('Erreur lors de la récupération des classes:', error);
     }
-  } catch (error) {
-    console.error('Erreur lors de la récupération des classes:', error);
-  }
 };
 
-const fetchMatieres = async () => {
-  try {
-    const response = await getListeMatieres(professeurId.value);
-    if (response.status === 200) {
-      matieres.value = response.données; // Stocker les données dans matieres
-    } else {
-      console.error('Erreur lors de la récupération des matières:', response.message);
-    }
-  } catch (error) {
-    console.error('Erreur lors de la récupération des matières:', error);
-  }
-};
+// const fetchMatieres = async () => {
+//   try {
+//     const response = await getListeMatieres(professeurId.value);
+//     if (response.status === 200) {
+//       matieres.value = response.données; // Stocker les données dans matieres
+//     } else {
+//       console.error('Erreur lors de la récupération des matières:', response.message);
+//     }
+//   } catch (error) {
+//     console.error('Erreur lors de la récupération des matières:', error);
+//   }
+// };
 
 
 // Soumettre le formulaire
 const submitForm = async () => {
-  try {
-    await ajouterEvaluation(formData.value);
-    Swal.fire({
-      title: 'Succès!',
-      text: 'Évaluation ajoutée avec succès!',
-      icon: 'success',
-      timer: 3000,
-      timerProgressBar: true
-    });
-  } catch (error) {
-    Swal.fire({
-      title: 'Erreur!',
-      text: 'Une erreur est survenue lors de l\'ajout de l\'évaluation.',
-      icon: 'error'
-    });
-  }
+    try {
+        console.log("Données du formulaire avant l'ajout:", formData.value); // Ajoutez ceci
+        await ajouterEvaluation(formData.value);
+        Swal.fire({
+            title: 'Succès!',
+            text: 'Évaluation ajoutée avec succès!',
+            icon: 'success',
+            timer: 1000,
+            timerProgressBar: true
+        });
+        fetchData();
+        resetForm();
+    } catch (error) {
+        Swal.fire({
+            title: 'Erreur!',
+            text: 'Une erreur est survenue lors de l\'ajout de l\'évaluation.',
+            icon: 'error'
+        });
+    }
 };
 
+const resetForm = () => {
+    formData.value = {
+        nom: '',
+        heure: '',
+        classe_prof_id: '',
+        matiere_id: '',
+        duree: '',
+        type_evaluation: '',
+        date: '',
+        id: null
+    };
+};
 // Récupérer le profil du professeur connecté
 const fetchProfile = async () => {
     try {
@@ -234,11 +264,17 @@ const fetchData = async () => {
     try {
         const response = await getEvaluationsParProf(professeurId.value);
         if (response.status === 200) {
-            // Filtrer les évaluations pour ne garder que celles à venir
             const evaluationsFutures = response.evaluations.filter(evaluation => dayjs(evaluation.date).isAfter(dayjs()));
-
-            // Trier les évaluations par date (du plus proche au plus éloigné)
             evaluationsFutures.sort((a, b) => dayjs(a.date).diff(dayjs(b.date)));
+            calendarOptions.value.events = evaluationsFutures.map(evaluation => ({
+                title: `${evaluation.type_evaluation} - ${evaluation.matiere}`, // Changer le titre pour inclure la matière
+                start: evaluation.date + 'T' + evaluation.heure,
+                extendedProps: {
+                    type: evaluation.type_evaluation,
+                    classe: evaluation.classe,
+                    matiere: evaluation.matiere
+                }
+            }));
 
             tableData.value = evaluationsFutures;
         } else {
@@ -292,43 +328,43 @@ const handlePageChangeOther = (newPage) => {
 };
 
 const deletePlanning = async (id) => {
-  const confirmDelete = await Swal.fire({
-    title: 'Êtes-vous sûr ?',
-    text: "Cette action ne peut pas être annulée !",
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#d33',
-    cancelButtonColor: '#3085d6',
-    confirmButtonText: 'Oui, supprimer !'
-  });
-
-  if (confirmDelete.isConfirmed) {
-    try {
-      await supprimerEvaluation(id);
-      Swal.fire({
-        title: 'Supprimé !',
-        text: 'Evaluation a été supprimée avec succès.',
-        icon: 'success',
-        timer: 3000,
-        timerProgressBar: true,
-        willClose: () => {
-          fetchData();
-        }
-      });
-    } catch (error) {
-      console.error('Erreur lors de la suppression :', error);
-      const errorMessage = error.response?.data?.message || error.message || 'Une erreur inattendue s\'est produite.';
-      await Swal.fire({
-        icon: 'error',
-        title: 'Erreur',
-        text: errorMessage,
+    const confirmDelete = await Swal.fire({
+        title: 'Êtes-vous sûr ?',
+        text: "Cette action ne peut pas être annulée !",
+        icon: 'warning',
+        showCancelButton: true,
         confirmButtonColor: '#d33',
-        timer: 3000,
-        timerProgressBar: true,
-        showConfirmButton: false
-      });
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Oui, supprimer !'
+    });
+
+    if (confirmDelete.isConfirmed) {
+        try {
+            await supprimerEvaluation(id);
+            Swal.fire({
+                title: 'Supprimé !',
+                text: 'Evaluation a été supprimée avec succès.',
+                icon: 'success',
+                timer: 1000,
+                timerProgressBar: true,
+                willClose: () => {
+                    fetchData();
+                }
+            });
+        } catch (error) {
+            console.error('Erreur lors de la suppression :', error);
+            const errorMessage = error.response?.data?.message || error.message || 'Une erreur inattendue s\'est produite.';
+            await Swal.fire({
+                icon: 'error',
+                title: 'Erreur',
+                text: errorMessage,
+                confirmButtonColor: '#d33',
+                timer: 3000,
+                timerProgressBar: true,
+                showConfirmButton: false
+            });
+        }
     }
-  }
 };
 
 onMounted(async () => {
@@ -336,7 +372,7 @@ onMounted(async () => {
     await fetchData();
     await fetchDataOthers();
     await fetchClasse();
-    await fetchMatieres();
+    // await fetchMatieres();
 });
 </script>
 <style scoped>
@@ -453,13 +489,15 @@ label:hover {
     color: #407CEE;
 }
 
-.mon_planning{
+.mon_planning {
     margin-top: 70px;
 }
-.mon_planning h2{
+
+.mon_planning h2 {
     margin-bottom: 40px;
 }
-.mon_planning .tableau1{
+
+.mon_planning .tableau1 {
     margin-left: 265px;
     margin-right: 38px;
 }

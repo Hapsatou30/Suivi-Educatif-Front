@@ -118,6 +118,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import { getEvaluationsParProf, getEvaluations , supprimerEvaluation,} from '@/services/Evaluations';
 import { profile } from '@/services/AuthService';
 import { getListeClasseProf } from '@/services/ClasseProfs';
+import { getListeMatieres } from '@/services/MatiereService';
 import { Icon } from '@iconify/vue';
 import Swal from 'sweetalert2';
 import dayjs from 'dayjs';
@@ -142,6 +143,8 @@ const pageSize = ref(5);
 const otherProfEvaluations = ref([]);
 const currentPageOther = ref(1);
 const classes = ref([]);
+
+const matieres = ref([]);
 
 // Données du formulaire
 const formData = ref({
@@ -175,8 +178,19 @@ const fetchClasse = async () => {
   }
 };
 
+const fetchMatieres = async () => {
+  try {
+    const response = await getListeMatieres(professeurId.value);
+    if (response.status === 200) {
+      matieres.value = response.données; // Stocker les données dans matieres
+    } else {
+      console.error('Erreur lors de la récupération des matières:', response.message);
+    }
+  } catch (error) {
+    console.error('Erreur lors de la récupération des matières:', error);
+  }
+};
 
-const matieres = ref([{ id: 1, nom: 'Anglais' }, { id: 2, nom: 'Math' }]);
 
 // Soumettre le formulaire
 const submitForm = async () => {
@@ -322,6 +336,7 @@ onMounted(async () => {
     await fetchData();
     await fetchDataOthers();
     await fetchClasse();
+    await fetchMatieres();
 });
 </script>
 <style scoped>

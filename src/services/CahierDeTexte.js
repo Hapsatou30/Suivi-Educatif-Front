@@ -20,3 +20,59 @@ export const getCahierTexte = async (anneeClasseId) => {
         return 0; // Valeur par défaut en cas d'erreur
     }
 };
+
+export const ajouterCahierTexte = async (cahier_texte) => {
+    try {
+      const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
+      const response = await axios.post(`${apiUrl}/cahiers-texte`, cahier_texte, { 
+        headers: {
+          Authorization: `Bearer ${token}` // Utiliser le token dans l'en-tête pour l'authentification
+        }
+      });
+  
+      // Afficher la réponse pour le débogage
+      console.log('cahier_texte ajouté :', response.data);
+      return response.data; // Renvoie toute la réponse pour analyse
+    } catch (error) {
+      console.error('Erreur lors de l\'ajout de la cahier_texte :', error);
+      return null; // Valeur par défaut en cas d'erreur
+    }
+  };
+
+  export const modifierCahierTexte = async (cahierTexte) => {
+    try {
+        const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
+        // Assurez-vous que l'ID est correctement référencé ici
+        const response = await axios.put(`${apiUrl}/cahiers-texte/${cahierTexte.id}`, cahierTexte, {
+            headers: {
+                Authorization: `Bearer ${token}` // Utiliser le token dans l'en-tête pour l'authentification
+            }
+        });
+
+        console.log('Cahier de texte modifié :', response.data);
+        return response.data; // Renvoie les données de la réponse pour analyse
+    } catch (error) {
+        console.error('Erreur lors de la modification du cahier de texte :', error.response ? error.response.data : error.message);
+        return { error: error.response ? error.response.data.error : error.message }; // Renvoie l'erreur sous forme d'objet
+    }
+};
+
+  export const getCahierTexteById = async (id) => {
+    try {
+      const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
+      const response = await axios.get(`${apiUrl}/details-cahiers-texte/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}` // Utiliser le token dans l'en-tête pour l'authentification
+        }
+      });
+  
+      // Afficher les données reçues pour le débogage
+      console.log('Détails du annees-scolaires récupérés :', response.data); // Vérifie les données reçues de l'API
+  
+      return response.data; // Retourner les détails du annees-scolaires
+    } catch (error) {
+      console.error('Erreur lors de la récupération des détails du annees-scolaires :', error);
+      return null; // Valeur par défaut en cas d'erreur
+    }
+  };
+  

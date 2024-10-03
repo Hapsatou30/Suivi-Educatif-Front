@@ -85,7 +85,8 @@ const professorRoutes = [
   { path: '/gestion_cahier_texte' , name: 'gestion_cahier_texte', component: GestionCahierTexte},
 
   { path: '/cahier_texte_prof/:classeProf_id/:annee_classe_id/:nom_classe', name: 'cahier_texte_prof', component:CahierTexteProf},
-
+ 
+  
   
   
 ];

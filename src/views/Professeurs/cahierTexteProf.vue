@@ -2,9 +2,7 @@
   <sidebarProf />
   <topBarProf />
   <div class="main-content">
-    <h2>
-      Remplir le cahier de texte de la classe de : {{ nom_classe }}
-    </h2>
+    <h2>{{ isEditMode ? 'Modifier' : 'Remplir' }} le cahier de texte de la classe de : {{ nom_classe }}</h2>
     <div class="cahier-text container mt-4">
       <div class="image-container">
         <img :src="imageCahier" alt="" class="image-background" />
@@ -13,81 +11,102 @@
             <div class="row mb-3">
               <div class="col-md-6">
                 <label for="titre" class="form-label">Titre du Cours :</label>
-                <input type="text" class="form-control" v-model="titre" placeholder="Entrez votre titre" required />
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  v-model="formData.titre" 
+                  placeholder="Entrez votre titre" 
+                  required 
+                />
               </div>
-              <div class="col-md-6" >
+              <div class="col-md-6">
                 <label for="date" class="form-label">Date :</label>
-                <input type="date" class="form-control" v-model="date" required />
+                <input 
+                  type="date" 
+                  class="form-control" 
+                  v-model="formData.date" 
+                  required readonly
+                />
               </div>
             </div>
             <div class="row mb-3">
               <div class="col-md-6">
-                <label for="resume" class="form-label">Résume du cours:</label>
-                <textarea name="" class="form-control" v-model="resume" placeholder="Entrez votre résume" required style="height: 200px;"></textarea>
+                <label for="resume" class="form-label">Résumé du cours :</label>
+                <textarea 
+                  class="form-control" 
+                  v-model="formData.resume" 
+                  placeholder="Entrez votre résumé" 
+                  required 
+                  style="height: 200px;"
+                ></textarea>
               </div>
               <div class="col-md-6">
                 <label for="ressource" class="form-label">Ressource :</label>
-                <input type="text" class="form-control" v-model="ressource" placeholder="Entrez votre ressource" required />
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  v-model="formData.ressource" 
+                  placeholder="Entrez votre ressource" 
+                />
               </div>
             </div>
             <div class="bouton">
-              <button type="submit" class="btn btn-submit">Enregistrer</button>
+              <button type="submit" class="btn btn-submit">
+                {{ isEditMode ? 'Mettre à jour' : 'Enregistrer' }}
+              </button>
             </div>
           </form>
         </div>
       </div>
     </div>
+
+    <!-- Tableau des cahiers de texte -->
     <div class="cahiers">
-            <div class="tableau">
-                <tabEvaluations v-if="paginatedData.length > 0" class="tab-cahiers"
-                    :headers="['Matiere', 'Professeur','Date', 'Titre', 'Action']"
-                    :data="paginatedData.map(({
-                      matiere,
-                      professeur,
-                      date,
-                      titre,
-                      id
-                    })=>({
-                      matiere,
-                      professeur,
-                      date,
-                      titre,
-                      id
-                    })
-                    )
-                    
-                    ">
-                      <template #actions="{ row }">
-                        <div class="boutons">
-                          <button class="btn " @click="editMatiere(row.id)" style="color: #4862C4;" title="Modifier la matière">
-                            <Icon icon="mdi:pencil-outline" /> 
-                          </button>
-                          <button class="btn " @click="deleteMatiere(row.id)" style="color: red;" title="Supprimer la matière">
-                            <Icon icon="mdi:trash-can-outline" /> 
-                          </button>
-                        </div>
-                      </template>
-                </tabEvaluations>
-
-                <p v-else class="no-evaluations-message">pas de cahier de texte.</p>
+      <div class="tableau">
+        <tabEvaluations 
+          v-if="paginatedData.length > 0"
+          class="tab-cahiers" 
+          :headers="['Matière', 'Professeur', 'Date', 'Titre', 'Action']"
+          :data="paginatedData.map(({ matiere, professeur, date, titre, id }) => ({
+            matiere,
+            professeur,
+            date,
+            titre,
+            id
+          }))"
+        >
+          <template #actions="{ row }">
+            <div class="boutons">
+              <button class="btn" @click="editCahier(row.id)" style="color: #4862C4;" title="Modifier le cahier de texte">
+                <Icon icon="mdi:pencil-outline" /> 
+              </button>
+              <button class="btn" @click="deleteCahier(row.id)" style="color: red;" title="Supprimer le cahier de texte">
+                <Icon icon="mdi:trash-can-outline" /> 
+              </button>
             </div>
+          </template>
+        </tabEvaluations>
 
-            <!-- Pagination -->
-            <pagination 
-        class="pagination2"
-        v-if="tableData.length > pageSize"
-        :totalItems="tableData.length"
-        :pageSize="pageSize"
-        :currentPage="currentPage"
-        @pageChange="handlePageChange"
+        <p v-else class="no-evaluations-message">Pas de cahier de texte.</p>
+      </div>
+
+      <!-- Pagination -->
+      <pagination 
+        class="pagination2" 
+        v-if="tableData.length > pageSize" 
+        :totalItems="tableData.length" 
+        :pageSize="pageSize" 
+        :currentPage="currentPage" 
+        @pageChange="handlePageChange" 
       />
-        </div>
+    </div>
 
     <div class="retour">
       <button @click="retour" class="btn btn-secondary">Retour</button>
     </div>
   </div>
 </template>
+
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
@@ -95,24 +114,36 @@ import sidebarProf from '@/components/sidebarProf.vue';
 import topBarProf from '@/components/topBarProf.vue';
 import tabEvaluations from '@/components/tabEvaluations.vue';
 import pagination from '@/components/paginations.vue';
-import { getCahierTexte } from '@/services/CahierDeTexte';
+import { getCahierTexte, ajouterCahierTexte, modifierCahierTexte, getCahierTexteById } from '@/services/CahierDeTexte';
 import { Icon } from '@iconify/vue';
+import Swal from 'sweetalert2';
 
-// Initialisation des routeurs
 const router = useRouter();
 const route = useRoute();
-const imageCahier =ref('/public/images/image.png');
+const imageCahier = ref('/public/images/image.png');
 
-// Variables réactives
 const classeProf_id = route.params.classeProf_id;
 const annee_classe_id = route.params.annee_classe_id;
 const nom_classe = route.params.nom_classe;
+
 const tableData = ref([]);
 const currentPage = ref(1);
 const pageSize = ref(5);
 
-// Méthode pour récupérer les cahiers de texte
-const fetchCahierTexte = async () => {
+// Préremplissage de la date avec la date d'aujourd'hui
+const today = new Date().toISOString().split('T')[0]; // Formate la date au format YYYY-MM-DD
+const formData = ref({
+  titre: '',
+  date: today, // Date préremplie
+  resume: '',
+  ressource: '',
+  classe_prof_id: classeProf_id,
+  id: null
+});
+
+const isEditMode = ref(false);
+
+const fetchData = async () => {
   try {
     const response = await getCahierTexte(annee_classe_id);
     tableData.value = response.données.map(item => ({
@@ -120,10 +151,52 @@ const fetchCahierTexte = async () => {
       professeur: item.professeur,
       date: item.date,
       titre: item.titre,
-      resume: item.resume
+      resume: item.resume,
+      id: item.id // Ajouter l'ID ici pour la modification/suppression
     }));
   } catch (error) {
     console.error('Erreur lors du chargement des cahiers de texte :', error);
+  }
+}
+
+const handleFormSubmit = async () => {
+  try {
+    console.log('Données du formulaire :', formData.value); // Ajout pour le débogage
+    if (isEditMode.value) {
+      if (!formData.value.id) {
+        throw new Error('L\'ID du cahier de texte est manquant.');
+      }
+      await modifierCahierTexte(formData.value);
+      Swal.fire('Succès', 'Cahier de texte mis à jour avec succès !', 'success');
+    } else {
+      await ajouterCahierTexte(formData.value);
+      Swal.fire('Succès', 'Cahier de texte ajouté avec succès !', 'success');
+    }
+    resetForm();
+    await fetchData();
+  } catch (error) {
+    Swal.fire('Erreur', 'Erreur lors de la soumission du formulaire.', 'error');
+    console.error('Erreur lors de la soumission :', error);
+  }
+};
+
+
+const editCahier = async (id) => {
+  const cahier = await getCahierTexteById(id);
+  // Vérifiez que vous accédez correctement aux propriétés des données
+  formData.value = {
+    titre: cahier.données.titre,  // Vérifiez que c'est bien cahier.données
+    date: cahier.données.date,     // Vérifiez ici également
+    resume: cahier.données.resume,
+    ressource: cahier.données.ressource,
+    id: cahier.données.id
+  };
+  isEditMode.value = true;
+
+  // Si vous souhaitez préremplir la date avec la date d'aujourd'hui si aucune date n'est fournie
+  if (!formData.value.date) {
+    const today = new Date().toISOString().split('T')[0]; // Format YYYY-MM-DD
+    formData.value.date = today;
   }
 };
 
@@ -138,15 +211,24 @@ const paginatedData = computed(() => {
   return tableData.value.slice(start, end);
 });
 
-// Méthode pour retourner à la page précédente
-const retour = () => {
-    router.back();
+const resetForm = () => {
+  formData.value = {
+    titre: '',
+    date: today, // Réinitialiser avec la date d'aujourd'hui
+    resume: '',
+    ressource: '',
+    classe_prof_id: classeProf_id,
+    id: null
+  };
+  isEditMode.value = false;
 };
 
-// Récupérer les cahiers de texte lors du montage du composant
-onMounted(() => {
-  fetchCahierTexte();
-});
+const retour = () => {
+  router.back();
+};
+
+// Appel initial pour charger les données
+onMounted(fetchData);
 </script>
 
 

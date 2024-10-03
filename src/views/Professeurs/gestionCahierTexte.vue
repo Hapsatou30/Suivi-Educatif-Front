@@ -74,7 +74,7 @@
     }
   };
   
-  // Ajoutez cette fonction dans votre script setup
+  
   const fetchData = async () => {
     try {
       // Appel du service pour récupérer les classes du professeur

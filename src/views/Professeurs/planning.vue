@@ -29,14 +29,16 @@
                             <label for="classe" class="form-label">Classe</label>
                             <select id="classe" v-model="formData.classe" class="form-select" required>
                                 <option value="" disabled selected>Choisissez une classe</option>
-                                <option v-for="classe in classes" :key="classe.id" :value="classe.id">{{ classe.nom }}</option>
+                                <option v-for="classe in classes" :key="classe.id" :value="classe.id">{{ classe.nom }}
+                                </option>
                             </select>
                         </div>
                         <div class="mb-3">
                             <label for="matiere" class="form-label">Matiere</label>
                             <select id="matiere" v-model="formData.matiere" class="form-select" required>
                                 <option value="" disabled selected>Choisissez une matiere</option>
-                                <option v-for="matiere in matieres" :key="matiere.id" :value="matiere.id">{{ matiere.nom }}</option>
+                                <option v-for="matiere in matieres" :key="matiere.id" :value="matiere.id">{{ matiere.nom
+                                    }}</option>
                             </select>
                         </div>
                     </div>
@@ -45,11 +47,13 @@
                             <label>Type d'Évaluation</label><br>
                             <div class="radio-group">
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                                        id="inlineRadio1" value="option1">
                                     <label class="form-check-label" for="inlineRadio1">Devoir</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                                        id="inlineRadio2" value="option2">
                                     <label class="form-check-label" for="inlineRadio2">Examen</label>
                                 </div>
                             </div>
@@ -66,41 +70,85 @@
                 </form>
             </div>
         </div>
+        <div class="mon_planning">
+            <h2>Mon Planning</h2>
+            <div class="tableau1">
+                <tabEvaluations v-if="paginatedData.length > 0" class="tab-planning1"
+                    :headers="['Matière ', 'Date', 'Heure', 'Durée(mins)', 'Evaluation', 'Classe', 'Action']"
+                    :data="paginatedData.map(({ matiere, date, heure, duree,type_evaluation, classe, id }) => ({ matiere, date, heure, duree,type_evaluation, classe, id }))">
+                    <template #actions="{ row }">
+                        <div class="boutons">
+                            <button class="btn" @click="editPlanning(row.id)" style="color: #407CEE;" title="Modifier le cahier de texte">
+                                <Icon icon="mdi:pencil-outline" />
+                            </button>
+                            <button class="btn" @click="deletePlanning(row.id)" style="color: red;" title="Supprimer le cahier de texte">
+                                <Icon icon="mdi:trash-can-outline" />
+                            </button>
+                        </div>
+                    </template>
+                </tabEvaluations>
+                <p v-else class="no-evaluations-message">Aucune évaluation à venir.</p>
+            </div>
+            <pagination class="pagination1"  v-if="tableData.length > pageSize" :totalItems="tableData.length" :pageSize="pageSize" :currentPage="currentPage" @pageChange="handlePageChange" />
+        </div>
+
+        <div class="mon_planning">
+            <h2>Planning des autres professeurs</h2>
+            <div class="tableau1">
+                <tabEvaluations v-if="paginatedOtherProf.length > 0" class="tab-planning1"
+                    :headers="['Matière', 'Date', 'Heure', 'Durée (mins)', 'Classe', 'Professeur']"
+                    :data="paginatedOtherProf.map(({ matiere, date, heure, duree, classe, professeur, id}) => ({ matiere, date, heure, duree, classe, professeur, id }))">
+                </tabEvaluations>
+                <p v-else class="no-evaluations-message">Aucune évaluation trouvée.</p>
+            </div>
+            <pagination  class="pagination1" v-if="otherProfEvaluations.length > pageSize" :totalItems="otherProfEvaluations.length" :pageSize="pageSize" :currentPage="currentPageOther" @pageChange="handlePageChangeOther" />
+        </div>
+
+        <div class="retour">
+            <button @click="retour" class="btn btn-secondary">Retour</button>
+        </div>
     </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import sidebarProf from '@/components/sidebarProf.vue';
 import topBarProf from '@/components/topBarProf.vue';
+import tabEvaluations from '@/components/tabEvaluations.vue';
+import pagination from '@/components/paginations.vue';
 import FullCalendar from '@fullcalendar/vue3';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import { getEvaluationsParProf, getEvaluations } from '@/services/Evaluations';
+import { profile } from '@/services/AuthService';
+import { Icon } from '@iconify/vue';
 import dayjs from 'dayjs';
 import 'dayjs/locale/fr';
 
-// Configurer dayjs pour utiliser le français
 dayjs.locale('fr');
 
 const calendarOptions = ref({
     plugins: [dayGridPlugin, interactionPlugin],
     initialView: 'dayGridMonth',
     locale: 'fr',
-    events: [
-        { title: 'Devoir de Maths', date: '2024-10-05' },
-        { title: 'Examen d\'Anglais', date: '2024-10-12' },
-    ],
-    // Masquer les weekends
+    events: [],
     dayRender(info) {
         const dayOfWeek = info.date.getDay();
-        if (dayOfWeek === 0 || dayOfWeek === 6) { // Dimanche ou Samedi
-            info.el.style.display = 'none'; // Masquer le jour
+        if (dayOfWeek === 0 || dayOfWeek === 6) {
+            info.el.style.display = 'none';
         }
     },
     dateClick(info) {
         alert('Date cliquée: ' + info.dateStr);
     }
 });
+
+const professeurId = ref('');
+const tableData = ref([]);
+const currentPage = ref(1);
+const pageSize = ref(5);
+const otherProfEvaluations = ref([]);
+const currentPageOther = ref(1);
 
 // Données du formulaire
 const formData = ref({
@@ -111,25 +159,106 @@ const formData = ref({
     duree: ''
 });
 
-// Liste des classes (à récupérer via une API ou une méthode)
-const classes = ref([
-    { id: 1, nom: 'Classe 1' },
-    { id: 2, nom: 'Classe 2' },
-]);
+// Listes des classes et matières
+const classes = ref([{ id: 1, nom: 'Classe 1' }, { id: 2, nom: 'Classe 2' }]);
+const matieres = ref([{ id: 1, nom: 'Anglais' }, { id: 2, nom: 'Math' }]);
 
-const matieres = ref([
-    { id: 1, nom: 'Anglais' },
-    { id: 2, nom: 'Math' },
-]);
-
+// Soumettre le formulaire
 const submitForm = () => {
     console.log('Formulaire soumis :', formData.value);
-    // Logique pour traiter le formulaire
 };
 
-</script>
+// Récupérer le profil du professeur connecté
+const fetchProfile = async () => {
+    try {
+        const response = await profile();
+        const user = response.user;
+        if (user && user.professeur) {
+            professeurId.value = user.professeur.id;
+        }
+    } catch (error) {
+        console.error('Erreur lors de la récupération du profil:', error);
+    }
+};
 
+const retour = () => {
+    router.go(-1);
+};
+
+// Récupérer les évaluations du professeur
+const fetchData = async () => {
+    try {
+        const response = await getEvaluationsParProf(professeurId.value);
+        if (response.status === 200) {
+            // Filtrer les évaluations pour ne garder que celles à venir
+            const evaluationsFutures = response.evaluations.filter(evaluation => dayjs(evaluation.date).isAfter(dayjs()));
+
+            // Trier les évaluations par date (du plus proche au plus éloigné)
+            evaluationsFutures.sort((a, b) => dayjs(a.date).diff(dayjs(b.date)));
+
+            tableData.value = evaluationsFutures;
+        } else {
+            console.error('Erreur lors de la récupération des évaluations:', response.message);
+        }
+    } catch (error) {
+        console.error('Erreur lors de la récupération des évaluations:', error);
+    }
+};
+
+const fetchDataOthers = async () => {
+    try {
+        const response = await getEvaluations();
+        const profIdConnecte = professeurId.value; // ID du professeur connecté
+
+        if (response.status === 200) {
+            // Filtrer les évaluations pour exclure celles du prof connecté et garder seulement celles à venir
+            const evaluationsFutures = response.données
+                .filter(evaluation => evaluation.profId !== profIdConnecte && dayjs(evaluation.date).isAfter(dayjs()));
+
+            // Trier les évaluations par date (du plus proche au plus éloigné)
+            evaluationsFutures.sort((a, b) => dayjs(a.date).diff(dayjs(b.date)));
+
+            otherProfEvaluations.value = evaluationsFutures;
+        } else {
+            console.error('Erreur lors de la récupération des évaluations:', response.message);
+        }
+    } catch (error) {
+        console.error('Erreur lors de la récupération des évaluations:', error);
+    }
+};
+
+// Pagination pour les évaluations à venir
+const paginatedData = computed(() => {
+    const start = (currentPage.value - 1) * pageSize.value;
+    return tableData.value.slice(start, start + pageSize.value);
+});
+
+const handlePageChange = (newPage) => {
+    currentPage.value = newPage;
+};
+
+// Pagination pour les évaluations des autres professeurs
+const paginatedOtherProf = computed(() => {
+    const start = (currentPageOther.value - 1) * pageSize.value;
+    return otherProfEvaluations.value.slice(start, start + pageSize.value);
+});
+
+const handlePageChangeOther = (newPage) => {
+    currentPageOther.value = newPage;
+};
+
+onMounted(async () => {
+    await fetchProfile();
+    await fetchData();
+    await fetchDataOthers();
+});
+</script>
 <style scoped>
+::v-deep .mon_planning .tableau1 .tab-planning1 td:nth-child(7) {
+    display: none;
+    /* Masquer la colonne de l'ID */
+}
+
 .main-content {
     padding: 20px;
 }
@@ -194,7 +323,7 @@ input[type="time"] {
     color: #F7AE00;
 }
 
-input[type="radio"]:checked + label {
+input[type="radio"]:checked+label {
     color: #407CEE;
     font-weight: bold;
 }
@@ -223,16 +352,29 @@ label:hover {
     background-color: #F7AE00;
     color: white;
 }
+
 ::v-deep .fc .fc-daygrid-day-number {
-  padding: 4px;
-  position: relative;
-  z-index: 4;
-  color: #000000;
+    padding: 4px;
+    position: relative;
+    z-index: 4;
+    color: #000000;
 }
+
 ::v-deep .fc .fc-daygrid-day-number:hover {
-  padding: 4px;
-  position: relative;
-  z-index: 4;
-  color: #407CEE;
+    padding: 4px;
+    position: relative;
+    z-index: 4;
+    color: #407CEE;
+}
+
+.mon_planning{
+    margin-top: 70px;
+}
+.mon_planning h2{
+    margin-bottom: 40px;
+}
+.mon_planning .tableau1{
+    margin-left: 265px;
+    margin-right: 38px;
 }
 </style>

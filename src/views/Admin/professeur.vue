@@ -58,7 +58,7 @@
         >
           <template #actions="{ row }">
             <div class="boutons">
-              <button class="btn " @click="editProfesseur(row.id)" style="color: #4862C4;" title="Modifier les informations du professeur">
+              <button class="btn " @click="editProfesseur(row.id)" style="color: #407CEE;" title="Modifier les informations du professeur">
                 <Icon icon="mdi:pencil-outline" /> 
               </button>
               <button class="btn " @click="deleteProfesseur(row.id)" style="color: red;" title="Supprimer le professeur">
@@ -364,6 +364,9 @@ p {
   color: red;
   font-family: "Poppins", sans-serif;
 }
-
+label:hover {
+      cursor: pointer; /* Change le curseur lors du survol */
+      color: #407CEE; /* Couleur au survol */
+  }
 </style>
 

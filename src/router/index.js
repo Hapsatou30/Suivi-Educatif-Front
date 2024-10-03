@@ -36,6 +36,7 @@ import Matrice from '@/components/matrice.vue';
 import EmploisDuTempsProf from '@/views/Professeurs/emploisTempsProf.vue';
 import GestionCahierTexte from '@/views/Professeurs/gestionCahierTexte.vue';
 import CahierTexteProf from '@/views/Professeurs/cahierTexteProf.vue';
+import Planning from '@/views/Professeurs/planning.vue';
 
 
 // Routes non protégées (accessible à tous)
@@ -85,8 +86,7 @@ const professorRoutes = [
   { path: '/gestion_cahier_texte' , name: 'gestion_cahier_texte', component: GestionCahierTexte},
 
   { path: '/cahier_texte_prof/:classeProf_id/:annee_classe_id/:nom_classe', name: 'cahier_texte_prof', component:CahierTexteProf},
- 
-  
+  { path: '/planning', name: 'planning', component:Planning},
   
   
 ];

@@ -73,7 +73,7 @@
         >
           <template #actions="{ row }">
             <div class="boutons">
-              <button class="btn " @click="editMatiere(row.id)" style="color: #4862C4;" title="Modifier la matière">
+              <button class="btn " @click="editMatiere(row.id)" style="color: #407CEE;" title="Modifier la matière">
                 <Icon icon="mdi:pencil-outline" /> 
               </button>
               <button class="btn " @click="deleteMatiere(row.id)" style="color: red;" title="Supprimer la matière">
@@ -285,6 +285,10 @@ label {
     margin-bottom: 5px;
     font-weight: bold;
 }
+label:hover {
+      cursor: pointer; /* Change le curseur lors du survol */
+      color: #407CEE; /* Couleur au survol */
+  }
 input[type="text"],
 input[type="number"],
 select {

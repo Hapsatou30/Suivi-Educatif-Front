@@ -23,7 +23,7 @@
           >
             <template #actions="{ row }">
               <div class="boutons">
-                <button class="btn " @click="redirectToSubeject(row.id)"style="color: #4862C4; font-size: 40px;" title="Voir les notes par matières">
+                <button class="btn " @click="redirectToSubeject(row.id)"style="color: #407CEE; font-size: 40px;" title="Voir les notes par matières">
                   <Icon icon="marketeq:eye"/> 
                 </button>
               </div>

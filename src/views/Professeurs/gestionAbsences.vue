@@ -2,7 +2,7 @@
   <sidebarProf />
   <topBarProf />
   <div class="main-content">
-    <h2>Mes Classes </h2>
+    <h1 style="text-align: center; margin-left: 300px; margin-bottom: 50px;">Mes Classes </h1>
 
     <div class="classes">
       <div class="tableau1">

@@ -119,9 +119,10 @@ import pagination from '@/components/paginations.vue';
 import FullCalendar from '@fullcalendar/vue3';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import { getEvaluationsParProf, getEvaluations } from '@/services/Evaluations';
+import { getEvaluationsParProf, getEvaluations , supprimerEvaluation} from '@/services/Evaluations';
 import { profile } from '@/services/AuthService';
 import { Icon } from '@iconify/vue';
+import Swal from 'sweetalert2';
 import dayjs from 'dayjs';
 import 'dayjs/locale/fr';
 
@@ -245,6 +246,46 @@ const paginatedOtherProf = computed(() => {
 
 const handlePageChangeOther = (newPage) => {
     currentPageOther.value = newPage;
+};
+
+const deletePlanning = async (id) => {
+  const confirmDelete = await Swal.fire({
+    title: 'Êtes-vous sûr ?',
+    text: "Cette action ne peut pas être annulée !",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Oui, supprimer !'
+  });
+
+  if (confirmDelete.isConfirmed) {
+    try {
+      await supprimerEvaluation(id);
+      Swal.fire({
+        title: 'Supprimé !',
+        text: 'Evaluation a été supprimée avec succès.',
+        icon: 'success',
+        timer: 3000,
+        timerProgressBar: true,
+        willClose: () => {
+          fetchData();
+        }
+      });
+    } catch (error) {
+      console.error('Erreur lors de la suppression :', error);
+      const errorMessage = error.response?.data?.message || error.message || 'Une erreur inattendue s\'est produite.';
+      await Swal.fire({
+        icon: 'error',
+        title: 'Erreur',
+        text: errorMessage,
+        confirmButtonColor: '#d33',
+        timer: 3000,
+        timerProgressBar: true,
+        showConfirmButton: false
+      });
+    }
+  }
 };
 
 onMounted(async () => {

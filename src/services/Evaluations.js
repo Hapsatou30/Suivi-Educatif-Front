@@ -68,3 +68,20 @@ export const getEvaluationsJour = async () => {
       return 0; // Valeur par défaut en cas d'erreur
     }
   };
+
+  export const supprimerEvaluation = async (id) => {
+    try {
+      const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
+      const response = await axios.delete(`${apiUrl}/evaluations/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}` // Utiliser le token dans l'en-tête pour l'authentification
+        }
+      });
+  
+      console.log('Evaluation supprimée :', response.data);
+      return response.data; // Renvoie les données de réponse
+    } catch (error) {
+      console.error('Erreur lors de la suppression de l\'évaluation :', error);
+      return null; // Valeur par défaut en cas d'erreur
+    }
+  };

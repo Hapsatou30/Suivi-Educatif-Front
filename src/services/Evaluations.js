@@ -85,3 +85,21 @@ export const getEvaluationsJour = async () => {
       return null; // Valeur par défaut en cas d'erreur
     }
   };
+
+  export const ajouterEvaluation = async (evaluation) => {
+    try {
+      const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
+      const response = await axios.post(`${apiUrl}/evaluations`, evaluation, { 
+        headers: {
+          Authorization: `Bearer ${token}` // Utiliser le token dans l'en-tête pour l'authentification
+        }
+      });
+  
+      // Afficher la réponse pour le débogage
+      console.log('evaluation ajouté :', response.data);
+      return response.data; // Renvoie toute la réponse pour analyse
+    } catch (error) {
+      console.error('Erreur lors de l\'ajout de l\'evaluations :', error);
+      return null; // Valeur par défaut en cas d'erreur
+    }
+  };

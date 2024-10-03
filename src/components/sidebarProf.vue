@@ -25,7 +25,7 @@
           </router-link>
         </li>
         <li>
-          <router-link to="/texte" class="menu-link">
+          <router-link to="/gestion_cahier_texte" class="menu-link">
             <Icon icon="carbon:book" /> Cahiers de textes
           </router-link>
         </li>

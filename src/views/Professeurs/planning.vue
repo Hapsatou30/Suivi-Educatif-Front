@@ -236,11 +236,14 @@ const submitForm = async () => {
     } catch (error) {
         Swal.fire({
             title: 'Erreur!',
-            text: 'Une erreur est survenue lors de l\'enregistrement de l\'évaluation.',
-            icon: 'error'
+            text: error.message || 'Une erreur est survenue lors de l\'enregistrement de l\'évaluation.',
+            icon: 'error',
+            timer: 3000,
+            timerProgressBar: true
         });
     }
 };
+
 
 
 const resetForm = () => {

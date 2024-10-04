@@ -88,44 +88,47 @@ export const getEvaluationsJour = async () => {
 
   export const ajouterEvaluation = async (evaluation) => {
     try {
-      const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
-      const response = await axios.post(`${apiUrl}/evaluations`, evaluation, { 
-        headers: {
-          Authorization: `Bearer ${token}` // Utiliser le token dans l'en-tête pour l'authentification
+        const token = localStorage.getItem('token'); 
+        const response = await axios.post(`${apiUrl}/evaluations`, evaluation, { 
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        
+        // Si le statut de la réponse est 400, lancer une erreur personnalisée
+        if (response.data.status && response.data.status === 400) {
+            throw new Error(response.data.message); // Forcer l'erreur
         }
-      });
-  
-      // Afficher la réponse pour le débogage
-      console.log('evaluation ajouté :', response.data);
-      return response.data; // Renvoie toute la réponse pour analyse
-    } catch (error) {
-      console.error('Erreur lors de l\'ajout de l\'evaluations :', error);
-      return null; // Valeur par défaut en cas d'erreur
-    }
-  };
 
-  export const modifierEvaluation  = async (evaluation) => {
-    try {
+        console.log('Évaluation ajoutée :', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Erreur lors de l\'ajout de l\'évaluation :', error.message);
+        throw error; // Relancer l'erreur pour que SweetAlert puisse l'attraper
+    }
+};
+
+export const modifierEvaluation = async (evaluation) => {
+  try {
       const token = localStorage.getItem('token');
       console.log('Envoi des données au serveur :', evaluation); 
       
       const response = await axios.put(`${apiUrl}/evaluations/${evaluation.id}`, evaluation, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+          headers: {
+              Authorization: `Bearer ${token}`
+          }
       });
       
-      console.log('evaluation modifié :', response.data);
-      return response.data;
-    } catch (error) {
-      console.error('Erreur lors de la modification du evaluation :', error.response ? error.response.data : error.message);
-  
-      if (error.response && error.response.data.errors) {
-        // Afficher les erreurs spécifiques de validation
-        console.error('Détails des erreurs:', error.response.data.errors);
+      // Si le statut de la réponse est 400, lancer une erreur personnalisée
+      if (response.data.status && response.data.status === 400) {
+          throw new Error(response.data.message); // Forcer l'erreur
       }
-      
-      return null;
-    }
-  };
-  
+
+      console.log('Évaluation modifiée :', response.data);
+      return response.data;
+  } catch (error) {
+      console.error('Erreur lors de la modification de l\'évaluation :', error.message);
+      throw error; // Relancer l'erreur pour que SweetAlert puisse l'attraper
+  }
+};
+

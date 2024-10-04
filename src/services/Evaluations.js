@@ -103,3 +103,29 @@ export const getEvaluationsJour = async () => {
       return null; // Valeur par défaut en cas d'erreur
     }
   };
+
+  export const modifierEvaluation  = async (evaluation) => {
+    try {
+      const token = localStorage.getItem('token');
+      console.log('Envoi des données au serveur :', evaluation); 
+      
+      const response = await axios.put(`${apiUrl}/evaluations/${evaluation.id}`, evaluation, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      
+      console.log('evaluation modifié :', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Erreur lors de la modification du evaluation :', error.response ? error.response.data : error.message);
+  
+      if (error.response && error.response.data.errors) {
+        // Afficher les erreurs spécifiques de validation
+        console.error('Détails des erreurs:', error.response.data.errors);
+      }
+      
+      return null;
+    }
+  };
+  

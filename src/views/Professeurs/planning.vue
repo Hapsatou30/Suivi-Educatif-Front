@@ -3,71 +3,64 @@
     <topBarProf />
     <div class="main-content planning">
         <h1>Planifier un Devoir ou un Examen</h1>
+        
+        <!-- Formulaire pour ajouter une évaluation -->
+        <form @submit.prevent="submitForm" class="forms" style="background-color: white;">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="nomEvaluation" class="form-label">Nom de l'Évaluation</label>
+                    <input type="text" id="nomEvaluation" v-model="formData.nom" class="form-control"
+                        placeholder="Nom évaluation" required />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="heure" class="form-label">Heure</label>
+                    <input type="time" id="heure" v-model="formData.heure" class="form-control" required />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="classe" class="form-label">Classe</label>
+                    <select id="classe" v-model="formData.classe_prof_id" class="form-select" required>
+                        <option value="" disabled selected>Choisissez une classe</option>
+                        <option v-for="classe in classes" :key="classe.classeProf_id"
+                            :value="classe.classeProf_id">{{ classe.nom_classe }} ->  {{ classe.nom_matiere }}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="date" class="form-label">Date</label>
+                    <input type="date" id="date" v-model="formData.date" class="form-control" required readonly />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="duree" class="form-label">Durée (en minutes)</label>
+                    <input type="number" id="duree" v-model="formData.duree" class="form-control" required />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label>Type d'Évaluation</label><br />
+                    <div class="radio-group">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" v-model="formData.type_evaluation"
+                                value="Devoir" required />
+                            <label class="form-check-label">Devoir</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" v-model="formData.type_evaluation"
+                                value="Examen" required />
+                            <label class="form-check-label">Examen</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4" style="display: flex; justify-content: end;">
+                <button type="submit" class="btn btn-submit">Enregistrer</button>
+            </div>
+        </form>
+
         <div class="row">
-            <div class="col-6">
+            <div class="col-12">
                 <!-- Calendrier interactif -->
                 <div id="calendar" class="calendar-container">
                     <FullCalendar :options="calendarOptions" />
                 </div>
-            </div>
-            <div class="col-6 forms" style="background-color: white;">
-                <!-- Formulaire pour ajouter une évaluation -->
-                <form @submit.prevent="submitForm">
-                    <div class="form-group">
-                        <div class="mb-3">
-                            <label for="nomEvaluation" class="form-label">Nom de l'Évaluation</label>
-                            <input type="text" id="nomEvaluation" v-model="formData.nom" class="form-control"
-                                placeholder="Nom évaluation" required />
-                        </div>
-                        <div class="mb-3">
-                            <label for="heure" class="form-label">Heure</label>
-                            <input type="time" id="heure" v-model="formData.heure" class="form-control" required />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="mb-3">
-                            <label for="classe" class="form-label">Classe</label>
-                            <select id="classe" v-model="formData.classe_prof_id" class="form-select" required>
-                                <option value="" disabled selected>Choisissez une classe</option>
-                                <option v-for="classe in classes" :key="classe.classeProf_id"
-                                    :value="classe.classeProf_id">{{ classe.nom_classe }}. '' .{{ classe.nom_matiere }}
-                                </option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="date" class="form-label">Date</label>
-                            <input type="date" id="date" v-model="formData.date" class="form-control" required
-                                readonly />
-                        </div>
-
-                    </div>
-                    <div class="form-group">
-
-
-                        <div class="mb-3">
-                            <label for="duree" class="form-label">Durée (en minutes)</label>
-                            <input type="number" id="duree" v-model="formData.duree" class="form-control" required />
-                        </div>
-                        <div class="mb-3">
-                            <label>Type d'Évaluation</label><br />
-                            <div class="radio-group">
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" v-model="formData.type_evaluation"
-                                        value="Devoir" required />
-                                    <label class="form-check-label">Devoir</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" v-model="formData.type_evaluation"
-                                        value="Examen" required />
-                                    <label class="form-check-label">Examen</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mt-4" style="display: flex; justify-content: end;">
-                        <button type="submit" class="btn btn-submit">Enregistrer</button>
-                    </div>
-                </form>
             </div>
         </div>
 
@@ -125,7 +118,7 @@ import pagination from '@/components/paginations.vue';
 import FullCalendar from '@fullcalendar/vue3';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import { getEvaluationsParProf, getEvaluations, supprimerEvaluation, ajouterEvaluation } from '@/services/Evaluations';
+import { getEvaluationsParProf, getEvaluations, supprimerEvaluation, ajouterEvaluation , modifierEvaluation} from '@/services/Evaluations';
 import { profile } from '@/services/AuthService';
 import { getListeClasseProf } from '@/services/ClasseProfs';
 // import { getListeMatieres } from '@/services/MatiereService';
@@ -170,7 +163,6 @@ const formData = ref({
     nom: '',
     heure: '',
     classe_prof_id: '',
-    matiere_id: '',
     duree: '',
     type_evaluation: '',
     date: ''
@@ -193,49 +185,69 @@ const fetchClasse = async () => {
     }
 };
 
-// const fetchMatieres = async () => {
-//   try {
-//     const response = await getListeMatieres(professeurId.value);
-//     if (response.status === 200) {
-//       matieres.value = response.données; // Stocker les données dans matieres
-//     } else {
-//       console.error('Erreur lors de la récupération des matières:', response.message);
-//     }
-//   } catch (error) {
-//     console.error('Erreur lors de la récupération des matières:', error);
-//   }
-// };
 
 
-// Soumettre le formulaire
+
+const editPlanning = async (id) => {
+    try {
+        const evaluation = tableData.value.find((evaluation) => evaluation.id === id);
+        if (evaluation) {
+            // Remplir les champs du formulaire avec les données de l'évaluation à modifier
+            formData.value = {
+                nom: evaluation.nom,
+                heure: evaluation.heure,
+                classe_prof_id: evaluation.classe_prof_id,
+                duree: evaluation.duree,
+                type_evaluation: evaluation.type_evaluation,
+                date: evaluation.date,
+                id: evaluation.id // Ajouter l'id pour le suivi de la modification
+            };
+        }
+    } catch (error) {
+        console.error('Erreur lors de la récupération de l\'évaluation à modifier:', error);
+    }
+};
+
 const submitForm = async () => {
     try {
-        console.log("Données du formulaire avant l'ajout:", formData.value); // Ajoutez ceci
-        await ajouterEvaluation(formData.value);
-        Swal.fire({
-            title: 'Succès!',
-            text: 'Évaluation ajoutée avec succès!',
-            icon: 'success',
-            timer: 1000,
-            timerProgressBar: true
-        });
+        if (formData.value.id) {
+            // Modifier l'évaluation si un ID est présent dans formData
+            await modifierEvaluation(formData.value);
+            Swal.fire({
+                title: 'Succès!',
+                text: 'Évaluation modifiée avec succès!',
+                icon: 'success',
+                timer: 1000,
+                timerProgressBar: true
+            });
+        } else {
+            // Ajouter une nouvelle évaluation si pas d'ID
+            await ajouterEvaluation(formData.value);
+            Swal.fire({
+                title: 'Succès!',
+                text: 'Évaluation ajoutée avec succès!',
+                icon: 'success',
+                timer: 1000,
+                timerProgressBar: true
+            });
+        }
         fetchData();
         resetForm();
     } catch (error) {
         Swal.fire({
             title: 'Erreur!',
-            text: 'Une erreur est survenue lors de l\'ajout de l\'évaluation.',
+            text: 'Une erreur est survenue lors de l\'enregistrement de l\'évaluation.',
             icon: 'error'
         });
     }
 };
+
 
 const resetForm = () => {
     formData.value = {
         nom: '',
         heure: '',
         classe_prof_id: '',
-        matiere_id: '',
         duree: '',
         type_evaluation: '',
         date: '',
@@ -375,12 +387,15 @@ onMounted(async () => {
     // await fetchMatieres();
 });
 </script>
+
 <style scoped>
 ::v-deep .mon_planning .tableau1 .tab-planning1 td:nth-child(7) {
     display: none;
     /* Masquer la colonne de l'ID */
 }
-
+.calendar-container {
+    width: 100%; 
+}
 .main-content {
     padding: 20px;
 }

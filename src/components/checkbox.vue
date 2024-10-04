@@ -92,8 +92,8 @@ input[type="checkbox"] {
 }
 
 input[type="checkbox"]:checked {
-    background-color: #4862C4; 
-    border-color: #4862C4;    
+    background-color: #407CEE; 
+    border-color: #407CEE;    
 }
 
 input[type="checkbox"]:checked::after {

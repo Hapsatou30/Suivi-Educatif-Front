@@ -112,7 +112,7 @@
                     }))">
                     <template #actions="{ row }">
                         <div class="boutons">
-                            <button class="btn " @click="editStudent(row.id)" style="color: #4862C4;"
+                            <button class="btn " @click="editStudent(row.id)" style="color: #407CEE;"
                                 title=" Modifier les informations d'un eleve">
                                 <Icon icon="mdi:pencil-outline" />
                             </button>
@@ -121,7 +121,7 @@
                                 <Icon icon="mdi:trash-can-outline" />
                             </button>
                             <button class="btn" @click="attribuerClasse(row)" :disabled="estDejaDansClasse(row)"
-                                style="color: #4862C4; font-size: 40px;" title="Ajouter dans une classe">
+                                style="color: #407CEE; font-size: 40px;" title="Ajouter dans une classe">
                                 <Icon icon="material-symbols:school" />
                             </button>
                         </div>
@@ -153,7 +153,7 @@
                     </div>
 
                     <div class="form-group" style="margin-top: 20px;  display: flex; justify-content: end">
-                        <button type="submit"                             style="background-color: #4862C4; color: white; padding: 10px 20px; border: none; border-radius: 12px; cursor: pointer; width: 200px; font-size: 20px;"
+                        <button type="submit"                             style="background-color: #407CEE; color: white; padding: 10px 20px; border: none; border-radius: 12px; cursor: pointer; width: 200px; font-size: 20px;"
                         class="btn btn-primary">Enregistrer</button>
                     </div>
                 </form>
@@ -534,7 +534,10 @@ onMounted(fetchElevesAvecClasse); // Appeler la méthode pour récupérer les é
     align-items: center;
     margin-bottom: 15px;
 }
-
+label:hover {
+      cursor: pointer; /* Change le curseur lors du survol */
+      color: #407CEE; /* Couleur au survol */
+  }
 label {
     display: block;
     margin-bottom: 5px;

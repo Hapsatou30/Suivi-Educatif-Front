@@ -76,7 +76,7 @@
             <button class="btn" @click="redirectToAnneeClasses(row.id)" style="color: #F7AE00;" title="Attribuer des classes">
                 <Icon icon="material-symbols:school" /> 
               </button>
-            <button class="btn " @click="editAnnee(row.id)" style=" color: #4862C4;" title="Modifier l'année">
+            <button class="btn " @click="editAnnee(row.id)" style=" color: #407CEE;" title="Modifier l'année">
                      <Icon icon="mdi:pencil-outline" /> 
             </button>
             <button class="btn" @click="redirectToClassesList(row.id)" style="color: #F7AE00;" title="Liste des classes ouvertes">
@@ -381,5 +381,9 @@ p {
   color: red;
   font-family: "Poppins", sans-serif;
 }
+label:hover {
+      cursor: pointer; /* Change le curseur lors du survol */
+      color: #407CEE; /* Couleur au survol */
+  }
 
 </style>

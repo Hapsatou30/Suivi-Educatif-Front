@@ -77,7 +77,7 @@
         >
           <template #actions="{ row }">
             <div class="boutons">
-              <button class="btn" @click="editCahier(row.id)" style="color: #4862C4;" title="Modifier le cahier de texte">
+              <button class="btn" @click="editCahier(row.id)" style="color: #407CEE;" title="Modifier le cahier de texte">
                 <Icon icon="mdi:pencil-outline" /> 
               </button>
               <button class="btn" @click="deleteCahier(row.id)" style="color: red;" title="Supprimer le cahier de texte">
@@ -310,7 +310,10 @@ form{
   margin-left: 2%;
   margin-top: 2%;
 }
-
+ label:hover {
+      cursor: pointer; /* Change le curseur lors du survol */
+      color: #407CEE; /* Couleur au survol */
+  }
 .row {
   display: flex;
   justify-content: space-between;

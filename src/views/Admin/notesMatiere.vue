@@ -18,7 +18,7 @@
                     <template #actions="{ row }">
                         <div class="boutons">
                             <button class="btn" @click="redirectToSubject(row.id)"
-                                style="color: #4862C4; font-size: 40px;" title="Voir les détails">
+                                style="color: #407CEE; font-size: 40px;" title="Voir les détails">
                                 <Icon icon="marketeq:eye" />
                             </button>
                         </div>

@@ -70,7 +70,7 @@
         >
           <template #actions="{ row }">
             <div class="boutons">
-              <button class="btn " @click="editClasse(row.id)" style=" color: #4862C4;" title="Modifier la classe">
+              <button class="btn " @click="editClasse(row.id)" style=" color: #407CEE;" title="Modifier la classe">
                 <Icon icon="mdi:pencil-outline" /> 
               </button>
               <button class="btn " @click="deleteClasse(row.id)" style="color: red;" title="Supprimer la classe">
@@ -290,6 +290,10 @@ label {
   font-weight: 500;
   font-size: 20px;
 }
+label:hover {
+      cursor: pointer; /* Change le curseur lors du survol */
+      color: #407CEE; /* Couleur au survol */
+  }
 input {
   width: 100%; /* Changez ceci pour s'adapter à votre mise en page */
   padding: 8px;

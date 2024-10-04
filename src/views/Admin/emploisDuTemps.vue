@@ -84,7 +84,7 @@
                     <!-- Bouton de soumission -->
                     <div class="form-group" style="text-align: right;">
                         <button type="submit"
-                            style="background-color: #4862C4; color: white; padding: 10px 20px; border: none; border-radius: 12px; cursor: pointer; width: 200px; font-size: 20px">
+                            style="background-color: #407CEE; color: white; padding: 10px 20px; border: none; border-radius: 12px; cursor: pointer; width: 200px; font-size: 20px">
                             {{ isEditing ? 'Modifier' : 'Ajouter' }}
                         </button>
                     </div>
@@ -108,7 +108,7 @@
                     <template #actions="{ row }">
                         <div class="boutons">
                             <!-- Bouton de modification -->
-                            <button class="btn" @click="editHoraire(row)" style="color: #4862C4;" title="Modifier l'horaire">
+                            <button class="btn" @click="editHoraire(row)" style="color: #407CEE;" title="Modifier l'horaire">
                                 <Icon icon="mdi:pencil-outline" />
                             </button>
 
@@ -445,7 +445,10 @@ const retour = () => {
     align-items: center;
     margin-bottom: 15px;
 }
-
+label:hover {
+      cursor: pointer; /* Change le curseur lors du survol */
+      color: #407CEE; /* Couleur au survol */
+  }
 label {
     display: block;
     margin-bottom: 5px;

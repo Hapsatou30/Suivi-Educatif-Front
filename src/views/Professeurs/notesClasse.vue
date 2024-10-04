@@ -43,9 +43,9 @@ import sidebarProf from '@/components/sidebarProf.vue';
 import topBarProf from '@/components/topBarProf.vue';
 import tabEvaluations from '@/components/tabEvaluations.vue';
 import pagination from '@/components/paginations.vue';
-import { getNoteClasse } from '@/services/NotesService';
+import { getNoteClasse, supprimerNote } from '@/services/NotesService';
 import { Icon } from '@iconify/vue';
-// import Swal from 'sweetalert2';
+ import Swal from 'sweetalert2';
 
 // Initialisation des routeurs
 const router = useRouter();
@@ -84,6 +84,50 @@ const paginatedData = computed(() => {
 
 const handlePageChange = (newPage) => {
     currentPage.value = newPage;
+};
+
+const deleteNote = async (id) => {
+    const confirmDelete = await Swal.fire({
+        title: 'Êtes-vous sûr ?',
+        text: "Cette action ne peut pas être annulée !",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Oui, supprimer !'
+    });
+
+    if (confirmDelete.isConfirmed) {
+        try {
+            await supprimerNote(id);
+            Swal.fire({
+                title: 'Supprimé !',
+                text: 'Evaluation a été supprimée avec succès.',
+                icon: 'success',
+                timer: 1000,
+                timerProgressBar: true,
+                willClose: () => {
+                    fetchData();
+                }
+            });
+        } catch (error) {
+            console.error('Erreur lors de la suppression :', error);
+            const errorMessage = error.response?.data?.message || error.message || 'Une erreur inattendue s\'est produite.';
+            await Swal.fire({
+                icon: 'error',
+                title: 'Erreur',
+                text: errorMessage,
+                confirmButtonColor: '#d33',
+                timer: 3000,
+                timerProgressBar: true,
+                showConfirmButton: false
+            });
+        }
+    }
+};
+
+const retour = () => {
+    router.go(-1);
 };
 onMounted(async () => {
     await fetchData();

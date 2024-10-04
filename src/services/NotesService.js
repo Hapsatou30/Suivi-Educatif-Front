@@ -25,3 +25,20 @@ export const getNoteClasse = async (classeProf_id) => {
   }
 };
 
+export const supprimerNote = async (id) => {
+    try {
+      const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
+      const response = await axios.delete(`${apiUrl}/notes/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}` // Utiliser le token dans l'en-tête pour l'authentification
+        }
+      });
+  
+      console.log('note supprimée :', response.data);
+      return response.data; // Renvoie les données de réponse
+    } catch (error) {
+      console.error('Erreur lors de la suppression de la note :', error);
+      return null; // Valeur par défaut en cas d'erreur
+    }
+  };
+

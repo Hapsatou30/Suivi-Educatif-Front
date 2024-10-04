@@ -37,6 +37,8 @@ import EmploisDuTempsProf from '@/views/Professeurs/emploisTempsProf.vue';
 import GestionCahierTexte from '@/views/Professeurs/gestionCahierTexte.vue';
 import CahierTexteProf from '@/views/Professeurs/cahierTexteProf.vue';
 import Planning from '@/views/Professeurs/planning.vue';
+import GestionNotesProf from '@/views/Professeurs/gestionNotes.vue';
+import NotesClasse from '@/views/Professeurs/notesClasse.vue';
 
 
 // Routes non protégées (accessible à tous)
@@ -88,7 +90,9 @@ const professorRoutes = [
   { path: '/cahier_texte_prof/:classeProf_id/:annee_classe_id/:nom_classe', name: 'cahier_texte_prof', component:CahierTexteProf},
   { path: '/planning', name: 'planning', component:Planning},
   
-  
+  { path: '/gestion_notes', name: 'gestion_notes', component: GestionNotesProf},
+
+  { path: '/notes_classe/:classeProf_id/:annee_classe_id/:nom_classe' , name: 'notes_classe', component:NotesClasse},
 ];
 
 // Création du tableau des routes combinées

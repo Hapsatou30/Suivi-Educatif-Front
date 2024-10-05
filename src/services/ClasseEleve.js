@@ -28,7 +28,7 @@ export const getEleveClasse = async (classeId) => {
       const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
 
       // Récupération des professeurs avec leur matière en utilisant le classeId
-      const response = await axios.get(`${apiUrl}/classes-eleves?annee_classe_id=${classeId}`, { 
+      const response = await axios.get(`${apiUrl}/classes-eleves/${classeId}`, { 
           headers: {
               Authorization: `Bearer ${token}` // Utiliser le token dans l'en-tête pour l'authentification
           }

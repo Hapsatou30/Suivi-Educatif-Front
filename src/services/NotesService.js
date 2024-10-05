@@ -7,7 +7,7 @@ export const getNoteClasse = async (classeProf_id) => {
       const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
 
       // Récupération des professeurs avec leur matière en utilisant le classeId
-      const response = await axios.get(`${apiUrl}/notes/matiere/${classeProf_id}`, { 
+      const response = await axios.get(`${apiUrl}/notes/classe/${classeProf_id}`, { 
           headers: {
               Authorization: `Bearer ${token}` // Utiliser le token dans l'en-tête pour l'authentification
           }
@@ -42,3 +42,20 @@ export const supprimerNote = async (id) => {
     }
   };
 
+  export const ajouterNote = async (note) => {
+    try {
+      const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
+      const response = await axios.post(`${apiUrl}/notes`, note, { 
+        headers: {
+          Authorization: `Bearer ${token}` // Utiliser le token dans l'en-tête pour l'authentification
+        }
+      });
+  
+      // Afficher la réponse pour le débogage
+      console.log('note ajouté :', response.data);
+      return response.data; // Renvoie toute la réponse pour analyse
+    } catch (error) {
+      console.error('Erreur lors de l\'ajout de la note :', error);
+      return null; // Valeur par défaut en cas d'erreur
+    }
+  };

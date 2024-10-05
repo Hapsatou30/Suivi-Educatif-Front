@@ -84,6 +84,7 @@ const fetchProfile = async () => {
     if (user && user.professeur) {
       professeurId.value = user.professeur.id;
     }
+    
   } catch (error) {
     console.error('Erreur lors de la récupération du profil:', error);
   }

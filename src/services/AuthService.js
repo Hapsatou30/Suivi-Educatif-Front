@@ -95,3 +95,21 @@ export const profile = async () => {
     return 0; // Valeur par défaut en cas d'erreur
   }
 };
+export const modifierProfileProfesseur = async (id, formDataToSend) => {
+  try {
+      const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
+      // Assurez-vous que l'ID est correctement référencé ici
+      const response = await axios.post(`${apiUrl}/professeur/${id}`, formDataToSend, {
+          headers: {
+              Authorization: `Bearer ${token}` ,// Utiliser le token dans l'en-tête pour l'authentification
+              "content-type": "multipart/form-data",
+          }
+      });
+
+      console.log('profil modifié :', response.data);
+      return response.data; // Renvoie les données de la réponse pour analyse
+  } catch (error) {
+      console.error('Erreur lors de la modification du profil :', error.response ? error.response.data : error.message);
+      return { error: error.response ? error.response.data.error : error.message }; // Renvoie l'erreur sous forme d'objet
+  }
+};

@@ -58,7 +58,7 @@
             <h2>Historique des Notes</h2>
             <div class="tableauNotes">
                 <tabEvaluations v-if="paginatedData.length > 0" class="tab-notes"
-                    :headers="['Prenom & Nom', 'Matricule', 'Evaluation', 'Note', 'Appréciation', 'Action']" :data="paginatedData.map(({ prenom, nom, matricule, evaluation, note, appreciation, id ,idClasseEleve,id_evaluation}) => ({
+                    :headers="['Prenom & Nom', 'Matricule', 'Evaluation', 'Note', 'Appréciation', 'Action']" :data="paginatedData.map(({ prenom, nom, matricule, evaluation, note, appreciation, id ,idClasseEleve,evaluation_id}) => ({
                         eleve: `${prenom} ${nom}`,
                         matricule,
                         evaluation,
@@ -66,7 +66,7 @@
                         appreciation,
                         id,
                         idClasseEleve,
-                        id_evaluation
+                        evaluation_id
                     }))">
                     <template #actions="{ row }">
                         <div class="boutons">
@@ -129,7 +129,7 @@ const fetchData = async () => {
     try {
         const response = await getNoteClasse(annee_classe_id);
         // Mapper les données pour inclure les informations des élèves
-        tableData.value = response.données.map(({ eleve,classeEleve, evaluation, note, appreciation, matiere, id ,id_evaluation}) => ({
+        tableData.value = response.données.map(({ eleve,classeEleve, evaluation, note, appreciation, matiere, id ,evaluation_id}) => ({
             prenom: eleve.prenom,
             nom: eleve.nom,
             matricule: eleve.matricule,
@@ -139,7 +139,7 @@ const fetchData = async () => {
             matiere: matiere,
             id: id,
             idClasseEleve: classeEleve.id,
-            id_evaluation: id_evaluation
+            evaluation_id: evaluation_id
 
         }));
     } catch (error) {
@@ -223,7 +223,7 @@ const checkNoteExistence = async (eleveId, evaluationId) => {
     try {
         const response = await getNoteClasse(annee_classe_id); 
         const existingNote = response.données.find(note => 
-            note.classeEleve.id === eleveId && note.id_evaluation === evaluationId
+            note.classeEleve.id === eleveId && note.evaluation_id === evaluationId
         );
         
         console.log('Note existante:', existingNote); // Log pour débogage
@@ -311,12 +311,13 @@ const updateNote = async (row) => {
         id: editingNoteId.value,
         notes: row.note,
         commentaire: row.appreciation,
-        id_evaluation: row.evaluation_id,
+        evaluation_id: row.evaluation,
         classe_eleve_id: row.id_classeEleve,
     };
+    console.log('nnnn', noteData);
 
     // Vérification de evaluation_id
-    if (!noteData.id_evaluation) {
+    if (!noteData.evaluation_id) {
         console.error('La valeur d\'evaluation_id est manquante ou null.');
         await Swal.fire({
             title: 'Erreur',
@@ -364,7 +365,7 @@ const editNote = (note) => {
     if (student) {
         student.note = note.note;
         student.appreciation = note.appreciation;
-        student.evaluation = note.id_evaluation; 
+        student.evaluation = note.evaluation_id; 
     }
 };
 

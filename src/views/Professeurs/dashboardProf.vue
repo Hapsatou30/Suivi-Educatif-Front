@@ -13,41 +13,38 @@
           <h3>Emploi du temps d’aujourd’hui</h3>
           <tabEvaluations v-if="tableData.length > 0" :headers="[]" :data="tableData" class="custom-table" />
 
-          <!-- Message affiché si la tableData est vide -->
           <p v-else class="no-evaluations-message">Vous n'avez pas de cours aujourd'hui.</p>
         </div>
       </div>
       <div class="col-6" style="display: flex; flex-direction: column; justify-content: end;">
         <div class="planning" >
-          <router-link to="/professeurs" class="addTeacher">
+          <router-link to="/planning" class="addTeacher">
             <Icon icon="ei:plus" class="plus" />
             <h3>Programmer un devoir/examen</h3>
           </router-link>
         </div>
-        <div class="list_planning" >
-          <div class="custom-card">
-            <div class="card-header">
-              <h3 class="card-title">{{Titre}}</h3>
-              <span class="card-subtitle">{{Sous-titre}}</span>
-            </div>
-            <div class="card-body">
-              <div class="card-body-left">
-                <Icon icon="mdi:calendar-outline" class="icon" />
-                {{  date }}
-              </div>
-              <div class="card-body-right">
-                <Icon icon="carbon:time" class="icon" />
-                {{  heure }}
-              </div>
-            </div>
 
-            <!-- Footer avec un bouton -->
-            <div class="card-footer">
-              <button class="btn">Reprogrammer</button>
-            </div>
-          </div>
+        <!-- Boucle sur les évaluations récupérées pour afficher un maximum de 2 cartes -->
+<div class="list_planning" v-for="(evaluation, index) in evaluations.slice(0, 2)" :key="index">
+  <div class="custom-card">
+    <div class="card-header">
+      <h3 class="card-title">{{ evaluation.matiere }}</h3>
+      <span class="card-subtitle">{{ evaluation.type_evaluation }}</span>
+    </div>
+    <div class="card-body">
+      <div class="card-body-left">
+        <Icon icon="mdi:calendar-outline" class="icon" />
+        {{ evaluation.date }}
+      </div>
+      <div class="card-body-right">
+        <Icon icon="carbon:time" class="icon" />
+        {{ evaluation.heure }}
+      </div>
+    </div>
 
-        </div>
+  </div>
+</div>
+
       </div>
     </div>
   </div>
@@ -60,17 +57,22 @@ import topBarProf from '@/components/topBarProf.vue';
 import affiche from '@/components/affiche.vue';
 import widget from '@/components/widget.vue';
 import { getNbrClasseProf } from '@/services/ClasseProfs';
+import { getEvaluationsParProf} from '@/services/Evaluations';
 import { profile } from '@/services/AuthService';
 import { getNbrMatiere } from '@/services/MatiereService';
 import tabEvaluations from '@/components/tabEvaluations.vue';
 import { geHoraireProf } from '@/services/HoraireService';
 import { Icon } from '@iconify/vue';
+import dayjs from 'dayjs';
+import 'dayjs/locale/fr';
 
+dayjs.locale('fr');
 // Variables réactives
 const classesCount = ref(0);
 const matiereCount = ref(0);
 const professeurId = ref('');
 const tableData = ref([]);
+const evaluations = ref([]);
 
 // Fonction pour récupérer les informations de profil de l'utilisateur connecté
 const fetchProfile = async () => {
@@ -120,12 +122,29 @@ const fetchHoraireProf = async () => {
     console.error('Erreur lors de la récupération des horaires:', error);
   }
 };
+// Fonction pour récupérer les évaluations du professeur
+const fetchEvaluation = async () => {
+  try {
+    const response = await getEvaluationsParProf(professeurId.value);
+    if (response.status === 200) {
+      const evaluationsFutures = response.evaluations.filter(evaluation => dayjs(evaluation.date).isAfter(dayjs()));
+      evaluationsFutures.sort((a, b) => dayjs(a.date).diff(dayjs(b.date)));
+
+      evaluations.value = evaluationsFutures; // Mettre à jour la variable réactive avec les données récupérées
+    } else {
+      console.error('Erreur lors de la récupération des évaluations:', response.message);
+    }
+  } catch (error) {
+    console.error('Erreur lors de la récupération des évaluations:', error);
+  }
+};
 
 // Appelle la récupération des données une fois que le composant est monté
 onMounted(async () => {
   await fetchProfile();
   await fetchData();
   await fetchHoraireProf();
+  await fetchEvaluation();
 });
 </script>
 
@@ -273,8 +292,9 @@ text-align: right;
 .card-body-right {
   width: 48%;
   padding: 10px;
-  background-color: #f5f5f5;
+  background-color: #F7AE00;
   border-radius: 8px;
+  color: white;
 }
 
 .card-footer {

@@ -67,24 +67,26 @@
           v-if="paginatedData.length > 0"
           class="tab-cahiers" 
           :headers="['Matière', 'Professeur', 'Date', 'Titre', 'Action']"
-          :data="paginatedData.map(({ matiere, professeur, date, titre, id }) => ({
+          :data="paginatedData.map(({ matiere, professeur, date, titre, id,professeur_id }) => ({
             matiere,
             professeur,
             date,
             titre,
-            id
+            id,
+            professeur_id
           }))"
         >
           <template #actions="{ row }">
-            <div class="boutons">
-              <button class="btn" @click="editCahier(row.id)" style="color: #407CEE;" title="Modifier le cahier de texte">
-                <Icon icon="mdi:pencil-outline" /> 
-              </button>
-              <button class="btn" @click="deleteCahier(row.id)" style="color: red;" title="Supprimer le cahier de texte">
-                <Icon icon="mdi:trash-can-outline" /> 
-              </button>
-            </div>
-          </template>
+  <div class="boutons" v-if="row.professeur_id === professeurId">
+    <button class="btn" @click="editCahier(row.id)" style="color: #407CEE;" title="Modifier le cahier de texte">
+      <Icon icon="mdi:pencil-outline" /> 
+    </button>
+    <button class="btn" @click="deleteCahier(row.id)" style="color: red;" title="Supprimer le cahier de texte">
+      <Icon icon="mdi:trash-can-outline" /> 
+    </button>
+  </div>
+</template>
+
         </tabEvaluations>
 
         <p v-else class="no-evaluations-message">Pas de cahier de texte.</p>
@@ -117,7 +119,7 @@ import pagination from '@/components/paginations.vue';
 import { getCahierTexte, ajouterCahierTexte, modifierCahierTexte, getCahierTexteById, supprimerClasse } from '@/services/CahierDeTexte';
 import { Icon } from '@iconify/vue';
 import Swal from 'sweetalert2';
-
+import { profile } from '@/services/AuthService';
 const router = useRouter();
 const route = useRoute();
 const imageCahier = ref('/public/images/image.png');
@@ -125,10 +127,25 @@ const imageCahier = ref('/public/images/image.png');
 const classeProf_id = route.params.classeProf_id;
 const annee_classe_id = route.params.annee_classe_id;
 const nom_classe = route.params.nom_classe;
-
+const professeurId = ref('');
 const tableData = ref([]);
 const currentPage = ref(1);
 const pageSize = ref(5);
+
+// Fonction pour récupérer les informations de profil de l'utilisateur connecté
+const fetchProfile = async () => {
+  try {
+    const response = await profile();
+    const user = response.user;
+
+    // Récupérer l'ID du professeur connecté
+    if (user && user.professeur) {
+      professeurId.value = user.professeur.id;
+    }
+  } catch (error) {
+    console.error('Erreur lors de la récupération du profil:', error);
+  }
+};
 
 // Préremplissage de la date avec la date d'aujourd'hui
 const today = new Date().toISOString().split('T')[0]; // Formate la date au format YYYY-MM-DD
@@ -152,7 +169,8 @@ const fetchData = async () => {
       date: item.date,
       titre: item.titre,
       resume: item.resume,
-      id: item.id // Ajouter l'ID ici pour la modification/suppression
+      id: item.id ,
+      professeur_id: item.professeur_id
     }));
   } catch (error) {
     console.error('Erreur lors du chargement des cahiers de texte :', error);
@@ -255,6 +273,7 @@ const resetForm = () => {
 };
 
 onMounted(fetchData);
+onMounted(fetchProfile);
 
 const retour = () => {
   router.go(-1);
@@ -386,7 +405,9 @@ label{
 ::v-deep .cahiers .tableau .tab-cahiers td:nth-child(5) {
  display: none;
 }
-
+::v-deep .cahiers .tableau .tab-cahiers td:nth-child(6) {
+ display: none;
+}
 .tab-cahiers {
     margin-left: 300px;
     margin-right: 50px;

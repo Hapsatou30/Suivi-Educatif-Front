@@ -315,10 +315,20 @@ const updateNote = async (row) => {
         classe_eleve_id: row.id_classeEleve,
     };
 
+    // Vérification de evaluation_id
+    if (!noteData.id_evaluation) {
+        console.error('La valeur d\'evaluation_id est manquante ou null.');
+        await Swal.fire({
+            title: 'Erreur',
+            text: 'La valeur d\'evaluation_id ne peut pas être vide.',
+            icon: 'error',
+        });
+        return; // Sortir de la fonction si l'évaluation_id est manquant
+    }
+
     try {
         const response = await modifierNote(noteData);
         if (response.status >= 200 && response.status < 300) {
-            // Réinitialiser l'état
             isEditing.value = false;
             editingNoteId.value = null;
 
@@ -334,9 +344,14 @@ const updateNote = async (row) => {
             });
         }
     } catch (error) {
-        // Gérer les erreurs ici
+        await Swal.fire({
+            title: 'Erreur',
+            text: 'Erreur lors de la modification de la note : ' + error.message,
+            icon: 'error',
+        });
     }
 };
+
 
 // Méthode pour remplir le formulaire lors de l'édition
 const editNote = (note) => {

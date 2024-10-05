@@ -63,23 +63,27 @@ export const supprimerNote = async (id) => {
   export const modifierNote = async (note) => {
     try {
         const token = localStorage.getItem('token');
+
+        // Affichez l'ID de la note pour vérifier
+        console.log('Modifying note with ID:', note.id);
         
-        const response = await axios.put(`${apiUrl}/notes/${note}`, note, {
+        const response = await axios.put(`${apiUrl}/notes/${note.id}`, note, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         });
-        
-        // Si le statut de la réponse est 400, lancer une erreur personnalisée
+
+        console.log('Response:', response.data); // Afficher la réponse pour le débogage
+
         if (response.data.status && response.data.status === 400) {
-            throw new Error(response.data.message); // Forcer l'erreur
+            throw new Error(response.data.message);
         }
-  
-        console.log('note modifiée :', response.data);
+
+        console.log('Note modifiée :', response.data);
         return response.data;
+
     } catch (error) {
-        console.error('Erreur lors de la modification de la note :', error.message);
-        throw error; // Relancer l'erreur pour que SweetAlert puisse l'attraper
+        console.error('Erreur lors de la modification de la note :', error.response ? error.response.data : error.message);
+        throw error;
     }
-  };
-  
+};

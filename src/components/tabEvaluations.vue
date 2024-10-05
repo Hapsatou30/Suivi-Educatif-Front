@@ -1,55 +1,43 @@
 <template>
-  <div>
-    <table>
-      <thead>
-        <tr>
-          <th v-for="(header, index) in headers" :key="index">{{ header }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="(row, rowIndex) in data"
-          :key="rowIndex"
-          :class="{'background': (rowIndex + 1) % 2 === 0, 'no-background': (rowIndex + 1) % 2 !== 0}"
-        >
-          <td v-if="$slots.photo">
-            <slot name="photo" :photo="row.photo" />
-          </td>
-          <td v-for="(cell, cellIndex) in row" :key="cellIndex" v-if="cellIndex !== 0">
-            {{ cell }}
-          </td>
-
-          <!-- Slot pour les actions -->
-          <td v-if="$slots.actions">
-            <slot name="actions" :row="row" />
-          </td>
-          
-          <!-- Slot pour l'action spécifique aux élèves -->
-          <td v-if="$slots.action">
-            <slot name="action" :col="row" />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</template>
-
-<script setup>
-import { defineProps } from 'vue';
-
-const props = defineProps({
-  headers: {
-    type: Array,
-    required: true
-  },
-  data: {
-    type: Array,
-    required: true
-  }
-});
-</script>
-
-
+    <div>
+      <!-- Création d'une table -->
+      <table>
+        <thead>
+          <tr>
+            <!-- Génération dynamique des en-têtes du tableau à partir de la propriété 'headers' -->
+            <th v-for="(header, index) in headers" :key="index">{{ header }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Génération dynamique des lignes du tableau à partir de la propriété 'data' -->
+          <tr
+            v-for="(row, rowIndex) in data"
+            :key="rowIndex"
+            :class="{'background': (rowIndex + 1) % 2 === 0, 'no-background': (rowIndex + 1) % 2 !== 0}"
+          >
+            <!-- Génération des cellules de chaque ligne -->
+            <td v-for="(cell, cellIndex) in row" :key="cellIndex">{{ cell }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </template>
+  
+  <script setup>
+  import { defineProps } from 'vue';
+  
+  // Définir les propriétés du composant pour recevoir des données externes
+  const props = defineProps({
+    headers: {
+      type: Array, // Type attendu pour les en-têtes : tableau
+      required: true // Cette propriété est requise
+    },
+    data: {
+      type: Array, // Type attendu pour les données : tableau
+      required: true // Cette propriété est requise
+    }
+  });
+  </script>
   
   <style scoped>
   table {

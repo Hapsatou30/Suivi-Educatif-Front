@@ -2,7 +2,7 @@
     <sidebarProf />
     <topBarProf />
     <div class="main-content">
-        <h2>Ajouter des notes pour la classe de {{ nom_classe }}</h2>
+        <h2>{{ isEditing ? "Modifier la note" : "Ajouter des notes pour la classe de " + nom_classe }}</h2>
         <div class="addNotes">
 
             <div class="tableau1">
@@ -36,8 +36,8 @@
                                 <input type="text" v-model="student.appreciation" />
                             </td>
                             <td>
-                                <button @click="addNote(student)"
-                                    style="background-color: #F7AE00; color: white; border: none; padding: 10px; cursor: pointer;" title="Ajouter une Note">
+                                <button @click="isEditing ? updateNote(student) : addNote(student)"
+                                    style="background-color: #F7AE00; color: white; border: none; padding: 10px; cursor: pointer;" title="Ajouter/Modifier la Note">
                                     <Icon icon="mdi:check" width="24" height="24" />
                                 </button>
                             </td>
@@ -58,17 +58,19 @@
             <h2>Historique des Notes</h2>
             <div class="tableauNotes">
                 <tabEvaluations v-if="paginatedData.length > 0" class="tab-notes"
-                    :headers="['Prenom & Nom', 'Matricule', 'Evaluation', 'Note', 'Appréciation', 'Action']" :data="paginatedData.map(({ prenom, nom, matricule, evaluation, note, appreciation, id }) => ({
+                    :headers="['Prenom & Nom', 'Matricule', 'Evaluation', 'Note', 'Appréciation', 'Action']" :data="paginatedData.map(({ prenom, nom, matricule, evaluation, note, appreciation, id ,idClasseEleve,id_evaluation}) => ({
                         eleve: `${prenom} ${nom}`,
                         matricule,
                         evaluation,
                         note,
                         appreciation,
-                        id
+                        id,
+                        idClasseEleve,
+                        id_evaluation
                     }))">
                     <template #actions="{ row }">
                         <div class="boutons">
-                            <button class="btn" @click="editNote(row.id)" style="color: #407CEE;"
+                            <button class="btn" @click="editNote(row)" style="color: #407CEE;"
                                 title="Modifier la note">
                                 <Icon icon="mdi:pencil-outline" />
                             </button>
@@ -97,7 +99,7 @@ import sidebarProf from '@/components/sidebarProf.vue';
 import topBarProf from '@/components/topBarProf.vue';
 import tabEvaluations from '@/components/tabEvaluations.vue';
 import pagination from '@/components/paginations.vue';
-import { getNoteClasse, supprimerNote, ajouterNote } from '@/services/NotesService';
+import { getNoteClasse, supprimerNote, ajouterNote,modifierNote } from '@/services/NotesService';
 import { getEleveClasse } from '@/services/ClasseEleve';
 import { getEvaluationsParClasseProf } from '@/services/Evaluations';
 import { Icon } from '@iconify/vue';
@@ -119,13 +121,15 @@ const pageSize = ref(5);
 const notesStudents = ref([]);
 const currentPageOther = ref(1);
 const evaluations = ref([]);
+const isEditing = ref(false);
+const editingNoteId = ref(null);
 
 
 const fetchData = async () => {
     try {
         const response = await getNoteClasse(annee_classe_id);
         // Mapper les données pour inclure les informations des élèves
-        tableData.value = response.données.map(({ eleve, evaluation, note, appreciation, matiere, id }) => ({
+        tableData.value = response.données.map(({ eleve,classeEleve, evaluation, note, appreciation, matiere, id ,id_evaluation}) => ({
             prenom: eleve.prenom,
             nom: eleve.nom,
             matricule: eleve.matricule,
@@ -133,7 +137,10 @@ const fetchData = async () => {
             note: note,
             appreciation: appreciation,
             matiere: matiere,
-            id: id
+            id: id,
+            idClasseEleve: classeEleve.id,
+            id_evaluation: id_evaluation
+
         }));
     } catch (error) {
         console.error('Erreur lors du chargement des cahiers de texte :', error);
@@ -271,6 +278,11 @@ const addNote = async (row) => {
         });
 
         if (response.status >= 200 && response.status < 300) {
+            // Réinitialiser les champs de l'élève
+            row.note = null; // Réinitialiser la note
+            row.appreciation = ''; // Réinitialiser l'appréciation
+            row.evaluation = ''; // Réinitialiser l'évaluation (s'il y a un v-model)
+
             await Swal.fire({
                 title: 'Succès',
                 text: 'La note a été ajoutée avec succès.',
@@ -294,7 +306,52 @@ const addNote = async (row) => {
     }
 };
 
+const updateNote = async (row) => {
+    const noteData = {
+        id: editingNoteId.value,
+        notes: row.note,
+        commentaire: row.appreciation,
+        id_evaluation: row.evaluation_id,
+        classe_eleve_id: row.id_classeEleve,
+    };
 
+    try {
+        const response = await modifierNote(noteData);
+        if (response.status >= 200 && response.status < 300) {
+            // Réinitialiser l'état
+            isEditing.value = false;
+            editingNoteId.value = null;
+
+            await Swal.fire({
+                title: 'Succès',
+                text: 'La note a été modifiée avec succès.',
+                icon: 'success',
+                timer: 1000,
+                timerProgressBar: true,
+                willClose: () => {
+                    fetchData(); // Mettez à jour l'affichage
+                }
+            });
+        }
+    } catch (error) {
+        // Gérer les erreurs ici
+    }
+};
+
+// Méthode pour remplir le formulaire lors de l'édition
+const editNote = (note) => {
+    console.log('eee', note);
+    isEditing.value = true;
+    editingNoteId.value = note.id; 
+    const student = notesStudents.value.find(s => s.id_classeEleve === note.idClasseEleve);
+    console.log('notesStudents', notesStudents);
+    console.log('Student', student);
+    if (student) {
+        student.note = note.note;
+        student.appreciation = note.appreciation;
+        student.evaluation = note.id_evaluation; 
+    }
+};
 
 const deleteNote = async (id) => {
     const confirmDelete = await Swal.fire({
@@ -353,6 +410,13 @@ onMounted(async () => {
 <style scoped>
 /* Masquer la colonne ID dans le tableau */
 ::v-deep .historiquesNotes .tableauNotes .tab-notes td:nth-child(6) {
+    display: none;
+}
+::v-deep .historiquesNotes .tableauNotes .tab-notes td:nth-child(7) {
+    display: none;
+}
+
+::v-deep .historiquesNotes .tableauNotes .tab-notes td:nth-child(8) {
     display: none;
 }
 

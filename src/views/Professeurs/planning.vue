@@ -4,65 +4,64 @@
     <div class="main-content planning">
         <h1>Planifier un Devoir ou un Examen</h1>
         
+        <!-- Conteneur pour aligner le formulaire et le calendrier -->
+    <div class="row " style="margin-left: 265px;margin-right: 30px; display: flex; align-items: center; justify-content: space-between;" >
+        <!-- Calendrier interactif dans l'autre colonne -->
+      <div class="col-md-6">
+        <div id="calendar" class="calendar-container">
+          <FullCalendar :options="calendarOptions" />
+        </div>
+      </div>
+      <div class="col-md-6">
         <!-- Formulaire pour ajouter une évaluation -->
         <form @submit.prevent="submitForm" class="forms" style="background-color: white;">
-            <div class="row">
+          <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label for="nomEvaluation" class="form-label">Nom de l'Évaluation</label>
-                    <input type="text" id="nomEvaluation" v-model="formData.nom" class="form-control"
-                        placeholder="Nom évaluation" required />
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="heure" class="form-label">Heure</label>
-                    <input type="time" id="heure" v-model="formData.heure" class="form-control" required />
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="classe" class="form-label">Classe</label>
-                    <select id="classe" v-model="formData.classe_prof_id" class="form-select" required>
-                        <option value="" disabled selected>Choisissez une classe</option>
-                        <option v-for="classe in classes" :key="classe.classeProf_id"
-                            :value="classe.classeProf_id">{{ classe.nom_classe }} ->  {{ classe.nom_matiere }}
-                        </option>
-                    </select>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="date" class="form-label">Date</label>
-                    <input type="date" id="date" v-model="formData.date" class="form-control" required readonly />
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="duree" class="form-label">Durée (en minutes)</label>
-                    <input type="number" id="duree" v-model="formData.duree" class="form-control" required />
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label>Type d'Évaluation</label><br />
-                    <div class="radio-group">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" v-model="formData.type_evaluation"
-                                value="Devoir" required />
-                            <label class="form-check-label">Devoir</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" v-model="formData.type_evaluation"
-                                value="Examen" required />
-                            <label class="form-check-label">Examen</label>
-                        </div>
-                    </div>
-                </div>
+              <label for="nomEvaluation" class="form-label">Nom de l'Évaluation</label>
+              <input type="text" id="nomEvaluation" v-model="formData.nom" class="form-control" placeholder="Nom évaluation" required />
             </div>
+            <div class="col-md-6 mb-3">
+              <label for="heure" class="form-label">Heure</label>
+              <input type="time" id="heure" v-model="formData.heure" class="form-control" required />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="classe" class="form-label">Classe</label>
+              <select id="classe" v-model="formData.classe_prof_id" class="form-select" required>
+                <option value="" disabled selected>Choisissez une classe</option>
+                <option v-for="classe in classes" :key="classe.classeProf_id" :value="classe.classeProf_id">
+                  {{ classe.nom_classe }} -> {{ classe.nom_matiere }}
+                </option>
+              </select>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="date" class="form-label">Date</label>
+              <input type="date" id="date" v-model="formData.date" class="form-control" required readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="duree" class="form-label">Durée (en minutes)</label>
+              <input type="number" id="duree" v-model="formData.duree" class="form-control" required />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label>Type d'Évaluation</label><br />
+              <div class="radio-group">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" v-model="formData.type_evaluation" value="Devoir" required />
+                  <label class="form-check-label">Devoir</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" v-model="formData.type_evaluation" value="Examen" required />
+                  <label class="form-check-label">Examen</label>
+                </div>
+              </div>
+            </div>
+          </div>
 
-            <div class="mt-4" style="display: flex; justify-content: end;">
-                <button type="submit" class="btn btn-submit">Enregistrer</button>
-            </div>
+          <div class="mt-4" style="display: flex; justify-content: end;">
+            <button type="submit" class="btn btn-submit">Enregistrer</button>
+          </div>
         </form>
-
-        <div class="row">
-            <div class="col-12">
-                <!-- Calendrier interactif -->
-                <div id="calendar" class="calendar-container">
-                    <FullCalendar :options="calendarOptions" />
-                </div>
-            </div>
-        </div>
+      </div>
+    </div>
 
         <div class="mon_planning">
             <h2>Mon Planning</h2>
@@ -408,14 +407,7 @@ onMounted(async () => {
     text-align: center;
 }
 
-.planning .row {
-    margin-left: 265px;
-    margin-right: 38px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 50px;
-}
+
 
 .planning .row .forms {
     background-color: white;

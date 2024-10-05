@@ -97,22 +97,32 @@ const fetchData = async () => {
     try {
         // Récupérer les élèves de la classe
         const response = await getEleveClasse(annee_classe_id);
-        const classeCible = response.données.find(classe => classe.id === parseInt(annee_classe_id));
+        console.log('Réponse de getEleveClasse:', response); // Log de la réponse
+
+        // Assurez-vous que annee_classe_id est bien un entier
+        console.log('annee_classe_id:', annee_classe_id);
+
+        // Filtrer les données en fonction de id_classe
+        const classeCible = response.données.find(classe => classe.id_classe === parseInt(annee_classe_id));
+        console.log('Classe cible:', classeCible); // Log de la classe cible
+
         const elevesClasse = [];
         const today = new Date().toISOString().split('T')[0]; // Date d'aujourd'hui au format yyyy-mm-dd
 
         if (classeCible && classeCible.eleves) {
+            console.log('Élèves dans la classe cible:', classeCible.eleves); // Log des élèves
+
             // Récupérer l'historique des absences d'aujourd'hui
             const absencesToday = Data.value.filter(absence => absence.date_presence === today);
+            console.log('Absences Today:', absencesToday); // Log des absences
 
             classeCible.eleves.forEach(eleve => {
                 // Vérifier si cet élève est absent aujourd'hui et récupérer son absenceId
-                const absence = absencesToday.find(abs => abs.classe_eleve.eleve.id === eleve.id);
+                const absence = absencesToday.find(abs => abs.classe_eleve.eleve.id === eleve.id_eleve);
                 const isAbsentToday = !!absence; // Vérifie si une absence existe pour aujourd'hui
-                console.log('Absences Today:', absencesToday);
 
                 elevesClasse.push({
-                    id: eleve.id,
+                    id: eleve.id_eleve,
                     prenom: eleve.prenom,
                     nom: eleve.nom,
                     matricule: eleve.matricule,
@@ -122,6 +132,8 @@ const fetchData = async () => {
                     absenceId: isAbsentToday ? absence.id : null, // Stocker l'ID de l'absence pour la suppression
                 });
             });
+        } else {
+            console.warn('Aucun élève trouvé pour la classe cible.'); // Avertir si aucun élève n'est trouvé
         }
 
         tableData.value = elevesClasse;
@@ -130,6 +142,7 @@ const fetchData = async () => {
         console.error('Erreur lors de la récupération des données :', error);
     }
 };
+
 
 
 // Fonction de gestion des cases à cocher

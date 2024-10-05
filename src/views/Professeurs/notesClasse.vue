@@ -210,6 +210,25 @@ const handlePageChangeOther = (newPage) => {
     currentPageOther.value = newPage;
 };
 
+
+// Méthode pour vérifier si l'élève a déjà une note pour l'évaluation donnée
+const checkNoteExistence = async (eleveId, evaluationId) => {
+    try {
+        const response = await getNoteClasse(annee_classe_id); 
+        const existingNote = response.données.find(note => 
+            note.classeEleve.id === eleveId && note.id_evaluation === evaluationId
+        );
+        
+        console.log('Note existante:', existingNote); // Log pour débogage
+        return existingNote !== undefined; 
+    } catch (error) {
+        console.error('Erreur lors de la vérification de l\'existence de la note :', error);
+        return false; // En cas d'erreur, on considère que la note n'existe pas
+    }
+};
+
+
+
 // Méthode pour ajouter une note
 const addNote = async (row) => {
     const eleveId = row.id_classeEleve; 
@@ -223,6 +242,22 @@ const addNote = async (row) => {
             title: 'Erreur',
             text: 'Veuillez remplir tous les champs avant d\'ajouter la note.',
             confirmButtonColor: '#d33',
+            timer: 1000,
+            timerProgressBar: true,
+        });
+        return;
+    }
+
+    // Vérifier si une note existe déjà pour cet élève et cette évaluation
+    const noteExists = await checkNoteExistence(eleveId, evaluationId);
+    if (noteExists) {
+        await Swal.fire({
+            icon: 'error',
+            title: 'Erreur',
+            text: 'Cet élève a déjà une note pour cette évaluation.',
+            confirmButtonColor: '#d33',
+            timer: 1000,
+            timerProgressBar: true,
         });
         return;
     }
@@ -240,7 +275,7 @@ const addNote = async (row) => {
                 title: 'Succès',
                 text: 'La note a été ajoutée avec succès.',
                 icon: 'success',
-                timer: 1500,
+                timer: 1000,
                 timerProgressBar: true,
                 willClose: () => {
                     fetchData(); // Assurez-vous que cela met à jour l'affichage

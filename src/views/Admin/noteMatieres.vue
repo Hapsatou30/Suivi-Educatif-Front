@@ -9,7 +9,7 @@
 
             <div class="tableau1">
                 <tabEvaluations v-if="paginatedData.length > 0" class="tab-evaluations"
-                    :headers="[ 'Professeur', 'Matière ', 'Note',]" :data="paginatedData.map(({ nom_professeur, prenom_professeur, matiere }) => ({
+                    :headers="['Professeur', 'Matière ', 'Note',]" :data="paginatedData.map(({ nom_professeur, prenom_professeur, matiere }) => ({
                         professeur: `${prenom_professeur} ${nom_professeur}`,
                         matiere,
                     }))">
@@ -23,17 +23,17 @@
                     </template>
                 </tabEvaluations>
 
-                <p v-else class="alert alert-info" >
-          Aucune classe trouvée.
-        </p>
+                <p v-else class="alert alert-info">
+                    Aucune classe trouvée.
+                </p>
             </div>
 
             <pagination class="pagination1" v-if="tableData.length > pageSize" :totalItems="tableData.length"
                 :pageSize="pageSize" :currentPage="currentPage" @pageChange="handlePageChange" />
         </div>
         <div class="retour">
-      <button @click="retour" class="btn btn-secondary">Retour</button>
-     </div>
+            <button @click="retour" class="btn btn-secondary">Retour</button>
+        </div>
     </div>
 </template>
 
@@ -62,29 +62,27 @@ const pageSize = ref(5);
 const fetchData = async () => {
     const response = await getProfClasse(anneClasseId);
 
-    // console.log('Réponse complète:', response); // Vérifiez la réponse ici
-
     // Vérifiez si la réponse est valide
-    if (response && response.classes_matieres) { // Vérifiez si la réponse contient classes_matieres
-        const classesMatieres = response.classes_matieres; // Récupération du tableau des matières
+    if (response && response.classes_matieres) {
+        const classesMatieres = response.classes_matieres;
 
         // Vérifiez si le tableau contient des professeurs
-        // console.log('Classes matières:', classesMatieres); // Ajoutez ce log
         if (Array.isArray(classesMatieres) && classesMatieres.length > 0) {
-            tableData.value = classesMatieres; // <-- Ajoutez cette ligne pour assigner les données
-            classesMatieres.forEach((item) => {
-                const nomProfesseur = item.nom_professeur || "Nom inconnu";
-                const prenomProfesseur = item.prenom_professeur || "Prénom inconnu";
-                const matiere = item.matiere || "Matière inconnue";
-                // console.log(`Professeur : ${prenomProfesseur} ${nomProfesseur}, Matière : ${matiere}`);
-            });
+            // Mapper les données pour extraire les informations souhaitées
+            tableData.value = classesMatieres.map(({ nom_professeur, prenom_professeur, matiere, id_profMat }) => ({
+                nom_professeur,
+                prenom_professeur,
+                matiere,
+                id_profMat,
+            }));
         } else {
-            // console.log('Aucun professeur trouvé pour cette classe.'); // Affiché seulement si classes_matieres est vide
+            console.log('Aucun professeur trouvé pour cette classe.');
         }
     } else {
-        // console.log('Erreur lors de la récupération des données ou pas de classes_matieres.');
+        console.log('Erreur lors de la récupération des données ou pas de classes_matieres.');
     }
 };
+
 
 
 
@@ -141,51 +139,58 @@ onMounted(() => {
 
 
 <style scoped>
-
-.main-content { 
-  margin-top: 120px;
+.main-content {
+    margin-top: 120px;
 }
+
 .main-content h2 {
-  color: black;
-  font-size: 24px;
-  font-family: "Poppins", sans-serif;
-  font-weight: 500;
-  text-align: center;
-  margin-left: 300px;
+    color: black;
+    font-size: 24px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    text-align: center;
+    margin-left: 300px;
 }
 
 .classes {
-  margin-top: 50px;
+    margin-top: 50px;
 }
-.classes h3{
-  font-size: 24px;
-  font-family: "Poppins", sans-serif;
-  font-weight: 500;
-  text-align: start;
-  margin-left: 300px;
+
+.classes h3 {
+    font-size: 24px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    text-align: start;
+    margin-left: 300px;
 }
+
 .tableau1 {
-  margin-left: 300px;
-  margin-right: 50px;
+    margin-left: 300px;
+    margin-right: 50px;
 }
+
 .pagination1 {
-  margin-left: 275px;
-  margin-right: 50px;
-  display: flex;
-  justify-content: end;
+    margin-left: 275px;
+    margin-right: 50px;
+    display: flex;
+    justify-content: end;
 }
+
 p {
-  font-size: 18px;
-  color: red;
-  font-family: "Poppins", sans-serif;
+    font-size: 18px;
+    color: red;
+    font-family: "Poppins", sans-serif;
 }
-.retour{
-  display: flex;
-  justify-content: end;
-  margin-right: 50px;
-  margin-bottom: 20px;
+
+.retour {
+    display: flex;
+    justify-content: end;
+    margin-right: 50px;
+    margin-bottom: 20px;
 }
-.retour .btn-secondary, .retour .btn-secondary:hover {
+
+.retour .btn-secondary,
+.retour .btn-secondary:hover {
     background-color: transparent;
     color: white;
     border: 1px solid #F7AE00;
@@ -197,6 +202,6 @@ p {
     font-family: "Poppins", sans-serif;
     font-weight: 500;
     color: #F7AE00;
-   
+
 }
 </style>

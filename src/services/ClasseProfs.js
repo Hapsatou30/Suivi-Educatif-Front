@@ -21,19 +21,19 @@ export const ajouterProfClasse = async (classeprof) => {
     return { success: false, message: 'Erreur lors de l\'ajout des profs.' }; // Retourner une structure d'erreur
   }
 };
-export const getProfClasse = async (classeId) => {
+export const getProfClasse = async (anneClasseId) => {
   try {
       const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
 
       // Récupération des professeurs avec leur matière en utilisant le classeId
-      const response = await axios.get(`${apiUrl}/classes-professeurs?annee_classe_id=${classeId}`, { 
+      const response = await axios.get(`${apiUrl}/classes-professeurs/${anneClasseId}`, { 
           headers: {
               Authorization: `Bearer ${token}` // Utiliser le token dans l'en-tête pour l'authentification
           }
       });
 
       // Afficher les données reçues pour le débogage
-      // console.log('Données reçues prof classe:', response.data); // Vérifie les données reçues de l'API
+      //  console.log('Données reçues prof classe:', response.data); // Vérifie les données reçues de l'API
 
       return response.data; // Retourner les données de l'API
   } catch (error) {

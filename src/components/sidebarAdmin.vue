@@ -25,7 +25,7 @@
           </router-link>
         </li>
         <li>
-          <router-link to="/gestion_notes" class="menu-link">
+          <router-link to="/gestion_notes_admin" class="menu-link"  :class="{ active: isActive('/gestion_notes_admin') || isActive('/notes_matieres') || isActive('/notes')    }">
             <Icon icon="clarity:note-line" /> Notes
           </router-link>
         </li>

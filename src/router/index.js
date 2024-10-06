@@ -24,7 +24,7 @@ import EmploisDuTemps from '@/views/Admin/emploisDuTemps.vue';
 import ListeEleves from '@/views/Admin/listeEleves.vue';
 import ClasseEleve from '@/views/Admin/classeEleve.vue';
 import ElevesCLasse from '@/views/Admin/elevesCLasses.vue';
-import GestionNotes from '@/views/Admin/gestionNotes.vue';
+import GestionNotesAdmin from '@/views/Admin/gestionNotesAdmin.vue';
 import NoteMatieres from '@/views/Admin/noteMatieres.vue';
 import NotesMatiere from '@/views/Admin/notesMatiere.vue';
 import DashboardProf from '@/views/Professeurs/dashboardProf.vue';
@@ -67,7 +67,7 @@ const adminRoutes = [
   { path: '/liste_eleves', name: 'liste_eleves', component: ListeEleves },
   { path: '/classe_eleves/:id', name: 'classe_eleves', component: ClasseEleve },
   { path: '/eleves_classe/:id', name: 'eleves_classe', component: ElevesCLasse },
-  { path: '/gestion_notes', name: 'gestion_notes', component: GestionNotes },
+  { path: '/gestion_notes_admin', name: 'gestion_notes_admin', component: GestionNotesAdmin },
   { path: '/notes_matieres/:id', name: 'notes_matieres', component: NoteMatieres },
   { path: '/notes/:id', name: 'notes', component: NotesMatiere },
 ];

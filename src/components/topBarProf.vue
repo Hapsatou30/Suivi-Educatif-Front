@@ -101,8 +101,8 @@ const fetchProfile = async () => {
    catch (error) {
     console.error('Erreur lors de la récupération du profil:', error);
   }
-  console.log('jj', photoUser);
-  console.log('iddd', professeurId) ;
+  // console.log('jj', photoUser);
+  // console.log('iddd', professeurId) ;
 };
 
 

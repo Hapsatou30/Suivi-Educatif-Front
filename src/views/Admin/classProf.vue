@@ -58,7 +58,7 @@ const fetchProfMatClasse = async () => {
 const fetchMatProf = async () => {
   try {
     const response = await getMatProf();
-    console.log('Réponse API brute:', response);
+    // console.log('Réponse API brute:', response);
 
     if (response && Array.isArray(response.données)) {
       itemList.value = response.données.map(profMat => ({
@@ -68,7 +68,7 @@ const fetchMatProf = async () => {
         checked: profMatAttribue.value.includes(profMat.id) 
       }));
 
-      console.log('Liste des ProfMat:', itemList.value);
+      // console.log('Liste des ProfMat:', itemList.value);
     } else {
       console.error('La réponse n\'est pas un tableau.');
     }
@@ -81,12 +81,12 @@ const fetchMatProf = async () => {
 const detailsAnneeClasse = async (id) => {
   try {
     const response = await getAnneeClasseDetails(id);
-    console.log('Réponse API brute:', response); 
+    // console.log('Réponse API brute:', response); 
 
     // Vérification si response contient un objet valide
     if (response && response.donnees_classe) {
       const classe = response.donnees_classe; 
-      console.log('Détails de la classe:', classe);
+      // console.log('Détails de la classe:', classe);
       nomClasse.value = classe.nom; // Mise à jour de la variable ici
     } else {
       console.error('Aucun détail de la classe trouvé ou structure inattendue.');
@@ -99,7 +99,7 @@ const detailsAnneeClasse = async (id) => {
 // Mettre à jour les professeurs sélectionnés depuis le composant checkbox
 const updateSelectedItems = (items) => {
   selectedProfMat.value = items; // Items contient les ids des professeurs sélectionnés
-  console.log('Professeurs sélectionnés:', selectedProfMat.value);
+  // console.log('Professeurs sélectionnés:', selectedProfMat.value);
 };
 
 // Méthode pour attribuer les professeurs à la classe
@@ -112,7 +112,7 @@ const attribuerProfClasse = async () => {
       });
 
 
-      console.log("Réponse du serveur:", response);
+      // console.log("Réponse du serveur:", response);
 
       if (response && response.success) {
         Swal.fire({
@@ -161,7 +161,7 @@ const retour = () => {
 };
 
 onMounted(() => {
-  console.log('ID de la classe:', anneClasseId);
+  // console.log('ID de la classe:', anneClasseId);
   detailsAnneeClasse(anneClasseId);
   fetchProfMatClasse().then(fetchMatProf);
 });

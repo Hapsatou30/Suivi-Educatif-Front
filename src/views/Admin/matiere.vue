@@ -133,7 +133,7 @@ const currentPage = ref(1);
 const pageSize = ref(5);
 
 const fetchData = async () => {
-  console.log('Fetching data...');
+  // console.log('Fetching data...');
   try {
     const response = await getMatieres();
 if (response && response.données && response.données.length > 0) {

@@ -60,7 +60,7 @@ const pageSize = ref(5);
 const fetchData = async () => {
     const response = await getNoteClasse(profClasseId); // Appeler votre méthode pour récupérer les notes
     
-    console.log('Réponse complète des notes:', response); // Affichez la réponse pour vérification
+    // console.log('Réponse complète des notes:', response); // Affichez la réponse pour vérification
 
     // Vérifiez si la réponse contient des données
     if (response && response.données && response.données.length > 0) {
@@ -69,10 +69,10 @@ const fetchData = async () => {
 
         // Récupérer la matière de la première entrée
         nomMatiere.value = notesData[0].matiere || 'Matière inconnue'; // Définit le nom de la matière
-        console.log('Nom de la matière:', nomMatiere.value);
+        // console.log('Nom de la matière:', nomMatiere.value);
 
     } else {
-        console.log('Aucune note trouvée pour ce professeur.'); // Gérer le cas où il n'y a pas de notes
+        // console.log('Aucune note trouvée pour ce professeur.'); // Gérer le cas où il n'y a pas de notes
         nomMatiere.value = 'Aucune matière trouvée'; // Valeur par défaut en l'absence de données
     }
 };
@@ -95,7 +95,7 @@ const retour = () => {
 
 // Appel des méthodes dans onMounted
 onMounted(() => {
-    console.log(profClasseId);
+    // console.log(profClasseId);
     fetchData(); // Appel de fetchData pour récupérer les notes
 });
 </script>

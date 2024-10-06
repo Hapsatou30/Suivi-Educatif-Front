@@ -226,7 +226,7 @@ const checkNoteExistence = async (eleveId, evaluationId) => {
             note.classeEleve.id === eleveId && note.evaluation_id === evaluationId
         );
         
-        console.log('Note existante:', existingNote); // Log pour débogage
+        // console.log('Note existante:', existingNote); // Log pour débogage
         return existingNote !== undefined; 
     } catch (error) {
         console.error('Erreur lors de la vérification de l\'existence de la note :', error);
@@ -314,7 +314,7 @@ const updateNote = async (row) => {
         evaluation_id: row.evaluation,
         classe_eleve_id: row.id_classeEleve,
     };
-    console.log('nnnn', noteData);
+    // console.log('nnnn', noteData);
 
     // Vérification de evaluation_id
     if (!noteData.evaluation_id) {
@@ -356,12 +356,12 @@ const updateNote = async (row) => {
 
 // Méthode pour remplir le formulaire lors de l'édition
 const editNote = (note) => {
-    console.log('eee', note);
+    // console.log('eee', note);
     isEditing.value = true;
     editingNoteId.value = note.id; 
     const student = notesStudents.value.find(s => s.id_classeEleve === note.idClasseEleve);
-    console.log('notesStudents', notesStudents);
-    console.log('Student', student);
+    // console.log('notesStudents', notesStudents);
+    // console.log('Student', student);
     if (student) {
         student.note = note.note;
         student.appreciation = note.appreciation;
@@ -414,8 +414,8 @@ const retour = () => {
 };
 onMounted(async () => {
     await fetchData();
-    console.log('Paginated Students:', paginatedStudents.value);
-    console.log('Paginated Data:', paginatedData.value);
+    // console.log('Paginated Students:', paginatedStudents.value);
+    // console.log('Paginated Data:', paginatedData.value);
     await fetchStudents();
     await fetchEvaluations();
 

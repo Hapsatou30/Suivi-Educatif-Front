@@ -17,7 +17,7 @@ export const postAbsences = async (absence) => {
     });
 
     // Afficher les données reçues pour le débogage
-     console.log('ajouter :', response.data); // Vérifie les données reçues de l'API
+    //  console.log('ajouter :', response.data); // Vérifie les données reçues de l'API
 
     return response.data; // Retourner le nombre total de annees-scolairess
   } catch (error) {
@@ -36,7 +36,7 @@ export const supprimerAbsence = async (absenceId) => {
       }
     });
 
-    console.log('absence supprimée :', response.data);
+    // console.log('absence supprimée :', response.data);
     return response.data; // Renvoie les données de réponse
   } catch (error) {
     console.error('Erreur lors de la suppression de l\'absence :', error);
@@ -55,7 +55,7 @@ export const getAbsenceClasseProf = async (classProfId) => {
     });
 
     // Afficher les données reçues pour le débogage
-    console.log('Détails du absence récupérés :', response.data); // Vérifie les données reçues de l'API
+    // console.log('Détails du absence récupérés :', response.data); // Vérifie les données reçues de l'API
 
     return response.data; // Retourner les détails du annees-scolaires
   } catch (error) {

@@ -12,7 +12,7 @@ export const geHoraireClasse = async (anneeClasseId) => {
             }
         });
 
-        console.log('Données reçues depuis l\'API:', response.data.données); 
+        // console.log('Données reçues depuis l\'API:', response.data.données); 
         return response.data; // Retourner le nombre total de professeurs
     } catch (error) {
         // Gérer les erreurs lors de la récupération du nombre de professeurs
@@ -23,7 +23,7 @@ export const geHoraireClasse = async (anneeClasseId) => {
 
 export const modifierHoraire = async (horaire) => {
     try {
-        console.log('Horaire avant modification:', horaire); // Pour débogage
+        // console.log('Horaire avant modification:', horaire); // Pour débogage
         const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
         const response = await axios.put(`${apiUrl}/horaires/${horaire.horaire_id}`, horaire, {
             headers: {
@@ -31,7 +31,7 @@ export const modifierHoraire = async (horaire) => {
             }
         });
   
-        console.log('Horaire modifié :', response.data);
+        // console.log('Horaire modifié :', response.data);
         return response.data; // Renvoie les données de la réponse pour analyse
     } catch (error) {
         console.error('Erreur lors de la modification de l\'horaire :', error.response ? error.response.data : error.message);
@@ -50,7 +50,7 @@ export const modifierHoraire = async (horaire) => {
         });
 
         // Afficher la réponse pour le débogage
-        console.log('Horaires ajoutés :', response.data);
+        // console.log('Horaires ajoutés :', response.data);
         return response.data; // Renvoie toute la réponse pour analyse
     } catch (error) {
         console.error('Erreur lors de l\'ajout de l\'horaire :', error.response ? error.response.data : error.message);
@@ -70,7 +70,7 @@ export const supprimerHoraire = async (id) => {
             }
         });
 
-        console.log('Horaire supprimé :', response.data);
+        // console.log('Horaire supprimé :', response.data);
         return response.data; // Renvoie les données de réponse
     } catch (error) {
         console.error('Erreur lors de la suppression de l\'horaire :', error);
@@ -89,7 +89,7 @@ export const geHoraireProf = async (professeurId) => {
             }
         });
 
-        console.log('Données reçues depuis l\'API:', response.data.données); 
+        // console.log('Données reçues depuis l\'API:', response.data.données); 
         return response.data; // Retourner le nombre total de professeurs
     } catch (error) {
         // Gérer les erreurs lors de la récupération du nombre de professeurs

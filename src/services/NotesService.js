@@ -14,7 +14,7 @@ export const getNoteClasse = async (classeProf_id) => {
       });
 
       // Afficher les données reçues pour le débogage
-      console.log('Données reçues Notes:', response.data); // Vérifie les données reçues de l'API
+      // console.log('Données reçues Notes:', response.data); // Vérifie les données reçues de l'API
 
       // Retourner l'objet complet
       return response.data; // Assurez-vous de retourner la réponse complète
@@ -34,7 +34,7 @@ export const supprimerNote = async (id) => {
         }
       });
   
-      console.log('note supprimée :', response.data);
+      // console.log('note supprimée :', response.data);
       return response.data; // Renvoie les données de réponse
     } catch (error) {
       console.error('Erreur lors de la suppression de la note :', error);
@@ -52,7 +52,7 @@ export const supprimerNote = async (id) => {
       });
   
       // Afficher la réponse pour le débogage
-      console.log('note ajouté :', response.data);
+      // console.log('note ajouté :', response.data);
       return response.data; // Renvoie toute la réponse pour analyse
     } catch (error) {
       console.error('Erreur lors de l\'ajout de la note :', error);
@@ -65,7 +65,7 @@ export const supprimerNote = async (id) => {
         const token = localStorage.getItem('token');
 
         // Affichez l'ID de la note pour vérifier
-        console.log('Modifying note with ID:', note.id);
+        // console.log('Modifying note with ID:', note.id);
         
         const response = await axios.put(`${apiUrl}/notes/${note.id}`, note, {
             headers: {
@@ -73,13 +73,13 @@ export const supprimerNote = async (id) => {
             }
         });
 
-        console.log('Response:', response.data); // Afficher la réponse pour le débogage
+        // console.log('Response:', response.data); // Afficher la réponse pour le débogage
 
         if (response.data.status && response.data.status === 400) {
             throw new Error(response.data.message);
         }
 
-        console.log('Note modifiée :', response.data);
+        // console.log('Note modifiée :', response.data);
         return response.data;
 
     } catch (error) {

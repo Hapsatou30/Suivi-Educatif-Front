@@ -11,7 +11,7 @@ export const ajouterAnneClasses = async (anneeclasse) => {
     });
 
     // Afficher les données reçues pour le débogage
-    console.log('Données reçues :', response.data);
+    // console.log('Données reçues :', response.data);
 
     // Vérifiez si la réponse inclut un champ "success"
     if (response.data && response.data.success) {
@@ -41,7 +41,7 @@ export const ajouterAnneClasses = async (anneeclasse) => {
       });
   
       // Afficher les données reçues pour le débogage
-       console.log('Données reçues :', response.data); // Vérifie les données reçues de l'API
+      //  console.log('Données reçues :', response.data); // Vérifie les données reçues de l'API
   
       return response.data; // Retourner le nombre total de professeurs
     } catch (error) {
@@ -62,7 +62,7 @@ export const getAnneeClasseDetails = async (id) => {
     });
 
     // Afficher les données reçues pour le débogage
-    console.log('Détails du annees-classe récupérés :', response.data); // Vérifie les données reçues de l'API
+    // console.log('Détails du annees-classe récupérés :', response.data); // Vérifie les données reçues de l'API
 
     return response.data; // Retourner les détails du annees-scolaires
   } catch (error) {

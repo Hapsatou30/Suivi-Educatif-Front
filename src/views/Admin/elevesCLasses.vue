@@ -74,11 +74,11 @@ const fetchData = async () => {
                 });
             });
         }
-        console.log('eleveclasse', elevesClasse);
+        // console.log('eleveclasse', elevesClasse);
         
 
         tableData.value = elevesClasse;
-        console.log('tableData.value = ' + tableData.value);
+        // console.log('tableData.value = ' + tableData.value);
         
         tableData.value.sort((a, b) => a.nom.localeCompare(b.nom));
 
@@ -105,12 +105,12 @@ const paginatedData = computed(() => {
 const detailsAnneeClasse = async (id) => {
     try {
         const response = await getAnneeClasseDetails(id);
-        console.log('Réponse API brute:', response);
+        // console.log('Réponse API brute:', response);
 
         // Vérification si response contient un objet valide
         if (response && response.donnees_classe) { // Corrigé ici pour accéder à 'donnees_classe'
             const classe = response.donnees_classe; // Corrigé ici pour accéder à 'donnees_classe'
-            console.log('Détails de la classe:', classe);
+            // console.log('Détails de la classe:', classe);
             nomClasse.value = `${classe.nom}`; // Mise à jour de la variable ici
         } else {
             console.error('Aucun détail de la classe trouvé ou structure inattendue.');
@@ -129,7 +129,7 @@ const retour = () => {
 
 // Appel des méthodes dans onMounted
 onMounted(() => {
-    console.log('ID de la classe:', anneClasseId);
+    // console.log('ID de la classe:', anneClasseId);
     detailsAnneeClasse(anneClasseId);
     fetchData(); // Récupérer les données des élèves au chargement de la page
 });

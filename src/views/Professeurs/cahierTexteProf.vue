@@ -182,7 +182,7 @@ const fetchData = async () => {
 
 const handleFormSubmit = async () => {
   try {
-    console.log('Données du formulaire :', formData.value); // Ajout pour le débogage
+    // console.log('Données du formulaire :', formData.value); // Ajout pour le débogage
     if (isEditMode.value) {
       if (!formData.value.id) {
         throw new Error('L\'ID du cahier de texte est manquant.');

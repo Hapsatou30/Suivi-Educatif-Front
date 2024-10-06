@@ -11,7 +11,7 @@ export const ajouterProfClasse = async (classeprof) => {
     });
 
     // Afficher les données reçues pour le débogage
-    console.log('Données reçues :', response.data);
+    // console.log('Données reçues :', response.data);
 
     // Vérifiez si la réponse inclut un champ "success"
       return response.data; // Retourner l'objet entier si succès
@@ -33,7 +33,7 @@ export const getProfClasse = async (classeId) => {
       });
 
       // Afficher les données reçues pour le débogage
-      console.log('Données reçues prof classe:', response.data); // Vérifie les données reçues de l'API
+      // console.log('Données reçues prof classe:', response.data); // Vérifie les données reçues de l'API
 
       return response.data; // Retourner les données de l'API
   } catch (error) {
@@ -55,7 +55,7 @@ export const getNbrClasseProf = async (professeurId) => {
       });
 
       // Afficher les données reçues pour le débogage
-      console.log('Données reçues prof classe:', response.data); // Vérifie les données reçues de l'API
+      // console.log('Données reçues prof classe:', response.data); // Vérifie les données reçues de l'API
 
       // Retourner l'objet complet
       return response.data.données; // Assurez-vous de retourner la réponse complète
@@ -78,7 +78,7 @@ export const getListeClasseProf = async (professeurId) => {
       });
 
       // Afficher les données reçues pour le débogage
-      console.log('Données reçues liste classe: du prof', response.data); // Vérifie les données reçues de l'API
+      // console.log('Données reçues liste classe: du prof', response.data); // Vérifie les données reçues de l'API
 
       // Retourner l'objet complet
       return response.data; // Assurez-vous de retourner la réponse complète

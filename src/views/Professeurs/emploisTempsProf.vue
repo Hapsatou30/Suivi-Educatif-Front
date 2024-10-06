@@ -108,7 +108,7 @@ const fetchHoraires = async (professeurId) => {
       }
     });
 
-    console.log('Données finales pour la matrice:', donneesTemp);
+    // console.log('Données finales pour la matrice:', donneesTemp);
     donnees.value = donneesTemp; // Mettre à jour la matrice avec les nouvelles données
   } catch (error) {
     console.error('Erreur lors de la récupération des horaires:', error);

@@ -301,9 +301,9 @@ const previousStep = () => {
     if (currentStep.value > 1) currentStep.value--;
 };
 const editStudent = (id) => {
-    console.log('Modifier l\'élève avec l\'ID :', id);
+    // console.log('Modifier l\'élève avec l\'ID :', id);
     const row = tableData.value.find(item => item.id === id);
-    console.log('Données de l\'élève trouvées :', row);
+    // console.log('Données de l\'élève trouvées :', row);
     if (row) {
         // Remplir les données du formulaire avec les informations de l'élève sélectionné
         formData.value = {
@@ -320,7 +320,7 @@ const editStudent = (id) => {
             parent_adresse: row.adresse_parent,
             id: row.id,
         };
-        console.log('formData après modification:', formData.value);
+        // console.log('formData après modification:', formData.value);
     }
 };
 // Fonction pour rechercher un parent
@@ -347,7 +347,7 @@ const searchParent = () => {
 const handleFormSubmit = async () => {
     try {
         const response = await (formData.value.id ? modifierEleve(formData.value) : ajouterEleve(formData.value));
-        console.log('Élève envoyé:', formData.value);
+        // console.log('Élève envoyé:', formData.value);
 
         const successMessage = formData.value.id ? 'Élève modifié avec succès !' : 'Élève ajouté avec succès !';
 
@@ -363,7 +363,7 @@ const handleFormSubmit = async () => {
         await fetchData();
         resetForm();
     } catch (error) {
-        console.log(error.response.data);
+        // console.log(error.response.data);
         Swal.fire({
             icon: 'error',
             title: 'Erreur',

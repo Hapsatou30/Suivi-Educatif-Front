@@ -39,7 +39,7 @@ export const getClasses = async () => {
     });
 
     // Afficher les données reçues pour le débogage
-     console.log('Données reçues :', response.data); // Vérifie les données reçues de l'API
+    //  console.log('Données reçues :', response.data); // Vérifie les données reçues de l'API
 
     return response.data.données; // Retourner le nombre total de professeurs
   } catch (error) {
@@ -60,7 +60,7 @@ export const getCLasseDetails = async (id) => {
     });
 
     // Afficher les données reçues pour le débogage
-    console.log('Détails de la classe récupérés :', response.data); // Vérifie les données reçues de l'API
+    // console.log('Détails de la classe récupérés :', response.data); // Vérifie les données reçues de l'API
 
     return response.data; // Retourner les détails du classes
   } catch (error) {
@@ -79,7 +79,7 @@ export const ajouterClasse = async (classe) => {
     });
 
     // Afficher la réponse pour le débogage
-    console.log('classe ajouté :', response.data);
+    // console.log('classe ajouté :', response.data);
     return response.data; // Renvoie toute la réponse pour analyse
   } catch (error) {
     console.error('Erreur lors de l\'ajout de la classe :', error);
@@ -103,7 +103,7 @@ export const modifierClasse = async (nouvellesDonnees) => {
       }
     });
 
-    console.log('Classe modifiée :', response.data);
+    // console.log('Classe modifiée :', response.data);
     return response.data; // Renvoie les nouvelles données
   } catch (error) {
     console.error('Erreur lors de la modification de la classe :', error.response.data);
@@ -122,7 +122,7 @@ export const supprimerClasse = async (id) => {
       }
     });
 
-    console.log('Classe supprimée :', response.data);
+    // console.log('Classe supprimée :', response.data);
     return response.data; // Renvoie les données de réponse
   } catch (error) {
     console.error('Erreur lors de la suppression de la Classe :', error);

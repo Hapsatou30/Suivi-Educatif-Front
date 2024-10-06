@@ -90,7 +90,7 @@ const fetchData = async () => {
       item.duree
     ]);
     
-    console.log('Données du tableau :', tableData.value);
+    // console.log('Données du tableau :', tableData.value);
   }
 };
 

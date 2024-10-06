@@ -41,7 +41,7 @@ const classesAttribuees = ref([]); // Pour stocker les classes déjà attribuée
 const fetchAnneeClasses = async (id) => {
   try {
     const response = await getAnneClasses();
-    console.log('Données reçues de getAnneClasses:', response.données); 
+    // console.log('Données reçues de getAnneClasses:', response.données); 
 
     if (response?.données) {
       const idAsNumber = Number(id); // Convertir l'ID en nombre si nécessaire
@@ -50,7 +50,7 @@ const fetchAnneeClasses = async (id) => {
       if (annee) {
         // Stocker les classes attribuées pour utilisation dans fetchClasses
         classesAttribuees.value = annee.classes.map(classe => classe.nom);
-        console.log('Classes attribuées au annee:', classesAttribuees.value);
+        // console.log('Classes attribuées au annee:', classesAttribuees.value);
       } else {
         console.warn('Aucun annee trouvé avec cet ID.');
       }
@@ -66,7 +66,7 @@ const fetchAnneeClasses = async (id) => {
 const fetchClasses = async () => {
   try {
     const response = await getClasses();
-    console.log('Réponse API brute:', response); // Affiche la réponse brute
+    // console.log('Réponse API brute:', response); // Affiche la réponse brute
 
     // Vérifiez si la réponse est un tableau et non un objet
     if (Array.isArray(response)) {
@@ -77,7 +77,7 @@ const fetchClasses = async () => {
         capacite: classe.capacite,
         checked: classesAttribuees.value.includes(classe.nom)
       }));
-      console.log('Liste des classes:', itemList.value);
+      // console.log('Liste des classes:', itemList.value);
     } else {
       console.error('La réponse n\'est pas un tableau.');
     }
@@ -92,12 +92,12 @@ const fetchClasses = async () => {
 const detailsAnnee = async (id) => {
   try {
     const response = await getAnneeDetails(id);
-    console.log('Réponse API brute:', response); // Vérifier ce que retourne réellement l'API
+    // console.log('Réponse API brute:', response); // Vérifier ce que retourne réellement l'API
 
     // Vérification si response contient un objet valide
     if (response && response.données) {
       const annee = response.données;
-      console.log('Détails de l\'année:', annee);
+      // console.log('Détails de l\'année:', annee);
       anneeScolaire.value = `${annee.annee_debut} - ${annee.annee_fin}`;
     } else {
       console.error('Aucun détail de l\'année trouvé ou structure inattendue.');
@@ -112,7 +112,7 @@ const detailsAnnee = async (id) => {
 // Mettre à jour les classes sélectionnées depuis le composant checkbox
 const updateSelectedItems = (items) => {
   selectedClasses.value = items; // Items contient les ids des classes sélectionnées
-  console.log('Classes sélectionnées:', selectedClasses.value);
+  // console.log('Classes sélectionnées:', selectedClasses.value);
 };
 
 // Méthode pour attribuer les classes au professeur
@@ -124,7 +124,7 @@ const attribuerclasses = async () => {
         classe_ids: selectedClasses.value,
       });
 
-      console.log("Réponse du serveur:", response);
+      // console.log("Réponse du serveur:", response);
 
       // Vérifiez si la réponse inclut un champ "success"
       if (response && response.success) {
@@ -190,7 +190,7 @@ const retour = () => {
 };
 
 onMounted(() => {
-  console.log('ID de l\'annee:', anneeId);
+  // console.log('ID de l\'annee:', anneeId);
   detailsAnnee(anneeId);
   fetchAnneeClasses(anneeId).then(fetchClasses);
 });

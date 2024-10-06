@@ -113,7 +113,7 @@
   
   
   const seeClasse = (classeProf_id, annee_classe_id, nom_classe) => {
-    console.log('ID de la classe prof:', classeProf_id, 'ID de l\'année de classe:', annee_classe_id, 'Nom de la classe:', nom_classe);
+    // console.log('ID de la classe prof:', classeProf_id, 'ID de l\'année de classe:', annee_classe_id, 'Nom de la classe:', nom_classe);
     router.push({ 
       name: 'notes_classe', 
       params: { 

@@ -132,7 +132,7 @@ const detailsAnnee = async (id) => {
 };
 
 onMounted(() => {
-  console.log('ID de l\'annee:', anneeId);
+  // console.log('ID de l\'annee:', anneeId);
   detailsAnnee(anneeId);
   fetchData(); 
 });

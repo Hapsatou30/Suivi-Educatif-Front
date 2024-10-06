@@ -63,7 +63,7 @@
   const fetchData = async () => {
   try {
     const response = await getAnneClasses();
-    console.log('Réponse de l\'API:', response);
+    // console.log('Réponse de l\'API:', response);
 
     // Vérifiez si 'données' est un tableau
     if (Array.isArray(response.données)) {

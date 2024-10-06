@@ -43,7 +43,7 @@ export const getAnnees = async () => {
     });
 
     // Afficher les données reçues pour le débogage
-     console.log('Données reçues :', response.data); // Vérifie les données reçues de l'API
+    //  console.log('Données reçues :', response.data); // Vérifie les données reçues de l'API
 
     return response.data.données; // Retourner le nombre total de annees-scolairess
   } catch (error) {
@@ -64,7 +64,7 @@ export const getAnneeDetails = async (id) => {
     });
 
     // Afficher les données reçues pour le débogage
-    console.log('Détails du annees-scolaires récupérés :', response.data); // Vérifie les données reçues de l'API
+    // console.log('Détails du annees-scolaires récupérés :', response.data); // Vérifie les données reçues de l'API
 
     return response.data; // Retourner les détails du annees-scolaires
   } catch (error) {
@@ -83,7 +83,7 @@ export const ajouterAnnee = async (annee) => {
     });
 
     // Afficher la réponse pour le débogage
-    console.log('annee ajouté :', response.data);
+    // console.log('annee ajouté :', response.data);
     return response.data; // Renvoie toute la réponse pour analyse
   } catch (error) {
     console.error('Erreur lors de l\'ajout de l\'annee :', error);
@@ -107,7 +107,7 @@ export const modifierAnnee = async (nouvellesDonnees) => {
       }
     });
 
-    console.log('Année modifiée :', response.data);
+    // console.log('Année modifiée :', response.data);
     return response.data; // Renvoie les nouvelles données
   } catch (error) {
     console.error('Erreur lors de la modification de l\'année :', error);
@@ -125,7 +125,7 @@ export const supprimerAnnee = async (id) => {
       }
     });
 
-    console.log('Année supprimée :', response.data);
+    // console.log('Année supprimée :', response.data);
     return response.data; // Renvoie les données de réponse
   } catch (error) {
     console.error('Erreur lors de la suppression de l\'année :', error);

@@ -15,7 +15,7 @@ export const getEvaluationsJour = async () => {
         }
       });
   
-      console.log('Données reçues :', response.data); // Vérifie les données reçues
+      // console.log('Données reçues :', response.data); // Vérifie les données reçues
       return response.data.données;
     } catch (error) {
       // Gérer les erreurs lors de la récupération du nombre d'élèves
@@ -37,7 +37,7 @@ export const getEvaluationsJour = async () => {
         }
       });
   
-      console.log('Données reçues :', response.data); // Vérifie les données reçues
+      // console.log('Données reçues :', response.data); // Vérifie les données reçues
       return response.data;
     } catch (error) {
       // Gérer les erreurs lors de la récupération du nombre d'élèves
@@ -59,7 +59,7 @@ export const getEvaluationsJour = async () => {
         }
       });
   
-      console.log('Données reçues :', response.data); // Vérifie les données reçues
+      // console.log('Données reçues :', response.data); // Vérifie les données reçues
       return response.data;
     } catch (error) {
       // Gérer les erreurs lors de la récupération du nombre d'élèves
@@ -81,7 +81,7 @@ export const getEvaluationsJour = async () => {
         }
       });
   
-      console.log('Données reçues :', response.data); // Vérifie les données reçues
+      // console.log('Données reçues :', response.data); // Vérifie les données reçues
       return response.data;
     } catch (error) {
       // Gérer les erreurs lors de la récupération du nombre d'élèves
@@ -99,7 +99,7 @@ export const getEvaluationsJour = async () => {
         }
       });
   
-      console.log('Evaluation supprimée :', response.data);
+      // console.log('Evaluation supprimée :', response.data);
       return response.data; // Renvoie les données de réponse
     } catch (error) {
       console.error('Erreur lors de la suppression de l\'évaluation :', error);
@@ -121,7 +121,7 @@ export const getEvaluationsJour = async () => {
             throw new Error(response.data.message); // Forcer l'erreur
         }
 
-        console.log('Évaluation ajoutée :', response.data);
+        // console.log('Évaluation ajoutée :', response.data);
         return response.data;
     } catch (error) {
         console.error('Erreur lors de l\'ajout de l\'évaluation :', error.message);
@@ -132,7 +132,7 @@ export const getEvaluationsJour = async () => {
 export const modifierEvaluation = async (evaluation) => {
   try {
       const token = localStorage.getItem('token');
-      console.log('Envoi des données au serveur :', evaluation); 
+      // console.log('Envoi des données au serveur :', evaluation); 
       
       const response = await axios.put(`${apiUrl}/evaluations/${evaluation.id}`, evaluation, {
           headers: {
@@ -145,7 +145,7 @@ export const modifierEvaluation = async (evaluation) => {
           throw new Error(response.data.message); // Forcer l'erreur
       }
 
-      console.log('Évaluation modifiée :', response.data);
+      // console.log('Évaluation modifiée :', response.data);
       return response.data;
   } catch (error) {
       console.error('Erreur lors de la modification de l\'évaluation :', error.message);

@@ -63,3 +63,22 @@ export const getAbsenceClasseProf = async (classProfId) => {
     return null; // Valeur par défaut en cas d'erreur
   }
 };
+// Méthode pour récupérer les détails d'un professeur par son ID
+export const getAbsenceAnneeClasse = async (anneeClasseId) => {
+  try {
+    const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
+    const response = await axios.get(`${apiUrl}/absences/annee-classe/${anneeClasseId}`, {
+      headers: {
+        Authorization: `Bearer ${token}` // Utiliser le token dans l'en-tête pour l'authentification
+      }
+    });
+
+    // Afficher les données reçues pour le débogage
+    // console.log('Détails du absence récupérés :', response.data); // Vérifie les données reçues de l'API
+
+    return response.data; // Retourner les détails du annees-scolaires
+  } catch (error) {
+    console.error('Erreur lors de la récupération des détails du absence :', error);
+    return null; // Valeur par défaut en cas d'erreur
+  }
+};

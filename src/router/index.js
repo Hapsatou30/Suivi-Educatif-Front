@@ -43,6 +43,8 @@ import GestionCahierTexteAdmin from '@/views/Admin/gestionCahierTexteAdmin.vue';
 import CahierTexteClasse from '@/views/Admin/cahierTexteClasse.vue';
 import GestionEvaluationsAdmin from '@/views/Admin/gestionEvaluationsAdmin.vue';
 import EvaluationsClasse from '@/views/Admin/evaluationsClasse.vue';
+import GestionAbsencesAdmins from '@/views/Admin/gestionAbsencesAdmins.vue';
+import AbsencesClasse from '@/views/Admin/absencesClasse.vue';
 
 
 // Routes non protégées (accessible à tous)
@@ -78,6 +80,9 @@ const adminRoutes = [
   { path: '/cahier_texte_classe/:anneeClasse_id', name: 'cahier_texte_classe', component: CahierTexteClasse},
   { path: '/gestion_evaluations', name: 'gestion_evaluations', component: GestionEvaluationsAdmin},
   { path: '/evaluations_classe/:anneeClasse_id', name: 'evaluations_classe', component: EvaluationsClasse},
+  { path: '/gestion_absences_admin', name: 'gestion_absences_admin', component: GestionAbsencesAdmins},
+  { path: '/absences_classe_admin/:anneeClasse_id', name: 'absences_classe_admin', component: AbsencesClasse},
+
 ];
 
 // Routes protégées pour les professeurs

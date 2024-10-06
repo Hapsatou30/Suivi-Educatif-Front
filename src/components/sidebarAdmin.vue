@@ -41,7 +41,7 @@
           </router-link>
         </li>
         <li>
-          <router-link to="/absences" class="menu-link">
+          <router-link to="/gestion_absences_admin" class="menu-link" :class="{ active: isActive('/gestion_absences_admin') || isActive('/absences_classe_admin') }">
             <Icon icon="mdi:account-off" /> Absences
           </router-link>
         </li>

@@ -68,8 +68,8 @@ const adminRoutes = [
   { path: '/classe_eleves/:id', name: 'classe_eleves', component: ClasseEleve },
   { path: '/eleves_classe/:id', name: 'eleves_classe', component: ElevesCLasse },
   { path: '/gestion_notes_admin', name: 'gestion_notes_admin', component: GestionNotesAdmin },
-  { path: '/notes_matieres/:id', name: 'notes_matieres', component: NoteMatieres },
-  { path: '/notes/:id', name: 'notes', component: NotesMatiere },
+  { path: '/notes_matieres/:anneeClasse_id', name: 'notes_matieres', component: NoteMatieres },
+  { path: '/notes/:id_profMat/:matiere', name: 'notes', component: NotesMatiere },
 ];
 
 // Routes protégées pour les professeurs

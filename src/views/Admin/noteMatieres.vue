@@ -8,14 +8,15 @@
         <div class="classes">
 
             <div class="tableau1">
-                <tabEvaluations v-if="paginatedData.length > 0" class="tab-evaluations"
-                    :headers="['Professeur', 'Matière ', 'Note',]" :data="paginatedData.map(({ nom_professeur, prenom_professeur, matiere }) => ({
+                <tabEvaluations v-if="paginatedData.length > 0" class="tab-noteMatiere"
+                    :headers="['Professeur', 'Matière ', 'Note',]" :data="paginatedData.map(({ nom_professeur, prenom_professeur, matiere ,id_profMat}) => ({
                         professeur: `${prenom_professeur} ${nom_professeur}`,
                         matiere,
+                        id_profMat
                     }))">
                     <template #actions="{ row }">
                         <div class="boutons">
-                            <button class="btn " @click="redirectToNotes(row.id)"
+                            <button class="btn " @click="redirectToNotes(row.id_profMat, row.matiere)"
                                 style="color: #407CEE; font-size: 40px;" title="Voir les notes par matières">
                                 <Icon icon="marketeq:eye" />
                             </button>
@@ -24,7 +25,7 @@
                 </tabEvaluations>
 
                 <p v-else class="alert alert-info">
-                    Aucune classe trouvée.
+                    Aucun professeur trouvé.
                 </p>
             </div>
 
@@ -52,7 +53,7 @@ const router = useRouter();
 const route = useRoute();
 
 const nomClasse = ref('');
-const anneClasseId = route.params.id;
+const anneClasseId = route.params.anneeClasse_id;
 
 const tableData = ref([]);
 const currentPage = ref(1);
@@ -69,7 +70,7 @@ const fetchData = async () => {
         // Vérifiez si le tableau contient des professeurs
         if (Array.isArray(classesMatieres) && classesMatieres.length > 0) {
             // Mapper les données pour extraire les informations souhaitées
-            tableData.value = classesMatieres.map(({ nom_professeur, prenom_professeur, matiere, id_profMat }) => ({
+            tableData.value = classesMatieres.map(({ nom_professeur, prenom_professeur, matiere, id_profMat, }) => ({
                 nom_professeur,
                 prenom_professeur,
                 matiere,
@@ -96,10 +97,13 @@ const paginatedData = computed(() => {
     const end = start + pageSize.value;
     return tableData.value.slice(start, end);
 });
-const redirectToNotes = (id) => {
-    // Redirige vers la page annee_classes avec l'id dans l'URL
-    router.push({ name: 'notes', params: { id } });
+const redirectToNotes = (id_profMat, matiere) => {
+    // console.log('id et matiere', id_profMat, matie 
+    
+    // Redirige vers la page notes avec l'id et le nom de la matière dans les paramètres de l'URL
+    router.push({ name: 'notes', params: { id_profMat, matiere } });
 };
+
 
 // Méthode pour récupérer les détails d'une année
 const detailsAnneeClasse = async (id) => {
@@ -131,7 +135,7 @@ const retour = () => {
 
 // Appel des méthodes dans onMounted
 onMounted(() => {
-    // console.log(anneClasseId);
+    //  console.log(anneClasseId);
     detailsAnneeClasse(anneClasseId);
     fetchData();
 });
@@ -139,6 +143,9 @@ onMounted(() => {
 
 
 <style scoped>
+  ::v-deep .tab-noteMatiere td:nth-child(3)  { 
+    display: none; /* Masquer la colonne de l'ID */
+  }
 .main-content {
     margin-top: 120px;
 }

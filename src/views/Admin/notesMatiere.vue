@@ -3,7 +3,7 @@
     <topbar_admin />
     <div class="main-content">
         <h2>
-            Les notes de la matière : {{ nomMatiere }}
+            Les notes de la matière : {{ matiere }}
         </h2>
         <div class="classes">
             <div class="tableauNote">
@@ -38,8 +38,10 @@ import pagination from '@/components/paginations.vue';
 const router = useRouter();
 const route = useRoute();
 
-const nomMatiere = ref(''); 
-const profClasseId = route.params.id;
+
+// const profClasseId = route.params.id;
+const id_profMat = route.params.id_profMat;
+const matiere = route.params.matiere;
 
 const tableData = ref([]);
 const currentPage = ref(1);
@@ -47,15 +49,13 @@ const pageSize = ref(5);
 
 // Déclaration d'une fonction asynchrone nommée fetchData
 const fetchData = async () => {
-    const response = await getNoteClasse(profClasseId);
+    const response = await getNoteClasse(id_profMat);
 
     // Vérifiez si la réponse contient des données
     if (response && response.données && response.données.length > 0) {
         // Si des données existent, on les extrait dans notesData
         const notesData = response.données;
-        // On assigne la matière de la première note à nomMatiere, ou 'Matière inconnue' si non définie
-        nomMatiere.value = notesData[0].matiere || 'Matière inconnue';
-
+        
         // Regroupement des notes par élève
         const groupedData = notesData.reduce((acc, note) => {
             // Destructuration de l'objet note pour obtenir les propriétés 
@@ -98,10 +98,7 @@ const fetchData = async () => {
         // Convertir l'objet regroupé en tableau et l'assigner à tableData
         tableData.value = Object.values(groupedData);
 
-    } else {
-        // Si aucune donnée n'est trouvée, on affiche 'Aucune matière trouvée'
-        nomMatiere.value = 'Aucune matière trouvée';
-    }
+    } 
 };
 
 

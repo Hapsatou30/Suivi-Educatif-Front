@@ -10,20 +10,21 @@
         <div class="tableau1">
           <tabEvaluations 
             v-if="paginatedData.length > 0"
-            class="tab-evaluations"
+            class="tab-gestionNotes"
             :headers="['N°', 'Nom ', 'Capacité', 'Niveau', 'Matières']"
-            :data="paginatedData.map(({ numero, nom, capacite,niveau, id }) => ({
+            :data="paginatedData.map(({ numero, nom, capacite,niveau, id,anneeClasse_id }) => ({
               numero,
               nom,
               capacite,
               niveau,
-              id
+              id,
+              anneeClasse_id
               
             }))"
           >
             <template #actions="{ row }">
               <div class="boutons">
-                <button class="btn " @click="redirectToSubeject(row.id)"style="color: #407CEE; font-size: 40px;" title="Voir les notes par matières">
+                <button class="btn " @click="redirectToSubeject(row.anneeClasse_id)"style="color: #407CEE; font-size: 40px;" title="Voir les notes par matières">
                   <Icon icon="marketeq:eye"/> 
                 </button>
               </div>
@@ -76,7 +77,8 @@
           nom: classe.nom,
           niveau: classe.niveau,
           capacite: classe.capacite,
-          id: classe.id  
+          id: classe.id  ,
+          anneeClasse_id: classe.anneeClasse_id
         }))
       );
 
@@ -100,9 +102,9 @@
     return tableData.value.slice(start, end);
   });
 
-  const redirectToSubeject = (id) => {
+  const redirectToSubeject = (anneeClasse_id) => {
   // Redirige vers la page annee_classes avec l'id dans l'URL
-  router.push({ name: 'notes_matieres', params: { id } });
+  router.push({ name: 'notes_matieres', params: { anneeClasse_id } });
 };
   
   onMounted(fetchData);
@@ -111,10 +113,12 @@
   
   <style scoped>
   /* Masquer la colonne ID dans le tableau */
-  .tab-evaluations td:nth-child(4)  { 
+  ::v-deep .tab-gestionNotes td:nth-child(4)  { 
     display: none; /* Masquer la colonne de l'ID */
   }
-  
+  ::v-deep.tab-gestionNotes td:nth-child(5)  { 
+    display: none; /* Masquer la colonne de l'ID */
+  }
   
   .boutons {
       background-color: transparent; 

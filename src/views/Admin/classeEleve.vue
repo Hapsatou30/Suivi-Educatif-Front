@@ -6,8 +6,15 @@
             Ajouter des élèves dans la classe de : {{ nomClasse }}
         </h2>
         <div class="check">
-            <!-- Écoute de l'événement d'items sélectionnés depuis le composant checkbox -->
-            <checkbox :items="itemList" :imageSrc="imageSource" @update:selectedItems="updateSelectedItems" />
+            <!-- Vérifier si la liste des élèves non attribués est vide -->
+            <template v-if="itemList.length > 0">
+                <checkbox :items="itemList" :imageSrc="imageSource" @update:selectedItems="updateSelectedItems" />
+            </template>
+            <template v-else>
+                <p class="alert alert-info" style="margin-left: 300px; margin-right: 50px;">
+                    Tous les élèves ont déjà une classe attribuée.
+                </p>
+            </template>
         </div>
         <div class="button-container">
             <button @click="attribuerEleveClasse" class="btn btn-custom">Enregistrer</button>
@@ -15,6 +22,7 @@
         </div>
     </div>
 </template>
+
 
 <script setup>
 import { ref, onMounted } from 'vue';
@@ -24,7 +32,7 @@ import topbar_admin from '@/components/topbarAdmin.vue';
 import checkbox from '@/components/checkbox.vue';
 import { getAnneeClasseDetails } from '@/services/AnneeClasseService';
 import { getEleves } from '@/services/EleveService';
-import { ajouterEleveClasse, getEleveClasse } from '@/services/ClasseEleve';
+import { ajouterEleveClasse, getElevesOntClasse } from '@/services/ClasseEleve';
 import Swal from 'sweetalert2';
 
 const router = useRouter();
@@ -41,12 +49,12 @@ const eleveAttribue = ref([]); // Pour stocker les élèves déjà attribués
 const detailsAnneeClasse = async (id) => {
     try {
         const response = await getAnneeClasseDetails(id);
-        console.log('Réponse API brute:', response);
+        // console.log('Réponse API brute:', response);
 
         // Vérification si response contient un objet valide
         if (response && response.donnees_classe) { // Corrigé ici pour accéder à 'donnees_classe'
             const classe = response.donnees_classe; // Corrigé ici pour accéder à 'donnees_classe'
-            console.log('Détails de la classe:', classe);
+            // console.log('Détails de la classe:', classe);
             nomClasse.value = `${classe.nom}`; // Mise à jour de la variable ici
         } else {
             console.error('Aucun détail de la classe trouvé ou structure inattendue.');
@@ -60,36 +68,31 @@ const detailsAnneeClasse = async (id) => {
 const fetchEleveNonAttribue = async () => {
     try {
         // Récupérer tous les élèves
-        const tousEleves = await getEleves(); // Vérifie que cette méthode retourne un tableau d'élèves
-        console.log(tousEleves); 
-        // Récupérer les élèves déjà attribués à cette année de classe
-        const response = await getEleveClasse(anneClasseId);
-        console.log(response);
+        const tousEleves = await getEleves(); // Cette méthode retourne un tableau d'élèves
+        // console.log('Liste de tous les élèves:', tousEleves);
+        
+        // Récupérer les élèves qui ont déjà une classe
+        const response = await getElevesOntClasse();
+        // console.log('Élèves ayant déjà une classe:', response);
 
-        // Vérifier que la réponse contient des données
+        // Vérifier que la réponse contient des données et qu'il s'agit d'un tableau
         if (response && response.données && Array.isArray(response.données)) {
-            // Créer un ensemble pour stocker les IDs des élèves attribués
+            // Créer un ensemble contenant les IDs des élèves attribués à une classe
             const elevesAttribueIds = new Set();
-
-            // Parcourir chaque classe dans les données
-            response.données.forEach(classe => {
-                if (classe.eleves && Array.isArray(classe.eleves)) {
-                    classe.eleves.forEach(eleve => {
-                        // Ajouter l'ID de l'élève à l'ensemble
-                        elevesAttribueIds.add(eleve.id);
-                    });
-                }
+            response.données.forEach(eleveClasse => {
+                elevesAttribueIds.add(eleveClasse.eleve_id);
             });
 
             // Filtrer les élèves pour ne garder que ceux qui ne sont pas attribués
             itemList.value = tousEleves.filter(eleve => !elevesAttribueIds.has(eleve.id));
-            console.log(itemList.value);
+            console.log('Élèves non attribués:', itemList.value);
         } else {
-            console.warn('Aucune donnée d\'élèves attribués trouvée ou structure inattendue.');
-            itemList.value = tousEleves; // Si aucune classe n'est trouvée, afficher tous les élèves
+            console.warn("Aucune donnée d'élèves attribués trouvée ou structure inattendue.");
+            // Si aucune classe n'est trouvée, afficher tous les élèves
+            itemList.value = tousEleves;
         }
     } catch (error) {
-        console.error('Erreur lors de la récupération des élèves non attribués :', error);
+        console.error("Erreur lors de la récupération des élèves non attribués:", error);
     }
 };
 
@@ -107,7 +110,7 @@ const attribuerEleveClasse = async () => {
                 eleve_id: selectedEleve.value,
             });
 
-            console.log("Réponse du serveur:", response);
+            // console.log("Réponse du serveur:", response);
 
             // Vérifiez si la réponse inclut un champ "success"
             if (response && response.status === 201) {

@@ -39,7 +39,7 @@ export const getProfesseurs = async () => {
     });
 
     // Afficher les données reçues pour le débogage
-     console.log('Données reçues :', response.data); // Vérifie les données reçues de l'API
+    //  console.log('Données reçues :', response.data); // Vérifie les données reçues de l'API
 
     return response.data.données; // Retourner le nombre total de professeurs
   } catch (error) {
@@ -59,7 +59,7 @@ export const getProfesseurDetails = async (id) => {
     });
 
     // Afficher les données reçues pour le débogage
-    console.log('Détails du professeur récupérés :', response.data); // Vérifie les données reçues de l'API
+    // console.log('Détails du professeur récupérés :', response.data); // Vérifie les données reçues de l'API
 
     return response.data; // Retourner les détails du professeur
   } catch (error) {
@@ -78,7 +78,7 @@ export const ajouterProfesseur = async (professeur) => {
     });
 
     // Afficher la réponse pour le débogage
-    console.log('Professeur ajouté :', response.data);
+    // console.log('Professeur ajouté :', response.data);
     return response.data; // Renvoie toute la réponse pour analyse
   } catch (error) {
     console.error('Erreur lors de l\'ajout du professeur :', error);
@@ -89,15 +89,15 @@ export const ajouterProfesseur = async (professeur) => {
 export const modifierProfesseur = async (professeur) => {
   try {
     const token = localStorage.getItem('token');
-    console.log('Envoi des données au serveur :', professeur); 
+    // console.log('Envoi des données au serveur :', professeur); 
     
-    const response = await axios.put(`${apiUrl}/professeur/${professeur.id}`, professeur, {
+    const response = await axios.post(`${apiUrl}/professeur/${professeur.id}`, professeur, {
       headers: {
         Authorization: `Bearer ${token}`
       }
     });
     
-    console.log('Professeur modifié :', response.data);
+    // console.log('Professeur modifié :', response.data);
     return response.data;
   } catch (error) {
     console.error('Erreur lors de la modification du professeur :', error.response ? error.response.data : error.message);
@@ -122,7 +122,7 @@ export const supprimerProfesseur = async (id) => {
       }
     });
 
-    console.log('professeurs supprimée :', response.data);
+    // console.log('professeurs supprimée :', response.data);
     return response.data; // Renvoie les données de réponse
   } catch (error) {
     console.error('Erreur lors de la suppression du professeurs :', error);

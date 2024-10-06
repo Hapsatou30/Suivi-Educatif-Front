@@ -38,12 +38,12 @@
   
   // Fonction appelée lors de la recherche
   const onSearch = () => {
-    console.log('Recherche pour:', searchQuery.value);
+    // console.log('Recherche pour:', searchQuery.value);
   };
   
   // Fonction pour gérer la sélection d'un résultat
   const selectResult = (result) => {
-    console.log('Résultat sélectionné:', result);
+    // console.log('Résultat sélectionné:', result);
     // Ici, vous pouvez émettre un événement ou effectuer une action avec le résultat sélectionné
   };
   

@@ -18,7 +18,9 @@
                         id
                     }))">
                 </tabEvaluations>
-                <p v-else class="no-evaluations-message">Aucun élève trouvé.</p>
+                <p v-else class="alert alert-info" >
+                    Aucune élève trouvé.
+                    </p>
             </div>
 
             <pagination class="pagination1" v-if="tableData.length > pageSize" :totalItems="tableData.length"
@@ -57,7 +59,7 @@ const fetchData = async () => {
         const response = await getEleveClasse(anneClasseId);
 
         // Trouver la classe qui correspond à l'ID
-        const classeCible = response.données.find(classe => classe.id === parseInt(anneClasseId));
+        const classeCible = response.données.find(classe => classe.id_anneeClasse === parseInt(anneClasseId));
         
 
         const elevesClasse = [];
@@ -65,7 +67,7 @@ const fetchData = async () => {
         if (classeCible && classeCible.eleves) {
             classeCible.eleves.forEach(eleve => {
                 elevesClasse.push({
-                    id: eleve.id,
+                    id: eleve.id_classeEleve,
                     prenom: eleve.prenom,
                     nom: eleve.nom,
                     matricule: eleve.matricule,
@@ -74,8 +76,12 @@ const fetchData = async () => {
                 });
             });
         }
+        // console.log('eleveclasse', elevesClasse);
+        
 
         tableData.value = elevesClasse;
+        // console.log('tableData.value = ' + tableData.value);
+        
         tableData.value.sort((a, b) => a.nom.localeCompare(b.nom));
 
     } catch (error) {
@@ -101,12 +107,12 @@ const paginatedData = computed(() => {
 const detailsAnneeClasse = async (id) => {
     try {
         const response = await getAnneeClasseDetails(id);
-        console.log('Réponse API brute:', response);
+        // console.log('Réponse API brute:', response);
 
         // Vérification si response contient un objet valide
         if (response && response.donnees_classe) { // Corrigé ici pour accéder à 'donnees_classe'
             const classe = response.donnees_classe; // Corrigé ici pour accéder à 'donnees_classe'
-            console.log('Détails de la classe:', classe);
+            // console.log('Détails de la classe:', classe);
             nomClasse.value = `${classe.nom}`; // Mise à jour de la variable ici
         } else {
             console.error('Aucun détail de la classe trouvé ou structure inattendue.');
@@ -125,7 +131,7 @@ const retour = () => {
 
 // Appel des méthodes dans onMounted
 onMounted(() => {
-    console.log('ID de la classe:', anneClasseId);
+    // console.log('ID de la classe:', anneClasseId);
     detailsAnneeClasse(anneClasseId);
     fetchData(); // Récupérer les données des élèves au chargement de la page
 });

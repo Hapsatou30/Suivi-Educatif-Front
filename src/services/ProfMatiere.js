@@ -11,7 +11,7 @@ export const ajouterProfMatiere = async (profmat) => {
     });
 
     // Afficher les données reçues pour le débogage
-    console.log('Données reçues :', response.data);
+    // console.log('Données reçues :', response.data);
 
     // Vérifiez si la réponse inclut un champ "success"
     if (response.data && response.data.success) {
@@ -40,7 +40,7 @@ export const ajouterProfMatiere = async (profmat) => {
       });
   
       // Afficher les données reçues pour le débogage
-       console.log('Données reçues :', response.data); // Vérifie les données reçues de l'API
+      //  console.log('Données reçues :', response.data); // Vérifie les données reçues de l'API
   
       return response.data; // Retourner le nombre total de professeurs
     } catch (error) {
@@ -63,7 +63,7 @@ export const ajouterProfMatiere = async (profmat) => {
       });
   
       // Afficher les données reçues pour le débogage
-       console.log('Données reçues :', response.data); // Vérifie les données reçues de l'API
+      //  console.log('Données reçues :', response.data); // Vérifie les données reçues de l'API
   
       return response.data; // Retourner le nombre total de professeurs
     } catch (error) {

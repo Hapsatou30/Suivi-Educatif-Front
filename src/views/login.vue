@@ -78,7 +78,7 @@ const validateForm = () => {
 // Méthode pour la connexion
 // Méthode pour la connexion
 const login = async () => {
-  console.log('Tentative de connexion avec : ', email.value, password.value);
+  // console.log('Tentative de connexion avec : ', email.value, password.value);
 
   // Vérification du formulaire
   if (!validateForm()) return;
@@ -86,7 +86,7 @@ const login = async () => {
   try {
     // Appel à l'API pour l'authentification
     const response = await loginService(email.value, password.value);
-    console.log('Réponse de l\'API : ', response);
+    // console.log('Réponse de l\'API : ', response);
 
     // Si le token d'authentification est reçu
     if (response.access_token) {
@@ -94,7 +94,7 @@ const login = async () => {
 
       // Récupération des rôles
       const roles = response.roles;
-      console.log('Rôles de l\'utilisateur : ', roles);
+      // console.log('Rôles de l\'utilisateur : ', roles);
 
       // Stockage des rôles dans localStorage
       localStorage.setItem('userRole', JSON.stringify(roles));
@@ -109,7 +109,7 @@ const login = async () => {
       }
     } else {
       error.value = 'Token non reçu.';
-      console.log('Erreur: Token non reçu');
+      // console.log('Erreur: Token non reçu');
     }
 
   } catch (err) {

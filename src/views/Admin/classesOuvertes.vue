@@ -41,7 +41,9 @@
           </template>
         </tabEvaluations>
 
-        <p v-else class="no-evaluations-message">Aucune classe trouvée.</p>
+        <p v-else class="alert alert-info" >
+          Aucune classe trouvée.
+        </p>
       </div>
 
       <pagination class="pagination1"
@@ -132,7 +134,7 @@ const detailsAnnee = async (id) => {
 };
 
 onMounted(() => {
-  console.log('ID de l\'annee:', anneeId);
+  // console.log('ID de l\'annee:', anneeId);
   detailsAnnee(anneeId);
   fetchData(); 
 });
@@ -234,10 +236,6 @@ const redirectToStudentsList = (id) => {
     color: #F7AE00;
    
 }
-.classes p {
-  font-size: 18px;
-  color: red;
-  font-family: "Poppins", sans-serif;
-}
+
 
 </style>

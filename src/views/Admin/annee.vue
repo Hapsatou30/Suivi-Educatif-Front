@@ -90,8 +90,11 @@
         </tabEvaluations>
 
 
-        <p v-else class="no-evaluations-message">Aucune année trouvée.</p>
+        <p v-else class="alert alert-info" >
+          Aucune année trouvée.
+        </p>
       </div>
+
 
       <pagination 
         class="pagination1"
@@ -126,7 +129,7 @@ const formData = ref({
 });
 
 const editAnnee = (id) => {
-  console.log('Modifier l\'année avec l\'ID :', id);
+  // console.log('Modifier l\'année avec l\'ID :', id);
   const row = tableData.value.find(item => item.id === id);
   if (row) {
     formData.value = {
@@ -135,7 +138,7 @@ const editAnnee = (id) => {
       annee_fin: row.annee_fin,
       etat: row.etat
     };
-    console.log('formData après modification:', formData.value);
+    // console.log('formData après modification:', formData.value);
   }
 };
 
@@ -147,7 +150,7 @@ const pageSize = ref(5);
 const fetchData = async () => {
   try {
     const response = await getAnnees();
-    console.log('Données récupérées :', response);
+    // console.log('Données récupérées :', response);
     if (response && response.length > 0) {
       // Inclure l'ID dans les données récupérées
       tableData.value = response.map((item, index) => ({
@@ -178,7 +181,7 @@ const paginatedData = computed(() => {
 const handleFormSubmit = async () => {
   try {
     const response = await (formData.value.id !== null ? modifierAnnee(formData.value) : ajouterAnnee(formData.value));
-    console.log('Réponse du serveur:', response);
+    // console.log('Réponse du serveur:', response);
 
     // Vérifiez si la réponse contient un message d'erreur
     if (response && response.status && response.status !== 200) {
@@ -376,11 +379,7 @@ margin-right: 50px;
 display: flex;
 justify-content: end;
 }
-p {
-  font-size: 18px;
-  color: red;
-  font-family: "Poppins", sans-serif;
-}
+
 label:hover {
       cursor: pointer; /* Change le curseur lors du survol */
       color: #407CEE; /* Couleur au survol */

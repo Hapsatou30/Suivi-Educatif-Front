@@ -86,7 +86,7 @@ export const profile = async () => {
     });
 
     // Afficher les données reçues pour le débogage
-     console.log('Données reçues :', response.data); // Vérifie les données reçues de l'API
+    //  console.log('Données reçues :', response.data); // Vérifie les données reçues de l'API
 
     return response.data; // Retourner le nombre total de professeurs
   } catch (error) {
@@ -106,7 +106,7 @@ export const modifierProfileProfesseur = async (id, formDataToSend) => {
           }
       });
 
-      console.log('profil modifié :', response.data);
+      // console.log('profil modifié :', response.data);
       return response.data; // Renvoie les données de la réponse pour analyse
   } catch (error) {
       console.error('Erreur lors de la modification du profil :', error.response ? error.response.data : error.message);

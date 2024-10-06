@@ -12,7 +12,7 @@ export const getCahierTexte = async (anneeClasseId) => {
             }
         });
 
-        console.log('Données reçues depuis l\'API:', response.data.données); 
+        // console.log('Données reçues depuis l\'API:', response.data.données); 
         return response.data; // Retourner le nombre total de professeurs
     } catch (error) {
         // Gérer les erreurs lors de la récupération du nombre de professeurs
@@ -31,7 +31,7 @@ export const ajouterCahierTexte = async (cahier_texte) => {
       });
   
       // Afficher la réponse pour le débogage
-      console.log('cahier_texte ajouté :', response.data);
+      // console.log('cahier_texte ajouté :', response.data);
       return response.data; // Renvoie toute la réponse pour analyse
     } catch (error) {
       console.error('Erreur lors de l\'ajout de la cahier_texte :', error);
@@ -49,7 +49,7 @@ export const ajouterCahierTexte = async (cahier_texte) => {
             }
         });
 
-        console.log('Cahier de texte modifié :', response.data);
+        // console.log('Cahier de texte modifié :', response.data);
         return response.data; // Renvoie les données de la réponse pour analyse
     } catch (error) {
         console.error('Erreur lors de la modification du cahier de texte :', error.response ? error.response.data : error.message);
@@ -67,7 +67,7 @@ export const ajouterCahierTexte = async (cahier_texte) => {
       });
   
       // Afficher les données reçues pour le débogage
-      console.log('Détails du annees-scolaires récupérés :', response.data); // Vérifie les données reçues de l'API
+      // console.log('Détails du annees-scolaires récupérés :', response.data); // Vérifie les données reçues de l'API
   
       return response.data; // Retourner les détails du annees-scolaires
     } catch (error) {
@@ -85,7 +85,7 @@ export const ajouterCahierTexte = async (cahier_texte) => {
         }
       });
   
-      console.log('Classe supprimée :', response.data);
+      // console.log('Classe supprimée :', response.data);
       return response.data; // Renvoie les données de réponse
     } catch (error) {
       console.error('Erreur lors de la suppression de la Classe :', error);

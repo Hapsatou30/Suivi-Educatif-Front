@@ -71,7 +71,9 @@
           </template>
         </tabEvaluations>
 
-        <p v-else class="no-professeurs-message">Aucun professeur trouvé.</p>
+        <p v-else class="alert alert-info" >
+          Aucun professeur trouvé.
+        </p>
       </div>
 
       <pagination 
@@ -124,7 +126,7 @@ const fetchData = async () => {
       id: item.id,
       user_id: item.user_id  
     }));
-    console.log("Données récupérées :", tableData.value); // Ajoutez ce log
+    // console.log("Données récupérées :", tableData.value); // Ajoutez ce log
   } catch (error) {
     console.error('Erreur lors de la récupération des données :', error);
   }
@@ -142,12 +144,12 @@ const paginatedData = computed(() => {
 });
 const handleFormSubmit = async () => {
     try {
-        console.log("Données à envoyer:", newProfesseur.value);
+        // console.log("Données à envoyer:", newProfesseur.value);
         const response = await (newProfesseur.value.id !== null 
           ? modifierProfesseur(newProfesseur.value) 
           : ajouterProfesseur(newProfesseur.value));
         
-        console.log("Réponse du serveur:", response);
+        // console.log("Réponse du serveur:", response);
         
         if (response) {  // Vérification modifiée
           await fetchData();  // Récupérez de nouveau la liste des professeurs après la modification

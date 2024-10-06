@@ -30,7 +30,9 @@
             </template>
           </tabEvaluations>
   
-          <p v-else class="no-evaluations-message">Aucune classe trouvée.</p>
+          <p v-else class="alert alert-info" >
+          Aucune classe trouvée.
+        </p>
         </div>
   
         <pagination class="pagination1"
@@ -63,7 +65,7 @@
   const fetchData = async () => {
   try {
     const response = await getAnneClasses();
-    console.log('Réponse de l\'API:', response);
+    // console.log('Réponse de l\'API:', response);
 
     // Vérifiez si 'données' est un tableau
     if (Array.isArray(response.données)) {

@@ -23,7 +23,9 @@
                     </template>
                 </tabEvaluations>
 
-                <p v-else class="no-evaluations-message">Aucune classe trouvée.</p>
+                <p v-else class="alert alert-info" >
+          Aucune classe trouvée.
+        </p>
             </div>
 
             <pagination class="pagination1" v-if="tableData.length > pageSize" :totalItems="tableData.length"
@@ -60,27 +62,27 @@ const pageSize = ref(5);
 const fetchData = async () => {
     const response = await getProfClasse(anneClasseId);
 
-    console.log('Réponse complète:', response); // Vérifiez la réponse ici
+    // console.log('Réponse complète:', response); // Vérifiez la réponse ici
 
     // Vérifiez si la réponse est valide
     if (response && response.classes_matieres) { // Vérifiez si la réponse contient classes_matieres
         const classesMatieres = response.classes_matieres; // Récupération du tableau des matières
 
         // Vérifiez si le tableau contient des professeurs
-        console.log('Classes matières:', classesMatieres); // Ajoutez ce log
+        // console.log('Classes matières:', classesMatieres); // Ajoutez ce log
         if (Array.isArray(classesMatieres) && classesMatieres.length > 0) {
             tableData.value = classesMatieres; // <-- Ajoutez cette ligne pour assigner les données
             classesMatieres.forEach((item) => {
                 const nomProfesseur = item.nom_professeur || "Nom inconnu";
                 const prenomProfesseur = item.prenom_professeur || "Prénom inconnu";
                 const matiere = item.matiere || "Matière inconnue";
-                console.log(`Professeur : ${prenomProfesseur} ${nomProfesseur}, Matière : ${matiere}`);
+                // console.log(`Professeur : ${prenomProfesseur} ${nomProfesseur}, Matière : ${matiere}`);
             });
         } else {
-            console.log('Aucun professeur trouvé pour cette classe.'); // Affiché seulement si classes_matieres est vide
+            // console.log('Aucun professeur trouvé pour cette classe.'); // Affiché seulement si classes_matieres est vide
         }
     } else {
-        console.log('Erreur lors de la récupération des données ou pas de classes_matieres.');
+        // console.log('Erreur lors de la récupération des données ou pas de classes_matieres.');
     }
 };
 
@@ -105,12 +107,12 @@ const redirectToNotes = (id) => {
 const detailsAnneeClasse = async (id) => {
     try {
         const response = await getAnneeClasseDetails(id);
-        console.log('Réponse API brute:', response);
+        // console.log('Réponse API brute:', response);
 
         // Vérification si response contient un objet valide
         if (response && response.donnees_classe) { // Corrigé ici pour accéder à 'donnees_classe'
             const classe = response.donnees_classe; // Corrigé ici pour accéder à 'donnees_classe'
-            console.log('Détails de la classe:', classe);
+            // console.log('Détails de la classe:', classe);
             nomClasse.value = `${classe.nom}`; // Mise à jour de la variable ici
         } else {
             console.error('Aucun détail de la classe trouvé ou structure inattendue.');
@@ -131,7 +133,7 @@ const retour = () => {
 
 // Appel des méthodes dans onMounted
 onMounted(() => {
-    console.log(anneClasseId);
+    // console.log(anneClasseId);
     detailsAnneeClasse(anneClasseId);
     fetchData();
 });

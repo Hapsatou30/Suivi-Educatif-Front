@@ -83,7 +83,9 @@
           </template>
         </tabEvaluations>
 
-        <p v-else class="no-evaluations-message">Aucune matière trouvée.</p>
+        <p v-else class="alert alert-info" >
+          Aucune matière trouvée.
+        </p>
       </div>
 
       <pagination 
@@ -133,7 +135,7 @@ const currentPage = ref(1);
 const pageSize = ref(5);
 
 const fetchData = async () => {
-  console.log('Fetching data...');
+  // console.log('Fetching data...');
   try {
     const response = await getMatieres();
 if (response && response.données && response.données.length > 0) {

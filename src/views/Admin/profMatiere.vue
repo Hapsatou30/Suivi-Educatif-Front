@@ -42,7 +42,7 @@ const matieresAttribuees = ref([]); // Pour stocker les matières déjà attribu
 const fetchProfMatiere = async (id) => {
   try {
     const response = await getProfMatiere();
-    console.log('Données reçues de getProfMatiere:', response.données); 
+    // console.log('Données reçues de getProfMatiere:', response.données); 
 
     if (response?.données) {
       const idAsNumber = Number(id); // Convertir l'ID en nombre si nécessaire
@@ -51,7 +51,7 @@ const fetchProfMatiere = async (id) => {
       if (professeur) {
         // Stocker les matières attribuées pour utilisation dans fetchMatieres
         matieresAttribuees.value = professeur.matieres.map(matiere => matiere.nom);
-        console.log('Matières attribuées au professeur:', matieresAttribuees.value);
+        // console.log('Matières attribuées au professeur:', matieresAttribuees.value);
       } else {
         console.warn('Aucun professeur trouvé avec cet ID.');
       }
@@ -74,7 +74,7 @@ const fetchMatieres = async () => {
       coefficient: matiere.coefficient,
       checked: matieresAttribuees.value.includes(matiere.nom) // Cocher si la matière est déjà attribuée
     }));
-    console.log('Liste des matières:', itemList.value);
+    // console.log('Liste des matières:', itemList.value);
   } catch (error) {
     console.error('Erreur lors de la récupération des matières :', error);
   }
@@ -87,7 +87,7 @@ const detailsProf = async (id) => {
     const response = await getProfesseurDetails(id);
     if (response && response.données) {
       const professeur = response.données;
-      console.log('Détails du professeur:', professeur);
+      // console.log('Détails du professeur:', professeur);
       professeurNomPrenom.value = `${professeur.prenom} ${professeur.nom}`;
     } else {
       console.error('Aucun détail de professeur trouvé.');
@@ -100,7 +100,7 @@ const detailsProf = async (id) => {
 // Mettre à jour les matières sélectionnées depuis le composant checkbox
 const updateSelectedItems = (items) => {
   selectedMatieres.value = items; // Items contient les ids des matières sélectionnées
-  console.log('Matières sélectionnées:', selectedMatieres.value);
+  // console.log('Matières sélectionnées:', selectedMatieres.value);
 };
 
 // Méthode pour attribuer les matières au professeur
@@ -112,7 +112,7 @@ const attribuerMatiere = async () => {
         matiere_ids: selectedMatieres.value,
       });
 
-      console.log("Réponse du serveur:", response);
+      // console.log("Réponse du serveur:", response);
 
       // Vérifiez si la réponse inclut un champ "success"
       if (response && response.success) {
@@ -178,7 +178,7 @@ const retour = () => {
 };
 
 onMounted(() => {
-  console.log('ID du professeur:', professeurId);
+  // console.log('ID du professeur:', professeurId);
   detailsProf(professeurId);
   fetchProfMatiere(professeurId).then(fetchMatieres);
 });

@@ -14,7 +14,7 @@ export const getMatieres = async () => {
       });
   
       // Afficher les données reçues pour le débogage
-       console.log('Données reçues :', response.data); // Vérifie les données reçues de l'API
+      //  console.log('Données reçues :', response.data); // Vérifie les données reçues de l'API
   
       return response.data; // Retourner le nombre total de professeurs
     } catch (error) {
@@ -34,7 +34,7 @@ export const getMatieres = async () => {
       });
   
       // Afficher la réponse pour le débogage
-      console.log('matiere ajouté :', response.data);
+      // console.log('matiere ajouté :', response.data);
       return response.data; // Renvoie toute la réponse pour analyse
     } catch (error) {
       console.error('Erreur lors de l\'ajout de la matiere :', error);
@@ -59,7 +59,7 @@ export const getMatieres = async () => {
         }
       });
   
-      console.log('Matiere modifiée :', response.data);
+      // console.log('Matiere modifiée :', response.data);
       return response.data; // Renvoie les nouvelles données
     } catch (error) {
       console.error('Erreur lors de la modification de la Matiere :', error);
@@ -77,7 +77,7 @@ export const getMatieres = async () => {
         }
       });
   
-      console.log('Matiere supprimée :', response.data);
+      // console.log('Matiere supprimée :', response.data);
       return response.data; // Renvoie les données de réponse
     } catch (error) {
       console.error('Erreur lors de la suppression de la matiere :', error);
@@ -98,7 +98,7 @@ export const getMatieres = async () => {
       });
   
       // Afficher les données reçues pour le débogage
-       console.log('Données reçues :', response.data); // Vérifie les données reçues de l'API
+      //  console.log('Données reçues :', response.data); // Vérifie les données reçues de l'API
   
       return response.data.données; // Retourner le nombre total de professeurs
     } catch (error) {
@@ -121,7 +121,7 @@ export const getMatieres = async () => {
       });
   
       // Afficher les données reçues pour le débogage
-       console.log('Données reçues :', response.data); // Vérifie les données reçues de l'API
+      //  console.log('Données reçues :', response.data); // Vérifie les données reçues de l'API
   
       return response.data; // Retourner le nombre total de professeurs
     } catch (error) {

@@ -41,7 +41,7 @@ export const getEleves = async () => {
     });
 
     // Afficher les données reçues pour le débogage
-     console.log('Données reçues :', response.data); // Vérifie les données reçues de l'API
+    //  console.log('Données reçues :', response.data); // Vérifie les données reçues de l'API
 
     return response.data.données; // Retourner le nombre total de professeurs
   } catch (error) {
@@ -61,7 +61,7 @@ export const ajouterEleve = async (eleve) => {
     });
 
     // Afficher la réponse pour le débogage
-    console.log('eleve ajouté :', response.data);
+    // console.log('eleve ajouté :', response.data);
     return response.data; // Renvoie toute la réponse pour analyse
   } catch (error) {
     if (error.response) {
@@ -79,7 +79,7 @@ export const ajouterEleve = async (eleve) => {
 
 export const modifierEleve = async (eleve) => {
   try {
-      console.log('eleve avant modification:', eleve); // Pour débogage
+      // console.log('eleve avant modification:', eleve); // Pour débogage
       const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
       
       // Assurez-vous que l'ID de l'élève est présent dans l'objet eleve
@@ -92,7 +92,7 @@ export const modifierEleve = async (eleve) => {
           }
       });
 
-      console.log('eleve modifié :', response.data);
+      // console.log('eleve modifié :', response.data);
       return response.data; // Renvoie les données de la réponse pour analyse
   } catch (error) {
       console.error('Erreur lors de la modification de l\'eleve :', error.response ? error.response.data : error.message);
@@ -111,7 +111,7 @@ export const supprimerEleve = async (id) => {
       }
     });
 
-    console.log('eleves supprimée :', response.data);
+    // console.log('eleves supprimée :', response.data);
     return response.data; // Renvoie les données de réponse
   } catch (error) {
     console.error('Erreur lors de la suppression de  eleves :', error);

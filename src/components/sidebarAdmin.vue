@@ -25,23 +25,23 @@
           </router-link>
         </li>
         <li>
-          <router-link to="/gestion_notes" class="menu-link">
+          <router-link to="/gestion_notes_admin" class="menu-link"  :class="{ active: isActive('/gestion_notes_admin') || isActive('/notes_matieres') || isActive('/notes')    }">
             <Icon icon="clarity:note-line" /> Notes
           </router-link>
         </li>
         <li>
-          <router-link to="/evaluations" class="menu-link">
+          <router-link to="/gestion_evaluations" class="menu-link" :class="{ active: isActive('/gestion_evaluations') || isActive('/evaluations_classe') }" >
             <span class="material-symbols-outlined"> task </span>
             Évaluations
           </router-link>
         </li>
         <li>
-          <router-link to="/cahiers-de-textes" class="menu-link">
+          <router-link to="/gestion_cahier_texte_admin" class="menu-link" :class="{ active: isActive('/gestion_cahier_texte_admin') || isActive('/cahier_texte_classe') }" >
             <Icon icon="carbon:book" /> Cahiers de textes
           </router-link>
         </li>
         <li>
-          <router-link to="/absences" class="menu-link">
+          <router-link to="/gestion_absences_admin" class="menu-link" :class="{ active: isActive('/gestion_absences_admin') || isActive('/absences_classe_admin') }">
             <Icon icon="mdi:account-off" /> Absences
           </router-link>
         </li>

@@ -30,7 +30,7 @@
 
                 </tabEvaluations>
 
-                <p v-else class="no-evaluations-message">Aucun élève trouvé.</p>
+                <p v-else class="alert alert-info">Aucun élève trouvé.</p>
             </div>
 
             <!-- Pagination -->
@@ -51,7 +51,7 @@
                     }))">
                 </tabEvaluations>
 
-                <p v-else class="no-evaluations-message">Aucun historique d'absence trouvé.</p>
+                <p v-else class="alert alert-info">Aucun historique d'absence trouvé.</p>
             </div>
 
             <pagination class="pagination1" v-if="Data.length > absencesPageSize" :totalItems="Data.length"
@@ -150,7 +150,7 @@ const handleCheckboxChange = (eleveId, isAbsent) => {
     const eleve = tableData.value.find(eleve => eleve.id === eleveId);
 
     if (eleve) {
-        if (isAbsent && !eleve.absent) {  
+        if (isAbsent && !eleve.absent) {
             postAbsences({
                 status: "absent",
                 classe_eleve_id: eleveId,

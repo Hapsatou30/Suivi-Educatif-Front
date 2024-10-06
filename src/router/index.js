@@ -24,7 +24,7 @@ import EmploisDuTemps from '@/views/Admin/emploisDuTemps.vue';
 import ListeEleves from '@/views/Admin/listeEleves.vue';
 import ClasseEleve from '@/views/Admin/classeEleve.vue';
 import ElevesCLasse from '@/views/Admin/elevesCLasses.vue';
-import GestionNotes from '@/views/Admin/gestionNotes.vue';
+import GestionNotesAdmin from '@/views/Admin/gestionNotesAdmin.vue';
 import NoteMatieres from '@/views/Admin/noteMatieres.vue';
 import NotesMatiere from '@/views/Admin/notesMatiere.vue';
 import DashboardProf from '@/views/Professeurs/dashboardProf.vue';
@@ -39,6 +39,12 @@ import CahierTexteProf from '@/views/Professeurs/cahierTexteProf.vue';
 import Planning from '@/views/Professeurs/planning.vue';
 import GestionNotesProf from '@/views/Professeurs/gestionNotes.vue';
 import NotesClasse from '@/views/Professeurs/notesClasse.vue';
+import GestionCahierTexteAdmin from '@/views/Admin/gestionCahierTexteAdmin.vue';
+import CahierTexteClasse from '@/views/Admin/cahierTexteClasse.vue';
+import GestionEvaluationsAdmin from '@/views/Admin/gestionEvaluationsAdmin.vue';
+import EvaluationsClasse from '@/views/Admin/evaluationsClasse.vue';
+import GestionAbsencesAdmins from '@/views/Admin/gestionAbsencesAdmins.vue';
+import AbsencesClasse from '@/views/Admin/absencesClasse.vue';
 
 
 // Routes non protégées (accessible à tous)
@@ -67,9 +73,16 @@ const adminRoutes = [
   { path: '/liste_eleves', name: 'liste_eleves', component: ListeEleves },
   { path: '/classe_eleves/:id', name: 'classe_eleves', component: ClasseEleve },
   { path: '/eleves_classe/:id', name: 'eleves_classe', component: ElevesCLasse },
-  { path: '/gestion_notes', name: 'gestion_notes', component: GestionNotes },
-  { path: '/notes_matieres/:id', name: 'notes_matieres', component: NoteMatieres },
-  { path: '/notes/:id', name: 'notes', component: NotesMatiere },
+  { path: '/gestion_notes_admin', name: 'gestion_notes_admin', component: GestionNotesAdmin },
+  { path: '/notes_matieres/:anneeClasse_id', name: 'notes_matieres', component: NoteMatieres },
+  { path: '/notes/:id_profMat/:matiere', name: 'notes', component: NotesMatiere },
+  { path: '/gestion_cahier_texte_admin' , name: 'gestion_cahier_texte_admin', component: GestionCahierTexteAdmin},
+  { path: '/cahier_texte_classe/:anneeClasse_id', name: 'cahier_texte_classe', component: CahierTexteClasse},
+  { path: '/gestion_evaluations', name: 'gestion_evaluations', component: GestionEvaluationsAdmin},
+  { path: '/evaluations_classe/:anneeClasse_id', name: 'evaluations_classe', component: EvaluationsClasse},
+  { path: '/gestion_absences_admin', name: 'gestion_absences_admin', component: GestionAbsencesAdmins},
+  { path: '/absences_classe_admin/:anneeClasse_id', name: 'absences_classe_admin', component: AbsencesClasse},
+
 ];
 
 // Routes protégées pour les professeurs

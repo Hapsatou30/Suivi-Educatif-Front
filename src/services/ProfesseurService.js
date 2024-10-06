@@ -91,7 +91,7 @@ export const modifierProfesseur = async (professeur) => {
     const token = localStorage.getItem('token');
     console.log('Envoi des données au serveur :', professeur); 
     
-    const response = await axios.put(`${apiUrl}/professeur/${professeur.id}`, professeur, {
+    const response = await axios.post(`${apiUrl}/professeur/${professeur.id}`, professeur, {
       headers: {
         Authorization: `Bearer ${token}`
       }

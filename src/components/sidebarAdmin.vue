@@ -5,17 +5,17 @@
       </div>
       <ul class="menu">
         <li>
-          <router-link to="/dashboard" class="menu-link">
+          <router-link to="/dashboard" class="menu-link" :class="{ active: isActive('/dashboard') }">
             <Icon icon="mdi:home-outline" /> Tableau de bord
           </router-link>
         </li>
         <li>
-          <router-link to="/professeurs" class="menu-link">
+          <router-link to="/professeurs" class="menu-link" :class="{ active: isActive('/professeurs') || isActive('/matieres') || isActive('/prof_matiere')    }">
             <Icon icon="mdi:teacher" /> Professeurs
           </router-link>
         </li>
         <li>
-          <router-link to="/annees" class="menu-link">
+          <router-link to="/annees" class="menu-link"  :class="{ active: isActive('/annees') || isActive('/classes') || isActive('/annee_classes') || isActive('/list_classes') || isActive('/class_prof') || isActive('/Emplois_du_temps') || isActive('/eleves_classe') }">
             <Icon icon="iwwa:year" /> Année scolaire
           </router-link>
         </li>
@@ -51,6 +51,13 @@
   
   <script setup>
   import { Icon } from '@iconify/vue';
+  import { useRoute } from 'vue-router';
+
+const route = useRoute();
+
+const isActive = (path) => {
+  return route.path.startsWith(path);
+};
   </script>
   
   <style scoped>
@@ -119,5 +126,21 @@
   .menu-link:hover {
     color: #F7AE00;
   }
+  .active {
+  background-color: white;
+  color: #407CEE;
+  width: 226px;
+  border-top-left-radius: 40px;
+  border-bottom-left-radius: 40px;
+}
+
+.active .iconify, .active .material-symbols-outlined {
+  color: #407CEE;
+}
+
+/* Hover effect */
+.menu-link:hover {
+  color: #F7AE00;
+}
   </style>
   

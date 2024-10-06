@@ -30,7 +30,7 @@
           </router-link>
         </li>
         <li>
-          <router-link to="/evaluations" class="menu-link">
+          <router-link to="/gestion_evaluations" class="menu-link" :class="{ active: isActive('/gestion_evaluations') || isActive('/evaluations_classe') }" >
             <span class="material-symbols-outlined"> task </span>
             Évaluations
           </router-link>

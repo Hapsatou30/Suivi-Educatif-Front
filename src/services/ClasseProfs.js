@@ -14,9 +14,8 @@ export const ajouterProfClasse = async (classeprof) => {
     console.log('Données reçues :', response.data);
 
     // Vérifiez si la réponse inclut un champ "success"
-    if (response.data && response.data) {
       return response.data; // Retourner l'objet entier si succès
-    } 
+    
   } catch (error) {
     console.error('Erreur:', error);
     return { success: false, message: 'Erreur lors de l\'ajout des profs.' }; // Retourner une structure d'erreur

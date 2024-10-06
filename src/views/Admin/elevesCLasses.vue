@@ -57,7 +57,7 @@ const fetchData = async () => {
         const response = await getEleveClasse(anneClasseId);
 
         // Trouver la classe qui correspond à l'ID
-        const classeCible = response.données.find(classe => classe.id === parseInt(anneClasseId));
+        const classeCible = response.données.find(classe => classe.id_anneeClasse === parseInt(anneClasseId));
         
 
         const elevesClasse = [];
@@ -65,7 +65,7 @@ const fetchData = async () => {
         if (classeCible && classeCible.eleves) {
             classeCible.eleves.forEach(eleve => {
                 elevesClasse.push({
-                    id: eleve.id,
+                    id: eleve.id_classeEleve,
                     prenom: eleve.prenom,
                     nom: eleve.nom,
                     matricule: eleve.matricule,
@@ -74,8 +74,12 @@ const fetchData = async () => {
                 });
             });
         }
+        console.log('eleveclasse', elevesClasse);
+        
 
         tableData.value = elevesClasse;
+        console.log('tableData.value = ' + tableData.value);
+        
         tableData.value.sort((a, b) => a.nom.localeCompare(b.nom));
 
     } catch (error) {

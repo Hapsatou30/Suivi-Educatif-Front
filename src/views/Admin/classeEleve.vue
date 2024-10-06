@@ -61,10 +61,9 @@ const fetchEleveNonAttribue = async () => {
     try {
         // Récupérer tous les élèves
         const tousEleves = await getEleves(); // Vérifie que cette méthode retourne un tableau d'élèves
-        console.log(tousEleves); 
+        console.log('liste de tout les eleves', tousEleves); 
         // Récupérer les élèves déjà attribués à cette année de classe
         const response = await getEleveClasse(anneClasseId);
-        console.log(response);
 
         // Vérifier que la réponse contient des données
         if (response && response.données && Array.isArray(response.données)) {
@@ -76,14 +75,16 @@ const fetchEleveNonAttribue = async () => {
                 if (classe.eleves && Array.isArray(classe.eleves)) {
                     classe.eleves.forEach(eleve => {
                         // Ajouter l'ID de l'élève à l'ensemble
-                        elevesAttribueIds.add(eleve.id);
+                        elevesAttribueIds.add(eleve.id_eleve);
+                        console.log('élève attribué', elevesAttribueIds);
                     });
                 }
+                
             });
-
+                
             // Filtrer les élèves pour ne garder que ceux qui ne sont pas attribués
             itemList.value = tousEleves.filter(eleve => !elevesAttribueIds.has(eleve.id));
-            console.log(itemList.value);
+            console.log('eleves non attrbué', itemList.value);
         } else {
             console.warn('Aucune donnée d\'élèves attribués trouvée ou structure inattendue.');
             itemList.value = tousEleves; // Si aucune classe n'est trouvée, afficher tous les élèves

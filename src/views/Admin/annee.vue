@@ -90,8 +90,11 @@
         </tabEvaluations>
 
 
-        <p v-else class="no-evaluations-message">Aucune année trouvée.</p>
+        <p v-else class="alert alert-info" >
+          Aucune année trouvée.
+        </p>
       </div>
+
 
       <pagination 
         class="pagination1"
@@ -376,11 +379,7 @@ margin-right: 50px;
 display: flex;
 justify-content: end;
 }
-p {
-  font-size: 18px;
-  color: red;
-  font-family: "Poppins", sans-serif;
-}
+
 label:hover {
       cursor: pointer; /* Change le curseur lors du survol */
       color: #407CEE; /* Couleur au survol */

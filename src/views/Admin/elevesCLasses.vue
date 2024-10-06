@@ -18,7 +18,9 @@
                         id
                     }))">
                 </tabEvaluations>
-                <p v-else class="no-evaluations-message">Aucun élève trouvé.</p>
+                <p v-else class="alert alert-info" >
+                    Aucune élève trouvé.
+                    </p>
             </div>
 
             <pagination class="pagination1" v-if="tableData.length > pageSize" :totalItems="tableData.length"

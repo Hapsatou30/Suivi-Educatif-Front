@@ -25,7 +25,9 @@
                     </template>
                 </tabEvaluations>
 
-                <p v-else class="no-evaluations-message">Aucune note trouvée.</p>
+                <p v-else class="alert alert-info" >
+          Aucune note trouvée.
+        </p>
             </div>
 
             <pagination class="pagination1" v-if="tableData.length > pageSize" :totalItems="tableData.length"

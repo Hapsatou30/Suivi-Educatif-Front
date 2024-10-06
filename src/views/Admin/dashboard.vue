@@ -25,7 +25,9 @@
         />
 
         <!-- Message affiché si la tableData est vide -->
-        <p v-else class="no-evaluations-message">Aucune évaluation prévue pour aujourd'hui.</p>
+        <p v-else class="alert alert-info" >
+          Aucune évaluation prévue pour aujourd'hui.
+        </p>
       </div>
 
       <!-- Composant de pagination -->

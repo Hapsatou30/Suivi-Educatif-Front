@@ -15,7 +15,7 @@
           </router-link>
         </li>
         <li>
-          <router-link to="/annees" class="menu-link"  :class="{ active: isActive('/annees') || isActive('/classes') || isActive('/annee_classes') || isActive('/list_classes') || isActive('/class_prof') || isActive('/Emplois_du_temps') || isActive('/eleves_classe') }">
+          <router-link to="/annees" class="menu-link"  :class="{ active: isActive('/annees') || isActive('/classes') || isActive('/annee_classes') || isActive('/list_classes') || isActive('/class_prof') || isActive('/Emplois_du_temps') || isActive('/classe_eleves') || isActive('/eleves_classe')}">
             <Icon icon="iwwa:year" /> Année scolaire
           </router-link>
         </li>

@@ -83,7 +83,9 @@
           </template>
         </tabEvaluations>
 
-        <p v-else class="no-evaluations-message">Aucune matière trouvée.</p>
+        <p v-else class="alert alert-info" >
+          Aucune matière trouvée.
+        </p>
       </div>
 
       <pagination 

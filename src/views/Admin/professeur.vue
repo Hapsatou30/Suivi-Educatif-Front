@@ -71,7 +71,9 @@
           </template>
         </tabEvaluations>
 
-        <p v-else class="no-professeurs-message">Aucun professeur trouvé.</p>
+        <p v-else class="alert alert-info" >
+          Aucun professeur trouvé.
+        </p>
       </div>
 
       <pagination 

@@ -36,7 +36,7 @@
           </router-link>
         </li>
         <li>
-          <router-link to="/cahiers-de-textes" class="menu-link">
+          <router-link to="/gestion_cahier_texte_admin" class="menu-link" :class="{ active: isActive('/gestion_cahier_texte_admin') || isActive('/cahier_texte_classe') }" >
             <Icon icon="carbon:book" /> Cahiers de textes
           </router-link>
         </li>

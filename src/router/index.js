@@ -39,6 +39,8 @@ import CahierTexteProf from '@/views/Professeurs/cahierTexteProf.vue';
 import Planning from '@/views/Professeurs/planning.vue';
 import GestionNotesProf from '@/views/Professeurs/gestionNotes.vue';
 import NotesClasse from '@/views/Professeurs/notesClasse.vue';
+import GestionCahierTexteAdmin from '@/views/Admin/gestionCahierTexteAdmin.vue';
+import CahierTexteClasse from '@/views/Admin/cahierTexteClasse.vue';
 
 
 // Routes non protégées (accessible à tous)
@@ -70,6 +72,8 @@ const adminRoutes = [
   { path: '/gestion_notes_admin', name: 'gestion_notes_admin', component: GestionNotesAdmin },
   { path: '/notes_matieres/:anneeClasse_id', name: 'notes_matieres', component: NoteMatieres },
   { path: '/notes/:id_profMat/:matiere', name: 'notes', component: NotesMatiere },
+  { path: '/gestion_cahier_texte_admin' , name: 'gestion_cahier_texte_admin', component: GestionCahierTexteAdmin},
+  { path: '/cahier_texte_classe/:anneeClasse_id', name: 'cahier_texte_classe', component: CahierTexteClasse},
 ];
 
 // Routes protégées pour les professeurs

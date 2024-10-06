@@ -3,7 +3,7 @@
     <topbar_admin />
     <div class="main-content">
 
-      <h2>Gestion des Notes </h2>
+      <h2>Gestion des Cahiers de texte   </h2>
   
       <div class="classes">
   
@@ -11,7 +11,7 @@
           <tabEvaluations 
             v-if="paginatedData.length > 0"
             class="tab-gestionNotes"
-            :headers="['N°', 'Nom ', 'Capacité', 'Niveau', 'Matières']"
+            :headers="['N°', 'Nom ', 'Capacité', 'Niveau', 'Cahiers de textes']"
             :data="paginatedData.map(({ numero, nom, capacite,niveau, id,anneeClasse_id }) => ({
               numero,
               nom,
@@ -104,7 +104,7 @@
 
   const redirectToSubeject = (anneeClasse_id) => {
   // Redirige vers la page annee_classes avec l'id dans l'URL
-  router.push({ name: 'notes_matieres', params: { anneeClasse_id } });
+  router.push({ name: 'cahier_texte_classe', params: { anneeClasse_id } });
 };
   
   onMounted(fetchData);

@@ -48,6 +48,7 @@ import AbsencesClasse from '@/views/Admin/absencesClasse.vue';
 import SideBarParent from '@/components/sideBarParent.vue';
 import DashboardParent from '@/views/Parents/dashboardParent.vue';
 import TopBarParent from '@/components/topBarParent.vue';
+import GestionNotes from '@/views/Parents/gestionNotes.vue';
 
 
 // Routes non protégées (accessible à tous)
@@ -116,6 +117,7 @@ const parentRoutes = [
   { path: '/sidebarParent', name: 'sidebarParent', component: SideBarParent},
   { path: '/topBarPArent', name: 'TopBarPArent', component: TopBarParent},
   { path: '/dashboardParent', name: 'dashboardParent', component: DashboardParent},
+  { path: '/gestion_notes_parent' , name: 'gestion_notes_parent', component: GestionNotes},
 ];
 
 // Création du tableau des routes combinées

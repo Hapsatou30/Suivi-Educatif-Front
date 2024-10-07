@@ -104,7 +104,11 @@ const login = async () => {
         router.push('/dashboard');
       } else if (roles.includes('professeur')) {
         router.push('/dashboard_prof');
-      } else {
+      }
+      else if (roles.includes('parent')) {
+        router.push('/dashboardParent');
+      }
+       else {
         router.push('/login');
       }
     } else {

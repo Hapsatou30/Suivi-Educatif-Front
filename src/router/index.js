@@ -45,6 +45,9 @@ import GestionEvaluationsAdmin from '@/views/Admin/gestionEvaluationsAdmin.vue';
 import EvaluationsClasse from '@/views/Admin/evaluationsClasse.vue';
 import GestionAbsencesAdmins from '@/views/Admin/gestionAbsencesAdmins.vue';
 import AbsencesClasse from '@/views/Admin/absencesClasse.vue';
+import SideBarParent from '@/components/sideBarParent.vue';
+import DashboardParent from '@/views/Parents/dashboardParent.vue';
+import TopBarParent from '@/components/topBarParent.vue';
 
 
 // Routes non protégées (accessible à tous)
@@ -108,11 +111,19 @@ const professorRoutes = [
   { path: '/notes_classe/:classeProf_id/:annee_classe_id/:nom_classe' , name: 'notes_classe', component:NotesClasse},
 ];
 
+//routes protégées pour les parents
+const parentRoutes = [
+  { path: '/sidebarParent', name: 'sidebarParent', component: SideBarParent},
+  { path: '/topBarPArent', name: 'TopBarPArent', component: TopBarParent},
+  { path: '/dashboardParent', name: 'dashboardParent', component: DashboardParent},
+];
+
 // Création du tableau des routes combinées
 const routes = [
   ...publicRoutes,
   ...adminRoutes.map(route => ({ ...route, meta: { requiresAuth: true, role: 'admin' } })),
   ...professorRoutes.map(route => ({ ...route, meta: { requiresAuth: true, role: 'professeur' } })),
+  ...parentRoutes.map(route => ({...route, meta: { requiresAuth: true, role: 'parent' } })), // Ajouter les routes parents si nécessaire
 ];
 
 

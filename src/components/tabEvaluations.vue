@@ -47,6 +47,10 @@ const props = defineProps({
     required: true
   }
 });
+// Log pour vérifier les props
+console.log('Headers:', props.headers);
+console.log('Data:', props.data);
+
 </script>
 
 

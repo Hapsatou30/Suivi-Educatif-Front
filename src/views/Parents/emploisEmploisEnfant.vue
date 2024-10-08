@@ -3,7 +3,7 @@
     <topbar_parent />
     <div class="main-content">
        <div class="head">
-       <router-link to="/gestion_notes_parent"> <Icon class="retour" icon="formkit:arrowleft" /></router-link>
+       <router-link to="/gestion_emplois_du_temps_parent"> <Icon class="retour" icon="formkit:arrowleft" /></router-link>
         <h1 style="text-align: center; margin-left: 100px;">L'emplois du temps de la classe  de <span class="prenom">{{ prenom }}</span></h1>
        </div>
        <div class="emplois">

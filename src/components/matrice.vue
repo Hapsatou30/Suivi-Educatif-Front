@@ -61,7 +61,6 @@ export default {
       type: Object,
       required: true,
     },
-    // Nouvelle prop pour déterminer le type de profil
     isMatiere: {
       type: Boolean,
       required: true,

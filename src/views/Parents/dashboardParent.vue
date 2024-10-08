@@ -127,7 +127,7 @@ const fetchEvaluations = async () => {
     try {
         if (parentId.value) {
             const response = await getEvaluationsParParent(parentId.value);
-            console.log('Evaluation', response);
+            // console.log('Evaluation', response);
 
             // Filtrer les évaluations pour ne garder que celles de la semaine
             const evaluationsDeLaSemaine = response.filter(evaluation => {

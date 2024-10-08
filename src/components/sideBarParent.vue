@@ -20,7 +20,7 @@
           </router-link>
         </li>
         <li>
-          <router-link to="/gestion_absences" class="menu-link" :class="{ active: isActive('/gestion_absences') || isActive('/fiche_de_presence') }">
+          <router-link to="/gestion_absences_parent" class="menu-link" :class="{ active: isActive('/gestion_absences_parent') || isActive('/absences_par_enfant') }">
             <Icon icon="healthicons:i-training-class" /> Absences
           </router-link>
         </li>

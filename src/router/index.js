@@ -54,6 +54,8 @@ import GestionCahierDeTexte from '@/views/Parents/gestionCahierDeTexte.vue';
 import CahierTexteEleve from '@/views/Parents/cahierTexteEleve.vue';
 import GestionEmploisDuTemps from '@/views/Parents/gestionEmploisDuTemps.vue';
 import EmploisEmploisEnfant from '@/views/Parents/emploisEmploisEnfant.vue';
+import GestionAbsencesParent from '@/views/Parents/gestionAbsences.vue';
+import AbsencesEnfant from '@/views/Parents/absencesEnfant.vue';
 
 
 // Routes non protégées (accessible à tous)
@@ -127,7 +129,9 @@ const parentRoutes = [
   { path: '/gestion_cahier_texte_parent', name: 'gestion_cahier_texte_parent', component:GestionCahierDeTexte},
   { path: '/cahier_texte_enfant/:classeEleve_id', name: 'cahier_texte_enfant', component:CahierTexteEleve},
   { path: '/gestion_emplois_du_temps_parent', name: 'gestion_emplois_du_temps_parent', component: GestionEmploisDuTemps},
-  { path: '/emplois_du_temps_enfant/:classeEleve_id', name: 'emplois_du_temps_enfant', component: EmploisEmploisEnfant}
+  { path: '/emplois_du_temps_enfant/:classeEleve_id', name: 'emplois_du_temps_enfant', component: EmploisEmploisEnfant},
+  { path: '/gestion_absences_parent', name:'gestion_absences_parent', component: GestionAbsencesParent},
+  { path: '/absences_par_enfant/:classeEleve_id', name:'absences_par_enfant', component: AbsencesEnfant},
 ];
 
 // Création du tableau des routes combinées

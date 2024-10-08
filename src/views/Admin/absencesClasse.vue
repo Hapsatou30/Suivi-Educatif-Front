@@ -9,13 +9,20 @@
         <!-- Tableau pour les absences du jour -->
         <div class="tableau-absences">
             <tabEvaluations v-if="absencesDuJour.length > 0" class="tab-absences_jour"
-                :headers="['Prénom & Nom', 'Date d\'absence', 'Matière', 'Justification']" 
-                :data="absencesDuJour.map(({ classe_eleve: { eleve }, date_presence, classe_prof: { prof_matiere: { matiere } }, justification }) => ({
+                :headers="['Prénom & Nom', 'Date d\'absence', 'Matière', 'Motif','Justification']" 
+                :data="absencesDuJour.map(({ classe_eleve: { eleve }, date_presence, classe_prof: { prof_matiere: { matiere } }, justification ,motif}) => ({
                     eleve: `${eleve.prenom} ${eleve.nom}`,
                     date_presence,
                     matiere: matiere ? matiere.nom : 'Non spécifié',
-                    justification: justification || 'Aucune',
+                    justification: justification ? `http://127.0.0.1:8000/storage//` + justification : 'vide',
+                    motif: motif || 'vide',  
                 }))">
+                <template #justification="{ justification }">
+                    <span v-if="justification !== 'vide'">
+                        <a :href="justification" target="_blank">Voir les justifications</a>
+                    </span>
+                    <span v-else>vide</span>
+                </template>
             </tabEvaluations>
             <p v-else class="alert alert-info">Aucune absence du jour trouvée.</p>
         </div>
@@ -24,13 +31,20 @@
             <h2 style=" margin-bottom: 50px;">Historique des Absences</h2>
             <div class="tableau-absences">
                 <tabEvaluations v-if="paginatedAbsencesData.length > 0" class="tab-absences_admin"
-                    :headers="['Prénom & Nom', 'Date d\'absence', 'Matière', 'Justification']" 
-                    :data="paginatedAbsencesData.map(({ classe_eleve: { eleve }, date_presence, classe_prof: { prof_matiere: { matiere } }, justification }) => ({
+                    :headers="['Prénom & Nom', 'Date d\'absence', 'Matière','Motif', 'Justification']" 
+                    :data="paginatedAbsencesData.map(({ classe_eleve: { eleve }, date_presence, classe_prof: { prof_matiere: { matiere } }, justification ,motif}) => ({
                         eleve: `${eleve.prenom} ${eleve.nom}`,
                         date_presence,
                         matiere: matiere ? matiere.nom : 'Non spécifié',
-                        justification: justification || 'Aucune',
+                        justification: justification ? `http://127.0.0.1:8000/storage//` + justification : 'vide',
+                        motif: motif || 'vide',  // Affiche 'vide' si motif est vide
                     }))">
+                    <template #justification="{ justification }">
+                    <span v-if="justification !== 'vide'">
+                        <a :href="justification" target="_blank">Voir les justifications</a>
+                    </span>
+                    <span v-else>vide</span>
+                </template>
                 </tabEvaluations>
 
                 <p v-else class="alert alert-info">Aucun historique d'absence trouvé.</p>
@@ -141,7 +155,10 @@ onMounted(() => {
     display: none;
     /* Masquer la colonne de l'ID */
 }
-
+::v-deep .tab-absences_admin td:nth-child(4) {
+    display: none;
+    /* Masquer la colonne de l'ID */
+}
 .main-content {
     margin-top: 120px;
 }

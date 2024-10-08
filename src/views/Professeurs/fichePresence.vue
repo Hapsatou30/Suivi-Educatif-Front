@@ -43,12 +43,19 @@
             <h2 style=" margin-bottom: 50px;">Historique des Absences</h2>
             <div class="tableau-absences">
                 <tabEvaluations v-if="paginatedAbsencesData.length > 0" class="tab-absences"
-                    :headers="['Prénom & Nom', 'Date d\'absence', 'Justification']" :data="paginatedAbsencesData.map(({ classe_eleve: { eleve }, date_presence, justification, id }) => ({
+                    :headers="['Prénom & Nom', 'Date d\'absence', 'Motif','Justification']" :data="paginatedAbsencesData.map(({ classe_eleve: { eleve }, date_presence, justification, motif,id }) => ({
                         eleve: `${eleve.prenom} ${eleve.nom}`,
                         date_presence,
-                        justification: justification || 'Aucune',
+                        justification: justification ? `http://127.0.0.1:8000/storage//` + justification : 'vide',
+                        motif: motif || 'vide', 
                         id
                     }))">
+                     <template #justification="{ justification }">
+                    <span v-if="justification !== 'vide'">
+                        <a :href="justification" target="_blank">Voir les justifications</a>
+                    </span>
+                    <span v-else>vide</span>
+                </template>
                 </tabEvaluations>
 
                 <p v-else class="alert alert-info">Aucun historique d'absence trouvé.</p>
@@ -263,9 +270,13 @@ onMounted(() => {
     display: none;
 }
 
-.absences .tableau-absences .tab-absences td:nth-child(4) {
+.absences .tableau-absences .tab-absences td:nth-child(3) {
     display: none;
 }
+.absences .tableau-absences .tab-absences td:nth-child(5) {
+    display: none;
+}
+
 
 .tableau-absences {
     margin-left: 300px;

@@ -30,7 +30,7 @@
           </router-link>
         </li>
         <li>
-          <router-link to="/emplois_du_temps_prof" class="menu-link" :class="{ active: isActive('/emplois_du_temps_prof') }">
+          <router-link to="/gestion_emplois_du_temps_parent" class="menu-link" :class="{ active: isActive('/gestion_emplois_du_temps_parent') || isActive('/emplois_du_temps_enfant')}">
             <Icon icon="cil:calendar" /> Emplois du temps
           </router-link>
         </li>

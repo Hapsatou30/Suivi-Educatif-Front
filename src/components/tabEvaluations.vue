@@ -53,8 +53,8 @@ const props = defineProps({
   }
 });
 // Log pour vérifier les props
-console.log('Headers:', props.headers);
-console.log('Data:', props.data);
+// console.log('Headers:', props.headers);
+// console.log('Data:', props.data);
 
 </script>
 

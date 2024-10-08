@@ -28,6 +28,11 @@
           <td v-if="$slots.action">
             <slot name="action" :col="row" />
           </td>
+
+          <!-- Slot pour les ressources -->
+          <td v-if="$slots.resources">
+            <slot name="resources" :ressources="row.ressources" />
+          </td>
         </tr>
       </tbody>
     </table>

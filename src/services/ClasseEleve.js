@@ -88,3 +88,47 @@ export const getClasseEleve = async (eleveId) => {
       return 0; // Valeur par défaut en cas d'erreur
     }
   };
+
+  export const getElevesParParent = async (parent_id) => {
+    try {
+        const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
+  
+       
+        const response = await axios.get(`${apiUrl}/parents/${parent_id}/eleves`, { 
+            headers: {
+                Authorization: `Bearer ${token}` // Utiliser le token dans l'en-tête pour l'authentification
+            }
+        });
+  
+        // Afficher les données reçues pour le débogage
+        // console.log('Données reçues eleve classe:', response.data); // Vérifie les données reçues de l'API
+  
+        return response.data; // Retourner les données de l'API
+    } catch (error) {
+        // Gérer les erreurs lors de la récupération des professeurs
+        console.error('Erreur:', error);
+        return null; // Valeur par défaut en cas d'erreur
+    }
+  };
+
+  export const getDetailsEleve = async (classeEleve_id) => {
+    try {
+        const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
+  
+       
+        const response = await axios.get(`${apiUrl}/eleve/${classeEleve_id}`, { 
+            headers: {
+                Authorization: `Bearer ${token}` // Utiliser le token dans l'en-tête pour l'authentification
+            }
+        });
+  
+        // Afficher les données reçues pour le débogage
+        // console.log('Données reçues eleve classe:', response.data); // Vérifie les données reçues de l'API
+  
+        return response.data; // Retourner les données de l'API
+    } catch (error) {
+        // Gérer les erreurs lors de la récupération des professeurs
+        console.error('Erreur:', error);
+        return null; // Valeur par défaut en cas d'erreur
+    }
+  };

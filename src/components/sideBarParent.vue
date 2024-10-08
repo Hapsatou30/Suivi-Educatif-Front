@@ -10,7 +10,7 @@
           </router-link>
         </li>
         <li>
-          <router-link to="/gestion_notes" class="menu-link" :class="{ active: isActive('/gestion_notes') || isActive('/notes_classe')  }">
+          <router-link to="/gestion_notes_parent" class="menu-link" :class="{ active: isActive('/gestion_notes_parent') || isActive('/notes_enfant')  }">
             <Icon icon="clarity:note-line" /> Notes
           </router-link>
         </li>
@@ -25,7 +25,7 @@
           </router-link>
         </li>
         <li>
-          <router-link to="/gestion_cahier_texte" class="menu-link" :class="{ active: isActive('/gestion_cahier_texte') || isActive('/cahier_texte_prof') }">
+          <router-link to="/gestion_cahier_texte_parent" class="menu-link" :class="{ active: isActive('/cahier_texte_enfant') || isActive('/gestion_cahier_texte_parent') }">
             <Icon icon="carbon:book" /> Cahiers de textes
           </router-link>
         </li>

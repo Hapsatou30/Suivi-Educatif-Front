@@ -24,6 +24,36 @@ export const getNoteClasse = async (classeProf_id) => {
       return null; // Valeur par défaut en cas d'erreur
   }
 };
+export const getNoteEleve = async (classeEleve_id) => {
+  try {
+      const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
+
+      // Récupération des professeurs avec leur matière en utilisant le classeId
+      const response = await axios.get(`${apiUrl}/eleves/${classeEleve_id}/notes`, { 
+          headers: {
+              Authorization: `Bearer ${token}` // Utiliser le token dans l'en-tête pour l'authentification
+          }
+      });
+
+      // Afficher les données reçues pour le débogage
+      //  console.log('Données reçues Notes:', response.data); // Vérifie les données reçues de l'API
+
+      // Retourner l'objet complet
+      return response.data; // Assurez-vous de retourner la réponse complète
+  } catch (error) {
+    if (error.response) {
+        // La réponse a été reçue mais le serveur a retourné un code d'erreur (ex. 400, 401, etc.)
+        console.error('Erreur de réponse:', error.response.data);
+    } else if (error.request) {
+        // La requête a été faite mais aucune réponse n'a été reçue
+        console.error('Erreur de requête:', error.request);
+    } else {
+        // Erreur lors de la configuration de la requête
+        console.error('Erreur de configuration:', error.message);
+    }
+}
+
+};
 
 export const supprimerNote = async (id) => {
     try {

@@ -153,7 +153,7 @@ const paginatedData = computed(() => {
     const start = (currentPage.value - 1) * pageSize.value;
     const end = start + pageSize.value;
     const dataToDisplay = tableData.value.slice(start, end);
-    console.log('Paginated Data:', dataToDisplay); // Ajoutez ce log pour déboguer
+    // console.log('Paginated Data:', dataToDisplay); // Ajoutez ce log pour déboguer
     return dataToDisplay;
 });
 

@@ -12,7 +12,7 @@ export const geHoraireClasse = async (anneeClasseId) => {
             }
         });
 
-        // console.log('Données reçues depuis l\'API:', response.data.données); 
+        //  console.log('Données reçues depuis l\'API:', response.data.données); 
         return response.data; // Retourner le nombre total de professeurs
     } catch (error) {
         // Gérer les erreurs lors de la récupération du nombre de professeurs

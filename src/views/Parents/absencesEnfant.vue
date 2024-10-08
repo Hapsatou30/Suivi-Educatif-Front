@@ -2,48 +2,48 @@
     <sidebar_parent />
     <topbar_parent />
     <div class="main-content">
-    <div class="head">
-        <router-link to="/gestion_absences_parent">
-            <Icon class="retour" icon="formkit:arrowleft" />
-        </router-link>
-        <h1 style="text-align: center; margin-left: 150px;">Historiques des absences de <span class="prenom">{{ prenom }}</span></h1>
-    </div>
-    <div class="absences">
-        <div class="tableau-absences">
-            <tabEvaluations v-if="paginatedAbsencesData.length > 0" class="tab-absences_admin"
-                :headers="['Date d\'absence', 'Matière', 'Motif', 'Justification', 'Action']"
-                :data="paginatedAbsencesData.map(({ date_presence, classe_prof: { prof_matiere: { matiere } }, justification, id, motif }) => ({
-                    date_presence,
-                    matiere: matiere ? matiere.nom : 'Non spécifié',
-                    justification: justification ? `http://127.0.0.1:8000/storage//` + justification : 'vide',
-                    motif: motif || 'vide',  // Affiche 'vide' si motif est vide
-                    id,
-                }))">
-                
-                <template #justification="{ justification }">
-                    <span v-if="justification !== 'vide'">
-                        <a :href="justification" target="_blank">Voir les justifications</a>
-                    </span>
-                    <span v-else>vide</span>
-                </template>
-
-                <template #actions="{ row }">
-                    <div class="boutons">
-                        <button class="btn" @click="openAddModal(row.id)" style="color: #407CEE;" title="Modifier l'horaire">
-                            <Icon icon="mdi:pencil-outline" />
-                        </button>
-                    </div>
-                </template>
-
-            </tabEvaluations>
-            <p v-else class="alert alert-info">Aucun historique d'absence trouvé.</p>
+        <div class="head">
+            <router-link to="/gestion_absences_parent">
+                <Icon class="retour" icon="formkit:arrowleft" />
+            </router-link>
+            <h1 style="text-align: center; margin-left: 150px;">Historiques des absences de <span class="prenom">{{
+                    prenom }}</span></h1>
         </div>
+        <div class="absences">
+            <div class="tableau-absences">
+                <tabEvaluations v-if="paginatedAbsencesData.length > 0" class="tab-absences_admin"
+                    :headers="['Date d\'absence', 'Matière', 'Motif', 'Justification', 'Action']" :data="paginatedAbsencesData.map(({ date_presence, classe_prof: { prof_matiere: { matiere } }, justification, id, motif }) => ({
+                        date_presence,
+                        matiere: matiere ? matiere.nom : 'Non spécifié',
+                        justification: justification ? `http://127.0.0.1:8000/storage//` + justification : 'vide',
+                        motif: motif || 'vide',  // Affiche 'vide' si motif est vide
+                        id,
+                    }))">
 
-        <pagination class="pagination1" v-if="Data.length > absencesPageSize" :totalItems="Data.length"
-            :pageSize="absencesPageSize" :currentPage="currentAbsencesPage"
-            @pageChange="handleAbsencesPageChange" />
+                    <template #justification="{ justification }">
+                        <span v-if="justification !== 'vide'">
+                            <a :href="justification" target="_blank">Voir les justifications</a>
+                        </span>
+                        <span v-else>vide</span>
+                    </template>
+
+                    <template #actions="{ row }">
+                        <div class="boutons">
+                            <button class="btn" @click="openAddModal(row)" style="color: #407CEE;" title="Modifier / Ajouter une justification">
+                                <Icon icon="mdi:pencil-outline" />
+                            </button>
+                        </div>
+                    </template>
+
+                </tabEvaluations>
+                <p v-else class="alert alert-info">Aucun historique d'absence trouvé.</p>
+            </div>
+
+            <pagination class="pagination1" v-if="Data.length > absencesPageSize" :totalItems="Data.length"
+                :pageSize="absencesPageSize" :currentPage="currentAbsencesPage"
+                @pageChange="handleAbsencesPageChange" />
+        </div>
     </div>
-</div>
 
     <!-- Modal -->
     <div v-if="showModal"
@@ -58,13 +58,14 @@
             <form @submit.prevent="isEditing ? handleModifierJustification() : handleAjouterJustification()">
                 <!-- Champ de téléchargement de fichier -->
                 <div class="form-group" style="margin-top: 20px; margin-bottom: 20px;">
-                    <input type="file" id="fileUpload" @change="handleFileUpload" />
+                    <input type="file" id="fileUpload"   @change="handleFileUpload" />
                 </div>
                 <!-- Champ pour le motif -->
-<div class="form-group" style="margin-top: 20px; margin-bottom: 20px;">
-    <label for="motif">Motif</label>
-    <input type="text" id="motif" v-model="motif" placeholder="Saisir le motif de l'absence" class="form-control" />
-</div>
+                <div class="form-group" style="margin-top: 20px; margin-bottom: 20px;">
+                    <label for="motif">Motif</label>
+                    <input type="text" id="motif" v-model="motif" placeholder="Saisir le motif de l'absence"
+                        class="form-control" />
+                </div>
 
                 <!-- Bouton de soumission -->
                 <div class="form-group" style="text-align: right;">
@@ -87,7 +88,7 @@ import { getDetailsEleve } from '@/services/ClasseEleve';
 import { useRoute } from 'vue-router';
 import tabEvaluations from '@/components/tabEvaluations.vue';
 import pagination from '@/components/paginations.vue';
-import { getAbsencesEleve ,modifierAbsence} from '@/services/AbsenceService';
+import { getAbsencesEleve, modifierAbsence } from '@/services/AbsenceService';
 
 
 
@@ -101,20 +102,21 @@ const showModal = ref(false); // État d'affichage du modal
 const isEditing = ref(false); // État de l'édition
 const uploadedFile = ref(null); // Référence pour stocker le fichier uploadé
 const motif = ref('');
-const justification = ref('');
 const currentAbsenceId = ref(null); // Référence pour stocker l'ID de l'absence actuelle
 
 
 const openAddModal = (row) => {
     isEditing.value = true;
-    motif.value = row.motif || ''; // Pré-remplir le champ du motif
-    justification.value = row.justification || ''; // Pré-remplir la justification
+    motif.value = row.motif || ''; 
+    if (typeof row.justification === 'string') {
+        // C'est un fichier déjà stocké, peut-être un lien
+        uploadedFile.value = row.justification;
+    } else {
+        uploadedFile.value = null;
+    }
     showModal.value = true;
-
-    // Passer l'ID d'absence à la fonction handleModifierJustification
-    currentAbsenceId.value = row.id; // Créez une ref pour stocker l'ID actuel
+    currentAbsenceId.value = row.id;
 };
-
 
 
 // Méthode pour fermer le modal
@@ -153,7 +155,7 @@ const fetchAbsences = async () => {
 const handleModifierJustification = async () => {
     console.log('Démarrage de la modification de justification');
 
-    console.log('ID d\'absence actuel:', currentAbsenceId.value); 
+    console.log('ID d\'absence actuel:', currentAbsenceId.value);
     try {
         const formData = new FormData();
         formData.append('motif', motif.value);
@@ -163,7 +165,7 @@ const handleModifierJustification = async () => {
 
         console.log('Données à envoyer:', formData);
 
-        const response = await modifierAbsence( currentAbsenceId.value, formData); // Passer l'ID ici
+        const response = await modifierAbsence(currentAbsenceId.value, formData); // Passer l'ID ici
         console.log('Réponse de l\'API:', response);
 
         if (response.status === 200) {
@@ -210,10 +212,12 @@ onMounted(() => {
     display: none;
     /* Masquer la colonne de l'ID */
 }
+
 ::v-deep .tab-absences_admin td:nth-child(5) {
     display: none;
     /* Masquer la colonne de l'ID */
 }
+
 .main-content {
     overflow-x: hidden;
 }

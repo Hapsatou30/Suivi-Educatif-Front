@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-md-4" v-for="card in cards" :key="card.id">
                 <!-- Envelopper la carte dans un lien -->
-                <router-link :to="{ name: 'notes_enfant', params: { classeEleve_id: card.classeEleve_id } }" class="text-decoration-none">
+                <router-link :to="{ name: 'cahier_texte_enfant', params: { classeEleve_id: card.classeEleve_id } }" class="text-decoration-none">
                     <div class="card mb-4 shadow-sm custom-card">
                         <div class="card-header">
                             <div class="image-wrapper">

@@ -49,6 +49,9 @@ import SideBarParent from '@/components/sideBarParent.vue';
 import DashboardParent from '@/views/Parents/dashboardParent.vue';
 import TopBarParent from '@/components/topBarParent.vue';
 import GestionNotes from '@/views/Parents/gestionNotes.vue';
+import NoteParEnfant from '@/views/Parents/noteParEnfant.vue';
+import GestionCahierDeTexte from '@/views/Parents/gestionCahierDeTexte.vue';
+import CahierTexteEleve from '@/views/Parents/cahierTexteEleve.vue';
 
 
 // Routes non protégées (accessible à tous)
@@ -118,6 +121,9 @@ const parentRoutes = [
   { path: '/topBarPArent', name: 'TopBarPArent', component: TopBarParent},
   { path: '/dashboardParent', name: 'dashboardParent', component: DashboardParent},
   { path: '/gestion_notes_parent' , name: 'gestion_notes_parent', component: GestionNotes},
+  { path: '/notes_enfant/:classeEleve_id', name: 'notes_enfant', component:NoteParEnfant},
+  { path: '/gestion_cahier_texte_parent', name: 'gestion_cahier_texte_parent', component:GestionCahierDeTexte},
+  { path: '/cahier_texte_enfant/:classeEleve_id', name: 'cahier_texte_enfant', component:CahierTexteEleve},
 ];
 
 // Création du tableau des routes combinées

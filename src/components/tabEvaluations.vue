@@ -18,7 +18,9 @@
           <td v-for="(cell, cellIndex) in row" :key="cellIndex" v-if="cellIndex !== 0">
             {{ cell }}
           </td>
-
+          <td v-if="$slots.justification">
+            <slot name="justification" :justification="row.justification" />
+          </td>
           <!-- Slot pour les actions -->
           <td v-if="$slots.actions">
             <slot name="actions" :row="row" />
@@ -33,6 +35,7 @@
           <td v-if="$slots.resources">
             <slot name="resources" :ressources="row.ressources" />
           </td>
+          
         </tr>
       </tbody>
     </table>

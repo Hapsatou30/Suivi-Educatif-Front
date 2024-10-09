@@ -6,7 +6,7 @@
       <router-link to="/gestion_evaluation_parent">
         <Icon class="retour" icon="formkit:arrowleft" />
       </router-link>
-      <h1 style="text-align: center; margin-left: 150px;">
+      <h1 class="text-center flex-grow-1">
         Les Évaluations à venir pour <span class="prenom">{{ prenom }}</span>
       </h1>
     </div>
@@ -17,7 +17,7 @@
         <div 
           v-for="(evaluation, index) in evaluations" 
           :key="index" 
-          class="evaluation-card col-12 col-sm-6 col-md-4" >
+          class="evaluation-card col-12 col-sm-6 col-md-4 d-flex flex-column align-items-center">
           <h4 class="date">{{ evaluation.date }}</h4>
           <div class="content">
             <p class="matiere">{{ evaluation.matiere }}</p>
@@ -27,13 +27,12 @@
       </div>
       
       <!-- Message s'il n'y a pas d'évaluations -->
-      <div v-else>
-        <p  class="alert alert-info">Aucune évaluation à venir pour le moment.</p>
+      <div v-else class="col-12">
+        <p class="alert alert-info text-center">Aucune évaluation à venir pour le moment.</p>
       </div>
     </div>
   </div>
 </template>
-
 
 <script setup>
 import sidebar_parent from '@/components/sideBarParent.vue';
@@ -54,8 +53,6 @@ const route = useRoute();
 const classeEleve_id = ref(route.params.classeEleve_id);
 const prenom = ref('');
 const evaluations = ref([]); // Liste des évaluations
-const evaluationsSemaine = ref([]); // Évaluations de la semaine
-const evaluationsAVenir = ref([]); // Évaluations après la semaine
 
 // Récupération des détails de l'élève
 const fetchDetailsEleve = async () => {
@@ -85,17 +82,6 @@ const fetchEvaluations = async () => {
         return evalDate.isAfter(now); // Évaluations futures seulement
       });
 
-      // Séparer les évaluations de la semaine et les autres à venir
-      evaluationsSemaine.value = evaluations.value.filter(evaluation => {
-        const evalDate = dayjs(evaluation.date);
-        return evalDate.isBetween(now.startOf('week'), now.endOf('week'));
-      });
-
-      evaluationsAVenir.value = evaluations.value.filter(evaluation => {
-        const evalDate = dayjs(evaluation.date);
-        return evalDate.isAfter(now.endOf('week')); // Évaluations après cette semaine
-      });
-
     } else {
       console.error("Erreur lors de la récupération des évaluations:", response.message);
     }
@@ -110,60 +96,77 @@ onMounted(() => {
 
 </script>
 
-  
-  <style scoped>
-  .main-content {
-    overflow-x: hidden;
-  }
-  
-  .head {
-    display: flex;
-    align-items: center;
-  }
-  
-  .prenom {
-    color: #FFCD1E;
-  }
-  
-  .retour {
-    font-size: 30px;
-    color: black;
-    margin-left: 300px;
-  }
-  ::v-deep .card-container {
-  gap: 16px; 
-  margin-top: 20px;
+<style scoped>
+.main-content {
+  overflow-x: hidden;
   margin-left: 300px;
-  margin-right: 50px;
+  margin-right: 50px
+}
+.head{
+  margin-left: 0;
 }
 
-::v-deep .evaluation-card {
+.head {
+  display: flex;
+  align-items: center;
+}
+
+.prenom {
+  color: #FFCD1E;
+}
+
+.retour {
+  font-size: 30px;
+  color: black;
+  margin-left: 1rem;
+}
+
+.card-container {
+  gap: 16px; 
+  margin-top: 20px;
+}
+
+.evaluation-card {
   border-radius: 8px;
   padding: 16px;
   background-color: #E6F1FF;
   margin-bottom: 16px; 
   border-radius: 18px;
-  width: 320px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centrer le contenu de la carte */
 }
 
-::v-deep .date {
+.date {
   text-align: center;
   font-weight: bold;
 }
 
-::v-deep .content {
+.content {
   display: flex;
   justify-content: space-between;
-  margin-top: 20px;
+  width: 100%; /* Prendre toute la largeur */
 }
 
-::v-deep .matiere {
+.matiere {
   text-align: left;
 }
 
-::v-deep .heure {
+.heure {
   text-align: right;
 }
-
-  </style>
-  
+@media (max-width: 480px) {
+  .main-content{
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .head h1{
+    font-size: 24px;
+    margin-top: 25px;
+    margin-left: -48px;
+    text-align: center;
+}
+}
+</style>

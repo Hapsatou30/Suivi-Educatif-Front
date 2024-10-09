@@ -179,6 +179,36 @@ onMounted(() => {
     color: black;
     margin-left: 300px;
 }
+@media (max-width: 480px) {
+    .main-content{
+      width: 90%;
+      margin-right: auto;
+      margin-left: auto;
+    }
+    
+    .head{
+        margin-top: 20%;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+       
+    }
+    .retour {
+    
+    margin-left: 0;
+}
+
+ .head h1{
+    font-size: 24px;
+    margin-top: 25px;
+    text-align: justify;
+ }
+ .emplois{
+  margin-left: -75%;
+  width: 125%;
+  
+ }
+}
 
 
 </style>

@@ -2,9 +2,9 @@
     <sidebar_parent />
     <topbar_parent />
     <div class="main-content container">
-        <h1>Voir les planning d'évaluations de mes enfants</h1>
+        <h1>Voir les plannings d'évaluations de mes enfants</h1>
         <div class="row">
-            <div class="col-md-4" v-for="card in cards" :key="card.id">
+            <div class="col-md-4 col-sm-6" v-for="card in cards" :key="card.id">
                 <!-- Envelopper la carte dans un lien -->
                 <router-link :to="{ name: 'evaluation_enfant', params: { classeEleve_id: card.classeEleve_id } }" class="text-decoration-none">
                     <div class="card mb-4 shadow-sm custom-card">
@@ -23,6 +23,7 @@
         </div>
     </div>
 </template>
+
 
 <script setup>
 import sidebar_parent from '@/components/sideBarParent.vue';
@@ -72,13 +73,12 @@ onMounted(async () => {
 </script>
 
 
-
 <style scoped>
-
 .main-content {
     margin-top: 120px;
-    margin-left: 270px;
+    margin-left: 270px; /* Ajustement pour la sidebar */
 }
+
 
 h1 {
     text-align: center;
@@ -115,12 +115,12 @@ h1 {
 }
 
 .custom-card:hover {
-    transform: translateY(-10px); /* Légère élévation de la carte */
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Ombre plus prononcée */
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
 .custom-card:hover .hexagon-image {
-    transform: scale(1.1); /* Zoom de l'image */
+    transform: scale(1.1);
 }
 
 .card-header {
@@ -143,7 +143,6 @@ h1 {
 
 .card-body {
     margin-top: 100px;
-    transition: transform 0.3s ease;
     text-align: center;
 }
 
@@ -154,7 +153,52 @@ h1 {
 }
 
 .custom-card:hover .card-body h3 {
-    color: #F7AE00; /* Changement de couleur au hover */
+    color: #F7AE00;
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        margin-top: 0;
+        margin-left: 0; 
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .main-content h1 {
+        font-size: 1.5rem; 
+        margin-top: 30px; 
+        margin-bottom: 30px;
+    }
+
+    .row {
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; 
+        width: 100%; 
+    }
+
+    .card {
+        height: auto; 
+        margin-bottom: 20px; 
+    }
+
+    .hexagon-image {
+        width: 150px;  
+        height: 150px; 
+        margin-top: 20px; 
+    }
+
+    .image-wrapper {
+        bottom: -60px; 
+    }
+
+    .card-header {
+        height: 120px; 
+    }
+
+    .card-body h3 {
+        font-size: 1rem; 
+    }
 }
 </style>
-

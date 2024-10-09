@@ -2,11 +2,10 @@
     <sidebar_parent />
     <topbar_parent />
     <div class="main-content">
-       <div class="head">
-       <router-link to="/gestion_notes_parent"> <Icon class="retour" icon="formkit:arrowleft" /></router-link>
-        <h1 style="text-align: center; margin-left: 300px;">Les Notes de <span class="prenom">{{ prenom }}</span></h1>
-        
-       </div>
+        <div class="head">
+            <router-link to="/gestion_notes_parent"> <Icon class="retour" icon="formkit:arrowleft" /></router-link>
+            <h1 class="title">Les Notes de <span class="prenom">{{ prenom }}</span></h1>
+        </div>
         <div class="legendes">
             <h4>Légendes</h4>
             <div class="legende sous-moyenne">
@@ -29,23 +28,22 @@
 
         <div class="notes">
             <div class="row">
-            <div class="col-6">
-                <h1>Matière : {{ notes[0]?.matiere || 'Aucune matière' }}</h1>
-            </div>
-            <div class="col-6">
-                <div v-for="note in notes" :key="note.nom_evaluation" :class="['card', getCardClass(note.note)]">
-                    <div class="card-title">{{ note.evaluation }} : {{note.nom_evaluation}}</div>
-                    <div class="card-content">
-                        <h1>{{ note.note }}</h1> 
-                    </div>
-                    <div class="card-footer">
-                        <p class="coef">Coef: {{ note.coefficient }}</p>
-                        <p class="comment">{{ note.commentaire }}</p>
+                <div class="col-6 title-container">
+                    <h1>Matière : {{ notes[0]?.matiere || 'Aucune matière' }}</h1>
+                </div>
+                <div class="col-6">
+                    <div v-for="note in notes" :key="note.nom_evaluation" :class="['card', getCardClass(note.note)]">
+                        <div class="card-title">{{ note.evaluation }} : {{ note.nom_evaluation }}</div>
+                        <div class="card-content">
+                            <h1>{{ note.note }}</h1>
+                        </div>
+                        <div class="card-footer">
+                            <p class="coef">Coef: {{ note.coefficient }}</p>
+                            <p class="comment">{{ note.commentaire }}</p>
+                        </div>
                     </div>
                 </div>
-
             </div>
-        </div>
         </div>
     </div>
 </template>
@@ -83,7 +81,6 @@ const fetchNotesEleve = async () => {
     try {
         const response = await getNoteEleve(classeEleve_id.value);
         if (response) {
-            // console.log('Notes récupérées:', response.eleve.notes);
             notes.value = response.eleve.notes;  
         } else {
             console.error('Erreur lors de la récupération des notes');
@@ -112,16 +109,19 @@ onMounted(() => {
 });
 </script>
 
-
-
 <style scoped>
 .main-content {
     overflow-x: hidden;
+    padding: 20px; 
+    margin-left: 300px
 }
-.head{
+
+.head {
     display: flex;
     align-items: center;
+    justify-content: center; /* Centre le contenu horizontalement */
 }
+
 .prenom {
     color: #FFCD1E;
 }
@@ -129,7 +129,7 @@ onMounted(() => {
 .retour {
     font-size: 30px;
     color: black;
-    margin-left: 300px;
+    margin-right: 20px; /* Ajustement de la marge */
 }
 
 /* Styles pour les légendes */
@@ -137,7 +137,6 @@ onMounted(() => {
     display: flex;
     flex-direction: column;
     margin-top: 20px;
-    margin-left: 300px;
 }
 
 .legende {
@@ -189,10 +188,20 @@ onMounted(() => {
     align-items: center;
     justify-content: space-between;
     margin-top: 20px;
-    margin-left: 300px;
-    width: 97%;
+    width: 100%; /* Utiliser 100% de la largeur */
 }
-.notes .row  h1{
+
+.title-container {
+    display: flex;
+    justify-content: flex-start; /* Aligne à gauche */
+}
+
+.title {
+    text-align: center; /* Centre le titre */
+    flex-grow: 1; /* Permet au titre de prendre de l'espace disponible */
+}
+
+.notes .row h1 {
     font-weight: bold;
 }
 
@@ -200,7 +209,8 @@ onMounted(() => {
     border-radius: 12px;
     padding: 20px;
     margin-bottom: 10px;
-    width: 480px;
+    width: 100%; /* Utiliser 100% de la largeur */
+    max-width: 480px; /* Largeur maximale */
     height: 210px;
     color: white;
 }
@@ -224,9 +234,31 @@ onMounted(() => {
     justify-content: space-between;
     margin-top: 10px;
     font-size: 0.9rem;
-    color: white
-}
-.coef, .comment{
     color: white;
 }
+
+.coef, .comment {
+    color: white;
+}
+@media (max-width: 768px) {
+    .main-content {
+   
+    margin-left: 0;
+    margin-top: 50px;
+}
+
+.head h1{
+    font-size: 24px;
+    margin-top: 25px
+}
+.card{
+    margin-left: -30%;
+    width: 150%;
+} 
+.card-title{
+    font-size: 16px;
+}
+
+}
+
 </style>

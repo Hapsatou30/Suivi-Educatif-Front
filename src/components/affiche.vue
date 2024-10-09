@@ -32,58 +32,105 @@ onMounted(fetchAnneeEnCours);
 </script>
 
   <style scoped>
+ 
   .card-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-left: 300px;
-    margin-right: 50px;
-    border-radius: 12px;
-    height: 160px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-left: 300px;
+  margin-right: 50px;
+  height: 160px;
+  border-radius: 12px;
+}
+
+.left-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.title {
+  font-size: 30px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  margin: 0;
+  color: black;
+}
+
+span {
+  color: #F7AE00;
+}
+
+.sub-title {
+  font-size: 18px;
+  margin-top: 10px;
+  color: #333;
+}
+
+.right-section {
+  display: flex;
+  align-items: center;
+}
+
+.school-image {
+  width: 386px;
+  height: 177px;
+  border-radius: 8px;
+  position: relative;
+  top: -9px;
+}
+
+.annee_cours {
+  font-weight: bold;
+  color: black;
+}
+
+
+@media (max-width: 768px) {
+  .card-container {
+   
+    margin: 0; 
+    padding: 10px;
+    height: auto;
   }
-  
-  .left-section {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  
+
   .title {
-    font-size: 30px;
-    font-family: "Poppins", sans-serif;
-    font-weight: 600;
-    margin: 0;
-    color: black;
+    font-size: 24px; 
+    text-align: center;
   }
-  span{
-    color: #F7AE00;
-  }
-  
+
   .sub-title {
-    font-size: 18px;
-    margin-top: 10px;
-    color: #333;
+    font-size: 16px; 
+    text-align: center;
   }
-  
+
   .right-section {
-    display: flex;
-    align-items: center;
+    margin-top: 20px;
   }
-  
+
   .school-image {
-    width: 386px;
-    height: 177px;
-    border-radius: 8px;
-    position: relative;
-    top: -9px;
+    width: 280px; 
+    height: auto;
   }
-  .annee_cours{
-    font-weight: bold;
-    color: black;
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 20px; 
   }
+
+  .sub-title {
+    font-size: 14px; 
+  }
+
+  .school-image {
+    width: 200px; 
+  }
+}
+
   </style>
   

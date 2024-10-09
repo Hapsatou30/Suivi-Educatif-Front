@@ -2,9 +2,9 @@
     <sidebar_parent />
     <topbar_parent />
     <div class="main-content container">
-        <h1>Voir les notes de mes enfants</h1>
+        <h1>Voir les absences de mes enfants</h1>
         <div class="row">
-            <div class="col-md-4" v-for="card in cards" :key="card.id">
+            <div class="col-md-4 col-sm-6" v-for="card in cards" :key="card.id">
                 <!-- Envelopper la carte dans un lien -->
                 <router-link :to="{ name: 'absences_par_enfant', params: { classeEleve_id: card.classeEleve_id } }" class="text-decoration-none">
                     <div class="card mb-4 shadow-sm custom-card">
@@ -71,18 +71,15 @@ onMounted(async () => {
 });
 </script>
 
-
-
 <style scoped>
-
 .main-content {
     margin-top: 120px;
-    margin-left: 270px;
+    margin-left: 270px; /* Ajustement pour la sidebar */
 }
 
 h1 {
     text-align: center;
-    margin-top: 50px;
+    margin-top: 100px;
     margin-bottom: 50px;
 }
 
@@ -156,5 +153,50 @@ h1 {
 .custom-card:hover .card-body h3 {
     color: #F7AE00; /* Changement de couleur au hover */
 }
-</style>
 
+@media (max-width: 768px) {
+    .main-content {
+        margin-top: 0;
+        margin-left: 0; 
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    h1 {
+        font-size: 1.5rem; 
+        margin-top: 30px; 
+        margin-bottom: 30px;
+    }
+
+    .row {
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; 
+        width: 100%; 
+    }
+
+    .card {
+        height: auto; 
+        margin-bottom: 20px; 
+    }
+
+    .hexagon-image {
+        width: 150px;  
+        height: 150px; 
+        margin-top: 20px; 
+    }
+
+    .image-wrapper {
+        bottom: -60px; 
+    }
+
+    .card-header {
+        height: 120px; 
+    }
+
+    .card-body h3 {
+        font-size: 1rem; 
+    }
+}
+</style>

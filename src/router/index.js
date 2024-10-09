@@ -56,6 +56,8 @@ import GestionEmploisDuTemps from '@/views/Parents/gestionEmploisDuTemps.vue';
 import EmploisEmploisEnfant from '@/views/Parents/emploisEmploisEnfant.vue';
 import GestionAbsencesParent from '@/views/Parents/gestionAbsences.vue';
 import AbsencesEnfant from '@/views/Parents/absencesEnfant.vue';
+import GestionEvaluation from '@/views/Parents/gestionEvaluation.vue';
+import EvaluationEnfant from '@/views/Parents/evaluationEnfant.vue';
 
 
 // Routes non protégées (accessible à tous)
@@ -132,6 +134,8 @@ const parentRoutes = [
   { path: '/emplois_du_temps_enfant/:classeEleve_id', name: 'emplois_du_temps_enfant', component: EmploisEmploisEnfant},
   { path: '/gestion_absences_parent', name:'gestion_absences_parent', component: GestionAbsencesParent},
   { path: '/absences_par_enfant/:classeEleve_id', name:'absences_par_enfant', component: AbsencesEnfant},
+  { path: '/gestion_evaluation_parent', name:'gestion_evaluation_parent', component: GestionEvaluation},
+  { path: '/evaluation_enfant/:classeEleve_id', name:'evaluation_enfant', component: EvaluationEnfant},
 ];
 
 // Création du tableau des routes combinées

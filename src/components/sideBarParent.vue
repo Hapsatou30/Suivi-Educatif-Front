@@ -15,7 +15,7 @@
           </router-link>
         </li>
         <li>
-          <router-link to="/planning" class="menu-link" :class="{ active: isActive('/planning') }">
+          <router-link to="/gestion_evaluation_parent" class="menu-link" :class="{ active: isActive('/gestion_evaluation_parent') || isActive('/evaluation_enfant')  }">
             <Icon icon="pajamas:planning" /> Évaluations
           </router-link>
         </li>

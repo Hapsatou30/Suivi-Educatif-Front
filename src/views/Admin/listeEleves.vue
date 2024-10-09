@@ -10,94 +10,181 @@
 
         <h2>Formulaire pour ajouter des eleves</h2>
         <div class="form-container mt-4">
-            <form @submit.prevent="handleFormSubmit">
-                <!-- Étape 1 : Informations du parent -->
-                <div v-if="currentStep === 1">
-                    <h3 style="text-align: center; margin-bottom: 20px;">Informations du parent</h3>
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="nom_parent" class="form-label">Nom du parent :</label>
-                            <input type="text" class="form-control" v-model="formData.parent_nom"
-                                placeholder="Entrez le nom du parent" required />
-                        </div>
-                        <div class="col-md-6">
-                            <label for="prenom_parent" class="form-label">Prénom du parent :</label>
-                            <input type="text" class="form-control" v-model="formData.parent_prenom"
-                                placeholder="Entrez le prénom du parent" required />
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="email_parent" class="form-label">Email du parent :</label>
-                            <input type="email" class="form-control" v-model="formData.parent_email"
-                                placeholder="Entrez l'email du parent" required />
-                        </div>
-                        <div class="col-md-6">
-                            <label for="telephone_parent" class="form-label">Téléphone du parent :</label>
-                            <input type="text" class="form-control" v-model="formData.parent_telephone"
-                                placeholder="Entrez le téléphone du parent" required />
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="adresse_parent" class="form-label">Adresse du parent :</label>
-                            <input type="text" class="form-control" v-model="formData.parent_adresse"
-                                placeholder="Entrez l'adresse du parent" required />
-                        </div>
-                        <div class="suivant col-md-6" style="margin-top: 30px; display: flex; justify-content: end;">
-                            <button type="button" class="btn" @click="nextStep">Suivant</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Étape 2 : Informations de l'élève -->
-                <div v-if="currentStep === 2">
-                    <h3 style="text-align: center; margin-bottom: 20px;">Informations de l'élève</h3>
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="nom_eleve" class="form-label">Nom de l'élève :</label>
-                            <input type="text" class="form-control" v-model="formData.nom"
-                                placeholder="Entrez le nom de l'élève" required />
-                        </div>
-                        <div class="col-md-6">
-                            <label for="prenom_eleve" class="form-label">Prénom de l'élève :</label>
-                            <input type="text" class="form-control" v-model="formData.prenom"
-                                placeholder="Entrez le prénom de l'élève" required />
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="email_eleve" class="form-label">Email de l'élève :</label>
-                            <input type="email" class="form-control" v-model="formData.email"
-                                placeholder="Entrez l'email de l'élève" required />
-                        </div>
-                        <div class="col-md-6">
-                            <label for="telephone_eleve" class="form-label">Téléphone de l'élève :</label>
-                            <input type="text" class="form-control" v-model="formData.telephone"
-                                placeholder="Entrez le téléphone de l'élève" required />
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="date_naissance_eleve" class="form-label">Date de naissance :</label>
-                            <input type="date" class="form-control" v-model="formData.date_naissance" required />
-                        </div>
-                        <div class="col-md-6">
-                            <label for="genre_eleve" class="form-label">Genre :</label>
-                            <select class="form-control" v-model="formData.genre" required>
-                                <option value="">Sélectionnez le genre</option>
-                                <option value="Masculin">Masculin</option>
-                                <option value="Feminin">Féminin</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="bouton d-flex justify-content-between">
-                        <button type="button" class="btn btn-secondary" @click="previousStep">Précédent</button>
-                        <button type="submit" class="btn btn-submit">Enregistrer</button>
-                    </div>
-                </div>
-            </form>
+    <form @submit.prevent="handleFormSubmit">
+      <!-- Étape 1 : Informations du parent -->
+      <div v-if="currentStep === 1">
+        <h3 style="text-align: center; margin-bottom: 20px;">Informations du parent</h3>
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="nom_parent" class="form-label">Nom du parent :</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              v-model="formData.parent_nom" 
+              placeholder="Entrez le nom du parent" 
+              @blur="validateField('parent_nom')" 
+              :class="{ 'is-invalid': errors.parent_nom }" 
+              required 
+            />
+            <div v-if="errors.parent_nom" class="text-danger">{{ errors.parent_nom }}</div>
+          </div>
+          <div class="col-md-6">
+            <label for="prenom_parent" class="form-label">Prénom du parent :</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              v-model="formData.parent_prenom" 
+              placeholder="Entrez le prénom du parent" 
+              @blur="validateField('parent_prenom')" 
+              :class="{ 'is-invalid': errors.parent_prenom }" 
+              required 
+            />
+            <div v-if="errors.parent_prenom" class="text-danger">{{ errors.parent_prenom }}</div>
+          </div>
         </div>
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="email_parent" class="form-label">Email du parent :</label>
+            <input 
+              type="email" 
+              class="form-control" 
+              v-model="formData.parent_email" 
+              placeholder="Entrez l'email du parent" 
+              @blur="validateField('parent_email')" 
+              :class="{ 'is-invalid': errors.parent_email }" 
+              required 
+            />
+            <div v-if="errors.parent_email" class="text-danger">{{ errors.parent_email }}</div>
+          </div>
+          <div class="col-md-6">
+            <label for="telephone_parent" class="form-label">Téléphone du parent :</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              v-model="formData.parent_telephone" 
+              placeholder="Entrez le téléphone du parent" 
+              @blur="validateField('parent_telephone')" 
+              :class="{ 'is-invalid': errors.parent_telephone }" 
+              required 
+            />
+            <div v-if="errors.parent_telephone" class="text-danger">{{ errors.parent_telephone }}</div>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="adresse_parent" class="form-label">Adresse du parent :</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              v-model="formData.parent_adresse" 
+              placeholder="Entrez l'adresse du parent" 
+              @blur="validateField('parent_adresse')" 
+              :class="{ 'is-invalid': errors.parent_adresse }" 
+              required 
+            />
+            <div v-if="errors.parent_adresse" class="text-danger">{{ errors.parent_adresse }}</div>
+          </div>
+          <div class="suivant col-md-6" style="margin-top: 30px; display: flex; justify-content: end;">
+            <button type="button" class="btn" @click="nextStep">Suivant</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Étape 2 : Informations de l'élève -->
+      <div v-if="currentStep === 2">
+        <h3 style="text-align: center; margin-bottom: 20px;">Informations de l'élève</h3>
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="nom_eleve" class="form-label">Nom de l'élève :</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              v-model="formData.nom" 
+              placeholder="Entrez le nom de l'élève" 
+              @blur="validateField('nom')" 
+              :class="{ 'is-invalid': errors.nom }" 
+              required 
+            />
+            <div v-if="errors.nom" class="text-danger">{{ errors.nom }}</div>
+          </div>
+          <div class="col-md-6">
+            <label for="prenom_eleve" class="form-label">Prénom de l'élève :</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              v-model="formData.prenom" 
+              placeholder="Entrez le prénom de l'élève" 
+              @blur="validateField('prenom')" 
+              :class="{ 'is-invalid': errors.prenom }" 
+              required 
+            />
+            <div v-if="errors.prenom" class="text-danger">{{ errors.prenom }}</div>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="email_eleve" class="form-label">Email de l'élève :</label>
+            <input 
+              type="email" 
+              class="form-control" 
+              v-model="formData.email" 
+              placeholder="Entrez l'email de l'élève" 
+              @blur="validateField('email')" 
+              :class="{ 'is-invalid': errors.email }" 
+              required 
+            />
+            <div v-if="errors.email" class="text-danger">{{ errors.email }}</div>
+          </div>
+          <div class="col-md-6">
+            <label for="telephone_eleve" class="form-label">Téléphone de l'élève :</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              v-model="formData.telephone" 
+              placeholder="Entrez le téléphone de l'élève" 
+              @blur="validateField('telephone')" 
+              :class="{ 'is-invalid': errors.telephone }" 
+              required 
+            />
+            <div v-if="errors.telephone" class="text-danger">{{ errors.telephone }}</div>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="date_naissance_eleve" class="form-label">Date de naissance :</label>
+            <input 
+              type="date" 
+              class="form-control" 
+              v-model="formData.date_naissance" 
+              @blur="validateField('date_naissance')" 
+              :class="{ 'is-invalid': errors.date_naissance }" 
+              required 
+            />
+            <div v-if="errors.date_naissance" class="text-danger">{{ errors.date_naissance }}</div>
+          </div>
+          <div class="col-md-6">
+            <label for="genre_eleve" class="form-label">Genre :</label>
+            <select 
+              class="form-control" 
+              v-model="formData.genre" 
+              @blur="validateField('genre')" 
+              :class="{ 'is-invalid': errors.genre }" 
+              required
+            >
+              <option value="">Sélectionnez le genre</option>
+              <option value="Masculin">Masculin</option>
+              <option value="Feminin">Féminin</option>
+            </select>
+            <div v-if="errors.genre" class="text-danger">{{ errors.genre }}</div>
+          </div>
+        </div>
+        <div class="bouton d-flex justify-content-between">
+          <button type="button" class="btn btn-secondary" @click="previousStep">Précédent</button>
+          <button type="submit" class="btn btn-submit" >Enregistrer</button>
+        </div>
+      </div>
+    </form>
+  </div>
         <div class="eleves">
             <h3>Liste des eleves</h3>
             <div class="tableau1">
@@ -193,6 +280,48 @@ const classes = ref([]); // Liste des classes
 const eleveSelectionne = ref(null); // Élève sélectionné
 const elevesAvecClasse = ref([]); // Stocker les élèves qui ont déjà une classe
 
+const errors = ref({
+  parent_nom: null,
+  parent_prenom: null,
+  parent_email: null,
+  parent_telephone: null,
+  parent_adresse: null,
+  nom: null,
+  prenom: null,
+  email: null,
+  telephone: null,
+  date_naissance: null,
+  genre: null
+});
+
+// Validation des champs
+const validateField = (field) => {
+  if (!formData.value[field]) {
+    errors.value[field] = `Le champ ${field.replace('_', ' ')} est requis.`;
+  } else if (field === 'email' && !/\S+@\S+\.\S+/.test(formData.value[field])) {
+    errors.value[field] = "Veuillez entrer un email valide.";
+  } else if (field === 'telephone' && !/^\d+$/.test(formData.value[field])) {
+    errors.value[field] = "Veuillez entrer un numéro valide.";
+  }else if (field === 'parent_email' && !/\S+@\S+\.\S+/.test(formData.value[field])) {
+    errors.value[field] = "Veuillez entrer un email valide.";
+  } else if (field === 'parent_telephone' && !/^\d+$/.test(formData.value[field])) {
+    errors.value[field] = "Veuillez entrer un numéro valide.";
+  }
+   else {
+    errors.value[field] = null;
+  }
+  // Vérifiez la validité du formulaire après la validation d'un champ
+  isFormValid();
+};
+
+
+// Validation générale
+const isFormValid = () => {
+  Object.keys(formData.value).forEach(field => {
+    validateField(field); // Valider chaque champ
+  });
+  return !Object.values(errors.value).some(error => error); // Retourne vrai si aucune erreur
+};
 
 // Récupérer les élèves avec une classe attribuée
 const fetchElevesAvecClasse = async () => {

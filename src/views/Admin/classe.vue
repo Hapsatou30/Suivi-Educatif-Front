@@ -15,37 +15,46 @@
           <div class="col-md-6">
             <label for="nom" class="form-label">Nom :</label>
             <input 
-              type="text" 
-              class="form-control" 
-              v-model="formData.nom" 
-              placeholder="Entrez le nom de la classe" 
-              required 
-            />
-          </div>
+            type="text" 
+            class="form-control" 
+            v-model="formData.nom" 
+            placeholder="Entrez le nom de la classe" 
+            @blur="validateField('nom')" 
+            :class="{ 'is-invalid': errors.nom }" 
+            required 
+          />
+          <div v-if="errors.nom" class="text-danger">{{ errors.nom }}</div>
+     </div>
           <div class="col-md-6">
             <label for="niveau" class="form-label">Niveau :</label>
             <input 
-              type="text" 
-              class="form-control" 
-              v-model="formData.niveau" 
-              placeholder="Entrez le niveau" 
-              required 
-            />
-          </div>
+            type="text" 
+            class="form-control" 
+            v-model="formData.niveau" 
+            placeholder="Entrez le niveau" 
+            @blur="validateField('niveau')" 
+            :class="{ 'is-invalid': errors.niveau }" 
+            required 
+          />
+          <div v-if="errors.niveau" class="text-danger">{{ errors.niveau }}</div>
+        </div>
         </div>
         <div class="row d-flex" style="display: flex; align-items: center;">
           <div class="col-md-6">
             <label for="capacite" class="form-label">Capacité :</label>
             <input 
-              type="number" 
-              class="form-control" 
-              v-model="formData.capacite" 
-              placeholder="Entrez la capacité" 
-              required 
-            />
-          </div>
+            type="number" 
+            class="form-control" 
+            v-model="formData.capacite" 
+            placeholder="Entrez la capacité" 
+            @blur="validateField('capacite')" 
+            :class="{ 'is-invalid': errors.capacite }" 
+            required 
+          />
+          <div v-if="errors.capacite" class="text-danger">{{ errors.capacite }}</div>
+        </div>
           <div class="col-md-6 mt-4" style="display: flex; justify-content: end;">
-            <button type="submit" class="btn btn-submit">Enregistrer</button>
+            <button type="submit" class="btn btn-submit" :disabled="!formIsValid">Enregistrer</button>
           </div>
         </div>
       </form>
@@ -113,6 +122,36 @@ const formData = ref({
   id: null  
 });
 
+
+const errors = ref({
+  nom: null,
+  niveau: null,
+  capacite: null,
+});
+
+const validateField = (field) => {
+  if (!formData.value[field]) {
+    errors.value[field] = `Le champ ${field} est obligatoire.`;
+  } else {
+    errors.value[field] = null;
+  }
+
+
+  if (field === 'capacite') {
+    if (isNaN(formData.value.capacite) || formData.value.capacite <= 0) {
+      errors.value.capacite = "Veuillez entrer une capacité valide.";
+    } else {
+      errors.value.capacite = null;
+    }
+  }
+};
+
+// Vérifier si le formulaire est valide
+const formIsValid = computed(() => {
+  return !Object.values(errors.value).some(error => error !== null) &&
+         Object.values(formData.value).every(field => field !== '');
+});
+
 const editClasse = (id) => {
   const row = tableData.value.find(item => item.id === id);
   if (row) {
@@ -155,6 +194,15 @@ const paginatedData = computed(() => {
 });
 
 const handleFormSubmit = async () => {
+  // Valider tous les champs avant de soumettre
+  validateField('nom');
+  validateField('niveau');
+  validateField('capacite');
+
+  if (!formIsValid.value) {
+    return; // Arrêter la soumission si le formulaire n'est pas valide
+  }
+
   try {
     const response = await (formData.value.id !== null ? modifierClasse(formData.value) : ajouterClasse(formData.value));
     const successMessage = formData.value.id !== null ? 'Classe modifiée avec succès !' : 'Classe ajoutée avec succès !';

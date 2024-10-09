@@ -16,22 +16,28 @@
           <div class="col-md-6">
             <label for="annee_debut" class="form-label">Année de début :</label>
             <input 
-              type="text" 
-              class="form-control" 
-              v-model="formData.annee_debut" 
-              placeholder="Entrez l'année de début" 
-              required 
-            />
+            type="text" 
+            class="form-control" 
+            v-model="formData.annee_debut" 
+            placeholder="Entrez l'année de début" 
+            @blur="validateField('annee_debut')" 
+            :class="{ 'is-invalid': errors.annee_debut }" 
+            required 
+          />
+          <div v-if="errors.annee_debut" class="text-danger">{{ errors.annee_debut }}</div>
           </div>
           <div class="col-md-6">
             <label for="annee_fin" class="form-label">Année de fin :</label>
             <input 
-              type="text" 
-              class="form-control" 
-              v-model="formData.annee_fin" 
-              placeholder="Entrez l'année de fin" 
-              required 
-            />
+            type="text" 
+            class="form-control" 
+            v-model="formData.annee_fin" 
+            placeholder="Entrez l'année de fin" 
+            @blur="validateField('annee_fin')" 
+            :class="{ 'is-invalid': errors.annee_fin }" 
+            required 
+          />
+          <div v-if="errors.annee_fin" class="text-danger">{{ errors.annee_fin }}</div>
           </div>
         </div>
 
@@ -39,19 +45,22 @@
           <div class="col-md-6">
             <label for="etat" class="form-label">État :</label>
             <select 
-              id="etat" 
-              class="form-select" 
-              v-model="formData.etat" 
-              required
-            >
-              <option value="Fermée">Fermée</option>
-              <option value="En_cours">En cours</option>
-            </select>
-          </div>
+            id="etat" 
+            class="form-select" 
+            v-model="formData.etat" 
+            @blur="validateField('etat')" 
+            :class="{ 'is-invalid': errors.etat }" 
+            required
+          >
+            <option value="Fermée">Fermée</option>
+            <option value="En_cours">En cours</option>
+          </select>
+          <div v-if="errors.etat" class="text-danger">{{ errors.etat }}</div>
+        </div>
         </div>
 
         <div class="bouton">
-          <button type="submit" class="btn btn-submit">Enregistrer</button>
+          <button type="submit" class="btn btn-submit" :disabled="!formIsValid">Enregistrer</button>
         </div>
       </form>
     </div>
@@ -128,6 +137,40 @@ const formData = ref({
   id: null  
 });
 
+
+const errors = ref({
+  annee_debut: null,
+  annee_fin: null,
+  etat: null
+});
+
+const validateField = (field) => {
+  if (!formData.value[field]) {
+    errors.value[field] = `Le champ ${field} est obligatoire.`;
+  } else {
+    errors.value[field] = null;
+  }
+
+
+  if (field === 'annee_debut' && isNaN(formData.value.annee_debut)) {
+    errors.value.annee_debut = "L'année de début doit être un nombre.";
+  } else if (field === 'annee_fin' && isNaN(formData.value.annee_fin)) {
+    errors.value.annee_fin = "L'année de fin doit être un nombre.";
+  }
+
+  // Vérification que l'année de fin est supérieure à l'année de début
+  if (formData.value.annee_debut && formData.value.annee_fin && 
+      parseInt(formData.value.annee_debut) >= parseInt(formData.value.annee_fin)) {
+    errors.value.annee_fin = "L'année de fin doit être supérieure à l'année de début.";
+  }
+};
+
+// Vérifier si le formulaire est valide
+const formIsValid = computed(() => {
+  return !Object.values(errors.value).some(error => error !== null) &&
+         Object.values(formData.value).every(field => field !== '');
+});
+
 const editAnnee = (id) => {
   // console.log('Modifier l\'année avec l\'ID :', id);
   const row = tableData.value.find(item => item.id === id);
@@ -179,44 +222,81 @@ const paginatedData = computed(() => {
 });
 
 const handleFormSubmit = async () => {
+  // Valider tous les champs avant de soumettre
+  validateField('annee_debut');
+  validateField('annee_fin');
+  if (formData.value.id !== null) {
+    validateField('etat');
+  }
+
+  if (!formIsValid.value) {
+    return; // Arrêter la soumission si le formulaire n'est pas valide
+  }
+
   try {
     const response = await (formData.value.id !== null ? modifierAnnee(formData.value) : ajouterAnnee(formData.value));
-    // console.log('Réponse du serveur:', response);
+    
+    // Vérifier le statut de la réponse
+    if (response.status === 201) {
+      const successMessage = formData.value.id !== null ? 'Année modifiée avec succès !' : 'Année ajoutée avec succès !';
 
-    // Vérifiez si la réponse contient un message d'erreur
-    if (response && response.status && response.status !== 200) {
-      // Supposons que le message d'erreur soit dans `response.message`
-      throw new Error(response.message || 'Une erreur inattendue s\'est produite.');
+      Swal.fire({
+        icon: 'success',
+        title: 'Succès',
+        text: successMessage,
+        confirmButtonColor: '#407CEE',
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false
+      });
+
+      await fetchData();
+      resetForm();
     }
-
-    const successMessage = formData.value.id !== null ? 'Année modifiée avec succès !' : 'Année ajoutée avec succès !';
-
-    Swal.fire({
-      icon: 'success',
-      title: 'Succès',
-      text: successMessage,
-      confirmButtonColor: '#407CEE',
-      timer: 2000,
-      timerProgressBar: true,
-      showConfirmButton: false
-    });
-
-    await fetchData();
-    resetForm();
   } catch (error) {
     console.error('Erreur lors de la soumission du formulaire :', error);
-    Swal.fire({
-      icon: 'error',
-      title: 'Erreur',
-      text: error.message || 'Une erreur inattendue s\'est produite.',
-      confirmButtonColor: '#d33',
-      timer: 3000,
-      timerProgressBar: true,
-      showConfirmButton: false
-    });
+
+    // Vérifiez si l'erreur a une réponse
+    if (error.response) {
+      
+      if (error.response.status === 409 || error.response.status === 422) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Erreur',
+          text: error.response.data.message || 'Une erreur inattendue s\'est produite.',
+          confirmButtonColor: '#d33',
+          timer: 3000,
+          timerProgressBar: true,
+          showConfirmButton: false
+        });
+      } else {
+        
+        Swal.fire({
+          icon: 'error',
+          title: 'Erreur',
+          text: error.response.data.message || 'Une erreur inattendue s\'est produite.',
+          confirmButtonColor: '#d33',
+          timer: 3000,
+          timerProgressBar: true,
+          showConfirmButton: false
+        });
+      }
+    } else {
+     
+      Swal.fire({
+        icon: 'error',
+        title: 'Erreur',
+        text: 'Une erreur inattendue s\'est produite. Veuillez vérifier votre connexion.',
+        confirmButtonColor: '#d33',
+        timer: 3000,
+        timerProgressBar: true,
+        showConfirmButton: false
+      });
+    }
     resetForm();
   }
 };
+
 
 const deleteAnnee = async (id) => {
   const confirmDelete = await Swal.fire({

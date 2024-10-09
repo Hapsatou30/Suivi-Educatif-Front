@@ -9,19 +9,37 @@
         <div class="formulaire">
           <h2>Connexion</h2>
           <form @submit.prevent="login">
+            <!-- Champ Email -->
             <div class="mb-3">
               <label for="email" class="form-label">Email</label>
-              <input type="email" v-model="email" class="form-control" id="email" placeholder="Votre Email" required />
+              <input
+                type="email"
+                v-model="email"
+                class="form-control"
+                id="email"
+                placeholder="Votre Email"
+                required
+              />
               <small v-if="emailError" class="text-danger">{{ emailError }}</small>
             </div>
+
+            <!-- Champ Mot de passe -->
             <div class="mb-3">
               <label for="password" class="form-label">Mot de passe</label>
-              <input type="password" v-model="password" class="form-control" id="password"
-                placeholder="Votre Mot de passe" required />
+              <input
+                type="password"
+                v-model="password"
+                class="form-control"
+                id="password"
+                placeholder="Votre Mot de passe"
+                required
+              />
               <small v-if="passwordError" class="text-danger">{{ passwordError }}</small>
             </div>
+
+            <!-- Bouton de soumission -->
             <button type="submit" class="btn-block btn-custom">Connexion</button>
-            <p v-if="error">{{ error }}</p>
+            <p v-if="error" class="text-danger">{{ error }}</p>
           </form>
         </div>
       </div>
@@ -33,20 +51,18 @@
 </template>
 
 <script setup>
-// Importation des dépendances
 import { ref } from 'vue';
 import { login as loginService } from '@/services/AuthService';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
-// Variables réactives
 const email = ref('');
 const password = ref('');
 const error = ref('');
 const emailError = ref('');
 const passwordError = ref('');
 
-// Méthode pour la validation
+// Méthode pour valider les champs
 const validateForm = () => {
   let isValid = true;
 
@@ -58,7 +74,7 @@ const validateForm = () => {
     emailError.value = 'Veuillez entrer un email valide.';
     isValid = false;
   } else {
-    emailError.value = '';
+    emailError.value = ''; // Réinitialiser si valide
   }
 
   // Validation du mot de passe
@@ -69,61 +85,41 @@ const validateForm = () => {
     passwordError.value = 'Le mot de passe doit contenir au moins 8 caractères.';
     isValid = false;
   } else {
-    passwordError.value = '';
+    passwordError.value = ''; // Réinitialiser si valide
   }
 
   return isValid;
-}
+};
 
-// Méthode pour la connexion
-// Méthode pour la connexion
+// Méthode pour gérer la connexion
 const login = async () => {
-  // console.log('Tentative de connexion avec : ', email.value, password.value);
-
-  // Vérification du formulaire
   if (!validateForm()) return;
 
   try {
-    // Appel à l'API pour l'authentification
     const response = await loginService(email.value, password.value);
-    // console.log('Réponse de l\'API : ', response);
 
-    // Si le token d'authentification est reçu
     if (response.access_token) {
       localStorage.setItem('token', response.access_token);
-
-      // Récupération des rôles
       const roles = response.roles;
-      // console.log('Rôles de l\'utilisateur : ', roles);
-
-      // Stockage des rôles dans localStorage
       localStorage.setItem('userRole', JSON.stringify(roles));
 
-      // Gestion des redirections
       if (roles.includes('admin')) {
         router.push('/dashboard');
       } else if (roles.includes('professeur')) {
         router.push('/dashboard_prof');
-      }
-      else if (roles.includes('parent')) {
+      } else if (roles.includes('parent')) {
         router.push('/dashboardParent');
-      }
-       else {
+      } else {
         router.push('/login');
       }
     } else {
       error.value = 'Token non reçu.';
-      // console.log('Erreur: Token non reçu');
     }
-
   } catch (err) {
     error.value = 'Erreur lors de la connexion.';
     console.error('Erreur lors de la connexion', err);
   }
 };
-
-
-
 </script>
 
 

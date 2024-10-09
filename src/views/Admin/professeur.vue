@@ -8,35 +8,69 @@
       page1="matiere"
       page2="professeur"
     />
-
     <h2>Formulaire pour ajouter des Professeurs</h2>
-
     <div class="form-container mt-4">
       <form @submit.prevent="handleFormSubmit">
         <div class="row mb-3">
           <div class="col-md-6">
             <label for="nom" class="form-label">Nom :</label>
-            <input type="text" class="form-control" v-model="newProfesseur.nom" placeholder="Entrez votre nom" required />
+            <input 
+              type="text" 
+              class="form-control" 
+              v-model="newProfesseur.nom" 
+              placeholder="Entrez votre nom" 
+              @blur="validateField('nom')" 
+              :class="{ 'is-invalid': errors.nom }" 
+              required 
+            />
+            <div v-if="errors.nom" class="text-danger">{{ errors.nom }}</div>
           </div>
           <div class="col-md-6">
             <label for="prenom" class="form-label">Prénom :</label>
-            <input type="text" class="form-control" v-model="newProfesseur.prenom" placeholder="Entrez votre prénom" required />
+            <input 
+              type="text" 
+              class="form-control" 
+              v-model="newProfesseur.prenom" 
+              placeholder="Entrez votre prénom" 
+              @blur="validateField('prenom')" 
+              :class="{ 'is-invalid': errors.prenom }" 
+              required 
+            />
+            <div v-if="errors.prenom" class="text-danger">{{ errors.prenom }}</div>
           </div>
         </div>
 
         <div class="row mb-3">
           <div class="col-md-6">
             <label for="email" class="form-label">Email :</label>
-            <input type="email" class="form-control" v-model="newProfesseur.email" placeholder="Entrez votre email" required />
+            <input 
+              type="email" 
+              class="form-control" 
+              v-model="newProfesseur.email" 
+              placeholder="Entrez votre email" 
+              @blur="validateField('email')" 
+              :class="{ 'is-invalid': errors.email }" 
+              required 
+            />
+            <div v-if="errors.email" class="text-danger">{{ errors.email }}</div>
           </div>
           <div class="col-md-6">
             <label for="telephone" class="form-label">Téléphone :</label>
-            <input type="text" class="form-control" v-model="newProfesseur.telephone" placeholder="Entrez votre numero de tel" required />
+            <input 
+              type="text" 
+              class="form-control" 
+              v-model="newProfesseur.telephone" 
+              placeholder="Entrez votre numéro de tel" 
+              @blur="validateField('telephone')" 
+              :class="{ 'is-invalid': errors.telephone }" 
+              required 
+            />
+            <div v-if="errors.telephone" class="text-danger">{{ errors.telephone }}</div>
           </div>
         </div>
 
         <div class="bouton">
-          <button type="submit" class="btn btn-submit">Enregistrer</button>
+          <button type="submit" class="btn btn-submit" :disabled="!formIsValid">Enregistrer</button>
         </div>
       </form>
     </div>
@@ -110,9 +144,34 @@ const newProfesseur = ref({
   id: null  
 });
 
+const errors = ref({
+  nom: null,
+  prenom: null,
+  email: null,
+  telephone: null
+});
 const tableData = ref([]);
 const currentPage = ref(1);
 const pageSize = ref(5);
+
+// Méthode de validation pour chaque champ
+const validateField = (field) => {
+  if (!newProfesseur.value[field]) {
+    errors.value[field] = `Le champ ${field} est obligatoire.`;
+  } else if (field === 'email' && !/\S+@\S+\.\S+/.test(newProfesseur.value.email)) {
+    errors.value.email = "Veuillez entrer un email valide.";
+  } else if (field === 'telephone' && !/^\d+$/.test(newProfesseur.value.telephone)) {
+    errors.value.telephone = "Veuillez entrer un numéro valide.";
+  } else {
+    errors.value[field] = null;
+  }
+};
+
+// Vérifier si le formulaire est valide
+const formIsValid = computed(() => {
+  return !Object.values(errors.value).some(error => error !== null) &&
+         Object.values(newProfesseur.value).every(field => field !== '');
+});
 
 const fetchData = async () => {
   try {
@@ -143,6 +202,16 @@ const paginatedData = computed(() => {
   return tableData.value.slice(start, end);
 });
 const handleFormSubmit = async () => {
+    // Valider tous les champs avant de soumettre
+    validateField('nom');
+  validateField('prenom');
+  validateField('email');
+  validateField('telephone');
+
+  if (!formIsValid.value) {
+    return; // Arrêter la soumission si le formulaire n'est pas valide
+  }
+
     try {
         // console.log("Données à envoyer:", newProfesseur.value);
         const response = await (newProfesseur.value.id !== null 
@@ -370,5 +439,11 @@ label:hover {
       cursor: pointer; /* Change le curseur lors du survol */
       color: #407CEE; /* Couleur au survol */
   }
+ .bouton .btn-submit:disabled {
+  background-color: #407CEE; /* couleur gris pour montrer qu'il est désactivé */
+  color: #666666; /* texte grisé */
+  cursor: not-allowed; /* curseur modifié pour indiquer qu'il n'est pas cliquable */
+  opacity: 0.6; /* rendre le bouton semi-transparent */
+}
 </style>
 

@@ -25,39 +25,36 @@
             </div>
         </div>
         <div class="evaluations">
-      <h2>Les évaluations de la semaine</h2>
-      <div class="tableau1">
-        <tabEvaluations 
-   v-if="paginatedData.length > 0"
-   :headers="['Jour', 'Matière', 'Devoir', 'Heure', 'Elève']"
-:data="paginatedData.map(({jour, matiere,type_evaluation,heure, prenom }) => ({
-
-jour,
-    matiere,
-    type_evaluation,
-    heure,
-    prenom,
-    
-}))"
-
-/>
-
-
-        <!-- Message affiché si la tableData est vide -->
-        <p v-else class="alert alert-info" >
-          Aucune évaluation prévue pour cette semaine.
-        </p>
-      </div>
-
-      <!-- Composant de pagination -->
-      <pagination class="pagination"
-        v-if="tableData.length > pageSize"
-        :totalItems="tableData.length"
-        :pageSize="pageSize"
-        :currentPage="currentPage"
-        @pageChange="handlePageChange"
+    <h2>Les évaluations de la semaine</h2>
+    <div class="tableau1">
+      <tabEvaluations 
+        v-if="paginatedData.length > 0"
+        :headers="['Jour', 'Matière', 'Devoir', 'Heure', 'Elève']"
+        :data="paginatedData.map(({ jour, matiere, type_evaluation, heure, prenom }) => ({
+          jour,
+          matiere,
+          type_evaluation,
+          heure,
+          prenom,
+        }))"
       />
+
+      <!-- Message affiché si la tableData est vide -->
+      <p v-else class="alert alert-info">
+        Aucune évaluation prévue pour cette semaine.
+      </p>
     </div>
+
+    <!-- Composant de pagination -->
+    <pagination 
+      class="pagination"
+      v-if="tableData.length > pageSize"
+      :totalItems="tableData.length"
+      :pageSize="pageSize"
+      :currentPage="currentPage"
+      @pageChange="handlePageChange"
+    />
+  </div>
     </div>
 </template>
 
@@ -262,4 +259,70 @@ onMounted(async () => {
     margin-left: 300px;
     margin-right: 50px;
   }
+/* Media queries pour rendre la section responsive sur mobile */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start; /* Aligner les éléments à gauche sur mobile */
+    margin: 0; /* Supprimer les marges latérales */
+  }
+
+  .widgets-container {
+    flex-direction: column;
+    align-items: flex-start; 
+    justify-content: start;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    margin-left: 0;
+
+    
+  }
+
+  .absence_jour {
+    margin: 20px 0; /* Ajouter un peu d'espace au-dessus et en-dessous sur mobile */
+    width: 100%; /* Faire en sorte que l'élément prenne toute la largeur disponible */
+  }
+
+  .card {
+    flex: 1 1 100%; /* Les cartes occuperont toute la largeur sur mobile */
+    max-width: 100%; /* S'assurer qu'elles ne dépassent pas la largeur de l'écran */
+  }
+
+  .card-title {
+    font-size: 20px; /* Réduire la taille du titre sur mobile */
+  }
+
+  .left-paragraph, .right-paragraph {
+    font-size: 16px; /* Réduire la taille des paragraphes sur mobile */
+  }
+}
+
+@media (max-width: 480px) {
+ .evaluations{
+    margin-top: 0;
+}
+.evaluations h2{
+    width: 100%;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 0px;
+}
+    .tableau1 {
+    margin-left: 0;
+    margin-right: 0;
+  }
+    .main-content {
+    width: 90%;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+  .card-title {
+    font-size: 18px; /* Réduire encore plus la taille du titre pour les petits écrans */
+  }
+
+  .left-paragraph, .right-paragraph {
+    font-size: 14px; /* Réduire la taille des paragraphes pour les petits écrans */
+  }}
 </style>

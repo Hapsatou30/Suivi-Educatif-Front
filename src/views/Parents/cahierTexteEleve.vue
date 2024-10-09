@@ -8,7 +8,6 @@
             </router-link>
             <h1 style="text-align: center; margin-left: 100px;">Le cahier de texte de la classe de <span
                     class="prenom">{{ prenom }}</span></h1>
-
         </div>
         <div class="cahiers">
             <div class="tableau1">
@@ -150,4 +149,36 @@ onMounted(async () => {
     display: flex;
     justify-content: end;
 }
+@media (max-width: 480px) {
+    .head{
+        margin-top: 20%;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+       
+    }
+    .retour {
+    
+    margin-left: 0;
+}
+
+ .head h1{
+    font-size: 24px;
+    margin-top: 25px;
+    text-align: justify;
+    
+}
+.cahiers{
+    margin-top: 20px;
+}
+
+    .tableau1 {
+    margin: 0;
+  }
+    .main-content {
+        margin: 0;
+    width: 90%;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}}
 </style>

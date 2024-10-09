@@ -6,7 +6,7 @@
             <router-link to="/gestion_absences_parent">
                 <Icon class="retour" icon="formkit:arrowleft" />
             </router-link>
-            <h1 style="text-align: center; margin-left: 150px;">Historiques des absences de <span class="prenom">{{
+            <h1 >Historiques des absences de <span class="prenom">{{
                     prenom }}</span></h1>
         </div>
         <div class="absences">
@@ -236,4 +236,43 @@ onMounted(() => {
     color: black;
     margin-left: 300px;
 }
+.head h1{
+    text-align: center; 
+    margin-left: 150px;
+}
+@media (max-width: 480px) {
+    .head{
+        margin-top: 20%;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+       
+    }
+    .retour {
+    
+    margin-left: 0;
+}
+ .head h1{
+    margin-left: -150px;
+    
+ }
+ .head h1{
+    font-size: 24px;
+    margin-top: 25px;
+    margin-left: -48px;
+    text-align: center;
+}
+.absences{
+    margin-top: 20px;
+}
+
+    .tableau-absences {
+    margin: 0;
+  }
+    .main-content {
+        margin: 0;
+    width: 90%;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}}
 </style>

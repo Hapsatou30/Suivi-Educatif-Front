@@ -4,7 +4,7 @@
     <Icon icon="mdi:menu" class="burger-icon" />
   </div>
 
-     <div :class="['sidebar', { 'is-open': isSidebarOpen }]">
+  <div :class="['sidebar', isSidebarOpen ? 'open' : '']">
       <div class="logo">
         <img src="/public/images/logo_blanc.png" alt="Logo" />
       </div>
@@ -61,6 +61,7 @@ const isSidebarOpen = ref(false);
 const toggleSidebar = () => {
   isSidebarOpen.value = !isSidebarOpen.value;
 };
+
   </script>
     
     <style scoped>
@@ -82,18 +83,19 @@ const toggleSidebar = () => {
 }
 /* Barre latérale */
 .sidebar {
-  width: 250px;
-  background-color: #407CEE;
-  height: 100vh;
   position: fixed;
+  left: -250px; /* Cache le sidebar à gauche de l'écran */
   top: 0;
-  left: -250px; /* Masqué par défaut en mobile */
-  transition: left 0.3s ease;
+  width: 250px;
+  height: 100%;
+  background-color: #333;
+  transition: left 0.3s ease-in-out; /* Animation de glissement */
 }
 
-.sidebar.is-open {
-  left: 0; /* Afficher la sidebar si ouvert */
+.sidebar.open {
+  left: 0; /* Affiche le sidebar */
 }
+
     .sidebar {
       width: 250px;
       background-color: #407CEE;

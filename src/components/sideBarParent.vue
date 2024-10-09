@@ -94,6 +94,10 @@ const toggleSidebar = () => {
   color: white;
   font-size: 24px;
 }
+.menu-link .iconify, .material-symbols-outlined {
+    margin-right: 10px;
+    font-size: 30px;
+  }
 
 .sidebar {
   position: fixed;

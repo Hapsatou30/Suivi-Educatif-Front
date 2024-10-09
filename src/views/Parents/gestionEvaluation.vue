@@ -76,7 +76,9 @@ onMounted(async () => {
 <style scoped>
 .main-content {
     margin-top: 120px;
+    margin-left: 270px; /* Ajustement pour la sidebar */
 }
+
 
 h1 {
     text-align: center;

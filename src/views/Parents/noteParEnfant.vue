@@ -253,7 +253,7 @@ onMounted(() => {
 }
 .card{
     margin-left: -30%;
-    width: 250px;
+    width: 150%;
 } 
 .card-title{
     font-size: 16px;

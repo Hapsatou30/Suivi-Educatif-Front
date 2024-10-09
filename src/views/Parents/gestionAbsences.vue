@@ -79,7 +79,7 @@ onMounted(async () => {
 
 h1 {
     text-align: center;
-    margin-top: 50px;
+    margin-top: 100px;
     margin-bottom: 50px;
 }
 

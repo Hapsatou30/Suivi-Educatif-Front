@@ -138,7 +138,7 @@ const attribuerProfClasse = async () => {
         });
 
         // Rechargez les professeurs pour mettre à jour la liste
-        await fetchMatProf();
+        await  fetchProfMatClasse().then(fetchMatProf);
       } else {
         throw new Error(response.message || 'Une erreur est survenue lors de l\'attribution.');
       }

@@ -43,9 +43,9 @@
             <h2 style=" margin-bottom: 50px;">Historique des Absences</h2>
             <div class="tableau-absences">
                 <tabEvaluations v-if="paginatedAbsencesData.length > 0" class="tab-absences"
-                    :headers="['Prénom & Nom', 'Date d\'absence', 'Motif','Justification']" :data="paginatedAbsencesData.map(({ classe_eleve: { eleve }, date_presence, justification, motif,id }) => ({
+                    :headers="['Prénom & Nom', 'Date d\'absence', 'Motif','Justification']" :data="paginatedAbsencesData.map(({ classe_eleve: { eleve }, date_absence, justification, motif,id }) => ({
                         eleve: `${eleve.prenom} ${eleve.nom}`,
-                        date_presence,
+                        date_absence,
                         justification: justification ? `http://127.0.0.1:8000/storage//` + justification : 'vide',
                         motif: motif || 'vide', 
                         id
@@ -120,7 +120,7 @@ const fetchData = async () => {
             // console.log('Élèves dans la classe cible:', classeCible.eleves); // Log des élèves
 
             // Récupérer l'historique des absences d'aujourd'hui
-            const absencesToday = Data.value.filter(absence => absence.date_presence === today);
+            const absencesToday = Data.value.filter(absence => absence.date_absence === today);
             // console.log('Absences Today:', absencesToday); // Log des absences
 
             classeCible.eleves.forEach(eleve => {

@@ -126,7 +126,7 @@ const attribuerMatiere = async () => {
           showConfirmButton: false
         });
 
-        await fetchMatieres();
+        await fetchProfMatiere(professeurId).then(fetchMatieres);
       } else {
         // Traitement des messages de succès qui sont considérés comme des erreurs
         throw new Error(response.message || 'Une erreur est survenue lors de l\'attribution.');
@@ -145,6 +145,7 @@ const attribuerMatiere = async () => {
           timerProgressBar: true,
           showConfirmButton: false
         });
+       
       } else {
         Swal.fire({
           icon: 'error',

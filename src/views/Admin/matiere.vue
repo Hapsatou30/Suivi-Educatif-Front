@@ -26,12 +26,15 @@
         <div class="row mb-3">
           <div class="col-md-12">
             <label for="description" class="form-label">Description :</label>
-            <input type="text" class="form-control" v-model="formData.description" placeholder="Entrez une description"
-              style="height: 150px;" @blur="validateField('description')" :class="{ 'is-invalid': errors.description }"
-              required />
+            <textarea class="form-control" v-model="formData.description" placeholder="Entrez une description"
+              style="height: 150px;" @input="validateField('description')" :class="{ 'is-invalid': errors.description }"
+              maxlength="100" required>
+            </textarea>
             <div v-if="errors.description" class="text-danger">{{ errors.description }}</div>
+            <div class="text-muted">{{ 100 - formData.description.length }} caractères.</div>
           </div>
         </div>
+
 
         <div class="bouton">
           <button type="submit" class="btn btn-submit" :disabled="!formIsValid">Enregistrer</button>
@@ -97,16 +100,21 @@ const errors = ref({
   description: null
 });
 const validateField = (field) => {
+  const nameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ]+(?:\s[A-Za-zÀ-ÖØ-öø-ÿ]+)*$/;  // Pour valider nom et prénom
+
   if (!formData.value[field]) {
     errors.value[field] = `Le champ ${field} est obligatoire.`;
+  } else if (field === 'nom' && !nameRegex.test(formData.value.nom)) {
+    errors.value.nom = "Le champ nom ne doit pas contenir de chiffres ni de caractères spéciaux.";
   } else if (field === 'coefficient' && (isNaN(formData.value.coefficient) || formData.value.coefficient <= 0)) {
-    errors.value.coefficient = "Veuillez entrer un coefficient valide.";
+    errors.value.coefficient = "Le coefficient doit être un nombre positif.";
   } else if (field === 'description' && formData.value.description.length > 100) {
     errors.value.description = "La description ne doit pas dépasser 100 caractères.";
   } else {
     errors.value[field] = null;
   }
 };
+
 
 const formIsValid = computed(() => {
   return !Object.values(errors.value).some(error => error !== null) &&

@@ -144,26 +144,51 @@ const errors = ref({
   etat: null
 });
 
+const anneeEnCours = new Date().getFullYear(); // Obtient l'année actuelle
+
 const validateField = (field) => {
+  // Vérification si le champ est vide
   if (!formData.value[field]) {
     errors.value[field] = `Le champ ${field} est obligatoire.`;
+    return;
   } else {
     errors.value[field] = null;
   }
 
+  // Validation pour 'annee_debut'
+  if (field === 'annee_debut') {
+    const anneeDebut = parseInt(formData.value.annee_debut);
 
-  if (field === 'annee_debut' && isNaN(formData.value.annee_debut)) {
-    errors.value.annee_debut = "L'année de début doit être un nombre.";
-  } else if (field === 'annee_fin' && isNaN(formData.value.annee_fin)) {
-    errors.value.annee_fin = "L'année de fin doit être un nombre.";
+    // Vérifie si 'annee_debut' est un nombre valide
+    if (isNaN(anneeDebut) || formData.value.annee_debut.length !== 4) {
+      errors.value.annee_debut = "L'année de début doit être un nombre à 4 chiffres.";
+    }
+    // Vérifie si 'annee_debut' est égale ou supérieure à l'année en cours
+    else if (anneeDebut < anneeEnCours || anneeDebut > anneeEnCours + 1) {
+      errors.value.annee_debut = `L'année de début doit être égale ou supérieure à ${anneeEnCours} et ne pas dépasser ${anneeEnCours + 1}.`;
+    }
   }
 
-  // Vérification que l'année de fin est supérieure à l'année de début
-  if (formData.value.annee_debut && formData.value.annee_fin && 
-      parseInt(formData.value.annee_debut) >= parseInt(formData.value.annee_fin)) {
-    errors.value.annee_fin = "L'année de fin doit être supérieure à l'année de début.";
+  // Validation pour 'annee_fin'
+  if (field === 'annee_fin') {
+    const anneeFin = parseInt(formData.value.annee_fin);
+    const anneeDebut = parseInt(formData.value.annee_debut);
+
+    // Vérifie si 'annee_fin' est un nombre valide
+    if (isNaN(anneeFin) || formData.value.annee_fin.length !== 4) {
+      errors.value.annee_fin = "L'année de fin doit être un nombre à 4 chiffres.";
+    }
+    // Vérifie si 'annee_fin' est supérieure ou égale à 'annee_debut'
+    else if (anneeFin < anneeDebut) {
+      errors.value.annee_fin = "L'année de fin doit être supérieure ou égale à l'année de début.";
+    }
+    // Vérifie si 'annee_fin' ne dépasse pas l'année en cours + 2
+    else if (anneeFin > anneeEnCours + 2) {
+      errors.value.annee_fin = `L'année de fin ne doit pas dépasser ${anneeEnCours + 2}.`;
+    }
   }
 };
+
 
 // Vérifier si le formulaire est valide
 const formIsValid = computed(() => {
@@ -258,23 +283,24 @@ const handleFormSubmit = async () => {
 
     // Vérifiez si l'erreur a une réponse
     if (error.response) {
+      const errorMessage = error.response.data.message || 'Une erreur inattendue s\'est produite.';
       
+      // Vérifier les codes d'erreur spécifiques
       if (error.response.status === 409 || error.response.status === 422) {
         Swal.fire({
           icon: 'error',
           title: 'Erreur',
-          text: error.response.data.message || 'Une erreur inattendue s\'est produite.',
+          text: errorMessage,
           confirmButtonColor: '#d33',
           timer: 3000,
           timerProgressBar: true,
           showConfirmButton: false
         });
       } else {
-        
         Swal.fire({
           icon: 'error',
           title: 'Erreur',
-          text: error.response.data.message || 'Une erreur inattendue s\'est produite.',
+          text: errorMessage,
           confirmButtonColor: '#d33',
           timer: 3000,
           timerProgressBar: true,
@@ -282,7 +308,7 @@ const handleFormSubmit = async () => {
         });
       }
     } else {
-     
+      // Si aucune réponse n'est reçue
       Swal.fire({
         icon: 'error',
         title: 'Erreur',
@@ -296,6 +322,7 @@ const handleFormSubmit = async () => {
     resetForm();
   }
 };
+
 
 
 const deleteAnnee = async (id) => {

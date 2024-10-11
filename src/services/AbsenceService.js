@@ -21,10 +21,15 @@ export const postAbsences = async (absence) => {
 
     return response.data; // Retourner le nombre total de annees-scolairess
   } catch (error) {
-    // Gérer les erreurs lors de la récupération du nombre de annees-scolairess
-    console.error('Erreur:', error);
-    return 0; // Valeur par défaut en cas d'erreur
+    if (error.response) {
+      // Afficher les erreurs de validation reçues du serveur
+      console.error('Erreur de validation:', error.response.data);
+    } else {
+      // Autre type d'erreur (comme une erreur réseau)
+      console.error('Erreur:', error.message);
+    }
   }
+  
 };
 // Méthode pour supprimer une  absence
 export const supprimerAbsence = async (absenceId) => {

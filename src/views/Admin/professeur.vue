@@ -156,16 +156,22 @@ const pageSize = ref(5);
 
 // Méthode de validation pour chaque champ
 const validateField = (field) => {
+  const nameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ]+(?:\s[A-Za-zÀ-ÖØ-öø-ÿ]+)*$/;  // Expression régulière pour accepter uniquement des lettres
+  const telephoneRegex = /^(77|78|70|76|75)\d{7}$/;  // Expression régulière pour valider le numéro de téléphone
+
   if (!newProfesseur.value[field]) {
     errors.value[field] = `Le champ ${field} est obligatoire.`;
+  } else if ((field === 'nom' || field === 'prenom') && !nameRegex.test(newProfesseur.value[field])) {
+    errors.value[field] = `Le champ ${field} ne doit pas contenir de chiffres ni de caractères spéciaux.`;
   } else if (field === 'email' && !/\S+@\S+\.\S+/.test(newProfesseur.value.email)) {
     errors.value.email = "Veuillez entrer un email valide.";
-  } else if (field === 'telephone' && !/^\d+$/.test(newProfesseur.value.telephone)) {
-    errors.value.telephone = "Veuillez entrer un numéro valide.";
+  } else if (field === 'telephone' && !telephoneRegex.test(newProfesseur.value.telephone)) {
+    errors.value.telephone = "Le numéro de téléphone doit commencer par 77, 78, 70 ou 75 et être suivi de 7 chiffres.";
   } else {
     errors.value[field] = null;
   }
 };
+
 
 // Vérifier si le formulaire est valide
 const formIsValid = computed(() => {

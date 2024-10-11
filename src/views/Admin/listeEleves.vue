@@ -136,17 +136,19 @@
             <div v-if="errors.email" class="text-danger">{{ errors.email }}</div>
           </div>
           <div class="col-md-6">
-            <label for="telephone_eleve" class="form-label">Téléphone de l'élève :</label>
-            <input 
-              type="text" 
+            <label for="genre_eleve" class="form-label">Genre :</label>
+            <select 
               class="form-control" 
-              v-model="formData.telephone" 
-              placeholder="Entrez le téléphone de l'élève" 
-              @blur="validateField('telephone')" 
-              :class="{ 'is-invalid': errors.telephone }" 
-              required 
-            />
-            <div v-if="errors.telephone" class="text-danger">{{ errors.telephone }}</div>
+              v-model="formData.genre" 
+              @blur="validateField('genre')" 
+              :class="{ 'is-invalid': errors.genre }" 
+              required
+            >
+              <option value="">Sélectionnez le genre</option>
+              <option value="Masculin">Masculin</option>
+              <option value="Feminin">Féminin</option>
+            </select>
+            <div v-if="errors.genre" class="text-danger">{{ errors.genre }}</div>
           </div>
         </div>
         <div class="row mb-3">
@@ -163,19 +165,7 @@
             <div v-if="errors.date_naissance" class="text-danger">{{ errors.date_naissance }}</div>
           </div>
           <div class="col-md-6">
-            <label for="genre_eleve" class="form-label">Genre :</label>
-            <select 
-              class="form-control" 
-              v-model="formData.genre" 
-              @blur="validateField('genre')" 
-              :class="{ 'is-invalid': errors.genre }" 
-              required
-            >
-              <option value="">Sélectionnez le genre</option>
-              <option value="Masculin">Masculin</option>
-              <option value="Feminin">Féminin</option>
-            </select>
-            <div v-if="errors.genre" class="text-danger">{{ errors.genre }}</div>
+          
           </div>
         </div>
         <div class="bouton d-flex justify-content-between">
@@ -296,16 +286,25 @@ const errors = ref({
 
 // Validation des champs
 const validateField = (field) => {
+  const nameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ]+(?:\s[A-Za-zÀ-ÖØ-öø-ÿ]+)*$/;  // Expression régulière pour accepter uniquement des lettres
+  const telephoneRegex = /^(77|78|70|76|75)\d{7}$/;  // Expression régulière pour valider le numéro de téléphone
+
   if (!formData.value[field]) {
     errors.value[field] = `Le champ ${field.replace('_', ' ')} est requis.`;
-  } else if (field === 'email' && !/\S+@\S+\.\S+/.test(formData.value[field])) {
+  }else if ((field === 'parent_nom' || field === 'parent_prenom') && !nameRegex.test(formData.value[field])) {
+    errors.value[field] = `Le champ ${field} ne doit pas contenir de chiffres ni de caractères spéciaux.`;
+  }
+  else if ((field === 'nom' || field === 'prenom') && !nameRegex.test(formData.value[field])) {
+    errors.value[field] = `Le champ ${field} ne doit pas contenir de chiffres ni de caractères spéciaux.`;
+  }
+   else if (field === 'email' && !/\S+@\S+\.\S+/.test(formData.value[field])) {
     errors.value[field] = "Veuillez entrer un email valide.";
-  } else if (field === 'telephone' && !/^\d+$/.test(formData.value[field])) {
-    errors.value[field] = "Veuillez entrer un numéro valide.";
+  } else if (field === 'telephone' && !telephoneRegex.test(formData.value.telephone)) {
+    errors.value.telephone = "Le numéro de téléphone doit commencer par 77, 78, 70 ou 75 et être suivi de 7 chiffres.";
   }else if (field === 'parent_email' && !/\S+@\S+\.\S+/.test(formData.value[field])) {
     errors.value[field] = "Veuillez entrer un email valide.";
-  } else if (field === 'parent_telephone' && !/^\d+$/.test(formData.value[field])) {
-    errors.value[field] = "Veuillez entrer un numéro valide.";
+  }else if (field === 'parent_telephone' && !telephoneRegex.test(formData.value.parent_telephone)) {
+    errors.value.parent_telephone = "Le numéro de téléphone doit commencer par 77, 78, 70 ou 75 et être suivi de 7 chiffres.";
   }
    else {
     errors.value[field] = null;
@@ -380,7 +379,6 @@ const enregistrerClasse = async () => {
             eleve_id: eleveSelectionne.value.id,
             annee_classe_id: classeSelectionnee.value
         });
-
         Swal.fire({
             icon: 'success',
             title: 'Succès',
@@ -390,7 +388,7 @@ const enregistrerClasse = async () => {
             timerProgressBar: true,
             showConfirmButton: false
         });
-
+        fetchElevesAvecClasse(); 
         closeModal();
         classeSelectionnee.value = ''; // Réinitialiser la sélection de classe
     } catch (error) {
@@ -410,7 +408,6 @@ const formData = ref({
     nom: '',
     prenom: '',
     email: '',
-    telephone: '',
     photo: '', // Si nécessaire pour ajouter une photo
     date_naissance: '',
     genre: '',
@@ -440,7 +437,6 @@ const editStudent = (id) => {
             nom: row.nom,
             prenom: row.prenom,
             email: row.email,
-            telephone: row.telephone,
             date_naissance: row.date_naissance,
             genre: row.genre,
             parent_telephone: row.telephone_parent,
@@ -533,7 +529,6 @@ const fetchData = async () => {
             matricule: item.matricule,
             date_naissance: item.date_naissance,
             genre: item.genre,
-            telephone: item.telephone,
             email: item.email,
             nom_parent: item.parent.nom_parent,
             prenom_parent: item.parent.prenom_parent,

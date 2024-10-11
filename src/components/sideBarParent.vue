@@ -5,7 +5,7 @@
 
   <div :class="['sidebar', isSidebarOpen ? 'open' : '']">
     <div class="logo">
-      <img src="/public/images/logo_blanc.png" alt="Logo" />
+      <img src="@/assets/logo_blanc.png" alt="Logo" />
     </div>
     <ul class="menu">
       <li>

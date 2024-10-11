@@ -26,12 +26,13 @@ import { getAnneeClasseDetails } from '@/services/AnneeClasseService';
 import { getMatProf } from '@/services/ProfMatiere';
 import { ajouterProfClasse, getProfClasse } from '@/services/ClasseProfs';
 import Swal from 'sweetalert2';
+import imageSource from '@/assets/classProf.png';
+
 
 const router = useRouter();
 const route = useRoute();
 
 const itemList = ref([]);
-const imageSource = ref('/public/images/classProf.png');
 const nomClasse = ref('');
 const anneClasseId = route.params.id;
 const selectedProfMat = ref([]); // Référence pour stocker les IDs des prof_mat sélectionnées

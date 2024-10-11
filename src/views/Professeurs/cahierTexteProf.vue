@@ -133,9 +133,9 @@ import { getCahierTexte, ajouterCahierTexte, modifierCahierTexte, getCahierTexte
 import { Icon } from '@iconify/vue';
 import Swal from 'sweetalert2';
 import { profile } from '@/services/AuthService';
+import imageCahier from '@/assets/image.png';
 const router = useRouter();
 const route = useRoute();
-const imageCahier = ref('/public/images/image.png');
 
 const classeProf_id = route.params.classeProf_id;
 const annee_classe_id = route.params.annee_classe_id;

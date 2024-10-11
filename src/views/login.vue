@@ -4,7 +4,7 @@
       <div class="col-lg-8 col-12">
         <div class="logo">
           <h1>BIENVENUE DANS</h1>
-          <img src="/public/images/logo_bleu.png" alt="logo" />
+          <img src="@/assets/logo_bleu.png" alt="logo" />
         </div>
         <div class="formulaire">
           <h2>Connexion</h2>
@@ -44,7 +44,7 @@
         </div>
       </div>
       <div class="col-4 d-none d-lg-block">
-        <img src="/public/images/login.png" alt="personne machine" />
+        <img src="@/assets/login.png" alt="personne machine" />
       </div>
     </div>
   </div>

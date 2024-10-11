@@ -26,12 +26,13 @@ import {  getAnneeDetails } from '@/services/AnneeScolaireService';
 import { getClasses } from '@/services/ClasseService'; 
 import { ajouterAnneClasses, getAnneClasses } from '@/services/AnneeClasseService'; 
 import Swal from 'sweetalert2';
+import imageSource from '@/assets/annee_classes.png';
+
 
 const router = useRouter();
 const route = useRoute();
 
 const itemList = ref([]);
-const imageSource = ref('/public/images/annee_classes.png');
 const anneeScolaire = ref('');
 const anneeId = route.params.id;
 const selectedClasses = ref([]); // Référence pour stocker les IDs des classes sélectionnées

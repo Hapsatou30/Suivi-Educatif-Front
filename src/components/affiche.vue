@@ -6,7 +6,7 @@
 
     </div>
     <div class="right-section">
-      <img src="/public/images/Teacher and student.png" alt="Image école" class="school-image" />
+      <img src="@/assets/Teacher and student.png" alt="Image école" class="school-image" />
     </div>
   </div>
 </template>

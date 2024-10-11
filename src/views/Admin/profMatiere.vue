@@ -7,7 +7,7 @@
     </h2>
     <div class="check">
       <!-- Écoute de l'événement d'items sélectionnés depuis le composant checkbox -->
-      <checkbox :items="itemList" :imageSrc="imageSource" @update:selectedItems="updateSelectedItems" />
+      <checkbox :items="itemList" :imageSrc="teacher_subject" @update:selectedItems="updateSelectedItems" />
     </div>
     <div class="button-container">
       <button @click="attribuerMatiere" class="btn btn-custom">Enregistrer</button>
@@ -26,12 +26,12 @@ import { getMatieres } from '@/services/MatiereService';
 import { getProfesseurDetails } from '@/services/ProfesseurService';
 import { ajouterProfMatiere, getProfMatiere } from '@/services/ProfMatiere';
 import Swal from 'sweetalert2';
+import teacher_subject from '@/assets/teacher_subject.png';
 
 const router = useRouter();
 const route = useRoute();
 
 const itemList = ref([]);
-const imageSource = ref('/public/images/teacher_subject.png');
 const professeurNomPrenom = ref('');
 const professeurId = route.params.id;
 const selectedMatieres = ref([]); // Référence pour stocker les IDs des matières sélectionnées

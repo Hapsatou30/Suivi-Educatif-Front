@@ -12,8 +12,8 @@
         <div class="absences">
             <div class="tableau-absences">
                 <tabEvaluations v-if="paginatedAbsencesData.length > 0" class="tab-absences_admin"
-                    :headers="['Date d\'absence', 'Matière', 'Motif', 'Justification', 'Action']" :data="paginatedAbsencesData.map(({ date_presence, classe_prof: { prof_matiere: { matiere } }, justification, id, motif }) => ({
-                        date_presence,
+                    :headers="['Date d\'absence', 'Matière', 'Motif', 'Justification', 'Action']" :data="paginatedAbsencesData.map(({ date_absence, classe_prof: { prof_matiere: { matiere } }, justification, id, motif }) => ({
+                        date_absence,
                         matiere: matiere ? matiere.nom : 'Non spécifié',
                         justification: justification ? `http://127.0.0.1:8000/storage//` + justification : 'vide',
                         motif: motif || 'vide',  // Affiche 'vide' si motif est vide
@@ -144,7 +144,7 @@ const fetchAbsences = async () => {
         const response = await getAbsencesEleve(classeEleve_id.value);
         if (response.données) {  // Vérifiez si response.données est défini
             // Trier les données du plus récent au plus ancien
-            Data.value = response.données.sort((a, b) => new Date(b.date_presence) - new Date(a.date_presence));
+            Data.value = response.données.sort((a, b) => new Date(b.date_absence) - new Date(a.date_absence));
         } else {
             console.error("Les données d'absence sont vides ou non définies.");
         }

@@ -6,7 +6,7 @@
     <div class="widgets-container">
       <widget title="Élèves" :number="elevesCount" iconClass="twemoji:man-student-medium-dark-skin-tone" />
       <widget title="Professeurs" :number="professeursCount" iconClass="noto-v1:woman-teacher-dark-skin-tone" />
-      <widget title="Classes" :number="classesCount" iconSrc="/public/images/Vector.svg" />
+      <widget title="Classes" :number="classesCount" :iconSrc="vectorIconSrc" />
     </div>
 
     <router-link to="/professeurs" class="addTeacher">
@@ -55,6 +55,7 @@ import { Icon } from '@iconify/vue';
 import tabEvaluations from '@/components/tabEvaluations.vue';
 import pagination from '@/components/paginations.vue'; 
 import { getEvaluationsJour } from '@/services/Evaluations';
+import vectorIconSrc from '@/assets/Vector.svg';
 
 const elevesCount = ref(0);
 const professeursCount = ref(0);

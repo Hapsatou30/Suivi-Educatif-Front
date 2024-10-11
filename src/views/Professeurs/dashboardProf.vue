@@ -6,8 +6,8 @@
     <div class="row">
       <div class="col-6">
         <div class="widgets-container">
-          <widget title="Cours" :number="classesCount" iconSrc="/public/images/Vector.svg" />
-          <widget title="Matières" :number="matiereCount" iconSrc="/public/images/Icon.svg" />
+          <widget title="Cours" :number="classesCount" :iconSrc="vectorIconSrc" />
+          <widget title="Matières" :number="matiereCount" :iconSrc="Icons" />
         </div>
         <div class="emploisDuTemps" style="background-color: white;">
           <h3>Emploi du temps d’aujourd’hui</h3>
@@ -65,6 +65,8 @@ import { geHoraireProf } from '@/services/HoraireService';
 import { Icon } from '@iconify/vue';
 import dayjs from 'dayjs';
 import 'dayjs/locale/fr';
+import vectorIconSrc from '@/assets/Vector.svg';
+import Icons from '@/assets/Icon.svg';
 
 dayjs.locale('fr');
 // Variables réactives

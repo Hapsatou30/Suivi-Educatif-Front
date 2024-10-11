@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="table-container">
     <table>
       <thead>
         <tr>
@@ -18,15 +18,17 @@
           <td v-for="(cell, cellIndex) in row" :key="cellIndex" v-if="cellIndex !== 0">
             {{ cell }}
           </td>
-
-          <!-- Slot pour les actions -->
+          <td v-if="$slots.justification">
+            <slot name="justification" :justification="row.justification" />
+          </td>
           <td v-if="$slots.actions">
             <slot name="actions" :row="row" />
           </td>
-          
-          <!-- Slot pour l'action spécifique aux élèves -->
           <td v-if="$slots.action">
             <slot name="action" :col="row" />
+          </td>
+          <td v-if="$slots.resources">
+            <slot name="resources" :ressources="row.ressources" />
           </td>
         </tr>
       </tbody>
@@ -49,35 +51,53 @@ const props = defineProps({
 });
 </script>
 
+<style scoped>
+.table-container {
+  overflow-x: auto; /* Ajout du défilement horizontal */
+}
 
-  
-  <style scoped>
-  table {
-    width: 100%;
-    border-collapse: collapse; /* Élimine les espaces entre les cellules */
+table {
+  width: 100%;
+  border-collapse: collapse; /* Élimine les espaces entre les cellules */
+}
+
+th,
+td {
+  padding: 15px; /* Ajustement du padding pour un look plus compact */
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+  font-size: 16px; /* Ajustement de la taille de la police pour une meilleure lisibilité */
+}
+
+th {
+  background-color: white;
+  font-size: 18px;
+  color: #F7AE00;
+}
+
+.background {
+  background-color: #C7DCF2; /* Fond bleu clair pour les lignes désignées */
+}
+
+.no-background {
+  background-color: white; /* Texte blanc pour les lignes sans fond */
+  border-left: 3px solid #F7AE00; /* Bordure gauche jaune */
+}
+
+/* Media queries pour améliorer la responsivité */
+@media (max-width: 768px) {
+  th,
+  td {
+    padding: 10px; /* Réduire le padding pour les petits écrans */
+    font-size: 14px; /* Réduire la taille de la police */
   }
-  
-  th, td {
-    padding: 20px; 
-    text-align: center; 
-    font-family: "Poppins", sans-serif;
-    font-size: 18px;
+}
+
+@media (max-width: 480px) {
+  th,
+  td {
+    font-size: 12px; /* Réduire encore la taille de la police pour les très petits écrans */
+    padding: 8px; /* Ajuster le padding */
   }
-  
-  th {
-    background-color: white; 
-    font-family: "Poppins", sans-serif;
-    font-size: 20px;
-    color: #F7AE00;
-  }
-  
-  .background {
-    background-color: #C7DCF2; /* Fond bleu clair pour les lignes désignées */
-  }
-  
-  .no-background {
-    background-color: white; /* Texte blanc pour les lignes sans fond */
-    border-left: 3px solid #F7AE00; /* Bordure gauche jaune */
-  }
-  </style>
-  
+}
+</style>

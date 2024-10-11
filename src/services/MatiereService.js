@@ -33,14 +33,13 @@ export const getMatieres = async () => {
         }
       });
   
-      // Afficher la réponse pour le débogage
-      // console.log('matiere ajouté :', response.data);
       return response.data; // Renvoie toute la réponse pour analyse
     } catch (error) {
       console.error('Erreur lors de l\'ajout de la matiere :', error);
-      return null; // Valeur par défaut en cas d'erreur
+      throw error; // Relancer l'erreur pour qu'elle soit capturée dans handleFormSubmit
     }
   };
+  
 
   export const modifierMatiere = async (nouvellesDonnees) => {
     try {

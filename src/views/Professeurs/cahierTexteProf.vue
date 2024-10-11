@@ -12,46 +12,59 @@
               <div class="col-md-6">
                 <label for="titre" class="form-label">Titre du Cours :</label>
                 <input 
-                  type="text" 
-                  class="form-control" 
-                  v-model="formData.titre" 
-                  placeholder="Entrez votre titre" 
-                  required 
-                />
-              </div>
+              type="text" 
+              class="form-control" 
+              v-model="formData.titre" 
+              placeholder="Entrez votre titre" 
+              @blur="validateField('titre')" 
+              :class="{ 'is-invalid': errors.titre }" 
+              required 
+            />
+            <div v-if="errors.titre" class="text-danger">{{ errors.titre }}</div>
+          </div>
               <div class="col-md-6">
                 <label for="date" class="form-label">Date :</label>
                 <input 
-                  type="date" 
-                  class="form-control" 
-                  v-model="formData.date" 
-                  required readonly
-                />
-              </div>
+              type="date" 
+              class="form-control" 
+              v-model="formData.date" 
+              @blur="validateField('date')" 
+              :class="{ 'is-invalid': errors.date }" 
+              required 
+              readonly
+            />
+            <div v-if="errors.date" class="text-danger">{{ errors.date }}</div>
+         </div>
             </div>
             <div class="row mb-3">
               <div class="col-md-6">
                 <label for="resume" class="form-label">Résumé du cours :</label>
                 <textarea 
-                  class="form-control" 
-                  v-model="formData.resume" 
-                  placeholder="Entrez votre résumé" 
-                  required 
-                  style="height: 200px;"
-                ></textarea>
-              </div>
+              class="form-control" 
+              v-model="formData.resume" 
+              placeholder="Entrez votre résumé" 
+              @blur="validateField('resume')" 
+              :class="{ 'is-invalid': errors.resume }" 
+              required 
+              style="height: 200px;"
+            ></textarea>
+            <div v-if="errors.resume" class="text-danger">{{ errors.resume }}</div>
+         </div>
               <div class="col-md-6">
                 <label for="ressource" class="form-label">Ressource :</label>
                 <input 
-                  type="text" 
-                  class="form-control" 
-                  v-model="formData.ressource" 
-                  placeholder="Entrez votre ressource" 
-                />
-              </div>
+              type="text" 
+              class="form-control" 
+              v-model="formData.ressource" 
+              placeholder="Entrez votre ressource" 
+              @blur="validateField('ressource')" 
+              :class="{ 'is-invalid': errors.ressource }" 
+            />
+            <div v-if="errors.ressource" class="text-danger">{{ errors.ressource }}</div>
+         </div>
             </div>
             <div class="bouton">
-              <button type="submit" class="btn btn-submit">
+              <button type="submit" class="btn btn-submit" :disabled="!formIsValid">
                 {{ isEditMode ? 'Mettre à jour' : 'Enregistrer' }}
               </button>
             </div>
@@ -132,6 +145,29 @@ const tableData = ref([]);
 const currentPage = ref(1);
 const pageSize = ref(5);
 
+const errors = ref({
+  titre: '',
+  date: '',
+  resume: '',
+  ressource: ''
+});
+
+const validateField = (field) => {
+  if (!formData.value[field]) {
+    errors.value[field] = `Le champ ${field} est obligatoire.`;
+  } else if (field === 'resume' && formData.value.resume.length > 100) {
+    errors.value.resume = "Le resume ne doit pas dépasser 100 caractères.";
+  }
+  else {
+    errors.value[field] = null;
+  }
+};
+
+const formIsValid = computed(() => {
+  return !Object.values(errors.value).some(error => error !== null) &&
+         Object.values(formData.value).every(field => field !== '');
+});
+
 // Fonction pour récupérer les informations de profil de l'utilisateur connecté
 const fetchProfile = async () => {
   try {
@@ -181,6 +217,15 @@ const fetchData = async () => {
 
 
 const handleFormSubmit = async () => {
+   // Valider tous les champs avant de soumettre
+   validateField('titre');
+  validateField('date');
+  validateField('resume');
+  validateField('ressource');
+
+  if (!formIsValid.value) {
+    return; // Arrêter la soumission si le formulaire n'est pas valide
+  }
   try {
     // console.log('Données du formulaire :', formData.value); // Ajout pour le débogage
     if (isEditMode.value) {

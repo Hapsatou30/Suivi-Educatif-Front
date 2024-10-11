@@ -110,9 +110,7 @@ const attribuerEleveClasse = async () => {
                 eleve_id: selectedEleve.value,
             });
 
-            // console.log("Réponse du serveur:", response);
-
-            // Vérifiez si la réponse inclut un champ "success"
+            // Vérifiez si la réponse inclut un champ "status" indiquant le succès
             if (response && response.status === 201) {
                 Swal.fire({
                     icon: 'success',
@@ -123,9 +121,9 @@ const attribuerEleveClasse = async () => {
                     timerProgressBar: true,
                     showConfirmButton: false
                 });
-
-                await fetchEleve(); // Appel à la fonction pour rafraîchir la liste des élèves
+                await fetchEleveNonAttribue(); 
             } else {
+                // Gérer les cas où la réponse n'est pas un succès
                 Swal.fire({
                     icon: 'error',
                     title: 'Erreur',

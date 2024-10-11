@@ -45,6 +45,20 @@ import GestionEvaluationsAdmin from '@/views/Admin/gestionEvaluationsAdmin.vue';
 import EvaluationsClasse from '@/views/Admin/evaluationsClasse.vue';
 import GestionAbsencesAdmins from '@/views/Admin/gestionAbsencesAdmins.vue';
 import AbsencesClasse from '@/views/Admin/absencesClasse.vue';
+import SideBarParent from '@/components/sideBarParent.vue';
+import DashboardParent from '@/views/Parents/dashboardParent.vue';
+import TopBarParent from '@/components/topBarParent.vue';
+import GestionNotes from '@/views/Parents/gestionNotes.vue';
+import NoteParEnfant from '@/views/Parents/noteParEnfant.vue';
+import GestionCahierDeTexte from '@/views/Parents/gestionCahierDeTexte.vue';
+import CahierTexteEleve from '@/views/Parents/cahierTexteEleve.vue';
+import GestionEmploisDuTemps from '@/views/Parents/gestionEmploisDuTemps.vue';
+import EmploisEmploisEnfant from '@/views/Parents/emploisEmploisEnfant.vue';
+import GestionAbsencesParent from '@/views/Parents/gestionAbsences.vue';
+import AbsencesEnfant from '@/views/Parents/absencesEnfant.vue';
+import GestionEvaluation from '@/views/Parents/gestionEvaluation.vue';
+import EvaluationEnfant from '@/views/Parents/evaluationEnfant.vue';
+import TabEvaluations from '@/components/tabEvaluations.vue';
 
 
 // Routes non protégées (accessible à tous)
@@ -53,7 +67,8 @@ const publicRoutes = [
   { path: '/login', redirect: '/' },
   { path: '/affiche', name: 'affiche', component: Affiche},
   { path: '/widget', name: 'widget', component: Widget},
-  { path: '/matrice', name: 'matrice', component: Matrice},
+  { path: '/matrice', name: 'matrice', component: Matrice}, 
+  { path: '/tab_evaluations', name: 'tab_evaluations', component: TabEvaluations},
 ];
 
 // Routes protégées pour les administrateurs
@@ -108,11 +123,29 @@ const professorRoutes = [
   { path: '/notes_classe/:classeProf_id/:annee_classe_id/:nom_classe' , name: 'notes_classe', component:NotesClasse},
 ];
 
+//routes protégées pour les parents
+const parentRoutes = [
+  { path: '/sidebarParent', name: 'sidebarParent', component: SideBarParent},
+  { path: '/topBarPArent', name: 'TopBarPArent', component: TopBarParent},
+  { path: '/dashboardParent', name: 'dashboardParent', component: DashboardParent},
+  { path: '/gestion_notes_parent' , name: 'gestion_notes_parent', component: GestionNotes},
+  { path: '/notes_enfant/:classeEleve_id', name: 'notes_enfant', component:NoteParEnfant},
+  { path: '/gestion_cahier_texte_parent', name: 'gestion_cahier_texte_parent', component:GestionCahierDeTexte},
+  { path: '/cahier_texte_enfant/:classeEleve_id', name: 'cahier_texte_enfant', component:CahierTexteEleve},
+  { path: '/gestion_emplois_du_temps_parent', name: 'gestion_emplois_du_temps_parent', component: GestionEmploisDuTemps},
+  { path: '/emplois_du_temps_enfant/:classeEleve_id', name: 'emplois_du_temps_enfant', component: EmploisEmploisEnfant},
+  { path: '/gestion_absences_parent', name:'gestion_absences_parent', component: GestionAbsencesParent},
+  { path: '/absences_par_enfant/:classeEleve_id', name:'absences_par_enfant', component: AbsencesEnfant},
+  { path: '/gestion_evaluation_parent', name:'gestion_evaluation_parent', component: GestionEvaluation},
+  { path: '/evaluation_enfant/:classeEleve_id', name:'evaluation_enfant', component: EvaluationEnfant},
+];
+
 // Création du tableau des routes combinées
 const routes = [
   ...publicRoutes,
   ...adminRoutes.map(route => ({ ...route, meta: { requiresAuth: true, role: 'admin' } })),
   ...professorRoutes.map(route => ({ ...route, meta: { requiresAuth: true, role: 'professeur' } })),
+  ...parentRoutes.map(route => ({...route, meta: { requiresAuth: true, role: 'parent' } })), // Ajouter les routes parents si nécessaire
 ];
 
 

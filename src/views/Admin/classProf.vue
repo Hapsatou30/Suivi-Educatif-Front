@@ -37,23 +37,35 @@ const anneClasseId = route.params.id;
 const selectedProfMat = ref([]); // Référence pour stocker les IDs des prof_mat sélectionnées
 const profMatAttribue = ref([]); // Pour stocker les prof_mat déjà attribuées
 
-// Récupérer toutes les profMat attribuées à une classe spécifique
 const fetchProfMatClasse = async () => {
-  const classeId = route.params.id; // Récupérer l'ID de la classe depuis les paramètres de la route
+  const anneClasseId = route.params.id; 
   try {
-    const profClasseData = await getProfClasse(classeId); // Appel de la méthode avec l'ID de classe
+    const profClasseData = await getProfClasse(anneClasseId); 
+    // console.log('Réponse de l\'API', profClasseDa 
 
-    // Traiter les données reçues
-    if (profClasseData && profClasseData.success) {
-      profMatAttribue.value = profClasseData.data.map(profMat => profMat.prof_mat_id);
-      console.log('ProfMat attribuées à la classe:', profMatAttribue.value);
+      if (profClasseData) {
+      const { annee_classe, classes_matieres } = profClasseData;
+
+      // Mettre à jour le nom de la classe
+      if (annee_classe && annee_classe.nom_classe) {
+        nomClasse.value = annee_classe.nom_classe;
+      }
+
+      // Extraire les professeurs et les matières attribuées
+      if (Array.isArray(classes_matieres)) {
+        profMatAttribue.value = classes_matieres.map(profMat => profMat.id_profMat);
+        console.log('ProfMat attribuées à la classe:', profMatAttribue.value);
+      } else {
+        console.error('Format inattendu pour les classes_matieres.');
+      }
     } else {
-      console.error('Erreur dans les données récupérées ou succès false.');
+      console.error('Aucune donnée trouvée dans la réponse.');
     }
   } catch (error) {
     console.error('Erreur lors de la récupération des professeurs pour la classe :', error);
   }
 };
+
 
 const fetchMatProf = async () => {
   try {
@@ -126,7 +138,7 @@ const attribuerProfClasse = async () => {
         });
 
         // Rechargez les professeurs pour mettre à jour la liste
-        await fetchMatProf();
+        await  fetchProfMatClasse().then(fetchMatProf);
       } else {
         throw new Error(response.message || 'Une erreur est survenue lors de l\'attribution.');
       }

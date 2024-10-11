@@ -21,10 +21,15 @@ export const postAbsences = async (absence) => {
 
     return response.data; // Retourner le nombre total de annees-scolairess
   } catch (error) {
-    // Gérer les erreurs lors de la récupération du nombre de annees-scolairess
-    console.error('Erreur:', error);
-    return 0; // Valeur par défaut en cas d'erreur
+    if (error.response) {
+      // Afficher les erreurs de validation reçues du serveur
+      console.error('Erreur de validation:', error.response.data);
+    } else {
+      // Autre type d'erreur (comme une erreur réseau)
+      console.error('Erreur:', error.message);
+    }
   }
+  
 };
 // Méthode pour supprimer une  absence
 export const supprimerAbsence = async (absenceId) => {
@@ -80,5 +85,60 @@ export const getAbsenceAnneeClasse = async (anneeClasseId) => {
   } catch (error) {
     console.error('Erreur lors de la récupération des détails du absence :', error);
     return null; // Valeur par défaut en cas d'erreur
+  }
+};
+
+export const getAbsenceParents = async (parentId) => {
+  try {
+    const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
+    const response = await axios.get(`${apiUrl}/parents/${parentId}/absences`, {
+      headers: {
+        Authorization: `Bearer ${token}` // Utiliser le token dans l'en-tête pour l'authentification
+      }
+    });
+
+    // Afficher les données reçues pour le débogage
+    // console.log('Détails du absence récupérés :', response.data); // Vérifie les données reçues de l'API
+
+    return response.data; // Retourner les détails du annees-scolaires
+  } catch (error) {
+    console.error('Erreur lors de la récupération des détails du absence :', error);
+    return null; // Valeur par défaut en cas d'erreur
+  }
+};
+export const getAbsencesEleve = async (classeEleveId) => {
+  try {
+    const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
+    const response = await axios.get(`${apiUrl}/classe-eleve/${classeEleveId}/absences`, {
+      headers: {
+        Authorization: `Bearer ${token}` // Utiliser le token dans l'en-tête pour l'authentification
+      }
+    });
+
+    // Afficher les données reçues pour le débogage
+    //  console.log('Détails du absence récupérés :', response.data); // Vérifie les données reçues de l'API
+
+    return response.data; // Retourner les détails du annees-scolaires
+  } catch (error) {
+    console.error('Erreur lors de la récupération des détails du absence :', error);
+    return null; // Valeur par défaut en cas d'erreur
+  }
+};
+
+export const modifierAbsence = async (id, formData) => {
+  try {
+      const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
+      // Assurez-vous que l'ID est correctement référencé ici
+      const response = await axios.post(`${apiUrl}/absences/${id}`,formData, {
+          headers: {
+              Authorization: `Bearer ${token}` // Utiliser le token dans l'en-tête pour l'authentification
+          }
+      });
+
+       console.log('absences :', response.data);
+      return response.data; // Renvoie les données de la réponse pour analyse
+  } catch (error) {
+      console.error('Erreur lors de la modification de l\'absence :', error.response ? error.response.data : error.message);
+      return { error: error.response ? error.response.data.error : error.message }; // Renvoie l'erreur sous forme d'objet
   }
 };

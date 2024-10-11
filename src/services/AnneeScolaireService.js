@@ -82,14 +82,13 @@ export const ajouterAnnee = async (annee) => {
       }
     });
 
-    // Afficher la réponse pour le débogage
-    // console.log('annee ajouté :', response.data);
     return response.data; // Renvoie toute la réponse pour analyse
   } catch (error) {
     console.error('Erreur lors de l\'ajout de l\'annee :', error);
-    return null; // Valeur par défaut en cas d'erreur
+    throw error; // Lance l'erreur pour qu'elle puisse être gérée dans le bloc catch de l'appelant
   }
 };
+
 export const modifierAnnee = async (nouvellesDonnees) => {
   try {
     const idValue = nouvellesDonnees.id; // Récupérer l'ID directement des nouvelles données

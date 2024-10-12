@@ -9,10 +9,22 @@
       <widget title="Classes" :number="classesCount" :iconSrc="vectorIconSrc" />
     </div>
 
-    <router-link to="/professeurs" class="addTeacher">
+    <!-- Ajout du graphique circulaire -->
+   <div class="row mt-5" >
+    <div class="chart-container col-3">
+      <h5>Répartition des élèves par sexe</h5>
+      <PieChart :maleCount="elevesCountMale" :femaleCount="elevesCountFemale" />
+    </div>
+    <!-- Ajout du graphique en barres pour les présences et absences -->
+    <div class="chart-container1 col-6">
+        <BarChart />
+      </div>
+   </div>
+
+    <!-- <router-link to="/professeurs" class="addTeacher">
       <Icon icon="ei:plus" class="plus" />
       <h3>Ajouter un professeur</h3>
-    </router-link>
+    </router-link> -->
 
     <div class="evaluations">
       <h2>Les évaluations du jour</h2>
@@ -39,12 +51,6 @@
         @pageChange="handlePageChange"
       />
     </div>
-
-    <!-- Ajout du graphique circulaire -->
-    <div class="chart-container">
-      <h2>Répartition des élèves par sexe</h2>
-      <PieChart :maleCount="elevesCountMale" :femaleCount="elevesCountFemale" />
-    </div>
   </div>
 </template>
 
@@ -57,6 +63,7 @@ import widget from '@/components/widget.vue';
 import { getElevesCount, getEleves } from '@/services/EleveService';
 import { getProfesseursCount } from '@/services/ProfesseurService';
 import PieChart from '@/components/PieChart.vue'; 
+import BarChart from '@/components/BarChart.vue';
 import { getClassesCount } from '@/services/ClasseService';
 import { Icon } from '@iconify/vue';
 import tabEvaluations from '@/components/tabEvaluations.vue';
@@ -128,6 +135,7 @@ onMounted(() => {
 <style scoped>
 .main-content { 
   margin-top: 120px;
+  overflow-x: hidden;
 }
 
 .widgets-container {
@@ -175,5 +183,24 @@ onMounted(() => {
   margin-right: 50px;
   display: flex;
   justify-content: end;
+}
+.chart-container{
+  background-color: white;
+  margin-left: 300px;
+  margin-top: 40px;
+  border-radius: 10%;
+  padding: 1%;
+}
+.chart-container1{
+  background-color: white;
+  margin-right: 50px;
+  margin-top: 40px;
+  border-radius: 10%;
+  padding: 1%;
+}
+.chart-container h4{
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px
 }
 </style>

@@ -1,72 +1,80 @@
 <template>
-    <div>
-      <canvas ref="pieChartCanvas" width="400" height="400"></canvas>
-    </div>
-  </template>
-  
-  
-  <script setup>
-  import { ref, onMounted } from 'vue';
-  import { Chart, registerables } from 'chart.js';
-  
-  Chart.register(...registerables);
-  
-  // Définir les props
-  const props = defineProps({
-    maleCount: {
-      type: Number,
-      required: true
-    },
-    femaleCount: {
-      type: Number,
-      required: true
-    }
-  });
-  
-  const pieChartCanvas = ref(null);
-  
-  onMounted(() => {
+  <div>
+    <!-- Canvas pour le graphique en forme de camembert -->
+    <canvas ref="pieChartCanvas" width="400" height="400"></canvas>
+  </div>
+</template>
+
+<script setup>
+// Importation des fonctions nécessaires de Vue et Chart.js
+import { ref, onMounted } from 'vue';
+import { Chart, registerables } from 'chart.js';
+
+// Enregistrement des composants Chart.js requis pour générer le graphique
+Chart.register(...registerables);
+
+// Définir les props attendus par le composant
+const props = defineProps({
+  maleCount: {
+    type: Number, // Nombre de garçons
+    required: true
+  },
+  femaleCount: {
+    type: Number, // Nombre de filles
+    required: true
+  }
+});
+
+// Référence au canvas où le graphique sera dessiné
+const pieChartCanvas = ref(null);
+
+// Exécuter le code une fois que le composant est monté dans le DOM
+onMounted(() => {
+  // Récupérer le contexte 2D du canvas pour dessiner le graphique
   const ctx = pieChartCanvas.value.getContext('2d');
   
-  // Utilisez les valeurs primitives
-  const maleCount = props.maleCount;
-const femaleCount = props.femaleCount;
+  // Accéder directement aux props sans utiliser `.value`
+  const maleCount = props.maleCount; // Récupérer le nombre de garçons
+  const femaleCount = props.femaleCount; // Récupérer le nombre de filles
 
-
+  // Créer un nouveau graphique de type 'pie' (camembert)
   new Chart(ctx, {
     type: 'pie',
     data: {
+      // Légendes des catégories (Garçons et Filles)
       labels: ['Garçons', 'Filles'],
       datasets: [{
-        label: 'Répartition des élèves',
-        data: [maleCount, femaleCount], // Utilisez les valeurs primitives ici
+        label: 'Répartition des élèves', // Label du dataset
+        data: [maleCount, femaleCount], // Données pour chaque catégorie
         backgroundColor: [
-          'rgba(75, 192, 192, 0.6)', // couleur pour les garçons
-          'rgba(255, 99, 132, 0.6)'  // couleur pour les filles
-        ],
+        '#407CEE', // Couleur pour les garçons
+        '#F7AE00'  // Couleur pour les filles
+        ]
+
       }],
     },
     options: {
-      responsive: true,
+      responsive: true, // Rendre le graphique responsive
       plugins: {
+        // Configuration de la légende
         legend: {
-          position: 'top',
+          position: 'bottom', // Positionner la légende en haut
         },
+        // Titre du graphique
         title: {
-          display: true,
-          text: 'Répartition des élèves par sexe'
+          display: true, // Afficher le titre
+          text: 'Répartition des élèves par sexe' // Texte du titre
         }
       }
     },
   });
 });
+</script>
 
-  </script>
-  
-  <style scoped>
-  canvas {
-    max-width: 600px; /* Ajustez la taille selon vos besoins */
-    margin: auto; /* Centre le graphique */
-  }
-  </style>
-  
+<style scoped>
+/* Styles pour le canvas */
+canvas {
+  max-width: 600px; /* Ajuster la largeur maximale du canvas */
+  margin: auto; /* Centrer le graphique horizontalement */
+}
+</style>

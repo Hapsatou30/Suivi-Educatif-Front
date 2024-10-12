@@ -10,9 +10,9 @@
     </div>
 
     <router-link to="/professeurs" class="addTeacher">
-    <Icon icon="ei:plus" class="plus" />
-    <h3>Ajouter un professeur</h3>
-  </router-link>
+      <Icon icon="ei:plus" class="plus" />
+      <h3>Ajouter un professeur</h3>
+    </router-link>
 
     <div class="evaluations">
       <h2>Les évaluations du jour</h2>
@@ -39,6 +39,12 @@
         @pageChange="handlePageChange"
       />
     </div>
+
+    <!-- Ajout du graphique circulaire -->
+    <div class="chart-container">
+      <h2>Répartition des élèves par sexe</h2>
+      <PieChart :maleCount="elevesCountMale" :femaleCount="elevesCountFemale" />
+    </div>
   </div>
 </template>
 
@@ -48,8 +54,9 @@ import sidebar_admin from '@/components/sidebarAdmin.vue';
 import topbar_admin from '@/components/topbarAdmin.vue';
 import affiche from '@/components/affiche.vue';
 import widget from '@/components/widget.vue';
-import { getElevesCount } from '@/services/EleveService';
+import { getElevesCount, getEleves } from '@/services/EleveService';
 import { getProfesseursCount } from '@/services/ProfesseurService';
+import PieChart from '@/components/PieChart.vue'; 
 import { getClassesCount } from '@/services/ClasseService';
 import { Icon } from '@iconify/vue';
 import tabEvaluations from '@/components/tabEvaluations.vue';
@@ -63,6 +70,8 @@ const classesCount = ref(0);
 const tableData = ref([]);
 const currentPage = ref(1); // Page actuelle
 const pageSize = ref(5); // Nombre d'éléments par page
+const elevesCountMale = ref(0);
+const elevesCountFemale = ref(0);
 
 // Calculer les données à afficher pour la page actuelle
 const paginatedData = computed(() => {
@@ -92,15 +101,29 @@ const fetchData = async () => {
       item.classe,
       item.duree
     ]);
-    
-    // console.log('Données du tableau :', tableData.value);
   }
+  
+  // Récupérer les élèves et compter par genre
+  const eleves = await getEleves();
+console.log('Élèves récupérés :', eleves); // Vérifiez les élèves récupérés
+
+if (Array.isArray(eleves)) {
+  // Convertir les genres en minuscules pour le filtrage
+  elevesCountMale.value = eleves.filter(eleve => eleve.genre.toLowerCase() === "masculin").length;
+  elevesCountFemale.value = eleves.filter(eleve => eleve.genre.toLowerCase() === "feminin").length;
+} else {
+  console.error('Les données des élèves ne sont pas au format attendu :', eleves);
+}
+
 };
 
 onMounted(() => {
   fetchData();
+  console.log('Male Count:', elevesCountMale.value, 'Female Count:', elevesCountFemale.value);
 });
+
 </script>
+
 
 <style scoped>
 .main-content { 

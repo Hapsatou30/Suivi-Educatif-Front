@@ -59,7 +59,7 @@ import AbsencesEnfant from '@/views/Parents/absencesEnfant.vue';
 import GestionEvaluation from '@/views/Parents/gestionEvaluation.vue';
 import EvaluationEnfant from '@/views/Parents/evaluationEnfant.vue';
 import TabEvaluations from '@/components/tabEvaluations.vue';
-
+import DiagrameCirculaire from '@/components/PieChart.vue';
 
 // Routes non protégées (accessible à tous)
 const publicRoutes = [
@@ -69,6 +69,7 @@ const publicRoutes = [
   { path: '/widget', name: 'widget', component: Widget},
   { path: '/matrice', name: 'matrice', component: Matrice}, 
   { path: '/tab_evaluations', name: 'tab_evaluations', component: TabEvaluations},
+  { path: '/diagramme_circulaire', name: 'diagramme_circulaire', component: DiagrameCirculaire},
 ];
 
 // Routes protégées pour les administrateurs

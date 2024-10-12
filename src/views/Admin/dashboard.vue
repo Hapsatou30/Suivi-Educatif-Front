@@ -12,11 +12,12 @@
     <!-- Ajout du graphique circulaire -->
    <div class="row mt-5" >
     <div class="chart-container col-3">
-      <h5>Répartition des élèves par sexe</h5>
+      <h5 style="text-align: center; margin-bottom: 5px;">Répartition des élèves par sexe</h5>
       <PieChart :maleCount="elevesCountMale" :femaleCount="elevesCountFemale" />
     </div>
     <!-- Ajout du graphique en barres pour les présences et absences -->
     <div class="chart-container1 col-6">
+      <h5 style="text-align: center; margin-bottom: 5px;">Présences et Absences par jour de la semaine</h5>
         <BarChart />
       </div>
    </div>
@@ -161,6 +162,9 @@ onMounted(() => {
   font-size: 24px;
   font-weight: bold;
 }
+.evaluations{
+  margin-bottom: 20px;
+}
 .evaluations h2{
   font-size: 30px; /* Taille du titre */
     margin-bottom: 20px; /* Marge inférieure */
@@ -185,14 +189,14 @@ onMounted(() => {
   justify-content: end;
 }
 .chart-container{
-  background-color: white;
+  background-color: rgb(241, 241, 241);
   margin-left: 300px;
   margin-top: 40px;
   border-radius: 10%;
   padding: 1%;
 }
 .chart-container1{
-  background-color: white;
+  background-color: rgb(241, 241, 241);
   margin-right: 50px;
   margin-top: 40px;
   border-radius: 10%;

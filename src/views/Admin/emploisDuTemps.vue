@@ -8,36 +8,39 @@
 
         <!-- Bouton pour ouvrir le modal d'ajout -->
         <div style="text-align: right; margin-bottom: 20px;">
-            <button @click="openAddModal" style="background-color: #F7AE00; color: white; padding: 10px 20px; border: none; border-radius: 12px; cursor: pointer; margin-right: 50px; font-size: 24px;" >
+            <button @click="openAddModal"
+                style="background-color: #F7AE00; color: white; padding: 10px 20px; border: none; border-radius: 12px; cursor: pointer; margin-right: 50px; font-size: 24px;">
                 Ajouter un horaire
             </button>
         </div>
 
+
         <!-- Modal -->
-        <div v-if="showModal"
-            style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1000; display: flex; justify-content: center; align-items: center;">
+        <div v-if="showModal" class="modal" :class="{
+            'modal-enter': !isEditing,
+            'modal-leave': isEditing
+        }" style="position: fixed; top: 0; right: 0;  width: 400px; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: transform 0.3s ease-in-out; transform: translateX(100%);"
+            :style="{ transform: showModal ? 'translateX(0)' : 'translateX(100%)' }">
             <div
-                style="position: relative; width: 90%; max-width: 500px; padding: 20px; background: white; border-radius: 8px; z-index: 1001; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
-                <h3>{{ isEditing ? 'Modifier Horaire' : 'Ajouter Horaire' }}</h3>
+                style="width: 100%; height: 100%; background: white; border-radius: 8px; z-index: 1001; padding: 20px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; align-items: center; justify-content: center">
+                <h3 style="margin-bottom: 60px; color: #F7AE00;">{{ isEditing ? 'Modifier Horaire' : 'Ajouter Horaire' }}</h3>
                 <span class="close" @click="closeModal"
                     style="position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer;">&times;</span>
 
-                <!-- Formulaire -->
                 <form @submit.prevent="isEditing ? handleModifierHoraire() : handleAjouterHoraire()">
-                    <!-- Champ Professeur et Matière -->
-                    <div class="form-group" style="margin-bottom: 15px;">
-                        <label for="classe_prof_id" style="display: block; margin-bottom: 5px;">Professeur et Matière:</label>
+                    <div class="form-group" style="margin-bottom: 30px;">
+                        <label for="classe_prof_id" style="display: block; margin-bottom: 5px;">Professeur et
+                            Matière:</label>
                         <select id="classe_prof_id" v-model="horaire.classe_prof_id" required
                             style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 12px;">
                             <option value="" disabled>Choisissez un professeur et une matière</option>
-                            <!-- Parcourir la liste des professeurs avec leur matière -->
-                            <option v-for="prof in uniqueProfesseursMatieres" :key="prof.classe_prof_id" :value="prof.classe_prof_id">
-                                {{ prof.professeur }}  -> {{ prof.matiere }}
+                            <option v-for="prof in uniqueProfesseursMatieres" :key="prof.classe_prof_id"
+                                :value="prof.classe_prof_id">
+                                {{ prof.professeur }} -> {{ prof.matiere }}
                             </option>
                         </select>
                     </div>
-                    <!-- Champ Jour -->
-                    <div class="form-group" style="margin-bottom: 15px;">
+                    <div class="form-group" style="margin-bottom: 30px;">
                         <label for="jour" style="display: block; margin-bottom: 5px;">Jour:</label>
                         <select id="jour" v-model="horaire.jour" required
                             style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 12px;">
@@ -49,10 +52,9 @@
                             <option value="Vendredi">Vendredi</option>
                         </select>
                     </div>
-                    <!-- Champ Heure de début -->
-                    <div class="form-group" style="margin-bottom: 15px;">
+                    <div class="form-group" style="margin-bottom: 30px;">
                         <label for="heure_debut" style="display: block; margin-bottom: 5px;">Heure de début:</label>
-                        <select id="heure_debut"  v-model="horaire.heure_debut" required
+                        <select id="heure_debut" v-model="horaire.heure_debut" required
                             style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 12px;">
                             <option value="">Sélectionnez l'heure de début</option>
                             <option value="08:00">08:00</option>
@@ -62,9 +64,7 @@
                             <option value="16:15">16:15</option>
                         </select>
                     </div>
-
-                    <!-- Champ Heure de fin -->
-                    <div class="form-group" style="margin-bottom: 15px;">
+                    <div class="form-group" style="margin-bottom: 30px;">
                         <label for="heure_fin" style="display: block; margin-bottom: 5px;">Heure de fin:</label>
                         <select id="heure_fin" v-model="horaire.heure_fin" required
                             style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 12px;">
@@ -76,12 +76,7 @@
                             <option value="18:00">18:00</option>
                         </select>
                     </div>
-
-
-                    <!-- Champ classe_prof_id (caché) -->
                     <input type="hidden" v-model="horaire.classe_prof_id" />
-
-                    <!-- Bouton de soumission -->
                     <div class="form-group" style="text-align: right;">
                         <button type="submit"
                             style="background-color: #407CEE; color: white; padding: 10px 20px; border: none; border-radius: 12px; cursor: pointer; width: 200px; font-size: 20px">
@@ -92,12 +87,13 @@
             </div>
         </div>
 
+
+
         <!-- Tableau des horaires -->
         <div class="horaires">
             <div class="tableau1">
                 <tabEvaluations v-if="paginatedData.length > 0" class="tab-evaluations"
-                    :headers="['Matière', 'Professeur', 'Horaire', 'Jour', 'Action']" 
-                    :data="paginatedData.map(({ matiere, professeur, horaire, jour, horaire_id, classe_prof_id }) => ({
+                    :headers="['Matière', 'Professeur', 'Horaire', 'Jour', 'Action']" :data="paginatedData.map(({ matiere, professeur, horaire, jour, horaire_id, classe_prof_id }) => ({
                         matiere,
                         professeur,
                         horaire,
@@ -108,12 +104,14 @@
                     <template #actions="{ row }">
                         <div class="boutons">
                             <!-- Bouton de modification -->
-                            <button class="btn" @click="editHoraire(row)" style="color: #407CEE;" title="Modifier l'horaire">
+                            <button class="btn" @click="editHoraire(row)" style="color: #407CEE;"
+                                title="Modifier l'horaire">
                                 <Icon icon="mdi:pencil-outline" />
                             </button>
 
                             <!-- Bouton de suppression -->
-                            <button class="btn" @click="supprimerHoraires(row.horaire_id)" style="color: red;" title="Supprimer l'horaire">
+                            <button class="btn" @click="supprimerHoraires(row.horaire_id)" style="color: red;"
+                                title="Supprimer l'horaire">
                                 <Icon icon="mdi:trash-can-outline" />
                             </button>
                         </div>
@@ -229,7 +227,7 @@ const handleAjouterHoraire = async () => {
         // Vérifier que tous les champs sont remplis
         if (jour && heure_debut && heure_fin) {
             const response = await ajouterHoraire(horaire.value); // Appeler le service pour ajouter l'horaire
-            
+
             // Vérifier si la réponse contient une erreur
             if (response && response.error) {
                 Swal.fire({
@@ -282,7 +280,7 @@ const handleModifierHoraire = async () => {
         // Vérifier que tous les champs sont remplis et que l'ID de l'horaire est défini
         if (jour && heure_debut && heure_fin && horaire_id) {
             const response = await modifierHoraire(horaire.value); // Appeler le service pour modifier l'horaire
-            
+
             // Vérifier si la réponse contient une erreur
             if (response && response.error) {
                 Swal.fire({
@@ -409,6 +407,15 @@ const retour = () => {
 
 
 <style>
+.modal-enter {
+    transform: translateX(100%);
+}
+.modal-leave {
+    transform: translateX(100%);
+}
+.modal-enter-active, .modal-leave-active {
+    transition: transform 0.3s ease;
+}
 /* Masquer la colonne ID dans le tableau */
 .horaires .tab-evaluations td:nth-child(5),
 .horaires .tab-evaluations td:nth-child(6) {
@@ -445,10 +452,14 @@ const retour = () => {
     align-items: center;
     margin-bottom: 15px;
 }
+
 label:hover {
-      cursor: pointer; /* Change le curseur lors du survol */
-      color: #407CEE; /* Couleur au survol */
-  }
+    cursor: pointer;
+    /* Change le curseur lors du survol */
+    color: #407CEE;
+    /* Couleur au survol */
+}
+
 label {
     display: block;
     margin-bottom: 5px;
@@ -549,29 +560,5 @@ p {
     font-weight: 500;
     color: #F7AE00;
 
-}
-
-.modal {
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    /* Arrière-plan semi-transparent */
-    z-index: 1000;
-    /* Assurez-vous que le modal est bien au-dessus des autres éléments */
-}
-
-.modal-content {
-    background-color: white;
-    margin: 15% auto;
-    /* Espacement vertical */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    /* Largeur du modal */
-    z-index: 1001;
 }
 </style>

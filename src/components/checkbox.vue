@@ -55,6 +55,10 @@ const updateSelection = () => {
 .img-fluid {
     max-width: 600px;
     height: auto;
+    transition: transform 0.3s ease; 
+}
+.img-fluid{
+    transform: scale(1.1); 
 }
 .row {
     display: flex;

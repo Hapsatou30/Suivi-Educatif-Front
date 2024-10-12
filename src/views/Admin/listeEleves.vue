@@ -304,7 +304,7 @@ const validateField = (field) => {
   }else if (field === 'parent_email' && !/\S+@\S+\.\S+/.test(formData.value[field])) {
     errors.value[field] = "Veuillez entrer un email valide.";
   }else if (field === 'parent_telephone' && !telephoneRegex.test(formData.value.parent_telephone)) {
-    errors.value.parent_telephone = "Le numéro de téléphone doit commencer par 77, 78, 70 ou 75 et être suivi de 7 chiffres.";
+    errors.value.parent_telephone = "Le numéro de téléphone doit commencer par 77, 78,76, 70 ou 75 et être suivi de 7 chiffres.";
   }
    else {
     errors.value[field] = null;

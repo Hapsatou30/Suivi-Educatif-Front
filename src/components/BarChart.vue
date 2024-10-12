@@ -82,7 +82,7 @@ const initChart = () => {
       responsive: true, // Rendre le graphique réactif
       plugins: {
         legend: {
-          position: 'top', // Position de la légende
+          position: 'bottom', // Position de la légende
         },
         title: {
           display: true,

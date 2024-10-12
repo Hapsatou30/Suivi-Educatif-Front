@@ -158,12 +158,13 @@ html {
   /* Utilise le flexbox pour centrer le logo */
   justify-content: center;
   align-items: center;
+  margin-top: -4%;
 }
 
 .logo h1 {
-  font-size: 36px;
+  font-size: 28px;
   /* Taille du texte */
-  margin-top: 110px;
+  margin-top: 12%;
   /* Marge supérieure */
   font-family: "Poppins", sans-serif;
   /* Police utilisée */
@@ -174,10 +175,13 @@ html {
 }
 
 .logo img {
-  width: 371px;
+  /* width: 371px; */
+  width: 30%;
   /* Largeur de l'image du logo */
-  height: 279px;
+  height: auto;
   /* Hauteur de l'image du logo */
+ 
+
 }
 
 .formulaire {
@@ -190,7 +194,8 @@ html {
   /* Bordure arrondie */
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
   /* Ombre portée */
-  max-width: 450px;
+
+  max-width: 70%;
   /* Largeur maximale du formulaire */
   margin-bottom: 30px;
   /* Marge inférieure */
@@ -269,11 +274,16 @@ input {
 }
 
 .container .col-4 img {
-  width: 500px;
+  width: 115%;
   height: auto;
   object-fit: cover;
-  margin-top: 70%;
+  margin-top: 65%;
   margin-left: -50%;
+  transition: transform 0.3s ease; 
+}
+
+.container .col-4 img:hover {
+  transform: scale(1.1); /* L'effet de zoom au survol */
 }
 
 /* Styles pour mobile */

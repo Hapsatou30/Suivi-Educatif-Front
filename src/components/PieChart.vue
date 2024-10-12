@@ -9,72 +9,74 @@
 // Importation des fonctions nécessaires de Vue et Chart.js
 import { ref, onMounted } from 'vue';
 import { Chart, registerables } from 'chart.js';
+import { getEleves } from '@/services/EleveService'; // Importation de votre service
 
 // Enregistrement des composants Chart.js requis pour générer le graphique
 Chart.register(...registerables);
 
-// Définir les props attendus par le composant
-const props = defineProps({
-  maleCount: {
-    type: Number, // Nombre de garçons
-    required: true
-  },
-  femaleCount: {
-    type: Number, // Nombre de filles
-    required: true
-  }
-});
+// Références pour stocker les données de comptage par genre
+const elevesCountMale = ref(0);
+const elevesCountFemale = ref(0);
 
 // Référence au canvas où le graphique sera dessiné
 const pieChartCanvas = ref(null);
 
-// Exécuter le code une fois que le composant est monté dans le DOM
-onMounted(() => {
-  // Récupérer le contexte 2D du canvas pour dessiner le graphique
-  const ctx = pieChartCanvas.value.getContext('2d');
-  
-  // Accéder directement aux props sans utiliser `.value`
-  const maleCount = props.maleCount; // Récupérer le nombre de garçons
-  const femaleCount = props.femaleCount; // Récupérer le nombre de filles
+// Fonction pour récupérer les élèves et les compter par genre
+const fetchElevesData = async () => {
+  const eleves = await getEleves();
+  console.log('Élèves récupérés :', eleves); // Vérifiez les élèves récupérés
 
-  // Créer un nouveau graphique de type 'pie' (camembert)
+  if (Array.isArray(eleves)) {
+    // Convertir les genres en minuscules pour le filtrage
+    elevesCountMale.value = eleves.filter(eleve => eleve.genre.toLowerCase() === "masculin").length;
+    elevesCountFemale.value = eleves.filter(eleve => eleve.genre.toLowerCase() === "feminin").length;
+
+    // Appel pour dessiner le graphique après que les données aient été récupérées
+    drawChart();
+  } else {
+    console.error('Les données des élèves ne sont pas au format attendu :', eleves);
+  }
+};
+
+// Fonction pour dessiner le graphique avec Chart.js
+const drawChart = () => {
+  const ctx = pieChartCanvas.value.getContext('2d');
+
   new Chart(ctx, {
     type: 'pie',
     data: {
-      // Légendes des catégories (Garçons et Filles)
       labels: ['Garçons', 'Filles'],
       datasets: [{
-        label: 'Répartition des élèves', // Label du dataset
-        data: [maleCount, femaleCount], // Données pour chaque catégorie
-        backgroundColor: [
-        '#407CEE', // Couleur pour les garçons
-        '#F7AE00'  // Couleur pour les filles
-        ]
-
+        label: 'Répartition des élèves',
+        data: [elevesCountMale.value, elevesCountFemale.value],
+        backgroundColor: ['#407CEE', '#F7AE00']
       }],
     },
     options: {
-      responsive: true, // Rendre le graphique responsive
+      responsive: true,
       plugins: {
-        // Configuration de la légende
         legend: {
-          position: 'bottom', // Positionner la légende en haut
+          position: 'bottom',
         },
-        // Titre du graphique
         title: {
-          display: true, // Afficher le titre
-          text: 'Répartition des élèves par sexe' // Texte du titre
+          display: true,
+          text: 'Répartition des élèves par sexe'
         }
       }
-    },
+    }
   });
+};
+
+// Appel de la fonction une fois que le composant est monté
+onMounted(() => {
+  fetchElevesData();
 });
 </script>
 
 <style scoped>
 /* Styles pour le canvas */
 canvas {
-  max-width: 600px; /* Ajuster la largeur maximale du canvas */
-  margin: auto; /* Centrer le graphique horizontalement */
+  max-width: 600px;
+  margin: auto;
 }
 </style>

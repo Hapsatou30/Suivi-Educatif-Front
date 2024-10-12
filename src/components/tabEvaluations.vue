@@ -30,6 +30,9 @@
           <td v-if="$slots.resources">
             <slot name="resources" :ressources="row.ressources" />
           </td>
+          <td v-if="$slots.resume">
+            <slot name="resume" :resume="row.resume" />
+          </td>
         </tr>
       </tbody>
     </table>

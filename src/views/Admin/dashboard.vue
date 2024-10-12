@@ -13,7 +13,7 @@
    <div class="row mt-5" >
     <div class="chart-container col-3">
       <h5 style="text-align: center; margin-bottom: 5px;">Répartition des élèves par sexe</h5>
-      <PieChart :maleCount="elevesCountMale" :femaleCount="elevesCountFemale" />
+      <PieChart  />
     </div>
     <!-- Ajout du graphique en barres pour les présences et absences -->
     <div class="chart-container1 col-6">
@@ -61,7 +61,7 @@ import sidebar_admin from '@/components/sidebarAdmin.vue';
 import topbar_admin from '@/components/topbarAdmin.vue';
 import affiche from '@/components/affiche.vue';
 import widget from '@/components/widget.vue';
-import { getElevesCount, getEleves } from '@/services/EleveService';
+import { getElevesCount } from '@/services/EleveService';
 import { getProfesseursCount } from '@/services/ProfesseurService';
 import PieChart from '@/components/PieChart.vue'; 
 import BarChart from '@/components/BarChart.vue';
@@ -78,8 +78,7 @@ const classesCount = ref(0);
 const tableData = ref([]);
 const currentPage = ref(1); // Page actuelle
 const pageSize = ref(5); // Nombre d'éléments par page
-const elevesCountMale = ref(0);
-const elevesCountFemale = ref(0);
+
 
 // Calculer les données à afficher pour la page actuelle
 const paginatedData = computed(() => {
@@ -111,23 +110,12 @@ const fetchData = async () => {
     ]);
   }
   
-  // Récupérer les élèves et compter par genre
-  const eleves = await getEleves();
-console.log('Élèves récupérés :', eleves); // Vérifiez les élèves récupérés
-
-if (Array.isArray(eleves)) {
-  // Convertir les genres en minuscules pour le filtrage
-  elevesCountMale.value = eleves.filter(eleve => eleve.genre.toLowerCase() === "masculin").length;
-  elevesCountFemale.value = eleves.filter(eleve => eleve.genre.toLowerCase() === "feminin").length;
-} else {
-  console.error('Les données des élèves ne sont pas au format attendu :', eleves);
-}
-
+  
 };
 
 onMounted(() => {
   fetchData();
-  console.log('Male Count:', elevesCountMale.value, 'Female Count:', elevesCountFemale.value);
+  
 });
 
 </script>
@@ -202,9 +190,5 @@ onMounted(() => {
   border-radius: 10%;
   padding: 1%;
 }
-.chart-container h4{
-  text-align: center;
-  margin-top: 10px;
-  margin-bottom: 10px
-}
+
 </style>

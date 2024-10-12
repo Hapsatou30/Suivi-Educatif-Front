@@ -61,6 +61,7 @@ import EvaluationEnfant from '@/views/Parents/evaluationEnfant.vue';
 import TabEvaluations from '@/components/tabEvaluations.vue';
 import DiagrameCirculaire from '@/components/PieChart.vue';
 import DiagrameBarre from '@/components/BarChart.vue';
+import DiagrameBarreProf from '@/components/BarChart1.vue';
 
 // Routes non protégées (accessible à tous)
 const publicRoutes = [
@@ -72,6 +73,7 @@ const publicRoutes = [
   { path: '/tab_evaluations', name: 'tab_evaluations', component: TabEvaluations},
   { path: '/diagramme_circulaire', name: 'diagramme_circulaire', component: DiagrameCirculaire},
   { path: '/diagramme_barre', name: 'diagramme_barre', component: DiagrameBarre},
+  { path: '/diagramme_barre_prof', name: 'diagramme_barre_prof', component: DiagrameBarreProf},
 ];
 
 // Routes protégées pour les administrateurs

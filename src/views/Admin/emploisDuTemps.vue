@@ -19,10 +19,10 @@
         <div v-if="showModal" class="modal" :class="{
             'modal-enter': !isEditing,
             'modal-leave': isEditing
-        }" style="position: fixed; top: 0; right: 0;  width: 400px; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: transform 0.3s ease-in-out; transform: translateX(100%);"
+        }" style="position: fixed; top: 0; right: 0;  width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1000;overflow: auto; display: flex;  align-items: center;   justify-content: flex-end; "
             :style="{ transform: showModal ? 'translateX(0)' : 'translateX(100%)' }">
             <div
-                style="width: 100%; height: 100%; background: white; border-radius: 8px; z-index: 1001; padding: 20px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; align-items: center; justify-content: center">
+                style="width: 80%; height: 100%; max-width: 400px; background: white; border-radius: 8px; z-index: 1001; padding: 20px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);  overflow-y: auto;">
                 <h3 style="margin-bottom: 60px; color: #F7AE00;">{{ isEditing ? 'Modifier Horaire' : 'Ajouter Horaire' }}</h3>
                 <span class="close" @click="closeModal"
                     style="position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer;">&times;</span>

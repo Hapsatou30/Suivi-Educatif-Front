@@ -199,19 +199,22 @@ const isEditMode = ref(false);
 const fetchData = async () => {
   try {
     const response = await getCahierTexte(annee_classe_id);
-    tableData.value = response.données.map(item => ({
-      matiere: item.matiere,
-      professeur: item.professeur,
-      date: item.date,
-      titre: item.titre,
-      resume: item.resume,
-      id: item.id ,
-      professeur_id: item.professeur_id
-    }));
+    tableData.value = response.données
+      .map(item => ({
+        matiere: item.matiere,
+        professeur: item.professeur,
+        date: item.date,
+        titre: item.titre,
+        resume: item.resume,
+        id: item.id,
+        professeur_id: item.professeur_id
+      }))
+      // Tri des données par date, les plus récentes en haut
+      .sort((a, b) => new Date(b.date) - new Date(a.date));
   } catch (error) {
     console.error('Erreur lors du chargement des cahiers de texte :', error);
   }
-}
+};
 
 
 

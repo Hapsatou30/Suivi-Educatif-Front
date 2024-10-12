@@ -45,6 +45,11 @@ onMounted(fetchAnneeEnCours);
   margin-right: 50px;
   height: 160px;
   border-radius: 12px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card-container:hover {
+  transform: scale(1.05); /* Zoom à 105% au survol */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Ombre supplémentaire au survol */
 }
 
 .left-section {

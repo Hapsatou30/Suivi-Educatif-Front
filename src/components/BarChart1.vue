@@ -1,7 +1,7 @@
 <template>
     <div>
       <!-- Canvas pour le graphique en barres -->
-      <canvas ref="barChartCanvas" width="500" height="500"></canvas>
+      <canvas ref="barChartCanvas" width="600" height="600"></canvas>
     </div>
   </template>
   

@@ -48,7 +48,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="chart-container1 col-6">
+      <div class="chart-container1 col-8">
       <h5 style="text-align: center; margin-bottom: 5px;">Mes heures de cours par jour</h5>
         <BarChart />
       </div>
@@ -273,8 +273,12 @@ text-align: right;
   background-color: white;
   text-align: center;
   
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-
+.custom-card:hover {
+  transform: scale(1.05); /* Zoom à 105% au survol */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Ombre supplémentaire au survol */
+}
 .card-header {
   display: flex;
   justify-content: space-between;

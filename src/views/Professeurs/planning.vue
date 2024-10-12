@@ -14,7 +14,7 @@
       </div>
       <div class="col-md-6">
         <!-- Formulaire pour ajouter une évaluation -->
-        <form @submit.prevent="submitForm" class="forms" style="background-color: white;">
+        <form @submit.prevent="submitForm" class="forms">
           <div class="row">
                 <div class="col-md-6 mb-3">
               <label for="nomEvaluation" class="form-label">Nom de l'Évaluation</label>
@@ -410,7 +410,6 @@ onMounted(async () => {
 
 
 .planning .row .forms {
-    background-color: white;
     padding: 20px;
     border-radius: 12px;
 }

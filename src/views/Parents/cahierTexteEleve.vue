@@ -12,15 +12,19 @@
         <div class="cahiers">
             <div class="tableau1">
                 <tabEvaluations v-if="paginatedData.length > 0" class="tab-noteMatiere"
-                    :headers="['Matière', 'Professeur', 'Date', 'Titre', 'Résumé', 'Ressource']" :data="paginatedData.map(({ matiere, professeur, date, titre, resume, ressources, id }) => ({
+                    :headers="['Matière', 'Professeur', 'Date', 'Titre', 'Résumé', 'Ressource']" :data="paginatedData.map(({ matiere, professeur, formattedDate, titre, resume, ressources, id }) => ({
                         matiere,
                         professeur,
-                        date,
+                        formattedDate,
                         titre,
                         resume,
                         ressources,
                         id,
                     }))">
+                     <template #resume="{ resume }">
+                        <span>{{ resume.length > 20 ? resume.substring(0, 20) + '...' : resume }}</span>
+                        <a href="#" @click.prevent="openModal(resume)">Voir plus</a>
+                    </template>
                     <template #resources="{ ressources }">
                         <a v-if="ressources" :href="ressources" target="_blank">Voir les ressources</a>
                     </template>
@@ -28,6 +32,14 @@
 
 
                 <p v-else class="alert alert-info">Pas de cahier de texte.</p>
+            </div>
+             <!-- Modal -->
+            <div v-if="selectedResume" class="modal" @click.self="selectedResume = ''">
+                <div class="modal-content">
+                <span class="close" @click="selectedResume = ''">&times;</span>
+                <h3>Résumé complet</h3>
+                <p>{{ selectedResume }}</p>
+                </div>
             </div>
 
             <!-- Pagination -->
@@ -56,6 +68,8 @@ const anneeClasse_id = ref('');
 const tableData = ref([]);
 const currentPage = ref(1);
 const pageSize = ref(5);
+const selectedResume = ref(''); // État pour stocker le résumé sélectionné
+
 
 const fetchDetailsEleve = async () => {
     try {
@@ -80,12 +94,15 @@ const fetchData = async () => {
         tableData.value = response.données.map(item => ({
             matiere: item.matiere,
             professeur: item.professeur,
-            date: item.date,
+            date: new Date(item.date), // Convertir en objet Date pour trier
+            formattedDate: new Date(item.date).toLocaleDateString('fr-FR'), // Format français (dd/MM/yyyy)
             titre: item.titre,
             resume: item.resume,
             ressources: item.ressources,
             id: item.id,
-        }));
+        }))
+        .sort((a, b) => b.date - a.date); // Trier du plus récent au plus ancien
+
     } catch (error) {
         console.error('Erreur lors du chargement des cahiers de texte :', error);
     }
@@ -105,10 +122,58 @@ onMounted(async () => {
     await fetchDetailsEleve();
     await fetchData();
 });
+const openModal = (resume) => {
+  selectedResume.value = resume; // Stocker le résumé sélectionné
+};
 
 </script>
 
 <style scoped>
+::v-deep .tab-noteMatiere td:nth-child(5) {
+  display: none;
+
+}
+.modal {
+  position: fixed;
+  z-index: 1000;
+  right: 0; 
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: flex-end; 
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 0; /* Supprimer la marge pour aligner à droite */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Largeur du contenu modal */
+  max-width: 400px; /* Ajustez la largeur maximale selon vos besoins */
+  height: 100%; /* Prendre toute la hauteur de la page */
+  border-radius: 8px; /* Si vous souhaitez arrondir les coins */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); /* Ajouter une ombre pour le relief */
+  overflow-y: auto; /* Ajouter un défilement si le contenu dépasse la hauteur */
+}
+
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
 .main-content {
     margin-top: 120px;
 }

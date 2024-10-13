@@ -8,10 +8,10 @@
     <div class="cahiers">
       <div class="tableau1">
         <tabEvaluations v-if="paginatedData.length > 0" class="tab-noteMatiere"
-          :headers="['Matière', 'Professeur', 'Date', 'Titre', 'Résumé']" :data="paginatedData.map(({ matiere, professeur, date, titre, resume, id, }) => ({
+          :headers="['Matière', 'Professeur', 'Date', 'Titre', 'Résumé']" :data="paginatedData.map(({ matiere, professeur, formattedDate, titre, resume, id, }) => ({
             matiere,
             professeur,
-            date,
+            formattedDate,
             titre,
             resume,
             id,
@@ -73,11 +73,14 @@ const fetchData = async () => {
     tableData.value = response.données.map(item => ({
       matiere: item.matiere,
       professeur: item.professeur,
-      date: item.date,
+      date: new Date(item.date), // Convertir en objet Date pour trier
+      formattedDate: new Date(item.date).toLocaleDateString('fr-FR'), // Format français (dd/MM/yyyy)
       titre: item.titre,
       resume: item.resume,
       id: item.id,
-    }));
+    }))
+    .sort((a, b) => b.date - a.date); // Trier du plus récent au plus ancien
+
   } catch (error) {
     console.error('Erreur lors du chargement des cahiers de texte :', error);
   }

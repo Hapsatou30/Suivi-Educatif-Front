@@ -12,8 +12,8 @@
         <div class="absences">
             <div class="tableau-absences">
                 <tabEvaluations v-if="paginatedAbsencesData.length > 0" class="tab-absences_admin"
-                    :headers="['Date d\'absence', 'Matière', 'Motif', 'Justification', 'Action']" :data="paginatedAbsencesData.map(({ date_absence, classe_prof: { prof_matiere: { matiere } }, justification, id, motif }) => ({
-                        date_absence,
+                    :headers="['Date d\'absence', 'Matière', 'Motif', 'Justification', 'Action']" :data="paginatedAbsencesData.map(({ formattedDate, classe_prof: { prof_matiere: { matiere } }, justification, id, motif }) => ({
+                        formattedDate,
                         matiere: matiere ? matiere.nom : 'Non spécifié',
                         justification: justification ? `http://127.0.0.1:8000/storage//` + justification : 'vide',
                         motif: motif || 'vide',  // Affiche 'vide' si motif est vide
@@ -47,15 +47,15 @@
 
     <!-- Modal -->
     <div v-if="showModal"
-        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1000; display: flex; justify-content: center; align-items: center;">
+    style="position: fixed; top: 0; right: 0;  width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1000;overflow: auto; display: flex;  align-items: center;   justify-content: flex-end; ">
         <div
-            style="position: relative; width: 90%; max-width: 500px; padding: 20px; background: white; border-radius: 8px; z-index: 1001; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
-            <h3>{{ isEditing ? 'Modifier Justification' : 'Ajouter Justification' }}</h3>
+        style="width: 80%; height: 100%; max-width: 400px; background: white; border-radius: 8px; z-index: 1001; padding: 20px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);  overflow-y: auto; display: flex; flex-direction: column; align-items: center; justify-content: center; ">
+            <h3 style="margin-bottom: 60px; color: #F7AE00;">{{ isEditing ? 'Modifier Justification' : 'Ajouter Justification' }}</h3>
             <span class="close" @click="closeModal"
                 style="position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer;">&times;</span>
 
             <!-- Formulaire -->
-            <form @submit.prevent="isEditing ? handleModifierJustification() : handleAjouterJustification()">
+            <form @submit.prevent="isEditing ? handleModifierJustification() : handleAjouterJustification()" style=" padding-left: 50px; padding-right: 50px;">
                 <!-- Champ de téléchargement de fichier -->
                 <div class="form-group" style="margin-top: 20px; margin-bottom: 20px;">
                     <input type="file" id="fileUpload"   @change="handleFileUpload" />
@@ -138,13 +138,18 @@ const fetchDetailsEleve = async () => {
     }
 };
 
-// Récupérer les absences d'une classe
 const fetchAbsences = async () => {
     try {
         const response = await getAbsencesEleve(classeEleve_id.value);
         if (response.données) {  // Vérifiez si response.données est défini
             // Trier les données du plus récent au plus ancien
-            Data.value = response.données.sort((a, b) => new Date(b.date_absence) - new Date(a.date_absence));
+            Data.value = response.données
+                .map(item => ({
+                    ...item,
+                    date_absence: new Date(item.date_absence), // Convertir en objet Date pour le tri
+                    formattedDate: new Date(item.date_absence).toLocaleDateString('fr-FR') // Format français (dd/MM/yyyy)
+                }))
+                .sort((a, b) => b.date_absence - a.date_absence); // Trier du plus récent au plus ancien
         } else {
             console.error("Les données d'absence sont vides ou non définies.");
         }
@@ -152,6 +157,7 @@ const fetchAbsences = async () => {
         console.error("Erreur lors de la récupération des absences :", error);
     }
 };
+
 const handleModifierJustification = async () => {
     console.log('Démarrage de la modification de justification');
 

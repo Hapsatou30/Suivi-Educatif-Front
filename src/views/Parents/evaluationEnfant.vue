@@ -17,8 +17,8 @@
         <div 
           v-for="(evaluation, index) in evaluations" 
           :key="index" 
-          class="evaluation-card col-12 col-sm-6 col-md-4 d-flex flex-column align-items-center">
-          <h4 class="date">{{ evaluation.date }}</h4>
+          class="matiere-card col-12 col-sm-6 col-md-4 d-flex flex-column align-items-center" :style="{ backgroundColor: getMatiereColor(evaluation.matiere ) }" >
+          <h4 class="date">{{ evaluation.formattedDate }}</h4>
           <div class="content">
             <p class="matiere">{{ evaluation.matiere }}</p>
             <p class="heure">{{ evaluation.heure }}</p>
@@ -73,14 +73,21 @@ const fetchDetailsEleve = async () => {
 const fetchEvaluations = async () => {
   try {
     const response = await getEvaluationsParEleve(classeEleve_id.value);
+    console.log('response', response);
+    
     if (response.status === 200) {
       const now = dayjs(); // Date actuelle
 
-      // Filtrer les évaluations à venir
-      evaluations.value = response.evaluations.filter(evaluation => {
-        const evalDate = dayjs(evaluation.date);
-        return evalDate.isAfter(now); // Évaluations futures seulement
-      });
+      // Filtrer les évaluations à venir et formater la date en français
+      evaluations.value = response.evaluations
+        .filter(evaluation => {
+          const evalDate = dayjs(evaluation.date);
+          return evalDate.isAfter(now); // Évaluations futures seulement
+        })
+        .map(evaluation => ({
+          ...evaluation,
+          formattedDate: dayjs(evaluation.date).format('DD/MM/YYYY'), // Format français
+        }));
 
     } else {
       console.error("Erreur lors de la récupération des évaluations:", response.message);
@@ -90,6 +97,17 @@ const fetchEvaluations = async () => {
   }
 };
 
+ // Fonction pour obtenir la couleur associée à une matière
+ const getMatiereColor = (matiere) => {
+      const colorsFromStorage = JSON.parse(localStorage.getItem('classeColors')) || {};
+  
+      if (colorsFromStorage[matiere]) {
+          return colorsFromStorage[matiere];
+      }
+  
+      // Si la couleur n'existe pas dans le localStorage, renvoyer une couleur par défaut
+      return '#cccccc'; // Vous pouvez changer cette couleur par une autre si nécessaire
+  };
 onMounted(() => {
   fetchDetailsEleve();
 });
@@ -120,7 +138,18 @@ onMounted(() => {
   color: black;
   margin-left: 1rem;
 }
+.matiere-card {
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    color: #fff; /* Ajuster selon le besoin */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
+.matiere-card:hover {
+  transform: scale(1.05); /* Zoom à 105% au survol */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Ombre supplémentaire au survol */
+}
 .card-container {
   gap: 16px; 
   margin-top: 20px;
@@ -147,14 +176,17 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   width: 100%; /* Prendre toute la largeur */
+  color: white;
 }
 
 .matiere {
   text-align: left;
+  color: white;
 }
 
 .heure {
   text-align: right;
+  color: white;
 }
 @media (max-width: 480px) {
   .main-content{

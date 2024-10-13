@@ -64,7 +64,7 @@ const fetchAssiduiteData = async () => {
 
         // Calculer les absences pour chaque élève
         absencesResponse.data.forEach(absence => {
-            const eleveIndex = enfants.findIndex(enfant => enfant.includes(absence.classe_eleve.eleve.nom));
+            const eleveIndex = enfants.findIndex(enfant => enfant.includes(absence.classe_eleve.eleve.prenom));
             if (eleveIndex !== -1) {
                 presences[eleveIndex] -= 1; // Supposons que chaque absence réduit la présence de 1%
                 absences[eleveIndex] += 1;   // Incrémente le nombre d'absences

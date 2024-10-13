@@ -24,7 +24,7 @@ const fetchProfile = async () => {
 
         if (user && user.parent) {
             parentId.value = user.parent.id;
-            console.log('parentId récupéré:', parentId.value);
+            // console.log('parentId récupéré:', parentId.value);
         } else {
             console.error('Aucun parent trouvé pour cet utilisateur.');
         }
@@ -42,7 +42,7 @@ const fetchAssiduiteData = async () => {
 
         // Récupérer les élèves à partir de l'API
         const response = await getElevesParParent(parentId.value);
-        console.log('response', response);
+        // console.log('response', response);
 
         // Vérifier que la réponse contient les données
         if (!response || !response.données) {
@@ -52,10 +52,10 @@ const fetchAssiduiteData = async () => {
 
         // Récupérer les données d'élèves
         const elevesResponse = response.données; // Récupérer uniquement les données
-        console.log('elevesResponse', elevesResponse); // Vérifiez ici
+        // console.log('elevesResponse', elevesResponse); // Vérifiez ici
 
         const absencesResponse = await getAbsenceParents(parentId.value);
-        console.log('absencesResponse', absencesResponse);
+        // console.log('absencesResponse', absencesResponse);
 
         // Récupérer les noms des enfants
         const enfants = elevesResponse.map(eleve => `${eleve.prenom} ${eleve.nom}`);
@@ -98,12 +98,12 @@ const updateAssiduiteChart = (enfants, presences, absences) => {
                     {
                         label: 'Présences',
                         data: presences,
-                        backgroundColor: 'rgba(76, 175, 80, 0.6)',
+                        backgroundColor: '#F7AE00',
                     },
                     {
                         label: 'Absences',
                         data: absences,
-                        backgroundColor: 'rgba(244, 67, 54, 0.6)',
+                        backgroundColor: '#407CEE',
                     }
                 ]
             },

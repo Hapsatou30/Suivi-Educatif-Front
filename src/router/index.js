@@ -63,6 +63,8 @@ import DiagrameCirculaire from '@/components/PieChart.vue';
 import DiagrameBarre from '@/components/BarChart.vue';
 import DiagrameBarreProf from '@/components/BarChart1.vue';
 import DiagrameBarreParent from '@/components/AssiduiteChart.vue';
+import DiagrameBarreNotes from '@/components/NotesChart.vue';
+
 
 // Routes non protégées (accessible à tous)
 const publicRoutes = [
@@ -76,6 +78,7 @@ const publicRoutes = [
   { path: '/diagramme_barre', name: 'diagramme_barre', component: DiagrameBarre},
   { path: '/diagramme_barre_prof', name: 'diagramme_barre_prof', component: DiagrameBarreProf},
   {path: '/diagramme_barre_parent', name: 'diagramme_barre_parent', component: DiagrameBarreParent},
+  { path: '/diagramme_matiere_notes', name: 'diagramme_matiere_notes', component: DiagrameBarreNotes},
 ];
 
 // Routes protégées pour les administrateurs

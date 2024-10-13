@@ -25,10 +25,14 @@
             </div>
         </div>
         <div class="row">
-      <div class="chart-container1 col-6">
+      <div class="chart-container1 col-4">
       <h5 style="text-align: center; margin-bottom: 5px;">Assiduité des Enfants</h5>
         <AssiduiteChart />
       </div>
+      <div  class="chart-container col-6">
+    <h5 style="text-align: center; margin-bottom: 5px;">Performance Académique des Enfants</h5>
+    <NotesChart />
+  </div>
     </div>
         <div class="evaluations">
     <h2>Les évaluations de la semaine</h2>
@@ -80,6 +84,7 @@ import pagination from '@/components/paginations.vue';
 import dayjs from 'dayjs';
 import 'dayjs/locale/fr';
 import AssiduiteChart from '@/components/AssiduiteChart.vue';
+import NotesChart from '@/components/NotesChart.vue';
 
 dayjs.locale('fr');
 const enfantsCount = ref(0);
@@ -268,12 +273,18 @@ onMounted(async () => {
     margin-right: 50px;
   }
   .chart-container1{
-  background-color: rgb(241, 241, 241);
   margin-left: 300px;
   margin-top: 40px;
   border-radius: 10%;
   padding: 1%;
   width: 450px;
+}
+.chart-container{
+margin-right: 50px;
+  margin-top: 40px;
+  border-radius: 10%;
+  padding: 1%;
+ 
 }
 /* Media queries pour rendre la section responsive sur mobile */
 @media (max-width: 768px) {

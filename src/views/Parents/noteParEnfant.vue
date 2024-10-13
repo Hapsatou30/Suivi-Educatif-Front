@@ -2,128 +2,120 @@
     <sidebar_parent />
     <topbar_parent />
     <div class="main-content">
-        <div class="head">
-            <router-link to="/gestion_notes_parent"> <Icon class="retour" icon="formkit:arrowleft" /></router-link>
-            <h1 class="title">Les Notes de <span class="prenom">{{ prenom }}</span></h1>
-        </div>
-        <div class="row mb-5">
-            <div class="legendes col-4">
-            <h4>Légendes</h4>
-            <div class="legende sous-moyenne">
-                <div class="case"></div>
-                <span>Sous moyenne</span>
-            </div>
-            <div class="legende passable">
-                <div class="case"></div>
-                <span>Passable</span>
-            </div>
-            <div class="legende bien">
-                <div class="case"></div>
-                <span>Bien</span>
-            </div>
-            <div class="legende tres-bien">
-                <div class="case"></div>
-                <span>Très bien</span>
-            </div>
-        </div>
-        <div class="chart-container1 col-7">
-        <h5 style="text-align: center; margin-bottom: 5px;">Performances de l'enfant</h5>
-        <ChildPerformanceChart :subjects="subjects" :scores="scores" />
+      <div class="head">
+        <router-link to="/gestion_notes_parent">
+          <Icon class="retour" icon="formkit:arrowleft" />
+        </router-link>
+        <h1 class="title">Les Notes de <span class="prenom">{{ prenom }}</span></h1>
       </div>
+  
+      <div class="row mb-5">
+        <div class="chart-container1 col-10">
+          <h5 style="text-align: center; margin-bottom: 5px;">Performances de l'enfant</h5>
+          <ChildPerformanceChart :subjects="subjects" :scores="scores" />
         </div>
-       
-
-        <div class="notes">
-            <div class="row">
-                <div class="col-6 title-container">
-                    <h1>Matière : {{ notes[0]?.matiere || 'Aucune matière' }}</h1>
-                </div>
-                <div class="col-6">
-                    <div v-for="note in notes" :key="note.nom_evaluation" :class="['card', getCardClass(note.note)]">
-                        <div class="card-title">{{ note.evaluation }} : {{ note.nom_evaluation }}</div>
-                        <div class="card-content">
-                            <h1>{{ note.note }}</h1>
-                        </div>
-                        <div class="card-footer">
-                            <p class="coef">Coef: {{ note.coefficient }}</p>
-                            <p class="comment">{{ note.commentaire }}</p>
-                        </div>
-                    </div>
-                </div>
+      </div>
+  
+      <div class="notes">
+        <div class="row">
+          <div class="col-6 title-container">
+            <h1>Matière : {{ notes[0]?.matiere || 'Aucune matière' }}</h1>
+          </div>
+          <div class="col-4">
+            <div v-for="note in notes" :key="note.nom_evaluation" :style="{ backgroundColor: getMatiereColor(note.matiere) }" class="matiere-card">
+              <div class="card-title">{{ note.evaluation }} : {{ note.nom_evaluation }}</div>
+              <div class="card-content">
+                <h1>{{ note.note }}</h1>
+              </div>
+              <div class="card-footer">
+                <p class="coef">Coef: {{ note.coefficient }}</p>
+                <p class="comment">{{ note.commentaire }}</p>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </div>
-</template>
+  </template>
+  
+  <script setup>
+  import sidebar_parent from '@/components/sideBarParent.vue';
+  import topbar_parent from '@/components/topBarParent.vue';
+  import { ref, onMounted } from 'vue';
+  import { Icon } from '@iconify/vue';
+  import { getDetailsEleve } from '@/services/ClasseEleve';
+  import { getNoteEleve } from '@/services/NotesService';
+  import { useRoute } from 'vue-router'; 
+  import ChildPerformanceChart from '@/components/ChildPerformanceChart.vue';
+  
+  const route = useRoute();
+  const classeEleve_id = ref(route.params.classeEleve_id); 
+  const prenom = ref(''); 
+  const notes = ref([]); 
+  const subjects = ref([]); 
+  const scores = ref([]); 
+  
+  // Récupération des détails de l'élève
+  const fetchDetailsEleve = async () => {
+      try {
+          const response = await getDetailsEleve(classeEleve_id.value);
+          if (response.status === 200) {
+              prenom.value = response.données.prenom; 
+          } else {
+              console.error('Erreur lors de la récupération des détails de l\'élève:', response.message);
+          }
+      } catch (error) {
+          console.error('Erreur lors de la récupération des détails de l\'élève:', error);
+      }
+  };
+  
+  // Récupération des notes de l'élève
+  const fetchNotesEleve = async () => {
+      try {
+          const response = await getNoteEleve(classeEleve_id.value);
+          if (response) {
+              notes.value = response.eleve.notes;  
+              subjects.value = notes.value.map(note => note.matiere);
+              scores.value = notes.value.map(note => note.note);
+          } else {
+              console.error('Erreur lors de la récupération des notes');
+          }
+      } catch (error) {
+          console.error('Erreur lors de la récupération des notes:', error);
+      }
+  };
+  
+  // Fonction pour obtenir la couleur associée à une matière
+  const getMatiereColor = (matiere) => {
+      const colorsFromStorage = JSON.parse(localStorage.getItem('classeColors')) || {};
+  
+      if (colorsFromStorage[matiere]) {
+          return colorsFromStorage[matiere];
+      }
+  
+      // Si la couleur n'existe pas dans le localStorage, renvoyer une couleur par défaut
+      return '#cccccc'; // Vous pouvez changer cette couleur par une autre si nécessaire
+  };
+  
+  onMounted(() => {
+      fetchDetailsEleve();  
+      fetchNotesEleve();     
+  });
+  </script>
+  
+  <style scoped>
+  .matiere-card {
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    color: #fff; /* Ajuster selon le besoin */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
-<script setup>
-import sidebar_parent from '@/components/sideBarParent.vue';
-import topbar_parent from '@/components/topBarParent.vue';
-import { ref, onMounted } from 'vue';
-import { Icon } from '@iconify/vue';
-import { getDetailsEleve } from '@/services/ClasseEleve';
-import { getNoteEleve } from '@/services/NotesService';
-import { useRoute } from 'vue-router'; 
-import ChildPerformanceChart from '@/components/ChildPerformanceChart.vue';
-
-const route = useRoute();
-const classeEleve_id = ref(route.params.classeEleve_id); 
-const prenom = ref(''); 
-const notes = ref([]); // Variable pour stocker les notes
-const subjects = ref([]); // Matières
-const scores = ref([]); // Notes de l'enfant
-
-// Récupération des détails de l'élève
-const fetchDetailsEleve = async () => {
-    try {
-        const response = await getDetailsEleve(classeEleve_id.value);
-        if (response.status === 200) {
-            prenom.value = response.données.prenom; 
-        } else {
-            console.error('Erreur lors de la récupération des détails de l\'élève:', response.message);
-        }
-    } catch (error) {
-        console.error('Erreur lors de la récupération des détails de l\'élève:', error);
-    }
-};
-
-
-// Récupération des notes de l'élève
-const fetchNotesEleve = async () => {
-    try {
-        const response = await getNoteEleve(classeEleve_id.value);
-        if (response) {
-            notes.value = response.eleve.notes;  
-            // Mise à jour des matières et des notes
-            subjects.value = notes.value.map(note => note.matiere);
-            scores.value = notes.value.map(note => note.note);
-        } else {
-            console.error('Erreur lors de la récupération des notes');
-        }
-    } catch (error) {
-        console.error('Erreur lors de la récupération des notes:', error);
-    }
-};
-
-// Fonction pour déterminer la classe CSS en fonction de la note
-const getCardClass = (note) => {
-    if (note < 10) {
-        return 'card-rouge';
-    } else if (note >= 10 && note <= 12) {
-        return 'card-orange';
-    } else if (note > 12 && note <= 15) {
-        return 'card-jaune';
-    } else {
-        return 'card-verte';
-    }
-};
-
-onMounted(() => {
-    fetchDetailsEleve();  
-    fetchNotesEleve();     
-});
-</script>
-
-<style scoped>
+.matiere-card:hover {
+  transform: scale(1.05); /* Zoom à 105% au survol */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Ombre supplémentaire au survol */
+}
 .main-content {
     overflow-x: hidden;
     padding: 20px; 
@@ -149,56 +141,6 @@ onMounted(() => {
   margin-right: 50px;
   border-radius: 10%;
   padding: 1%;
-}
-/* Styles pour les légendes */
-.legendes {
-    display: flex;
-    flex-direction: column;
-    margin-top: 20px;
-}
-
-.legende {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.case {
-    width: 20px;  
-    height: 20px; 
-    margin-right: 10px; 
-}
-
-.sous-moyenne .case {
-    background-color: #FF0000;
-}
-
-.passable .case {
-    background-color: #FF6600;
-}
-
-.bien .case {
-    background-color: #FFCD1E;
-}
-
-.tres-bien .case {
-    background-color: #3E782A;
-}
-
-.card-rouge {
-    background-color: #FF0000; /* Rouge */
-}
-
-.card-orange {
-    background-color: #FF6600; /* Orange */
-}
-
-.card-jaune {
-    background-color: #FFCD1E; /* Jaune */
-}
-
-.card-verte {
-    background-color: #3E782A; /* Vert */
 }
 
 .notes .row {

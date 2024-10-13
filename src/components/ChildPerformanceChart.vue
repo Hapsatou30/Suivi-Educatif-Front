@@ -23,12 +23,29 @@
   
   const performanceChart = ref(null);
   
+  // Fonction pour obtenir la couleur associée à une matière
+  const getMatiereColor = (matiere) => {
+    const colorsFromStorage = JSON.parse(localStorage.getItem('classeColors')) || {};
+  
+    if (colorsFromStorage[matiere]) {
+      return colorsFromStorage[matiere];
+    }
+  
+    // Si la couleur n'existe pas dans le localStorage, renvoyer une couleur par défaut
+    return '#cccccc'; // Couleur par défaut
+  };
+  
   const renderChart = () => {
     const ctx = performanceChart.value.getContext('2d');
+    
     // Détruire l'instance existante si elle existe
     if (performanceChart.instance) {
       performanceChart.instance.destroy();
     }
+  
+    // Créer un tableau de couleurs basé sur les matières
+    const backgroundColors = props.subjects.map(matiere => getMatiereColor(matiere));
+    const borderColors = [...backgroundColors]; // On peut utiliser les mêmes couleurs pour les bordures
   
     performanceChart.instance = new Chart(ctx, {
       type: 'bar',
@@ -37,30 +54,8 @@
         datasets: [{
           label: 'Notes',
           data: props.scores,
-          backgroundColor: [
-            '#FF6384',
-            '#36A2EB',
-            '#FFCE56',
-            '#4BC0C0',
-            '#9966FF',
-            '#FF9F40',
-            '#FF6394',
-            '#36A2EB',
-            '#FFCE66',
-            '#4BC0C2',
-          ],
-          borderColor: [
-            '#FF6384',
-            '#36A2EB',
-            '#FFCE56',
-            '#4BC0C0',
-            '#9966FF',
-            '#FF9F40',
-            '#FF6394',
-            '#36A2EB',
-            '#FFCE66',
-            '#4BC0C2',
-          ],
+          backgroundColor: backgroundColors,
+          borderColor: borderColors,
           borderWidth: 1,
         }],
       },

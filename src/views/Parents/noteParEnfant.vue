@@ -6,7 +6,8 @@
             <router-link to="/gestion_notes_parent"> <Icon class="retour" icon="formkit:arrowleft" /></router-link>
             <h1 class="title">Les Notes de <span class="prenom">{{ prenom }}</span></h1>
         </div>
-        <div class="legendes">
+        <div class="row mb-5">
+            <div class="legendes col-4">
             <h4>Légendes</h4>
             <div class="legende sous-moyenne">
                 <div class="case"></div>
@@ -25,6 +26,12 @@
                 <span>Très bien</span>
             </div>
         </div>
+        <div class="chart-container1 col-7">
+        <h5 style="text-align: center; margin-bottom: 5px;">Performances de l'enfant</h5>
+        <ChildPerformanceChart :subjects="subjects" :scores="scores" />
+      </div>
+        </div>
+       
 
         <div class="notes">
             <div class="row">
@@ -56,11 +63,14 @@ import { Icon } from '@iconify/vue';
 import { getDetailsEleve } from '@/services/ClasseEleve';
 import { getNoteEleve } from '@/services/NotesService';
 import { useRoute } from 'vue-router'; 
+import ChildPerformanceChart from '@/components/ChildPerformanceChart.vue';
 
 const route = useRoute();
 const classeEleve_id = ref(route.params.classeEleve_id); 
 const prenom = ref(''); 
 const notes = ref([]); // Variable pour stocker les notes
+const subjects = ref([]); // Matières
+const scores = ref([]); // Notes de l'enfant
 
 // Récupération des détails de l'élève
 const fetchDetailsEleve = async () => {
@@ -76,12 +86,16 @@ const fetchDetailsEleve = async () => {
     }
 };
 
+
 // Récupération des notes de l'élève
 const fetchNotesEleve = async () => {
     try {
         const response = await getNoteEleve(classeEleve_id.value);
         if (response) {
             notes.value = response.eleve.notes;  
+            // Mise à jour des matières et des notes
+            subjects.value = notes.value.map(note => note.matiere);
+            scores.value = notes.value.map(note => note.note);
         } else {
             console.error('Erreur lors de la récupération des notes');
         }
@@ -131,7 +145,11 @@ onMounted(() => {
     color: black;
     margin-right: 20px; /* Ajustement de la marge */
 }
-
+.chart-container1{
+  margin-right: 50px;
+  border-radius: 10%;
+  padding: 1%;
+}
 /* Styles pour les légendes */
 .legendes {
     display: flex;
@@ -213,8 +231,13 @@ onMounted(() => {
     max-width: 480px; /* Largeur maximale */
     height: 210px;
     color: white;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+.card:hover {
+  transform: scale(1.05); /* Zoom à 105% au survol */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Ombre supplémentaire au survol */
+}
 .card-title {
     font-size: 1.2rem;
     font-weight: bold;

@@ -25,7 +25,8 @@
                             <td>
                                 <select v-model="student.evaluation" @change="updateEvaluationId(student)">
                                     <option disabled value="">Sélectionner une évaluation</option>
-                                    <option v-for="evaluation in evaluations" :key="evaluation.id" :value="evaluation.id">{{ evaluation.nom }}</option>
+                                    <option v-for="evaluation in evaluations" :key="evaluation.id"
+                                        :value="evaluation.id">{{ evaluation.nom }}</option>
                                 </select>
                             </td>
 
@@ -37,7 +38,8 @@
                             </td>
                             <td>
                                 <button @click="isEditing ? updateNote(student) : addNote(student)"
-                                    style="background-color: #F7AE00; color: white; border: none; padding: 10px; cursor: pointer;" title="Ajouter/Modifier la Note">
+                                    style="background-color: #F7AE00; color: white; border: none; padding: 10px; cursor: pointer;"
+                                    title="Ajouter/Modifier la Note">
                                     <Icon icon="mdi:check" width="24" height="24" />
                                 </button>
                             </td>
@@ -58,7 +60,7 @@
             <h2>Historique des Notes</h2>
             <div class="tableauNotes">
                 <tabEvaluations v-if="paginatedData.length > 0" class="tab-notes"
-                    :headers="['Prenom & Nom', 'Matricule', 'Evaluation', 'Note', 'Appréciation', 'Action']" :data="paginatedData.map(({ prenom, nom, matricule, evaluation, note, appreciation, id ,idClasseEleve,evaluation_id}) => ({
+                    :headers="['Prenom & Nom', 'Matricule', 'Evaluation', 'Note', 'Appréciation', 'Action']" :data="paginatedData.map(({ prenom, nom, matricule, evaluation, note, appreciation, id, idClasseEleve, evaluation_id }) => ({
                         eleve: `${prenom} ${nom}`,
                         matricule,
                         evaluation,
@@ -70,8 +72,7 @@
                     }))">
                     <template #actions="{ row }">
                         <div class="boutons">
-                            <button class="btn" @click="editNote(row)" style="color: #407CEE;"
-                                title="Modifier la note">
+                            <button class="btn" @click="editNote(row)" style="color: #407CEE;" title="Modifier la note">
                                 <Icon icon="mdi:pencil-outline" />
                             </button>
                             <button class="btn" @click="deleteNote(row.id)" style="color: red;"
@@ -99,7 +100,7 @@ import sidebarProf from '@/components/sidebarProf.vue';
 import topBarProf from '@/components/topBarProf.vue';
 import tabEvaluations from '@/components/tabEvaluations.vue';
 import pagination from '@/components/paginations.vue';
-import { getNoteClasse, supprimerNote, ajouterNote,modifierNote } from '@/services/NotesService';
+import { getNoteClasse, supprimerNote, ajouterNote, modifierNote } from '@/services/NotesService';
 import { getEleveClasse } from '@/services/ClasseEleve';
 import { getEvaluationsParClasseProf } from '@/services/Evaluations';
 import { Icon } from '@iconify/vue';
@@ -127,9 +128,11 @@ const editingNoteId = ref(null);
 
 const fetchData = async () => {
     try {
-        const response = await getNoteClasse(annee_classe_id);
+        const response = await getNoteClasse(classeProf_id);
+        console.log('classeProf_id', classeProf_id);
+        
         // Mapper les données pour inclure les informations des élèves
-        tableData.value = response.données.map(({ eleve,classeEleve, evaluation, note, appreciation, matiere, id ,evaluation_id}) => ({
+        tableData.value = response.données.map(({ eleve, classeEleve, evaluation, note, appreciation, matiere, id, evaluation_id }) => ({
             prenom: eleve.prenom,
             nom: eleve.nom,
             matricule: eleve.matricule,
@@ -142,8 +145,10 @@ const fetchData = async () => {
             evaluation_id: evaluation_id
 
         }));
+        console.log('tableData: ' , tableData);
+        
     } catch (error) {
-        console.error('Erreur lors du chargement des cahiers de texte :', error);
+        console.error('Erreur lors du chargement des notes:', error);
     }
 }
 // Récupération des données des élèves
@@ -158,7 +163,7 @@ const fetchStudents = async () => {
                 nom: eleve.nom,
                 prenom: eleve.prenom,
                 matricule: eleve.matricule
-            })); 
+            }));
             // Stocker les données dans notesStudents
             notesStudents.value = eleves;
         } else {
@@ -193,7 +198,7 @@ const fetchEvaluations = async () => {
 const updateEvaluationId = (student) => {
     const selectedEvaluation = evaluations.value.find(evaluation => evaluation.id === student.evaluation);
     if (selectedEvaluation) {
-        student.evaluation_id = selectedEvaluation.id; 
+        student.evaluation_id = selectedEvaluation.id;
     }
 };
 
@@ -221,13 +226,13 @@ const handlePageChangeOther = (newPage) => {
 // Méthode pour vérifier si l'élève a déjà une note pour l'évaluation donnée
 const checkNoteExistence = async (eleveId, evaluationId) => {
     try {
-        const response = await getNoteClasse(annee_classe_id); 
-        const existingNote = response.données.find(note => 
+        const response = await getNoteClasse(annee_classe_id);
+        const existingNote = response.données.find(note =>
             note.classeEleve.id === eleveId && note.evaluation_id === evaluationId
         );
-        
+
         // console.log('Note existante:', existingNote); // Log pour débogage
-        return existingNote !== undefined; 
+        return existingNote !== undefined;
     } catch (error) {
         console.error('Erreur lors de la vérification de l\'existence de la note :', error);
         return false; // En cas d'erreur, on considère que la note n'existe pas
@@ -238,10 +243,10 @@ const checkNoteExistence = async (eleveId, evaluationId) => {
 
 // Méthode pour ajouter une note
 const addNote = async (row) => {
-    const eleveId = row.id_classeEleve; 
-    const evaluationId = row.evaluation_id; 
+    const eleveId = row.id_classeEleve;
+    const evaluationId = row.evaluation_id;
     const noteAttribuee = row.note;
-    const appreciation = row.appreciation; 
+    const appreciation = row.appreciation;
 
     if (!evaluationId || noteAttribuee === undefined || !appreciation) {
         await Swal.fire({
@@ -340,7 +345,12 @@ const updateNote = async (row) => {
                 timer: 1000,
                 timerProgressBar: true,
                 willClose: () => {
-                    fetchData(); // Mettez à jour l'affichage
+                    fetchData();
+                    // Réinitialiser les champs de l'élève
+                    row.note = null; // Réinitialiser la note
+                    row.appreciation = ''; // Réinitialiser l'appréciation
+                    row.evaluation = ''; // Réinitialiser l'évaluation (s'il y a un v-model)
+
                 }
             });
         }
@@ -358,14 +368,14 @@ const updateNote = async (row) => {
 const editNote = (note) => {
     // console.log('eee', note);
     isEditing.value = true;
-    editingNoteId.value = note.id; 
+    editingNoteId.value = note.id;
     const student = notesStudents.value.find(s => s.id_classeEleve === note.idClasseEleve);
     // console.log('notesStudents', notesStudents);
     // console.log('Student', student);
     if (student) {
         student.note = note.note;
         student.appreciation = note.appreciation;
-        student.evaluation = note.evaluation_id; 
+        student.evaluation = note.evaluation_id;
     }
 };
 
@@ -428,6 +438,7 @@ onMounted(async () => {
 ::v-deep .historiquesNotes .tableauNotes .tab-notes td:nth-child(6) {
     display: none;
 }
+
 ::v-deep .historiquesNotes .tableauNotes .tab-notes td:nth-child(7) {
     display: none;
 }

@@ -312,7 +312,7 @@
 }
 
 /* Media query pour les petits écrans */
-@media (max-width: 768px) {
+@media (max-width: 810px) {
   .topbar {
     flex-direction: column;
     height: auto;

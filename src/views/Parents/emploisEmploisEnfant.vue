@@ -4,7 +4,7 @@
     <div class="main-content">
        <div class="head">
        <router-link to="/gestion_emplois_du_temps_parent"> <Icon class="retour" icon="formkit:arrowleft" /></router-link>
-        <h1 style="text-align: center; margin-left: 100px;">L'emplois du temps de la classe  de <span class="prenom">{{ prenom }}</span></h1>
+        <h1 style="text-align: center; ">L'emplois du temps de la classe  de <span class="prenom">{{ prenom }}</span></h1>
        </div>
        <div class="emplois">
             <matrice :horaires="horaires" :data="donnees" :jours="joursDeLaSemaine" :classeColors="classeColors" :isMatiere="true" />
@@ -179,13 +179,45 @@ onMounted(() => {
     color: black;
     margin-left: 300px;
 }
+.emplois {
+    margin-left: 16%;
+}
+@media (max-width: 810px) {
+   .main-content {
+    width: 90%;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+.head {
+    gap: 2% ;
+}
+.head h1{
+    margin-left: 10%;
+    
+ }
+ .head h1{
+    font-size: 24px;
+    margin-top: 25px;
+    text-align: center;
+}
+.retour {
+    
+    margin-left: 0;
+}
+.emplois {
+    margin-left: 0%;
+  }
+}
 @media (max-width: 480px) {
     .main-content{
       width: 90%;
       margin-right: auto;
       margin-left: auto;
     }
+    .head h1{
+    margin-left: 0%;
     
+ }
     .head{
         margin-top: 20%;
         display: flex;
@@ -199,13 +231,12 @@ onMounted(() => {
 }
 
  .head h1{
-    font-size: 24px;
+    font-size: 20px;
     margin-top: 25px;
     text-align: justify;
  }
  .emplois{
-  margin-left: -75%;
-  width: 125%;
+  margin-left: 0%;
   
  }
 }

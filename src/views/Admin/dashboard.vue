@@ -9,10 +9,23 @@
       <widget title="Classes" :number="classesCount" :iconSrc="vectorIconSrc" />
     </div>
 
-    <router-link to="/professeurs" class="addTeacher">
-    <Icon icon="ei:plus" class="plus" />
-    <h3>Ajouter un professeur</h3>
-  </router-link>
+    <!-- Ajout du graphique circulaire -->
+   <div class="row mt-5" >
+    <div class="chart-container col-3">
+      <h5 style="text-align: center; margin-bottom: 5px;">Répartition des élèves par sexe</h5>
+      <PieChart  />
+    </div>
+    <!-- Ajout du graphique en barres pour les présences et absences -->
+    <div class="chart-container1 col-6">
+      <h5 style="text-align: center; margin-bottom: 5px;">Présences et Absences par jour de la semaine</h5>
+        <BarChart />
+      </div>
+   </div>
+
+    <!-- <router-link to="/professeurs" class="addTeacher">
+      <Icon icon="ei:plus" class="plus" />
+      <h3>Ajouter un professeur</h3>
+    </router-link> -->
 
     <div class="evaluations">
       <h2>Les évaluations du jour</h2>
@@ -50,6 +63,8 @@ import affiche from '@/components/affiche.vue';
 import widget from '@/components/widget.vue';
 import { getElevesCount } from '@/services/EleveService';
 import { getProfesseursCount } from '@/services/ProfesseurService';
+import PieChart from '@/components/PieChart.vue'; 
+import BarChart from '@/components/BarChart.vue';
 import { getClassesCount } from '@/services/ClasseService';
 import { Icon } from '@iconify/vue';
 import tabEvaluations from '@/components/tabEvaluations.vue';
@@ -63,6 +78,7 @@ const classesCount = ref(0);
 const tableData = ref([]);
 const currentPage = ref(1); // Page actuelle
 const pageSize = ref(5); // Nombre d'éléments par page
+
 
 // Calculer les données à afficher pour la page actuelle
 const paginatedData = computed(() => {
@@ -92,19 +108,23 @@ const fetchData = async () => {
       item.classe,
       item.duree
     ]);
-    
-    // console.log('Données du tableau :', tableData.value);
   }
+  
+  
 };
 
 onMounted(() => {
   fetchData();
+  
 });
+
 </script>
+
 
 <style scoped>
 .main-content { 
   margin-top: 120px;
+  overflow-x: hidden;
 }
 
 .widgets-container {
@@ -130,6 +150,9 @@ onMounted(() => {
   font-size: 24px;
   font-weight: bold;
 }
+.evaluations{
+  margin-bottom: 20px;
+}
 .evaluations h2{
   font-size: 30px; /* Taille du titre */
     margin-bottom: 20px; /* Marge inférieure */
@@ -153,4 +176,19 @@ onMounted(() => {
   display: flex;
   justify-content: end;
 }
+.chart-container{
+  background-color: rgb(241, 241, 241);
+  margin-left: 300px;
+  margin-top: 40px;
+  border-radius: 10%;
+  padding: 1%;
+}
+.chart-container1{
+  background-color: rgb(241, 241, 241);
+  margin-right: 50px;
+  margin-top: 40px;
+  border-radius: 10%;
+  padding: 1%;
+}
+
 </style>

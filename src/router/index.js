@@ -59,6 +59,11 @@ import AbsencesEnfant from '@/views/Parents/absencesEnfant.vue';
 import GestionEvaluation from '@/views/Parents/gestionEvaluation.vue';
 import EvaluationEnfant from '@/views/Parents/evaluationEnfant.vue';
 import TabEvaluations from '@/components/tabEvaluations.vue';
+import DiagrameCirculaire from '@/components/PieChart.vue';
+import DiagrameBarre from '@/components/BarChart.vue';
+import DiagrameBarreProf from '@/components/BarChart1.vue';
+import DiagrameBarreParent from '@/components/AssiduiteChart.vue';
+import DiagrameBarreNotes from '@/components/NotesChart.vue';
 
 
 // Routes non protégées (accessible à tous)
@@ -69,6 +74,11 @@ const publicRoutes = [
   { path: '/widget', name: 'widget', component: Widget},
   { path: '/matrice', name: 'matrice', component: Matrice}, 
   { path: '/tab_evaluations', name: 'tab_evaluations', component: TabEvaluations},
+  { path: '/diagramme_circulaire', name: 'diagramme_circulaire', component: DiagrameCirculaire},
+  { path: '/diagramme_barre', name: 'diagramme_barre', component: DiagrameBarre},
+  { path: '/diagramme_barre_prof', name: 'diagramme_barre_prof', component: DiagrameBarreProf},
+  {path: '/diagramme_barre_parent', name: 'diagramme_barre_parent', component: DiagrameBarreParent},
+  { path: '/diagramme_matiere_notes', name: 'diagramme_matiere_notes', component: DiagrameBarreNotes},
 ];
 
 // Routes protégées pour les administrateurs

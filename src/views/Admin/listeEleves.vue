@@ -131,7 +131,7 @@
               placeholder="Entrez l'email de l'élève" 
               @blur="validateField('email')" 
               :class="{ 'is-invalid': errors.email }" 
-              required 
+               
             />
             <div v-if="errors.email" class="text-danger">{{ errors.email }}</div>
           </div>
@@ -304,10 +304,25 @@ const validateField = (field) => {
   }else if (field === 'parent_email' && !/\S+@\S+\.\S+/.test(formData.value[field])) {
     errors.value[field] = "Veuillez entrer un email valide.";
   }else if (field === 'parent_telephone' && !telephoneRegex.test(formData.value.parent_telephone)) {
-    errors.value.parent_telephone = "Le numéro de téléphone doit commencer par 77, 78, 70 ou 75 et être suivi de 7 chiffres.";
-  }
-   else {
-    errors.value[field] = null;
+    errors.value.parent_telephone = "Le numéro de téléphone doit commencer par 77, 78,76, 70 ou 75 et être suivi de 7 chiffres.";
+  }else if (field === 'date_naissance') {
+    const today = new Date();
+    const birthDate = new Date(formData.value[field]);
+    const age = today.getFullYear() - birthDate.getFullYear();
+    const isBeforeToday = birthDate < today;
+    const isValidDate = !isNaN(birthDate.getTime());
+
+    if (!isValidDate) {
+      errors.value[field] = "Veuillez entrer une date de naissance valide.";
+    } else if (!isBeforeToday) {
+      errors.value[field] = "La date de naissance doit être dans le passé.";
+    } else if (age < 11 || age > 17) {
+      errors.value[field] = "L'élève doit avoir entre 11 et 17 ans.";
+    } else {
+      errors.value[field] = null; // Pas d'erreur
+    }
+  } else {
+    errors.value[field] = null; // Pas d'erreur
   }
   // Vérifiez la validité du formulaire après la validation d'un champ
   isFormValid();

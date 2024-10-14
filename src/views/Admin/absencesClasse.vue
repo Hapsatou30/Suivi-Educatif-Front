@@ -32,9 +32,9 @@
             <div class="tableau-absences">
                 <tabEvaluations v-if="paginatedAbsencesData.length > 0" class="tab-absences_admin"
                     :headers="['Prénom & Nom', 'Date d\'absence', 'Matière','Motif', 'Justification']" 
-                    :data="paginatedAbsencesData.map(({ classe_eleve: { eleve }, date_presence, classe_prof: { prof_matiere: { matiere } }, justification ,motif}) => ({
+                    :data="paginatedAbsencesData.map(({ classe_eleve: { eleve }, date_absence, classe_prof: { prof_matiere: { matiere } }, justification ,motif}) => ({
                         eleve: `${eleve.prenom} ${eleve.nom}`,
-                        date_presence,
+                        date_absence,
                         matiere: matiere ? matiere.nom : 'Non spécifié',
                         justification: justification ? `http://127.0.0.1:8000/storage//` + justification : 'vide',
                         motif: motif || 'vide',  // Affiche 'vide' si motif est vide
@@ -92,7 +92,7 @@ const absencesPageSize = ref(5); // Nombre d'éléments par page pour l'historiq
 // Méthode pour filtrer les absences du jour
 const absencesDuJour = computed(() => {
     const today = dayjs().format('YYYY-MM-DD'); 
-    return Data.value.filter(absence => absence.date_presence === today);
+    return Data.value.filter(absence => absence.date_absence === today);
 });
 
 

@@ -57,7 +57,7 @@ const isSidebarOpen = ref(false);
 
 // Écouteur d'événements pour mettre à jour l'état lors du redimensionnement
 const handleResize = () => {
-  if (window.innerWidth > 768) {
+  if (window.innerWidth > 810) {
     isSidebarOpen.value = true; // Ouvre par défaut en mode ordinateur
   } else {
     isSidebarOpen.value = false; // Ferme en mode mobile
@@ -72,7 +72,7 @@ onMounted(() => {
 
 // Fonction pour basculer la barre latérale
 const toggleSidebar = () => {
-  if (window.innerWidth <= 768) {
+  if (window.innerWidth <= 810) {
     isSidebarOpen.value = !isSidebarOpen.value; // Basculer uniquement en mode mobile
   }
 };
@@ -170,7 +170,7 @@ const toggleSidebar = () => {
   color: #F7AE00;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 810px) {
   .burger-menu {
     display: block; 
     margin-top: 0px;

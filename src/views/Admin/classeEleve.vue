@@ -34,12 +34,12 @@ import { getAnneeClasseDetails } from '@/services/AnneeClasseService';
 import { getEleves } from '@/services/EleveService';
 import { ajouterEleveClasse, getElevesOntClasse } from '@/services/ClasseEleve';
 import Swal from 'sweetalert2';
+import imageSource from '@/assets/classProf.png';
 
 const router = useRouter();
 const route = useRoute();
 
 const itemList = ref([]); // Liste des élèves à afficher
-const imageSource = ref('/public/images/classProf.png');
 const nomClasse = ref('');
 const anneClasseId = route.params.id;
 const selectedEleve = ref([]); // Référence pour stocker les IDs des élèves sélectionnés

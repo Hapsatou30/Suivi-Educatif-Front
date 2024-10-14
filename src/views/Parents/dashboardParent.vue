@@ -21,9 +21,18 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
+        <div class="  diagrammes">
+      <div class="chart-container1 ">
+      <h5 style="text-align: center; margin-bottom: 5px;">Assiduité des Enfants</h5>
+        <AssiduiteChart />
+      </div>
+      <div  class="chart-container ">
+    <h5 style="text-align: center; margin-bottom: 5px;">Performance Académique des Enfants</h5>
+    <NotesChart />
+  </div>
+    </div>
         <div class="evaluations">
     <h2>Les évaluations de la semaine</h2>
     <div class="tableau1">
@@ -73,6 +82,8 @@ import tabEvaluations from '@/components/tabEvaluations.vue';
 import pagination from '@/components/paginations.vue'; 
 import dayjs from 'dayjs';
 import 'dayjs/locale/fr';
+import AssiduiteChart from '@/components/AssiduiteChart.vue';
+import NotesChart from '@/components/NotesChart.vue';
 
 dayjs.locale('fr');
 const enfantsCount = ref(0);
@@ -169,13 +180,12 @@ onMounted(async () => {
 });
 </script>
 
-
-
-
 <style scoped>
 .main-content {
     margin-top: 120px;
+    overflow-x: hidden;
 }
+
 .evaluations{
     margin-top: 80px;
 }
@@ -259,15 +269,42 @@ onMounted(async () => {
     margin-left: 300px;
     margin-right: 50px;
   }
+.diagrammes{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 40px;
+    margin-left: 300px;
+    margin-right: 50px;
+   
+}
+
+@media (max-width: 992px) {
+    .main-content {
+    width: 100%;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+    .evaluations{
+    margin-top: 8%;
+    margin-bottom: 70%;
+}
+
+}
 /* Media queries pour rendre la section responsive sur mobile */
-@media (max-width: 768px) {
+@media (max-width: 810px) {
+    .main-content {
+    width: 90%;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
   .header {
     flex-direction: column;
     align-items: flex-start; /* Aligner les éléments à gauche sur mobile */
     margin: 0; /* Supprimer les marges latérales */
   }
 
-  .widgets-container {
+  .widgets-container, .diagrammes {
     flex-direction: column;
     align-items: flex-start; 
     justify-content: start;
@@ -277,7 +314,23 @@ onMounted(async () => {
 
     
   }
-
+  .evaluations{
+    margin-top: 8%;
+    margin-bottom: 70%;
+}
+.evaluations h2{
+    font-size: 20px;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 0px;
+}
+.tableau1 {
+    margin-left: 0;
+    margin-right: 0;
+  }
   .absence_jour {
     margin: 20px 0; /* Ajouter un peu d'espace au-dessus et en-dessous sur mobile */
     width: 100%; /* Faire en sorte que l'élément prenne toute la largeur disponible */
@@ -295,13 +348,36 @@ onMounted(async () => {
   .left-paragraph, .right-paragraph {
     font-size: 16px; /* Réduire la taille des paragraphes sur mobile */
   }
+  .chart-container1{
+  margin-left: 0;
+  margin-top: 40px;
+  border-radius: 10%;
+  padding: 1%;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.chart-container{
+margin-right: 0;
+  margin-top: 40px;
+  border-radius: 10%;
+  padding: 1%;
+  width: 90%;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+ 
+}
+  
 }
 
-@media (max-width: 480px) {
+@media (max-width: 576px) {
  .evaluations{
     margin-top: 0;
+    margin-bottom: 100%;
 }
 .evaluations h2{
+    font-size: 20px;
     width: 100%;
     text-align: center;
     display: flex;
@@ -324,5 +400,30 @@ onMounted(async () => {
 
   .left-paragraph, .right-paragraph {
     font-size: 14px; /* Réduire la taille des paragraphes pour les petits écrans */
-  }}
+  }
+  h5{
+    font-size: 18px;
+    text-align: center;
+  }
+  .chart-container1{
+  margin-left: 0;
+  margin-top: 40px;
+  border-radius: 10%;
+  padding: 1%;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.chart-container{
+margin-right: 0;
+  margin-top: 40px;
+  border-radius: 10%;
+  padding: 1%;
+  width: 90%;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+ 
+}
+  }
 </style>

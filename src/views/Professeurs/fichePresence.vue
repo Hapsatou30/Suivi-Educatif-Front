@@ -125,11 +125,11 @@ const fetchData = async () => {
 
             classeCible.eleves.forEach(eleve => {
                 // Vérifier si cet élève est absent aujourd'hui et récupérer son absenceId
-                const absence = absencesToday.find(abs => abs.classe_eleve.eleve.id === eleve.id_eleve);
+                const absence = absencesToday.find(abs => abs.classe_eleve.id === eleve.id_classeEleve);
                 const isAbsentToday = !!absence; // Vérifie si une absence existe pour aujourd'hui
 
                 elevesClasse.push({
-                    id: eleve.id_eleve,
+                    id: eleve.id_classeEleve,
                     prenom: eleve.prenom,
                     nom: eleve.nom,
                     matricule: eleve.matricule,
@@ -144,6 +144,7 @@ const fetchData = async () => {
         }
 
         tableData.value = elevesClasse;
+        
         tableData.value.sort((a, b) => a.nom.localeCompare(b.nom));
     } catch (error) {
         console.error('Erreur lors de la récupération des données :', error);
@@ -155,6 +156,8 @@ const fetchData = async () => {
 // Fonction de gestion des cases à cocher
 const handleCheckboxChange = (eleveId, isAbsent) => {
     const eleve = tableData.value.find(eleve => eleve.id === eleveId);
+console.log('eleve: ', eleve);
+
 
     if (eleve) {
         if (isAbsent && !eleve.absent) {
@@ -165,6 +168,11 @@ const handleCheckboxChange = (eleveId, isAbsent) => {
             }).then(response => {
                 eleve.absenceId = response.data.id;
                 eleve.absent = true;
+                console.log({
+    status: "absent",
+    classe_eleve_id: eleveId, // Vérifiez si cet ID est correct
+    classe_prof_id: classeProf_id,
+});
 
                 Swal.fire({
                     icon: 'success',

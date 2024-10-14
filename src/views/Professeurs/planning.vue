@@ -3,65 +3,91 @@
     <topBarProf />
     <div class="main-content planning">
         <h1>Planifier un Devoir ou un Examen</h1>
-        
-        <!-- Conteneur pour aligner le formulaire et le calendrier -->
-    <div class="row " style="margin-left: 265px;margin-right: 30px; display: flex; align-items: center; justify-content: space-between;" >
-        <!-- Calendrier interactif dans l'autre colonne -->
-      <div class="col-md-6">
-        <div id="calendar" class="calendar-container">
-          <FullCalendar :options="calendarOptions" />
-        </div>
-      </div>
-      <div class="col-md-6">
-        <!-- Formulaire pour ajouter une évaluation -->
-        <form @submit.prevent="submitForm" class="forms" style="background-color: white;">
-          <div class="row">
-                <div class="col-md-6 mb-3">
-              <label for="nomEvaluation" class="form-label">Nom de l'Évaluation</label>
-              <input type="text" id="nomEvaluation" v-model="formData.nom" class="form-control" placeholder="Nom évaluation" required />
-            </div>
-            <div class="col-md-6 mb-3">
-              <label for="heure" class="form-label">Heure</label>
-              <input type="time" id="heure" v-model="formData.heure" class="form-control" required />
-            </div>
-            <div class="col-md-6 mb-3">
-              <label for="classe" class="form-label">Classe</label>
-              <select id="classe" v-model="formData.classe_prof_id" class="form-select" required>
-                <option value="" disabled selected>Choisissez une classe</option>
-                <option v-for="classe in classes" :key="classe.classeProf_id" :value="classe.classeProf_id">
-                  {{ classe.nom_classe }} -> {{ classe.nom_matiere }}
-                </option>
-              </select>
-            </div>
-            <div class="col-md-6 mb-3">
-              <label for="date" class="form-label">Date</label>
-              <input type="date" id="date" v-model="formData.date" class="form-control" required readonly />
-            </div>
-            <div class="col-md-6 mb-3">
-              <label for="duree" class="form-label">Durée (en minutes)</label>
-              <input type="number" id="duree" v-model="formData.duree" class="form-control" required />
-            </div>
-            <div class="col-md-6 mb-3">
-              <label>Type d'Évaluation</label><br />
-              <div class="radio-group">
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" v-model="formData.type_evaluation" value="Devoir" required />
-                  <label class="form-check-label">Devoir</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" v-model="formData.type_evaluation" value="Examen" required />
-                  <label class="form-check-label">Examen</label>
-                </div>
-              </div>
-            </div>
-          </div>
 
-          <div class="mt-4" style="display: flex; justify-content: end;">
-            <button type="submit" class="btn btn-submit">Enregistrer</button>
-          </div>
-        </form>
-      </div>
-    </div>
+        <!-- Conteneur pour aligner le formulaire et le calendrier -->
+        <div class="row "
+            style="margin-left: 265px;margin-right: 30px; display: flex; align-items: center; justify-content: space-between;">
+            <!-- Calendrier interactif dans l'autre colonne -->
+            <div class="col-md-6">
+                <div id="calendar" class="calendar-container">
+                    <FullCalendar :options="calendarOptions" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <!-- Formulaire pour ajouter une évaluation -->
+                <form @submit.prevent="submitForm" class="forms">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="nomEvaluation" class="form-label">Nom de l'Évaluation</label>
+                            <input type="text" id="nomEvaluation" v-model="formData.nom" class="form-control"
+                                placeholder="Nom évaluation" @blur="validateField('nom')"
+                                :class="{ 'is-invalid': errors.nom }" required />
+                            <div v-if="errors.nom" class="text-danger">{{ errors.nom }}</div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="heure" class="form-label">Heure</label>
+                            <input type="time" id="heure" v-model="formData.heure" class="form-control"
+                                @blur="validateField('heure')" :class="{ 'is-invalid': errors.heure }" required />
+                            <div v-if="errors.heure" class="text-danger">{{ errors.heure }}</div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="classe" class="form-label">Classe</label>
+                            <select id="classe" v-model="formData.classe_prof_id" class="form-select"
+                                @change="validateField('classe_prof_id')"
+                                :class="{ 'is-invalid': errors.classe_prof_id }" required>
+                                <option value="" disabled selected>Choisissez une classe</option>
+                                <option v-for="classe in classes" :key="classe.classeProf_id"
+                                    :value="classe.classeProf_id">
+                                    {{ classe.nom_classe }} -> {{ classe.nom_matiere }}
+                                </option>
+                            </select>
+                            <div v-if="errors.classe_prof_id" class="text-danger">{{ errors.classe_prof_id }}</div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="date" class="form-label">Date</label>
+                            <input type="date" id="date" v-model="formData.date" class="form-control"
+    @blur="validateField('date')" :class="{ 'is-invalid': errors.date }" required />
+
+                            <div v-if="errors.date" class="text-danger">{{ errors.date }}</div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="duree" class="form-label">Durée (en minutes)</label>
+                            <input type="number" id="duree" v-model="formData.duree" class="form-control"
+                                @blur="validateField('duree')" :class="{ 'is-invalid': errors.duree }" required />
+                            <div v-if="errors.duree" class="text-danger">{{ errors.duree }}</div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label>Type d'Évaluation</label><br />
+                            <div class="radio-group">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" v-model="formData.type_evaluation"
+                                        value="Devoir" @change="validateField('type_evaluation')"
+                                        :class="{ 'is-invalid': errors.type_evaluation }" required />
+                                    <label class="form-check-label">Devoir</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" v-model="formData.type_evaluation"
+                                        value="Examen" @change="validateField('type_evaluation')"
+                                        :class="{ 'is-invalid': errors.type_evaluation }" required />
+                                    <label class="form-check-label">Examen</label>
+                                </div>
+                            </div>
+                            <div v-if="errors.type_evaluation" class="text-danger">{{ errors.type_evaluation }}</div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4" style="display: flex; justify-content: end;">
+                        <button type="submit" class="btn btn-submit" >Enregistrer</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
 
         <div class="mon_planning">
             <h2>Mon Planning</h2>
@@ -117,7 +143,7 @@ import pagination from '@/components/paginations.vue';
 import FullCalendar from '@fullcalendar/vue3';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import { getEvaluationsParProf, getEvaluations, supprimerEvaluation, ajouterEvaluation , modifierEvaluation} from '@/services/Evaluations';
+import { getEvaluationsParProf, getEvaluations, supprimerEvaluation, ajouterEvaluation, modifierEvaluation } from '@/services/Evaluations';
 import { profile } from '@/services/AuthService';
 import { getListeClasseProf } from '@/services/ClasseProfs';
 // import { getListeMatieres } from '@/services/MatiereService';
@@ -167,6 +193,46 @@ const formData = ref({
     date: ''
 });
 
+const errors = ref({
+    nom: null,
+    heure: null,
+    classe_prof_id: null,
+    date: null,
+    duree: null,
+    type_evaluation: null
+});
+
+// Méthode de validation pour chaque champ
+
+const validateField = (field) => {
+    const today = new Date(); // Obtenir la date actuelle
+
+    // Validation spécifique pour chaque champ
+    if (!formData.value[field]) {
+        errors.value[field] = `Le champ ${field} est obligatoire.`;
+    } else if (field === 'date') {
+        const selectedDate = new Date(formData.value.date);
+        if (selectedDate < today.setHours(0, 0, 0, 0)) {
+            errors.value.date = "La date doit être égale ou postérieure à aujourd'hui.";
+        } else {
+            errors.value.date = null; // Aucune erreur pour la date
+        }
+    } else if (field === 'duree' && (!Number.isInteger(+formData.value.duree) || +formData.value.duree < 1)) {
+        errors.value.duree = "La durée doit être un nombre entier supérieur à 0.";
+    } else if (field === 'type_evaluation' && !['Devoir', 'Examen'].includes(formData.value.type_evaluation)) {
+        errors.value.type_evaluation = "Le type d'évaluation doit être soit 'Devoir' soit 'Examen'.";
+    } else {
+        errors.value[field] = null; // Réinitialiser en cas d'absence d'erreurs
+    }
+};
+
+
+// Vérifier si le formulaire est valide
+const formIsValid = computed(() => {
+    return !Object.values(errors.value).some(error => error !== null) &&
+        Object.values(formData.value).every(field => field !== '');
+});
+
 
 
 // Récupération de la liste des classes
@@ -208,6 +274,16 @@ const editPlanning = async (id) => {
 };
 
 const submitForm = async () => {
+    validateField('nom');
+    validateField('heure');
+    validateField('classe_prof_id');
+    validateField('date');
+    validateField('duree');
+    validateField('type_evaluation');
+
+    if (!formIsValid.value) {
+        return; // Arrêter la soumission si le formulaire n'est pas valide
+    }
     try {
         if (formData.value.id) {
             // Modifier l'évaluation si un ID est présent dans formData
@@ -277,6 +353,8 @@ const retour = () => {
 const fetchData = async () => {
     try {
         const response = await getEvaluationsParProf(professeurId.value);
+        console.log('Response', response);
+        
         if (response.status === 200) {
             const evaluationsFutures = response.evaluations.filter(evaluation => dayjs(evaluation.date).isAfter(dayjs()));
             evaluationsFutures.sort((a, b) => dayjs(a.date).diff(dayjs(b.date)));
@@ -395,9 +473,11 @@ onMounted(async () => {
     display: none;
     /* Masquer la colonne de l'ID */
 }
+
 .calendar-container {
-    width: 100%; 
+    width: 100%;
 }
+
 .main-content {
     padding: 20px;
 }
@@ -410,7 +490,6 @@ onMounted(async () => {
 
 
 .planning .row .forms {
-    background-color: white;
     padding: 20px;
     border-radius: 12px;
 }
@@ -510,5 +589,16 @@ label:hover {
 .mon_planning .tableau1 {
     margin-left: 265px;
     margin-right: 38px;
+}
+
+::v-deep  .bouton .btn-submit:disabled {
+    background-color: #407CEE;
+    /* couleur gris pour montrer qu'il est désactivé */
+    color: #666666;
+    /* texte grisé */
+    cursor: not-allowed;
+    /* curseur modifié pour indiquer qu'il n'est pas cliquable */
+    opacity: 0.6;
+    /* rendre le bouton semi-transparent */
 }
 </style>

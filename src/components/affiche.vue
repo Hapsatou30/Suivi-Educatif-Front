@@ -45,6 +45,11 @@ onMounted(fetchAnneeEnCours);
   margin-right: 50px;
   height: 160px;
   border-radius: 12px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card-container:hover {
+  transform: scale(1.05); /* Zoom à 105% au survol */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Ombre supplémentaire au survol */
 }
 
 .left-section {
@@ -88,11 +93,37 @@ span {
   font-weight: bold;
   color: black;
 }
+@media (max-width: 992px) {
+ 
+  .title {
+  font-size: 20px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  margin: 0;
+  color: black;
+}
+
+  .sub-title {
+    font-size: 16px; 
+    text-align: center;
+  }
+
+  .right-section {
+    margin-top: 20px;
+  }
+
+  .school-image {
+    width: 280px; 
+    height: auto;
+  }
+}
 
 
-@media (max-width: 768px) {
+@media (max-width: 810px) {
   .card-container {
-   
+   width: 100%;
+   margin-left: auto !important;
+    margin-right: auto !important;
     margin: 0; 
     padding: 10px;
     height: auto;
@@ -118,9 +149,9 @@ span {
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 576px) {
   .title {
-    font-size: 20px; 
+    font-size: 18px; 
   }
 
   .sub-title {

@@ -41,7 +41,7 @@ export const getEleves = async () => {
     });
 
     // Afficher les données reçues pour le débogage
-    //  console.log('Données reçues :', response.data); // Vérifie les données reçues de l'API
+      console.log('Données reçues :', response.data); // Vérifie les données reçues de l'API
 
     return response.data.données; // Retourner le nombre total de professeurs
   } catch (error) {

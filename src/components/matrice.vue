@@ -63,16 +63,16 @@ export default {
 
 <style scoped>
 .tableau-horaires {
-  margin-left: 300px;
-  margin-right: 50px;
-  width: 78%;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  padding: 0 20px;
   overflow-x: auto;
-
 }
 
 .tableau-horaires table {
-  width: 100%; /* Prend toute la largeur disponible */
-  border-collapse: collapse; /* Pour un aspect plus propre */
+  width: 100%;
+  border-collapse: collapse;
 }
 
 .tableau-horaires th,
@@ -83,38 +83,91 @@ export default {
 }
 
 .tableau-horaires th {
-  font-size: 1.5rem; /* Utiliser des unités relatives pour plus de flexibilité */
-  color: black;
-  font-family: "Poppins", sans-serif;
-  font-weight: 500;
+  font-size: 1.2rem;
 }
 
 .tableau-horaires td {
-  font-size: 1.2rem; /* Utiliser des unités relatives pour plus de flexibilité */
-  font-family: "Poppins", sans-serif;
-  font-weight: 300;
+  font-size: 1rem;
 }
 
 .carte {
   border: 1px solid #ddd;
   padding: 10px;
-  border-radius: 10px; /* Arrondi plus léger pour un look moderne */
+  border-radius: 10px;
   background-color: black;
-  margin-bottom: 10px; /* Espacement entre les cartes */
+  margin-bottom: 10px;
 }
 
 .carte h4 {
   color: white;
-  font-size: 1.2rem; /* Ajuster la taille pour la responsivité */
-  font-family: "Poppins", sans-serif;
+  font-size: 1rem;
 }
 
 .carte p {
   color: white;
-  font-size: 0.9rem; /* Ajuster la taille pour la responsivité */
-  font-family: "Poppins", sans-serif;
+  font-size: 0.8rem;
   margin-top: 5px;
   text-align: end;
 }
+
+/* Responsivité pour tablettes */
+@media (max-width: 768px) {
+  .tableau-horaires {
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+  }
+
+  .tableau-horaires th {
+    font-size: 1.1rem;
+  }
+
+  .tableau-horaires td {
+    font-size: 0.9rem;
+  }
+
+  .carte {
+    padding: 8px;
+  }
+
+  .carte h4 {
+    font-size: 0.9rem;
+  }
+
+  .carte p {
+    font-size: 0.7rem;
+  }
+}
+
+/* Responsivité pour mobiles */
+@media (max-width: 480px) {
+  .tableau-horaires {
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+    padding: 0 10px;
+  }
+
+  .tableau-horaires th {
+    font-size: 1rem;
+  }
+
+  .tableau-horaires td {
+    font-size: 0.8rem;
+  }
+
+  .carte {
+    padding: 6px;
+  }
+
+  .carte h4 {
+    font-size: 0.8rem;
+  }
+
+  .carte p {
+    font-size: 0.6rem;
+  }
+}
+
 </style>
 

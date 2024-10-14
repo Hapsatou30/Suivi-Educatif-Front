@@ -4,7 +4,7 @@
     <div class="main-content container">
         <h1>Voir les emplois du temps de mes enfants</h1>
         <div class="row">
-            <div class="col-md-4 col-sm-6" v-for="card in cards" :key="card.id">
+            <div class="col-lg-3 col-md-6 col-12" v-for="card in cards" :key="card.id">
                 <!-- Envelopper la carte dans un lien -->
                 <router-link :to="{ name: 'emplois_du_temps_enfant', params: { classeEleve_id: card.classeEleve_id } }" class="text-decoration-none">
                     <div class="card mb-4 shadow-sm custom-card">
@@ -153,9 +153,25 @@ h1 {
     color: #F7AE00;
 }
 
+/* Styles pour les appareils mobiles et tablettes */
+@media (max-width: 992px) {
+    .main-content {
+        overflow-x: hidden;
+    }
+
+    .custom-card {
+        margin: 0; /* Ajustez l'espacement autour des cartes */
+    }
+
+    .row {
+        gap: 0;
+        margin-left: 0;
+        margin-right: 0; /* Évitez l'espacement par défaut des colonnes */
+    }
+}
+
 @media (max-width: 768px) {
     .main-content {
-        margin-top: 0;
         margin-left: 0; 
         display: flex;
         flex-direction: column;
@@ -170,14 +186,15 @@ h1 {
 
     .row {
         display: flex; 
-        flex-direction: column; 
-        align-items: center; 
+        align-items: center;
+        justify-content: space-between; 
         width: 100%; 
     }
 
     .card {
         height: auto; 
         margin-bottom: 20px; 
+        width: 100%;
     }
 
     .hexagon-image {

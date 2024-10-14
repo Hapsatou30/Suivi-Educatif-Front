@@ -133,11 +133,10 @@ onMounted(async () => {
 });
 </script>
 
-  
   <style scoped>
   /* Styles pour le canvas */
   canvas {
-      max-width: 600px; /* Limite la largeur maximale du canvas */
+      max-width: 100%; /* Limite la largeur maximale du canvas */
       margin: auto; /* Centre le graphique */
   }
   </style>

@@ -49,7 +49,7 @@
     <div v-if="showModal"
     style="position: fixed; top: 0; right: 0;  width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1000;overflow: auto; display: flex;  align-items: center;   justify-content: flex-end; ">
         <div
-        style="width: 80%; height: 100%; max-width: 400px; background: white; border-radius: 8px; z-index: 1001; padding: 20px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);  overflow-y: auto; display: flex; flex-direction: column; align-items: center; justify-content: center; ">
+        style="width: 80%; height: 100%; max-width: 400px; background: white; border-radius: 8px; z-index: 1001; padding: 20px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);  overflow-y: auto; display: flex; flex-direction: column; align-items: center;  ">
             <h3 style="margin-bottom: 60px; color: #F7AE00;">{{ isEditing ? 'Modifier Justification' : 'Ajouter Justification' }}</h3>
             <span class="close" @click="closeModal"
                 style="position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer;">&times;</span>
@@ -245,6 +245,33 @@ onMounted(() => {
 .head h1{
     text-align: center; 
     margin-left: 150px;
+}
+@media (max-width: 810px) {
+   .main-content {
+    width: 90%;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+.head {
+    gap: 15% ;
+}
+.head h1{
+    margin-left: 0;
+    
+ }
+ .head h1{
+    font-size: 24px;
+    margin-top: 25px;
+    margin-left: -48px;
+    text-align: center;
+}
+.retour {
+    
+    margin-left: 0;
+}
+.tableau-absences {
+    margin: 0;
+  }
 }
 @media (max-width: 480px) {
     .head{

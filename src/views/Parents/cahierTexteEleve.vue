@@ -6,7 +6,7 @@
             <router-link to="/gestion_cahier_texte_parent">
                 <Icon class="retour" icon="formkit:arrowleft" />
             </router-link>
-            <h1 style="text-align: center; margin-left: 100px;">Le cahier de texte de la classe de <span
+            <h1 style="text-align: center; ">Le cahier de texte de la classe de <span
                     class="prenom">{{ prenom }}</span></h1>
         </div>
         <div class="cahiers">
@@ -202,7 +202,10 @@ const openModal = (resume) => {
     display: none;
     /* Masquer la colonne de l'ID */
 }
-
+.head h1{
+    margin-left: 15%;
+    
+ }
 .tableau1 {
     margin-left: 300px;
     margin-right: 50px;
@@ -213,6 +216,32 @@ const openModal = (resume) => {
     margin-right: 50px;
     display: flex;
     justify-content: end;
+}
+@media (max-width: 810px) {
+   .main-content {
+    width: 90%;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+.head {
+    gap: 2% ;
+}
+.head h1{
+    margin-left: 10%;
+    
+ }
+ .head h1{
+    font-size: 24px;
+    margin-top: 25px;
+    text-align: center;
+}
+.retour {
+    
+    margin-left: 0;
+}
+.tableau1 {
+    margin: 0;
+  }
 }
 @media (max-width: 480px) {
     .head{

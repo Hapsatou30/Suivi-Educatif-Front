@@ -188,6 +188,19 @@ onMounted(() => {
   text-align: right;
   color: white;
 }
+@media (max-width: 810px) {
+  .main-content{
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .head h1{
+    font-size: 24px;
+    margin-top: 25px;
+    margin-left: 0;
+    text-align: center;
+  }
+}
 @media (max-width: 480px) {
   .main-content{
     width: 90%;

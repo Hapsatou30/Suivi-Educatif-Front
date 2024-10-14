@@ -5,7 +5,6 @@
         <h1>Voir les emplois du temps de mes enfants</h1>
         <div class="row">
             <div class="col-lg-3 col-md-6 col-12" v-for="card in cards" :key="card.id">
-                <!-- Envelopper la carte dans un lien -->
                 <router-link :to="{ name: 'emplois_du_temps_enfant', params: { classeEleve_id: card.classeEleve_id } }" class="text-decoration-none">
                     <div class="card mb-4 shadow-sm custom-card">
                         <div class="card-header">
@@ -170,9 +169,11 @@ h1 {
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 810px) {
     .main-content {
-        margin-left: 0; 
+        width: 90%;
+        margin-left: auto !important;
+        margin-right: auto !important;
         display: flex;
         flex-direction: column;
         align-items: center;

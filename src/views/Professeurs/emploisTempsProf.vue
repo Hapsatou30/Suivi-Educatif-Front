@@ -124,5 +124,7 @@ onMounted(async () => {
 <style scoped>
 .main-content {
   margin-top: 120px;
+  margin-left: 250px;
 }
+
 </style>

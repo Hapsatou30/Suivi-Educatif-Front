@@ -353,6 +353,8 @@ const retour = () => {
 const fetchData = async () => {
     try {
         const response = await getEvaluationsParProf(professeurId.value);
+        console.log('Response', response);
+        
         if (response.status === 200) {
             const evaluationsFutures = response.evaluations.filter(evaluation => dayjs(evaluation.date).isAfter(dayjs()));
             evaluationsFutures.sort((a, b) => dayjs(a.date).diff(dayjs(b.date)));

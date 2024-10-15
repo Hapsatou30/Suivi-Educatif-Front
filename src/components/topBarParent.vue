@@ -4,9 +4,10 @@
         <h4>Bonjour, {{ prenomUser }}</h4>
       </div>
       <div class="right-section">
-        <div class="notifications">
-          <Icon icon="mdi:bell-outline" class="notification" />
-        </div>
+        <div class="notifications" @click="handleNotificationClick">
+        <Icon icon="mdi:bell-outline" class="notification" />
+        <span class="badge">{{ unreadCount }}</span>
+      </div>
         <div class="dropdown">
           <img :src="photoUser" alt="Photo de profil" class="dropdown-toggle" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" />
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
@@ -16,6 +17,15 @@
         </div>
       </div>
     </div>
+     <!-- Modal de notifications -->
+     <NotificationModal
+      v-if="isModalVisible"
+      :title="'Notifications'"
+      :notifications="notifications"
+      :confirmText="'Fermer'"
+      :cancelText="null"
+      @close="handleCloseModal"
+    />
   
     <!-- Modal pour modifier le profil -->
     <div v-if="isModalOpen"
@@ -63,16 +73,22 @@
   
   <script setup>
   // Importation des dépendances
-  import { ref, onMounted } from 'vue';
+  import { ref, onMounted,computed } from 'vue';
   import { profile, logout } from '@/services/AuthService'; 
   import { Icon } from '@iconify/vue';
   import Swal from 'sweetalert2';
+  import { getNotifications } from '@/services/NotificationService';
+import NotificationModal from './NotificationModal.vue';
+
   
   // Variables réactives pour stocker les informations utilisateur
   const prenomUser = ref('');
   const photoUser = ref('');
   const parentId = ref('');
   const isModalOpen = ref(false); // Déclaration de la variable pour contrôler l'ouverture du modal
+  const isModalVisible = ref(false); // Gérer la visibilité du modal
+const notifications = ref([]); // Stocker les notifications récupérées
+
   const formData = ref({
     nom: '',
     prenom: '',
@@ -105,8 +121,31 @@
     // console.log('iddd', parentId) ;
   };
   
-  
-  
+  const unreadCount = computed(() => {
+  return notifications.value.filter(notification => notification.is_read === 0).length; // Compte les notifications non lues
+});
+
+
+// Méthode pour récupérer et afficher les notifications
+const fetchNotifications = async () => {
+  try {
+    const response = await getNotifications(); // Appel à la méthode pour récupérer les notifications
+    notifications.value = response.données; // Stocker les notifications récupérées dans la variable
+  } catch (error) {
+    console.error('Erreur lors de la récupération des notifications', error);
+  }
+};
+
+// Méthode pour gérer le clic sur l'icône des notifications
+const handleNotificationClick = () => {
+  isModalVisible.value = true; // Ouvrir le modal
+};
+
+// Fonction pour fermer le modal
+const handleCloseModal = () => {
+  isModalVisible.value = false;
+};
+
   
   // Fonction pour ouvrir le modal
   const openModal = () => {
@@ -176,6 +215,7 @@
   
   // Appel de la fonction fetchProfile lorsque le composant est monté
   onMounted(fetchProfile);
+  onMounted(fetchNotifications);
   </script>
   
   
@@ -310,6 +350,22 @@
   object-fit: cover;
   cursor: pointer;
 }
+.badge {
+  position: relative; /* Positionner le badge sur l'icône */
+  top: -15px; /* Ajuster la position verticale */
+  right: 4px; /* Ajuster la position horizontale */
+  background-color: red; /* Couleur de fond du badge */
+  color: white; /* Couleur du texte */
+  border-radius: 50%; /* Rendre le badge circulaire */
+  padding: 5px 8px; /* Espacement interne */
+  font-size: 14px; /* Taille de police */
+}
+
+/* Optionnel: rendre le badge moins visible quand il affiche 0 */
+.badge {
+  opacity: 1; /* Assure que l'élément est visible */
+}
+
 
 /* Media query pour les petits écrans */
 @media (max-width: 810px) {

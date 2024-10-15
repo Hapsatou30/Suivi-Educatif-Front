@@ -26,7 +26,7 @@ const fetchAbsences = async () => {
     // Appeler le service pour récupérer les absences
     const response = await getAbsencesSemaine();
     absences.value = response.data; // Stocker les données d'absences
-    console.log('Absences', absences.value);
+    // console.log('Absences', absences.value);
     
     // Initialiser les compteurs pour chaque jour de la semaine (Lundi à Vendredi)
     const presenceCount = Array(5).fill(0); // Compteur de présences

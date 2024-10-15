@@ -64,7 +64,7 @@
          </div>
             </div>
             <div class="bouton">
-              <button type="submit" class="btn btn-submit" :disabled="!formIsValid">
+              <button type="submit" class="btn btn-submit">
                 {{ isEditMode ? 'Mettre à jour' : 'Enregistrer' }}
               </button>
             </div>

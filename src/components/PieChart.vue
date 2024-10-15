@@ -24,7 +24,7 @@ const pieChartCanvas = ref(null);
 // Fonction pour récupérer les élèves et les compter par genre
 const fetchElevesData = async () => {
   const eleves = await getEleves();
-  console.log('Élèves récupérés :', eleves); // Vérifiez les élèves récupérés
+  // console.log('Élèves récupérés :', eleves); // Vérifiez les élèves récupérés
 
   if (Array.isArray(eleves)) {
     // Convertir les genres en minuscules pour le filtrage

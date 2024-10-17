@@ -76,7 +76,19 @@
     </div>
 
     <div class="professeurs">
-      <h3>Liste des Professeurs</h3>
+      <div class="title_recherche" style="display: flex; align-items:  center; justify-content: space-between;">
+        <h3>Liste des Professeurs</h3>
+    
+    <!-- Barre de recherche -->
+    <div class="search-container">
+      <input 
+        type="text" 
+        v-model="searchQuery" 
+        class="form-control mb-3" 
+        placeholder="Recherchez un professeur " 
+      />
+    </div>
+      </div>
       <div class="tableau">
         <tabEvaluations 
           v-if="paginatedData.length > 0"
@@ -197,6 +209,29 @@ const fetchData = async () => {
   }
 };
 
+// Propriété pour stocker la requête de recherche
+const searchQuery = ref('');
+
+// Filtrer les professeurs en fonction de la requête de recherche
+const filteredProfesseurs = computed(() => {
+  // Si la requête de recherche est vide, on retourne tous les professeurs
+  if (!searchQuery.value) {
+    return tableData.value;
+  }
+
+  // Convertir la requête de recherche en minuscules pour ignorer la casse
+  const lowerCaseQuery = searchQuery.value.toLowerCase();
+  
+  // Filtrer les professeurs en fonction du nom, prénom, email ou matricule
+  return tableData.value.filter(professeur =>
+    professeur.nom.toLowerCase().includes(lowerCaseQuery) || // Vérifie si le nom contient la requête
+    professeur.prenom.toLowerCase().includes(lowerCaseQuery) || // Vérifie si le prénom contient la requête
+    professeur.email.toLowerCase().includes(lowerCaseQuery) || // Vérifie si l'email contient la requête
+    professeur.matricule.toLowerCase().includes(lowerCaseQuery) // Vérifie si le matricule contient la requête
+  );
+});
+
+
 
 const handlePageChange = (page) => {
   currentPage.value = page;
@@ -205,7 +240,7 @@ const handlePageChange = (page) => {
 const paginatedData = computed(() => {
   const start = (currentPage.value - 1) * pageSize.value;
   const end = start + pageSize.value;
-  return tableData.value.slice(start, end);
+  return filteredProfesseurs.value.slice(start, end);
 });
 const handleFormSubmit = async () => {
     // Valider tous les champs avant de soumettre
@@ -415,6 +450,17 @@ onMounted(fetchData);
   font-weight: 500;
   
 }
+.search-container input{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    border-radius: 12px;
+    width: 350px;
+  }
+  
+
 .professeurs .tableau {
   width: 100%;
  

@@ -123,7 +123,8 @@ const fetchAbsencesDuJour = async () => {
             const today = dayjs().format('YYYY-MM-DD'); // Récupérer la date d'aujourd'hui
 
             // Filtrer les absences pour celles qui correspondent à aujourd'hui
-            absencesDuJour.value = response.data.filter(absence => absence.date_presence === today && absence.status === 'absent');
+            absencesDuJour.value = response.data.filter(absence => absence.date_absence === today && absence.status === 'absent');
+            
         }
     } catch (error) {
         console.error('Erreur lors de la récupération des absences:', error);

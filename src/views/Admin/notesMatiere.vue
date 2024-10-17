@@ -5,6 +5,14 @@
         <h2>
             Les notes de la matière : {{ matiere }}
         </h2>
+        <div class="search-container" style="display: flex; align-items:  center; justify-content: end; margin-right: 50px;">
+      <input 
+        type="text" 
+        v-model="searchQuery1" 
+        class="form-control mb-3" 
+        placeholder="Recherchez un élève " 
+      />
+    </div>
         <div class="classes">
             <div class="tableauNote">
                 <tabEvaluations v-if="paginatedData.length > 0" class="tab-notes"
@@ -100,7 +108,23 @@ const fetchData = async () => {
 
     } 
 };
+// propriété pour la barre de recherche
+const searchQuery1 = ref('');
 
+// Filtrer les professeurs en fonction de la requête de recherche
+const filteredEleves = computed(() => {
+    // Si la requête de recherche est vide, on retourne tous les matieres
+  if (!searchQuery1.value) {
+    return tableData.value;
+  }
+    // Convertir la requête de recherche en minuscules pour ignorer la casse
+  const lowerCaseQuery = searchQuery1.value.toLowerCase();
+  return tableData.value.filter(eleve =>
+    eleve.eleve.toLowerCase().includes(lowerCaseQuery) ||
+    eleve.matricule.toLowerCase().includes(lowerCaseQuery) 
+   
+  );
+});
 
 const handlePageChange = (page) => {
     currentPage.value = page;
@@ -109,7 +133,7 @@ const handlePageChange = (page) => {
 const paginatedData = computed(() => {
     const start = (currentPage.value - 1) * pageSize.value;
     const end = start + pageSize.value;
-    return tableData.value.slice(start, end).map(({ eleve, matricule, premierDevoir, deuxiemeDevoir, examen }) => ({
+    return filteredEleves.value.slice(start, end).map(({ eleve, matricule, premierDevoir, deuxiemeDevoir, examen }) => ({
         eleve,
         matricule,
         premierDevoir,

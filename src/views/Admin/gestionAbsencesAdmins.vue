@@ -4,6 +4,14 @@
     <div class="main-content">
 
       <h2>Gestion des absences  </h2>
+      <div class="search-container" style="display: flex; align-items:  center; justify-content: end;">
+      <input 
+        type="text" 
+        v-model="searchQuery" 
+        class="form-control mb-3" 
+        placeholder="Recherchez une classe " 
+      />
+    </div>
   
       <div class="classes">
   
@@ -92,6 +100,24 @@
 };
 
   
+  
+  // propriété pour la barre de recherche
+const searchQuery = ref('');
+
+// Filtrer les professeurs en fonction de la requête de recherche
+const filteredClasses = computed(() => {
+    // Si la requête de recherche est vide, on retourne tous les matieres
+  if (!searchQuery.value) {
+    return tableData.value;
+  }
+    // Convertir la requête de recherche en minuscules pour ignorer la casse
+  const lowerCaseQuery = searchQuery.value.toLowerCase();
+  return tableData.value.filter(classe =>
+    classe.nom.toLowerCase().includes(lowerCaseQuery) ||
+    classe.niveau.toLowerCase().includes(lowerCaseQuery)
+   
+  );
+});
   const handlePageChange = (page) => {
     currentPage.value = page;
   };
@@ -99,8 +125,9 @@
   const paginatedData = computed(() => {
     const start = (currentPage.value - 1) * pageSize.value;
     const end = start + pageSize.value;
-    return tableData.value.slice(start, end);
+    return filteredClasses.value.slice(start, end);
   });
+
 
   const redirectToSubeject = (anneeClasse_id) => {
   // Redirige vers la page annee_classes avec l'id dans l'URL
@@ -219,6 +246,13 @@
     color: red;
     font-family: "Poppins", sans-serif;
   }
-  
+  .search-container input{
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    border-radius: 12px;
+    width: 350px;
+    margin-right: 50px;
+  }
   </style>
   

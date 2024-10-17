@@ -61,7 +61,19 @@
     </div>
 
     <div class="classes">
-      <h3 style="font-size: 24px;">Liste des Classes</h3>
+      <div class="title_recherche" style="display: flex; align-items:  center; justify-content: space-between;">
+        <h3>Liste des Classes</h3>
+    
+    <!-- Barre de recherche -->
+    <div class="search-container">
+      <input 
+        type="text" 
+        v-model="searchQuery" 
+        class="form-control mb-3" 
+        placeholder="Recherchez une classe " 
+      />
+    </div>
+      </div>
 
       <div class="tableau1">
         <tabEvaluations 
@@ -182,6 +194,23 @@ const fetchData = async () => {
     console.error('Erreur lors de la récupération des données :', error);
   }
 };
+// propriété pour la barre de recherche
+const searchQuery = ref('');
+
+// Filtrer les professeurs en fonction de la requête de recherche
+const filteredClasses = computed(() => {
+    // Si la requête de recherche est vide, on retourne tous les matieres
+  if (!searchQuery.value) {
+    return tableData.value;
+  }
+    // Convertir la requête de recherche en minuscules pour ignorer la casse
+  const lowerCaseQuery = searchQuery.value.toLowerCase();
+  return tableData.value.filter(classe =>
+    classe.nom.toLowerCase().includes(lowerCaseQuery) ||
+    classe.niveau.toLowerCase().includes(lowerCaseQuery)
+   
+  );
+});
 
 const handlePageChange = (page) => {
   currentPage.value = page;
@@ -190,7 +219,7 @@ const handlePageChange = (page) => {
 const paginatedData = computed(() => {
   const start = (currentPage.value - 1) * pageSize.value;
   const end = start + pageSize.value;
-  return tableData.value.slice(start, end);
+  return filteredClasses.value.slice(start, end);
 });
 
 const handleFormSubmit = async () => {
@@ -382,6 +411,17 @@ input::placeholder {
   text-align: start;
   margin-left: 300px;
 }
+.search-container input{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    border-radius: 12px;
+    width: 350px;
+    margin-right: 50px;
+  }
+  
 .tableau1 {
   margin-left: 300px;
   margin-right: 50px;

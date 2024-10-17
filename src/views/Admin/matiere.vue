@@ -43,7 +43,19 @@
     </div>
 
     <div class="matieres">
-      <h3 style="font-size: 24px;">Liste des Matières</h3>
+      <div class="title_recherche" style="display: flex; align-items:  center; justify-content: space-between;">
+        <h3>Liste des Matières</h3>
+    
+    <!-- Barre de recherche -->
+    <div class="search-container">
+      <input 
+        type="text" 
+        v-model="searchQuery" 
+        class="form-control mb-3" 
+        placeholder="Recherchez une matiere " 
+      />
+    </div>
+      </div>
       <div class="tableau1">
         <tabEvaluations v-if="paginatedData.length > 0" class="tab-evaluations"
           :headers="['N°', 'Nom', 'Coefficient', 'Description', 'Action']" :data="paginatedData.map(({ numero, nom, coefficient, description, id }) => ({
@@ -159,7 +171,23 @@ const fetchData = async () => {
   }
 };
 
+// propriété pour la barre de recherche
+const searchQuery = ref('');
 
+// Filtrer les professeurs en fonction de la requête de recherche
+const filteredMatieres = computed(() => {
+    // Si la requête de recherche est vide, on retourne tous les matieres
+  if (!searchQuery.value) {
+    return tableData.value;
+  }
+    // Convertir la requête de recherche en minuscules pour ignorer la casse
+  const lowerCaseQuery = searchQuery.value.toLowerCase();
+  return tableData.value.filter(matiere =>
+    matiere.nom.toLowerCase().includes(lowerCaseQuery) ||
+    matiere.description.toLowerCase().includes(lowerCaseQuery)
+   
+  );
+});
 const handlePageChange = (page) => {
   currentPage.value = page;
 };
@@ -167,7 +195,7 @@ const handlePageChange = (page) => {
 const paginatedData = computed(() => {
   const start = (currentPage.value - 1) * pageSize.value;
   const end = start + pageSize.value;
-  return tableData.value.slice(start, end);
+  return filteredMatieres.value.slice(start, end);
 });
 
 const handleFormSubmit = async () => {

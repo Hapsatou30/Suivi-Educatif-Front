@@ -5,6 +5,14 @@
     <h2>
       Cahier de texte de la : {{ nomClasse }}
     </h2>
+    <div class="search-container" style="display: flex; align-items:  center; justify-content: end; margin-right: 50px;">
+      <input 
+        type="text" 
+        v-model="searchQuery1" 
+        class="form-control mb-3" 
+        placeholder="Recherchez un élève " 
+      />
+    </div>
     <div class="cahiers">
       <div class="tableau1">
         <tabEvaluations v-if="paginatedData.length > 0" class="tab-noteMatiere"
@@ -85,6 +93,26 @@ const fetchData = async () => {
     console.error('Erreur lors du chargement des cahiers de texte :', error);
   }
 }
+// propriété pour la barre de recherche
+const searchQuery1 = ref('');
+
+// Filtrer les professeurs en fonction de la requête de recherche
+const filteredCahiers = computed(() => {
+    // Si la requête de recherche est vide, on retourne tous les matieres
+  if (!searchQuery1.value) {
+    return tableData.value;
+  }
+    // Convertir la requête de recherche en minuscules pour ignorer la casse
+  const lowerCaseQuery = searchQuery1.value.toLowerCase();
+  return tableData.value.filter(cahier =>
+    cahier.matiere.toLowerCase().includes(lowerCaseQuery) ||
+    cahier.professeur.toLowerCase().includes(lowerCaseQuery) ||
+    cahier.titre.toLowerCase().includes(lowerCaseQuery) ||
+    cahier.resume.toLowerCase().includes(lowerCaseQuery) 
+   
+  );
+});
+
 
 const handlePageChange = (page) => {
   currentPage.value = page;
@@ -93,7 +121,7 @@ const handlePageChange = (page) => {
 const paginatedData = computed(() => {
   const start = (currentPage.value - 1) * pageSize.value;
   const end = start + pageSize.value;
-  return tableData.value.slice(start, end);
+  return filteredCahiers.value.slice(start, end);
 });
 
 // Méthode pour récupérer les détails d'une année

@@ -6,7 +6,19 @@
             Liste des eleves de la classe: {{ nomClasse }}
         </h2>
         <div class="eleves">
-            <h3>Liste des eleves</h3>
+            <div class="title_recherche" style="display: flex; align-items:  center; justify-content: space-between;">
+        <h3>Liste des élèves</h3>
+    
+    <!-- Barre de recherche -->
+    <div class="search-container">
+      <input 
+        type="text" 
+        v-model="searchQuery1" 
+        class="form-control mb-3" 
+        placeholder="Recherchez un élève " 
+      />
+    </div>
+      </div>
             <div class="tableau1">
                 <tabEvaluations v-if="paginatedData.length > 0" class="tab-eleves"
                     :headers="['Prénom & Nom', 'Matricule', 'Nom_Parent', 'Téléphone']" :data="paginatedData.map(({ prenom, nom, matricule, nom_parent, parent, parent_telephone,id
@@ -89,7 +101,24 @@ const fetchData = async () => {
     }
 };
 
+// propriété pour la barre de recherche
+const searchQuery1 = ref('');
 
+// Filtrer les professeurs en fonction de la requête de recherche
+const filteredEleves = computed(() => {
+    // Si la requête de recherche est vide, on retourne tous les matieres
+  if (!searchQuery1.value) {
+    return tableData.value;
+  }
+    // Convertir la requête de recherche en minuscules pour ignorer la casse
+  const lowerCaseQuery = searchQuery1.value.toLowerCase();
+  return tableData.value.filter(eleve =>
+    eleve.nom.toLowerCase().includes(lowerCaseQuery) ||
+    eleve.prenom.toLowerCase().includes(lowerCaseQuery) ||
+    eleve.matricule.toLowerCase().includes(lowerCaseQuery)  
+   
+  );
+});
 
 // Méthode pour changer de page dans la pagination
 const handlePageChange = (page) => {
@@ -100,7 +129,7 @@ const handlePageChange = (page) => {
 const paginatedData = computed(() => {
     const start = (currentPage.value - 1) * pageSize.value; // Calculer l'index de début
     const end = start + pageSize.value; // Calculer l'index de fin
-    return tableData.value.slice(start, end); // Retourner les données pour la page actuelle
+    return filteredEleves.value.slice(start, end); // Retourner les données pour la page actuelle
 });
 
 // Méthode pour récupérer les détails d'une année

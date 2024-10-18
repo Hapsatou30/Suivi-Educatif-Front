@@ -153,7 +153,7 @@ const fetchData = async () => {
             evaluation_id: evaluation_id
         }));
 
-        console.log('tableData: ', tableData);
+        // console.log('tableData: ', tableData);
     } catch (error) {
         console.error('Erreur lors du chargement des notes:', error);
     }
@@ -184,7 +184,7 @@ const fetchStudents = async () => {
 
             // Stocker les données dans notesStudents
             notesStudents.value = eleves;
-            console.log('Données des élèves avec bulletins 1_semestre:', notesStudents.value);
+            // console.log('Données des élèves avec bulletins 1_semestre:', notesStudents.value);
 
         } else {
             console.error('Erreur lors de la récupération des élèves:', response.message);
@@ -263,7 +263,7 @@ const checkNoteExistence = async (eleveId, evaluationId) => {
             note.classeEleve.id === eleveId && note.evaluation_id === evaluationId
         );
 
-        // console.log('Note existante:', existingNote); // Log pour débogage
+        console.log('Note existante:', existingNote); // Log pour débogage
         return existingNote !== undefined;
     } catch (error) {
         console.error('Erreur lors de la vérification de l\'existence de la note :', error);
@@ -464,8 +464,8 @@ const retour = () => {
 };
 onMounted(async () => {
     await fetchData();
-    // console.log('Paginated Students:', paginatedStudents.value);
-    // console.log('Paginated Data:', paginatedData.value);
+    console.log('Paginated Students:', paginatedStudents.value);
+    console.log('Paginated Data:', paginatedData.value);
     await fetchStudents();
     await fetchEvaluations();
 

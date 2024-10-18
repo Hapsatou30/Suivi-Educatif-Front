@@ -86,7 +86,7 @@
                         </div>
                     </template>
                 </tabEvaluations>
-                <p v-else class="no-evaluations-message">Aucune évaluation à venir.</p>
+                <p v-else class="no-evaluations-message">Aucune note disponible</p>
             </div>
             <pagination class="pagination1" v-if="tableData.length > pageSize" :totalItems="tableData.length"
                 :pageSize="pageSize" :currentPage="currentPage" @pageChange="handlePageChange" />
@@ -135,10 +135,12 @@ const editingNoteId = ref(null);
 const fetchData = async () => {
     try {
         const response = await getNoteClasse(classeProf_id);
-        // console.log('classeProf_id', classeProf_id);
-
-        // Mapper les données pour inclure les informations des élèves
-        tableData.value = response.données.map(({ eleve, evaluation, classeEleve, note, appreciation, matiere, id, evaluation_id }) => ({
+        
+        // Filtrer les données pour ne garder que celles avec la période '1_semestre'
+        const filteredData = response.données.filter(note => note.bulletin_id.periode === '1_semestre');
+        
+        // Mapper les données filtrées pour inclure les informations des élèves
+        tableData.value = filteredData.map(({ eleve, evaluation, classeEleve, note, appreciation, matiere, id, evaluation_id }) => ({
             prenom: eleve.prenom,
             nom: eleve.nom,
             matricule: eleve.matricule,
@@ -149,14 +151,14 @@ const fetchData = async () => {
             id: id,
             idClasseEleve: classeEleve.id,
             evaluation_id: evaluation_id
-
         }));
-        console.log('tableData: ', tableData);
 
+        console.log('tableData: ', tableData);
     } catch (error) {
         console.error('Erreur lors du chargement des notes:', error);
     }
-}
+};
+
 // Récupération des données des élèves
 const fetchStudents = async () => {
     try {

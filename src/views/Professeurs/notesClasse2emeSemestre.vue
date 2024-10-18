@@ -4,7 +4,7 @@
     <div class="main-content">
         <boutons title1="1er Semestre" title2="2ème Semestre" page1="notes_classe_1erSemestre"
             page2="notes_classe_2emeSemestre" />
-        <h2>{{ isEditing ? "Modifier la note" : "Ajouter des notes pour la classe de " + nom_classe }}</h2>
+        <h2>{{ isEditing ? "Modifier la note" : "Ajouter les notes du 2ème semestre pour la classe de " + nom_classe }}</h2>
         <div class="addNotes">
 
             <div class="tableau1">

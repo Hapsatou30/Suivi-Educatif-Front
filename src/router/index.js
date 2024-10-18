@@ -38,7 +38,7 @@ import GestionCahierTexte from '@/views/Professeurs/gestionCahierTexte.vue';
 import CahierTexteProf from '@/views/Professeurs/cahierTexteProf.vue';
 import Planning from '@/views/Professeurs/planning.vue';
 import GestionNotesProf from '@/views/Professeurs/gestionNotes.vue';
-import NotesClasse from '@/views/Professeurs/notesClasse.vue';
+import NotesClasse from '@/views/Professeurs/notesClasse1erSemestre.vue';
 import GestionCahierTexteAdmin from '@/views/Admin/gestionCahierTexteAdmin.vue';
 import CahierTexteClasse from '@/views/Admin/cahierTexteClasse.vue';
 import GestionEvaluationsAdmin from '@/views/Admin/gestionEvaluationsAdmin.vue';
@@ -64,6 +64,7 @@ import DiagrameBarre from '@/components/BarChart.vue';
 import DiagrameBarreProf from '@/components/BarChart1.vue';
 import DiagrameBarreParent from '@/components/AssiduiteChart.vue';
 import DiagrameBarreNotes from '@/components/NotesChart.vue';
+import NotesClasse2emeSemestre from '@/views/Professeurs/notesClasse2emeSemestre.vue';
 
 
 // Routes non protégées (accessible à tous)
@@ -130,7 +131,8 @@ const professorRoutes = [
   
   { path: '/gestion_notes', name: 'gestion_notes', component: GestionNotesProf},
 
-  { path: '/notes_classe/:classeProf_id/:annee_classe_id/:nom_classe' , name: 'notes_classe', component:NotesClasse},
+  { path: '/notes_classe_1erSemestre/:classeProf_id/:annee_classe_id/:nom_classe' , name: 'notes_classe_1erSemestre', component:NotesClasse},
+  { path: '/notes_classe_2emeSemestre/:classeProf_id/:annee_classe_id/:nom_classe' , name: 'notes_classe_2emeSemestre', component:NotesClasse2emeSemestre},
 ];
 
 //routes protégées pour les parents

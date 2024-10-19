@@ -38,6 +38,11 @@
           <Icon icon="cil:calendar" /> Emplois du temps
         </router-link>
       </li>
+      <li>
+        <router-link to="/gestion_bulletins" class="menu-link" :class="{ active: isActive('/gestion_bulletins') || isActive('/bulletins_par_enfant_1semestre') || isActive('/bulletins_par_enfant_2semestre') }">
+          <Icon icon="clarity:note-line" /> Bulletins
+        </router-link>
+      </li>
     </ul>
   </div>
 </template>

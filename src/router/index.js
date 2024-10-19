@@ -67,6 +67,10 @@ import DiagrameBarreNotes from '@/components/NotesChart.vue';
 import NotesClasse2emeSemestre from '@/views/Professeurs/notesClasse2emeSemestre.vue';
 import Note2emeSemestreParEnfant from '@/views/Parents/note2emeSemestreParEnfant.vue';
 import Note1erSemestreParEnfant from '@/views/Parents/note1erSemestreParEnfant.vue';
+import GestionBulletins from '@/views/Parents/gestionBulletins.vue';
+import TemplateBulletin from '@/components/TemplateBulletin.vue';
+import BulletinsParEnfant2emeSemestre from '@/views/Parents/bulletinsParEnfant2emeSemestre.vue';
+import BulletinsParEnfant1erSemestre from '@/views/Parents/bulletinsParEnfant1erSemestre.vue';
 
 
 // Routes non protégées (accessible à tous)
@@ -82,6 +86,7 @@ const publicRoutes = [
   { path: '/diagramme_barre_prof', name: 'diagramme_barre_prof', component: DiagrameBarreProf},
   {path: '/diagramme_barre_parent', name: 'diagramme_barre_parent', component: DiagrameBarreParent},
   { path: '/diagramme_matiere_notes', name: 'diagramme_matiere_notes', component: DiagrameBarreNotes},
+  { path: '/templateBulletin', name: 'templateBulletin', component: TemplateBulletin},
 ];
 
 // Routes protégées pour les administrateurs
@@ -153,6 +158,9 @@ const parentRoutes = [
   { path: '/absences_par_enfant/:classeEleve_id', name:'absences_par_enfant', component: AbsencesEnfant},
   { path: '/gestion_evaluation_parent', name:'gestion_evaluation_parent', component: GestionEvaluation},
   { path: '/evaluation_enfant/:classeEleve_id', name:'evaluation_enfant', component: EvaluationEnfant},
+  { path: '/gestion_bulletins', name:'gestion_bulletins', component: GestionBulletins},
+  { path: '/bulletins_par_enfant_1semestre/:classeEleve_id', name:'bulletins_par_enfant_1semestre', component: BulletinsParEnfant1erSemestre},
+  { path: '/bulletins_par_enfant_2semestre/:classeEleve_id', name:'bulletins_par_enfant_2semestre', component: BulletinsParEnfant2emeSemestre}
 ];
 
 // Création du tableau des routes combinées

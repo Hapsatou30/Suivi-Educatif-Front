@@ -182,7 +182,7 @@ onMounted(() => {
 .emplois {
     margin-left: 16%;
 }
-@media (max-width: 810px) {
+@media (max-width: 1000px) {
    .main-content {
     width: 90%;
     margin-left: auto !important;

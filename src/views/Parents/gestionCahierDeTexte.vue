@@ -4,7 +4,7 @@
     <div class="main-content container">
         <h1>Voir les cahiers de texte de mes enfants</h1>
         <div class="row">
-            <div class="col-lg-3 col-md-6 col-12" v-for="card in cards" :key="card.id">
+            <div class="col-lg-4 col-md-6 col-12" v-for="card in cards" :key="card.id">
                 <!-- Envelopper la carte dans un lien -->
                 <router-link :to="{ name: 'cahier_texte_enfant', params: { classeEleve_id: card.classeEleve_id } }" class="text-decoration-none">
                     <div class="card mb-4 shadow-sm custom-card">
@@ -73,14 +73,47 @@ onMounted(async () => {
 
 <style scoped>
 .main-content {
-    margin-top: 120px;
-    margin-left: 270px;
+    margin-top: 100px;
+    margin-left: 270px; 
+    margin-right: 50px;
+    width: 81%;
+    overflow-x: hidden;
+   
 }
+
 
 h1 {
     text-align: center;
     margin-top: 50px;
     margin-bottom: 50px;
+    margin-left: 0;
+}
+.row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    gap: 2%;
+    overflow-x: hidden;
+}
+.row>* {
+    flex: 1 1 calc(33.33% - 16px); /* Chaque carte prend 33.33% de la largeur disponible moins l'espace du gap */
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  color: #fff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box; 
+  overflow-x: hidden;
+}
+.custom-card {
+  flex: 1 1 calc(33.33% - 16px); /* Chaque carte prend 33.33% de la largeur disponible moins l'espace du gap */
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  color: #fff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box; /* Inclut les marges et les bordures dans la largeur */
 }
 
 .card {
@@ -112,12 +145,12 @@ h1 {
 }
 
 .custom-card:hover {
-    transform: translateY(-10px); /* Légère élévation de la carte */
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Ombre plus prononcée */
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
 .custom-card:hover .hexagon-image {
-    transform: scale(1.1); /* Zoom de l'image */
+    transform: scale(1.1);
 }
 
 .card-header {
@@ -148,26 +181,28 @@ h1 {
     font-size: 1.25rem;
     font-weight: bold;
     transition: color 0.3s ease;
+    color: black;
 }
 
 .custom-card:hover .card-body h3 {
-    color: #F7AE00; /* Changement de couleur au hover */
+    color: #F7AE00;
 }
+
 /* Styles pour les appareils mobiles et tablettes */
 @media (max-width: 992px) {
     .main-content {
         overflow-x: hidden;
+        width: 90%;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        
     }
 
     .custom-card {
         margin: 0; /* Ajustez l'espacement autour des cartes */
     }
 
-    .row {
-        gap: 0;
-        margin-left: 0;
-        margin-right: 0; /* Évitez l'espacement par défaut des colonnes */
-    }
+
 }
 
 @media (max-width: 810px) {
@@ -186,12 +221,25 @@ h1 {
         margin-bottom: 30px;
     }
 
-    .row {
-        display: flex; 
-        align-items: center;
-        justify-content: space-between; 
-        width: 100%; 
-    }
+    .row>* {
+    flex: 1 1 calc(50% - 16px); /* Chaque carte prend 33.33% de la largeur disponible moins l'espace du gap */
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  color: #fff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box; 
+  overflow-x: hidden;
+}
+.custom-card {
+  flex: 1 1 calc(50% - 16px); /* Chaque carte prend 33.33% de la largeur disponible moins l'espace du gap */
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  color: #fff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box; /* Inclut les marges et les bordures dans la largeur */
+}
 
     .card {
         height: auto; 
@@ -215,5 +263,26 @@ h1 {
     .card-body h3 {
         font-size: 1rem; 
     }
+}
+@media (max-width: 576px) {
+    .row>* {
+    flex: 1 1 calc(100% - 16px); /* Chaque carte prend 33.33% de la largeur disponible moins l'espace du gap */
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  color: #fff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box; 
+  overflow-x: hidden;
+}
+.custom-card {
+  flex: 1 1 calc(50% - 16px); /* Chaque carte prend 33.33% de la largeur disponible moins l'espace du gap */
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  color: #fff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box; /* Inclut les marges et les bordures dans la largeur */
+}
 }
 </style>

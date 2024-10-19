@@ -7,7 +7,7 @@
         <p>République du Sénégal</p>
         <p>Ministère de l'Éducation nationale</p>
         <h3>Les Cours Privés Général Mouhamadou Mansour Seck</h3>
-        <h4>ANNÉE SCOLAIRE : 2024-2025</h4>
+        <h4>ANNÉE SCOLAIRE : {{  anneeScolaire }}</h4>
       </div>
       <img src="@/assets/ministere.png" alt="Logo Droite" class="logo-right" />
     </header>
@@ -18,19 +18,19 @@
         <ul>
           <li>Tél: <span>338765678</span></li>
           <li>Email: <span>samaecole@gmail.com</span></li>
-          <li>Niveau: <span>Troisième</span></li>
-          <li>Effectif: <span>25</span></li>
+          <li>Niveau: <span> {{  niveau }}</span></li>
+          <li>Effectif: <span>{{  effectif }}</span></li>
           <li>Moyenne Classe: <span>10.02</span></li>
         </ul>
       </div>
 
       <div class="column">
         <ul>
-          <li>Matricule: <span>EAM2345</span></li>
-          <li>Sexe: <span>Féminin</span></li>
-          <li>Classe: <span>3ème A</span></li>
-          <li>Prénom & Nom: <span>Amina Zahra Fall</span></li>
-          <li>Né(e) le: <span>20-04-2010</span></li>
+          <li>Matricule: <span>{{ matricule }}</span></li>
+          <li>Sexe: <span>{{ sexe }}</span></li>
+          <li>Classe: <span>{{ classe }}</span></li>
+          <li>Prénom & Nom: <span>{{ prenom }} {{ nom }}</span></li>
+          <li>Né(e) le: <span>{{ dateNaissance }}</span></li>
         </ul>
       </div>
     </div>
@@ -226,7 +226,21 @@
 </template>
 
 <script setup>
-// Si des scripts sont nécessaires, tu peux les ajouter ici
+// Déclaration des props pour passer les données dynamiques
+defineProps({
+  anneeScolaire: String,
+  // tel: String,
+  // email: String,
+   niveau: String,
+   effectif: Number,
+  // moyenneClasse: Number,
+  matricule: String,
+  sexe: String,
+  classe: String,
+  prenom: String,
+  nom: String,
+  dateNaissance: String,
+});
 </script>
 
 <style scoped>

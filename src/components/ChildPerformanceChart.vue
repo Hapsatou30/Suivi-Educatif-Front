@@ -24,13 +24,13 @@ const props = defineProps({
 const performanceChart = ref(null);
 
 // Variables pour la largeur et la hauteur du graphique
-const chartWidth = ref(400);
-const chartHeight = ref(200);
+const chartWidth = ref(600);
+const chartHeight = ref(500);
 
 // Ajuster la taille du graphique en fonction de la fenêtre
 const updateChartSize = () => {
   const width = window.innerWidth;
-  chartWidth.value = width < 600 ? width - 20 : 600; // Réduire pour les petits écrans
+  chartWidth.value = width < 900 ? width - 20 : 900; // Réduire pour les petits écrans
   chartHeight.value = chartWidth.value / 2; // Hauteur proportionnelle à la largeur
 };
 

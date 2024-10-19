@@ -57,7 +57,7 @@ const isSidebarOpen = ref(false);
 
 // Écouteur d'événements pour mettre à jour l'état lors du redimensionnement
 const handleResize = () => {
-  if (window.innerWidth > 810) {
+  if (window.innerWidth >= 1000) {
     isSidebarOpen.value = true; // Ouvre par défaut en mode ordinateur
   } else {
     isSidebarOpen.value = false; // Ferme en mode mobile
@@ -72,13 +72,14 @@ onMounted(() => {
 
 // Fonction pour basculer la barre latérale
 const toggleSidebar = () => {
-  if (window.innerWidth <= 810) {
+  if (window.innerWidth < 1000) {
     isSidebarOpen.value = !isSidebarOpen.value; // Basculer uniquement en mode mobile
   }
 };
 </script>
 
 <style scoped>
+/* Bouton burger */
 .burger-menu {
   display: none; 
   position: fixed;
@@ -94,14 +95,11 @@ const toggleSidebar = () => {
   color: white;
   font-size: 24px;
 }
-.menu-link .iconify, .material-symbols-outlined {
-    margin-right: 10px;
-    font-size: 30px;
-  }
 
+/* Sidebar */
 .sidebar {
   position: fixed;
-  left: 0; /* Affiche la sidebar en mode ordinateur */
+  left: -250px; /* Masqué par défaut */
   top: 0;
   width: 250px;
   height: 100vh; 
@@ -111,7 +109,7 @@ const toggleSidebar = () => {
 }
 
 .sidebar.open {
-  left: 0; 
+  left: 0; /* Affiché lorsque ouvert */
 }
 
 .logo {
@@ -142,14 +140,15 @@ const toggleSidebar = () => {
   text-decoration: none;
   color: white;
   font-size: 18px;
-  padding: 05px;
+  padding: 5px;
   font-family: "Poppins", sans-serif;
   font-weight: 400;
   width: 226px;
 }
 
-.menu-link .iconify {
+.menu-link .iconify,.material-symbols-outlined  {
   margin-right: 10px;
+  font-size: 30px;
 }
 
 .router-link-exact-active,
@@ -170,21 +169,18 @@ const toggleSidebar = () => {
   color: #F7AE00;
 }
 
-@media (max-width: 810px) {
+/* Styles responsifs */
+@media (max-width: 1000px) {
   .burger-menu {
-    display: block; 
-    margin-top: 0px;
+    display: block; /* Afficher le bouton burger pour les appareils inférieurs à 1000px */
   }
 
   .sidebar {
-    left: -250px; /* Masqué par défaut */
+    left: -250px; /* Masqué par défaut sur mobile */
   }
 
   .sidebar.open {
-    left: 0; /* Affiché lorsque ouvert */
+    left: 0; /* Afficher la sidebar lorsque ouvert */
   }
-  .logo {
-  margin-top: 30px;
-}
 }
 </style>

@@ -12,25 +12,27 @@
     </div>
 
     <!-- Section des cartes d'évaluation -->
-    <div class="card-container row">
-      <div v-if="evaluations.length > 0">
-        <div 
-          v-for="(evaluation, index) in evaluations" 
-          :key="index" 
-          class="matiere-card col-12 col-sm-6 col-md-4 d-flex flex-column align-items-center" :style="{ backgroundColor: getMatiereColor(evaluation.matiere ) }" >
-          <h4 class="date">{{ evaluation.formattedDate }}</h4>
-          <div class="content">
-            <p class="matiere">{{ evaluation.matiere }}</p>
-            <p class="heure">{{ evaluation.heure }}</p>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Message s'il n'y a pas d'évaluations -->
-      <div v-else class="col-12">
-        <p class="alert alert-info text-center">Aucune évaluation à venir pour le moment.</p>
+    <div class="card-container row ">
+  <div v-if="evaluations.length > 0" class="ligne">
+    <div 
+      v-for="(evaluation, index) in evaluations" 
+      :key="index" 
+      class="matiere-card  " 
+      :style="{ backgroundColor: getMatiereColor(evaluation.matiere) }">
+      <h4 class="date">{{ evaluation.formattedDate }}</h4>
+      <div class="content">
+        <p class="matiere">{{ evaluation.matiere }}</p>
+        <p class="heure">{{ evaluation.heure }}</p>
       </div>
     </div>
+  </div>
+
+  <!-- Message s'il n'y a pas d'évaluations -->
+  <div v-else class="col-12">
+    <p class="alert alert-info text-center">Aucune évaluation à venir pour le moment.</p>
+  </div>
+</div>
+
   </div>
 </template>
 
@@ -73,17 +75,17 @@ const fetchDetailsEleve = async () => {
 const fetchEvaluations = async () => {
   try {
     const response = await getEvaluationsParEleve(classeEleve_id.value);
-    console.log('response', response);
     
     if (response.status === 200) {
       const now = dayjs(); // Date actuelle
 
-      // Filtrer les évaluations à venir et formater la date en français
+      // Filtrer les évaluations futures, les trier par date, et formater la date
       evaluations.value = response.evaluations
         .filter(evaluation => {
           const evalDate = dayjs(evaluation.date);
           return evalDate.isAfter(now); // Évaluations futures seulement
         })
+        .sort((a, b) => dayjs(a.date).diff(dayjs(b.date))) // Trier par date croissante
         .map(evaluation => ({
           ...evaluation,
           formattedDate: dayjs(evaluation.date).format('DD/MM/YYYY'), // Format français
@@ -96,6 +98,7 @@ const fetchEvaluations = async () => {
     console.error("Erreur lors de la récupération des évaluations:", error);
   }
 };
+
 
  // Fonction pour obtenir la couleur associée à une matière
  const getMatiereColor = (matiere) => {
@@ -138,21 +141,28 @@ onMounted(() => {
   color: black;
   margin-left: 1rem;
 }
+.ligne {
+  display: flex;
+  flex-wrap: wrap; /* Permet aux cartes de passer à la ligne suivante si l'espace est insuffisant */
+  gap: 16px; /* Espace entre les cartes */
+  margin-top: 20px;
+  justify-content: space-between; /* Distribue les cartes équitablement */
+}
+
 .matiere-card {
-    padding: 15px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    color: #fff; /* Ajuster selon le besoin */
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  flex: 1 1 calc(33.33% - 16px); /* Chaque carte prend 33.33% de la largeur disponible moins l'espace du gap */
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  color: #fff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box; /* Inclut les marges et les bordures dans la largeur */
+  background-color: #cccccc; /* Juste pour la visibilité */
 }
 
 .matiere-card:hover {
-  transform: scale(1.05); /* Zoom à 105% au survol */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Ombre supplémentaire au survol */
-}
-.card-container {
-  gap: 16px; 
-  margin-top: 20px;
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .evaluation-card {
@@ -161,10 +171,6 @@ onMounted(() => {
   background-color: #E6F1FF;
   margin-bottom: 16px; 
   border-radius: 18px;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Centrer le contenu de la carte */
 }
 
 .date {
@@ -188,7 +194,7 @@ onMounted(() => {
   text-align: right;
   color: white;
 }
-@media (max-width: 810px) {
+@media (max-width: 1000px) {
   .main-content{
     width: 95%;
     margin-left: auto;
@@ -199,6 +205,9 @@ onMounted(() => {
     margin-top: 25px;
     margin-left: 0;
     text-align: center;
+  }
+  .matiere-card {
+    flex: 1 1 calc(50% - 16px); /* Passe à 2 cartes par ligne sur des écrans plus petits */
   }
 }
 @media (max-width: 480px) {
@@ -213,5 +222,8 @@ onMounted(() => {
     margin-left: -48px;
     text-align: center;
 }
+.matiere-card {
+    flex: 1 1 calc(100% - 16px); /* Passe à 1 carte par ligne sur des petits écrans */
+  }
 }
 </style>

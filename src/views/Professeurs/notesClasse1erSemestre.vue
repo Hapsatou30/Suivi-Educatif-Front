@@ -2,7 +2,9 @@
     <sidebarProf />
     <topBarProf />
     <div class="main-content">
-        <h2>{{ isEditing ? "Modifier la note" : "Ajouter des notes pour la classe de " + nom_classe }}</h2>
+        <boutons title1="1er Semestre" title2="2ème Semestre" page1="notes_classe_1erSemestre"
+            page2="notes_classe_2emeSemestre" />
+        <h2>{{ isEditing ? "Modifier la note" : "Ajouter les notes du 1er semestre pour la classe de " + nom_classe }}</h2>
         <div class="addNotes">
 
             <div class="tableau1">
@@ -36,6 +38,9 @@
                             <td>
                                 <input type="text" v-model="student.appreciation" />
                             </td>
+                            <td style="display: none;">
+                                <input type="hidden" v-model="student.id_bulletin" />
+                            </td>
                             <td>
                                 <button @click="isEditing ? updateNote(student) : addNote(student)"
                                     style="background-color: #F7AE00; color: white; border: none; padding: 10px; cursor: pointer;"
@@ -55,7 +60,6 @@
         </div>
 
 
-
         <div class="historiquesNotes">
             <h2>Historique des Notes</h2>
             <div class="tableauNotes">
@@ -72,7 +76,7 @@
                     }))">
                     <template #actions="{ row }">
                         <div class="boutons">
-                            <button class="btn" @click="editNote(row)" style="color: #407CEE;" title="Modifier la note">
+                            <button class="btn" @click="editNote(row.id)" style="color: #407CEE;" title="Modifier la note">
                                 <Icon icon="mdi:pencil-outline" />
                             </button>
                             <button class="btn" @click="deleteNote(row.id)" style="color: red;"
@@ -82,11 +86,12 @@
                         </div>
                     </template>
                 </tabEvaluations>
-                <p v-else class="no-evaluations-message">Aucune évaluation à venir.</p>
+                <p v-else class="no-evaluations-message">Aucune note disponible</p>
             </div>
             <pagination class="pagination1" v-if="tableData.length > pageSize" :totalItems="tableData.length"
                 :pageSize="pageSize" :currentPage="currentPage" @pageChange="handlePageChange" />
         </div>
+
         <div class="retour">
             <button @click="retour" class="btn btn-secondary">Retour</button>
         </div>
@@ -98,6 +103,7 @@ import { ref, onMounted, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import sidebarProf from '@/components/sidebarProf.vue';
 import topBarProf from '@/components/topBarProf.vue';
+import boutons from '@/components/boutons.vue';
 import tabEvaluations from '@/components/tabEvaluations.vue';
 import pagination from '@/components/paginations.vue';
 import { getNoteClasse, supprimerNote, ajouterNote, modifierNote } from '@/services/NotesService';
@@ -129,10 +135,12 @@ const editingNoteId = ref(null);
 const fetchData = async () => {
     try {
         const response = await getNoteClasse(classeProf_id);
-        console.log('classeProf_id', classeProf_id);
         
-        // Mapper les données pour inclure les informations des élèves
-        tableData.value = response.données.map(({ eleve, classeEleve, evaluation, note, appreciation, matiere, id, evaluation_id }) => ({
+        // Filtrer les données pour ne garder que celles avec la période '1_semestre'
+        const filteredData = response.données.filter(note => note.bulletin_id.periode === '1_semestre');
+        
+        // Mapper les données filtrées pour inclure les informations des élèves
+        tableData.value = filteredData.map(({ eleve, evaluation, classeEleve, note, appreciation, matiere, id, evaluation_id }) => ({
             prenom: eleve.prenom,
             nom: eleve.nom,
             matricule: eleve.matricule,
@@ -143,29 +151,41 @@ const fetchData = async () => {
             id: id,
             idClasseEleve: classeEleve.id,
             evaluation_id: evaluation_id
-
         }));
-        console.log('tableData: ' , tableData);
-        
+
+        // console.log('tableData: ', tableData);
     } catch (error) {
         console.error('Erreur lors du chargement des notes:', error);
     }
-}
+};
+
 // Récupération des données des élèves
 const fetchStudents = async () => {
     try {
         // Récupérer les élèves de la classe
         const response = await getEleveClasse(annee_classe_id);
+
         if (response.status === 200) {
             // Extraire les données des élèves
-            const eleves = response.données[0].eleves.map(eleve => ({
-                id_classeEleve: eleve.id_classeEleve,
-                nom: eleve.nom,
-                prenom: eleve.prenom,
-                matricule: eleve.matricule
-            }));
+            const eleves = response.données[0].eleves.map(eleve => {
+                // Filtrer les bulletins pour garder uniquement ceux avec la période "1_semestre"
+                const bulletinsFiltrés = eleve.bulletins.filter(bulletin => bulletin.periode === "1_semestre");
+
+                // Ne conserver que les élèves ayant des bulletins filtrés
+                return bulletinsFiltrés.length > 0 ? {
+                    id_classeEleve: eleve.id_classeEleve,
+                    nom: eleve.nom,
+                    prenom: eleve.prenom,
+                    matricule: eleve.matricule,
+                    id_bulletin: bulletinsFiltrés[0].id_bulletin, // Ajouter l'ID du bulletin
+                    periode: bulletinsFiltrés[0].periode, // Ajouter la période du b
+                } : null; // Retourner null si aucun bulletin ne correspond
+            }).filter(eleve => eleve !== null); // Filtrer les élèves null
+
             // Stocker les données dans notesStudents
             notesStudents.value = eleves;
+            // console.log('Données des élèves avec bulletins 1_semestre:', notesStudents.value);
+
         } else {
             console.error('Erreur lors de la récupération des élèves:', response.message);
         }
@@ -173,6 +193,7 @@ const fetchStudents = async () => {
         console.error('Une erreur est survenue:', e);
     }
 };
+
 
 // Récupérer les évaluations du professeur
 const fetchEvaluations = async () => {
@@ -195,12 +216,23 @@ const fetchEvaluations = async () => {
     }
 };
 
+// const updateEvaluationId = (student) => {
+//     const selectedEvaluation = evaluations.value.find(evaluation => evaluation.id === student.evaluation);
+//     if (selectedEvaluation) {
+//         student.evaluation_id = selectedEvaluation.id;
+//     }
+// };
 const updateEvaluationId = (student) => {
     const selectedEvaluation = evaluations.value.find(evaluation => evaluation.id === student.evaluation);
     if (selectedEvaluation) {
         student.evaluation_id = selectedEvaluation.id;
+    } else {
+        student.evaluation_id = null;
+        console.error('Aucune évaluation sélectionnée');
     }
 };
+
+
 
 
 // Pagination pour les évaluations à venir
@@ -226,12 +258,12 @@ const handlePageChangeOther = (newPage) => {
 // Méthode pour vérifier si l'élève a déjà une note pour l'évaluation donnée
 const checkNoteExistence = async (eleveId, evaluationId) => {
     try {
-        const response = await getNoteClasse(annee_classe_id);
+        const response = await getNoteClasse(classeProf_id);
         const existingNote = response.données.find(note =>
             note.classeEleve.id === eleveId && note.evaluation_id === evaluationId
         );
 
-        // console.log('Note existante:', existingNote); // Log pour débogage
+        console.log('Note existante:', existingNote); // Log pour débogage
         return existingNote !== undefined;
     } catch (error) {
         console.error('Erreur lors de la vérification de l\'existence de la note :', error);
@@ -243,10 +275,11 @@ const checkNoteExistence = async (eleveId, evaluationId) => {
 
 // Méthode pour ajouter une note
 const addNote = async (row) => {
-    const eleveId = row.id_classeEleve;
     const evaluationId = row.evaluation_id;
     const noteAttribuee = row.note;
     const appreciation = row.appreciation;
+    const bulletinId = row.id_bulletin;
+    const periode = "1_semestre";
 
     if (!evaluationId || noteAttribuee === undefined || !appreciation) {
         await Swal.fire({
@@ -261,7 +294,7 @@ const addNote = async (row) => {
     }
 
     // Vérifier si une note existe déjà pour cet élève et cette évaluation
-    const noteExists = await checkNoteExistence(eleveId, evaluationId);
+    const noteExists = await checkNoteExistence(row.id_classeEleve, evaluationId);
     if (noteExists) {
         await Swal.fire({
             icon: 'error',
@@ -279,7 +312,8 @@ const addNote = async (row) => {
             notes: noteAttribuee,
             commentaire: appreciation,
             evaluation_id: evaluationId,
-            classe_eleve_id: eleveId,
+            bulletin_id: bulletinId,
+            periode: periode,
         });
 
         if (response.status >= 200 && response.status < 300) {
@@ -311,73 +345,79 @@ const addNote = async (row) => {
     }
 };
 
-const updateNote = async (row) => {
-    const noteData = {
+const updateNote = async (student) => {
+    const updatedNote = {
         id: editingNoteId.value,
-        notes: row.note,
-        commentaire: row.appreciation,
-        evaluation_id: row.evaluation,
-        classe_eleve_id: row.id_classeEleve,
+        evaluation_id: student.evaluation,
+        notes: student.note,
+        appreciation: student.appreciation,
+        id_bulletin: student.id_bulletin
     };
-    // console.log('nnnn', noteData);
-
-    // Vérification de evaluation_id
-    if (!noteData.evaluation_id) {
-        console.error('La valeur d\'evaluation_id est manquante ou null.');
-        await Swal.fire({
-            title: 'Erreur',
-            text: 'La valeur d\'evaluation_id ne peut pas être vide.',
-            icon: 'error',
-        });
-        return; // Sortir de la fonction si l'évaluation_id est manquant
-    }
 
     try {
-        const response = await modifierNote(noteData);
-        if (response.status >= 200 && response.status < 300) {
-            isEditing.value = false;
-            editingNoteId.value = null;
-
+        const response = await modifierNote(updatedNote);
+        if (response.status === 200) {
             await Swal.fire({
-                title: 'Succès',
-                text: 'La note a été modifiée avec succès.',
                 icon: 'success',
+                title: 'Modifié',
+                text: 'La note a été modifiée avec succès.',
+                confirmButtonColor: '#3085d6',
                 timer: 1000,
                 timerProgressBar: true,
-                willClose: () => {
-                    fetchData();
-                    // Réinitialiser les champs de l'élève
-                    row.note = null; // Réinitialiser la note
-                    row.appreciation = ''; // Réinitialiser l'appréciation
-                    row.evaluation = ''; // Réinitialiser l'évaluation (s'il y a un v-model)
-
-                }
             });
+            // Réinitialiser les champs de l'élève après la mise à jour
+            notesStudents.value = notesStudents.value.map(student => {
+                return {
+                    ...student,
+                    note: null, // Réinitialiser la note
+                    appreciation: '', // Réinitialiser l'appréciation
+                    evaluation: '', // Réinitialiser l'évaluation
+                };
+            });
+
+            // Rafraîchir les données après la modification
+            await fetchData();
+            isEditing.value = false; // Réinitialiser l'état d'édition
+            editingNoteId.value = null; // Réinitialiser l'ID
+        } else {
+            // Gestion des erreurs
+            throw new Error('Erreur lors de la mise à jour de la note.');
         }
     } catch (error) {
+        console.error('Erreur lors de la mise à jour de la note:', error);
         await Swal.fire({
-            title: 'Erreur',
-            text: 'Erreur lors de la modification de la note : ' + error.message,
             icon: 'error',
+            title: 'Erreur',
+            text: error.message || 'Erreur lors de la mise à jour de la note.',
+            confirmButtonColor: '#d33',
         });
     }
 };
 
-
 // Méthode pour remplir le formulaire lors de l'édition
-const editNote = (note) => {
-    // console.log('eee', note);
-    isEditing.value = true;
-    editingNoteId.value = note.id;
-    const student = notesStudents.value.find(s => s.id_classeEleve === note.idClasseEleve);
-    // console.log('notesStudents', notesStudents);
-    // console.log('Student', student);
-    if (student) {
-        student.note = note.note;
-        student.appreciation = note.appreciation;
-        student.evaluation = note.evaluation_id;
+const editNote = (id) => {
+    const noteToEdit = tableData.value.find(note => note.id === id);
+    if (noteToEdit) {
+        // Remplir les valeurs de l'étudiant en fonction de la note à modifier
+        notesStudents.value = notesStudents.value.map(student => {
+            if (student.id_classeEleve === noteToEdit.idClasseEleve) {
+                return {
+                    ...student,
+                    evaluation: noteToEdit.evaluation_id,
+                    note: noteToEdit.note,
+                    appreciation: noteToEdit.appreciation
+                };
+            }
+            return student;
+        });
+
+        // Définir l'état d'édition
+        isEditing.value = true;
+        editingNoteId.value = id; // Garder l'ID de la note en cours d'édition
     }
 };
+
+
 
 const deleteNote = async (id) => {
     const confirmDelete = await Swal.fire({
@@ -424,8 +464,8 @@ const retour = () => {
 };
 onMounted(async () => {
     await fetchData();
-    // console.log('Paginated Students:', paginatedStudents.value);
-    // console.log('Paginated Data:', paginatedData.value);
+    console.log('Paginated Students:', paginatedStudents.value);
+    console.log('Paginated Data:', paginatedData.value);
     await fetchStudents();
     await fetchEvaluations();
 

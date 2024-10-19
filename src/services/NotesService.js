@@ -124,22 +124,20 @@ export const supprimerNote = async (id) => {
     try {
         const token = localStorage.getItem('token');
 
-        // Affichez l'ID de la note pour vérifier
-        // console.log('Modifying note with ID:', note.id);
-        
         const response = await axios.put(`${apiUrl}/notes/${note.id}`, note, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         });
 
-        // console.log('Response:', response.data); // Afficher la réponse pour le débogage
+        // Assurez-vous de vérifier la structure de la réponse
+        console.log('Réponse de l\'API:', response.data); // Ajoutez ce log pour voir la réponse
 
+        // Vérifiez le statut renvoyé par l'API
         if (response.data.status && response.data.status === 400) {
             throw new Error(response.data.message);
         }
 
-        // console.log('Note modifiée :', response.data);
         return response.data;
 
     } catch (error) {

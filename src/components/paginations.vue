@@ -1,44 +1,34 @@
 <template>
-    <nav aria-label="Pagination">
-      <ul class="pagination">
-        <!-- Bouton "Précédent" -->
-        <li :class="['page-item', { disabled: currentPage === 1 }]">
-          <button 
-            class="page-link" 
-            @click="changePage(currentPage - 1)" 
-            :disabled="currentPage === 1">
-            <span class="material-symbols-outlined">
-            arrow_left
-            </span>
-          </button>
-        </li>
+  <nav aria-label="Pagination">
+    <ul class="pagination">
+      <!-- Bouton "Précédent" -->
+      <li :class="['page-item', { disabled: currentPage === 1 }]">
+        <button 
+          class="page-link" 
+          @click="changePage(currentPage - 1)" 
+          :disabled="currentPage === 1">
+          <span class="material-symbols-outlined">arrow_left</span>
+        </button>
+      </li>
   
-        <!-- Boutons pour chaque page -->
-        <li 
-          v-for="page in totalPages" 
-          :key="page" 
-          :class="['page-item', { active: page === currentPage }]">
-          <button 
-            class="page-link" 
-            @click="changePage(page)">
-            {{ page }}
-          </button>
-        </li>
+      <!-- Affichage du numéro de page actuel -->
+      <li :class="['page-item', { active: true }]">
+        <button class="page-link">{{ currentPage }}</button>
+      </li>
   
-        <!-- Bouton "Suivant" -->
-        <li :class="['page-item', { disabled: currentPage === totalPages }]">
-          <button 
-            class="page-link" 
-            @click="changePage(currentPage + 1)" 
-            :disabled="currentPage === totalPages">
-            <span class="material-symbols-outlined">
-            arrow_right
-            </span>
-          </button>
-        </li>
-      </ul>
-    </nav>
-  </template>
+      <!-- Bouton "Suivant" -->
+      <li :class="['page-item', { disabled: currentPage === totalPages }]">
+        <button 
+          class="page-link" 
+          @click="changePage(currentPage + 1)" 
+          :disabled="currentPage === totalPages">
+          <span class="material-symbols-outlined">arrow_right</span>
+        </button>
+      </li>
+    </ul>
+  </nav>
+</template>
+
 <script setup>
 import { defineProps, defineEmits, computed } from 'vue';
 

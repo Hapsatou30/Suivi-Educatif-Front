@@ -280,20 +280,8 @@ onMounted(async () => {
    
 }
 
-@media (max-width: 992px) {
-    .main-content {
-    width: 100%;
-    margin-left: auto !important;
-    margin-right: auto !important;
-}
-    .evaluations{
-    margin-top: 8%;
-    margin-bottom: 70%;
-}
-
-}
 /* Media queries pour rendre la section responsive sur mobile */
-@media (max-width: 810px) {
+@media (max-width: 992px) {
     .main-content {
     width: 90%;
     margin-left: auto !important;
@@ -373,6 +361,11 @@ margin-right: 0;
 }
 
 @media (max-width: 576px) {
+  .main-content {
+    width: 90%;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
  .evaluations{
     margin-top: 0;
     margin-bottom: 100%;
@@ -390,11 +383,7 @@ margin-right: 0;
     margin-left: 0;
     margin-right: 0;
   }
-    .main-content {
-    width: 90%;
-    margin-left: auto !important;
-    margin-right: auto !important;
-}
+  
   .card-title {
     font-size: 18px; /* Réduire encore plus la taille du titre pour les petits écrans */
   }
@@ -416,7 +405,7 @@ margin-right: 0;
   margin-right: auto;
 }
 .chart-container{
-margin-right: 0;
+
   margin-top: 40px;
   border-radius: 10%;
   padding: 1%;

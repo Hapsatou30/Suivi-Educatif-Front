@@ -132,7 +132,23 @@ onMounted(() => {
 <style scoped>
 /* Styles pour le canvas */
 canvas {
-  max-width: 600px; /* Limite la largeur maximale du canvas */
+  max-width: 100%; /* Permet au canvas de s'adapter à la largeur du conteneur parent */
+  height: auto; /* Ajuste automatiquement la hauteur pour maintenir le ratio */
   margin: auto; /* Centre le graphique */
 }
+
+@media (max-width: 768px) {
+  canvas {
+    max-width: 100%;
+    height: 500px; /* Ajuste la hauteur pour les petits écrans */
+  }
+}
+
+@media (max-width: 480px) {
+  canvas {
+    max-width: 100%;
+    height: 400px; /* Plus petite taille pour les très petits écrans */
+  }
+}
 </style>
+

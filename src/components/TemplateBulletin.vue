@@ -60,9 +60,9 @@
       <td>{{ matiere.noteExamen || '-' }}</td>
       <td>{{ matiere.moyenneMatiere || '-' }}</td>
       <td>{{ matiere.coeff || '-' }}</td>
-      <td>{{ (matiere.moyenne * matiere.coeff).toFixed(2) || '-' }}</td>
+      <td>{{ (matiere.moyenneMatiere * matiere.coeff).toFixed(2) || '-' }}</td>
       <td>{{ matiere.rang || '-' }}</td>
-      <td>{{ matiere.appreciations || '-' }}</td>
+      <td>{{ getAppreciation(matiere.moyenneMatiere) }}</td>
     </tr>
   </tbody>
   <tfoot>
@@ -168,40 +168,65 @@
 <script setup>
 import { computed } from 'vue';
 
-// Déclaration des props pour passer les données dynamiques
+// Déclaration des props : ces données dynamiques sont passées au composant depuis le parent
 const props = defineProps({
-  anneeScolaire: String,
-  niveau: String,
-  effectif: Number,
-  matricule: String,
-  sexe: String,
-  classe: String,
-  prenom: String,
-  nom: String,
-  dateNaissance: String,
+  anneeScolaire: String, 
+  niveau: String,       
+  effectif: Number,      
+  matricule: String,    
+  sexe: String,          
+  classe: String,       
+  prenom: String,       
+  nom: String,          
+  dateNaissance: String, 
+
+  // Tableau des matières étudiées par l'élève, chaque matière contient des informations telles que la moyenne et le coefficient
   matieres: {
     type: Array,
-    default: () => [] 
+    default: () => [] // Valeur par défaut vide si aucune matière n'est passée
   },
-   absences: {
+
+  // Objet pour gérer les absences, avec un nombre total d'absences, justifiées et non justifiées
+  absences: {
     type: Object,
     default: () => ({
-      total: 0,
-      justifiees: 0,
-      nonJustifiees: 0,
-    }),},
+      total: 0,           
+      justifiees: 0,      
+      nonJustifiees: 0,   
+    }),
+  },
 });
 
-// Calcul du total des coefficients
+// Calcul du total des coefficients pour toutes les matières
 const totalCoef = computed(() => {
-  return props.matieres.reduce((total, matiere) => total + (matiere.coeff || 0), 0);
+  // Utilisation de reduce() pour additionner les coefficients de toutes les matières
+  return props.matieres.reduce((total, matiere) => 
+    total + (matiere.coeff || 0),  // Ajoute le coefficient de la matière au total, ou 0 si le coefficient est non défini
+  0); // Le total commence à 0
 });
 
-
-// Calcul du total Moy*Coef
+// Calcul du total Moy*Coef pour toutes les matières
 const totalMoyCoef = computed(() => {
-  return props.matieres.reduce((total, matiere) => total + (0 * 1), 0); // Ici, c'est basé sur les valeurs statiques
+  // Utilisation de reduce() pour calculer la somme des moyennes pondérées par le coefficient de chaque matière
+  return props.matieres.reduce((total, matiere) => {
+    const moyenneMatiere = parseFloat(matiere.moyenneMatiere) || 0; // Conversion de la moyenne en nombre, ou 0 si non définie
+    const coefficient = parseFloat(matiere.coeff) || 0;             // Conversion du coefficient en nombre, ou 0 si non défini
+    return total + (moyenneMatiere * coefficient);                  // Ajout du produit Moyenne * Coefficient au total
+  }, 0); // Le total commence à 0
 });
+
+// Fonction pour obtenir l'appréciation en fonction de la moyenne de la matière
+const getAppreciation = (moyenneMatiere) => {
+  const moyenne = parseFloat(moyenneMatiere) || 0;
+  if (moyenne < 10) return 'Faible';
+  if (moyenne >= 10 && moyenne < 12) return 'Passable';
+  if (moyenne >= 12 && moyenne < 14) return 'Assez-Bien';
+  if (moyenne >= 14 && moyenne < 16) return 'Bien';
+  if (moyenne >= 16 && moyenne < 18) return 'Très-Bien';
+  if (moyenne >= 18 && moyenne <= 20) return 'Excellent';
+  return '-'; 
+};
+
 </script>
 
 

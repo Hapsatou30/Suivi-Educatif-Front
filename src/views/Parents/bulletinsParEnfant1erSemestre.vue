@@ -13,10 +13,19 @@
         page2="bulletins_par_enfant_2semestre" />
     </div>
     <div class="bulletin" v-if="matieres.length">
-      <TemplateBulletin :anneeScolaire="anneeScolaire" :effectif="effectifClasse" :niveau="detailsEleve.niveau"
-        :matricule="detailsEleve.matricule" :sexe="detailsEleve.sexe" :classe="detailsEleve.classe"
-        :prenom="detailsEleve.prenom" :nom="detailsEleve.nom"
-        :dateNaissance="formatDateFrancaise(detailsEleve.dateNaissance)" :matieres="matieres" :absences="absences" />
+      <TemplateBulletin
+      :anneeScolaire="anneeScolaire"
+      :effectif="effectifClasse" 
+      :niveau="detailsEleve.niveau"
+      :matricule="detailsEleve.matricule"
+      :sexe="detailsEleve.sexe"
+      :classe="detailsEleve.classe"
+      :prenom="detailsEleve.prenom" 
+      :nom="detailsEleve.nom"
+      :dateNaissance="formatDateFrancaise(detailsEleve.dateNaissance)"
+      :matieres="matieres" 
+      :absences="absences"
+       />
     </div>
   </div>
 </template>
@@ -111,45 +120,44 @@ const fetchDetailsEleve = async () => {
         }
 
         // Récupération des notes de l'élève
-        // Récupération des notes de l'élève
-const responseNotes = await getNoteEleve(classeEleve_id.value);
-console.log('responseNotes', responseNotes);
+        const responseNotes = await getNoteEleve(classeEleve_id.value);
+        console.log('responseNotes', responseNotes);
 
-if (responseNotes.status === 200) {
-    const notes = responseNotes.eleve.notes;
+        if (responseNotes.status === 200) {
+          const notes = responseNotes.eleve.notes;
 
-    // Mappage des matières avec leurs devoirs et examens
-    matieres.value = matieres.value.map(matiere => {
-        // Filtrer les devoirs pour chaque matière
-        const devoirs = notes.filter(note =>
-            note.matiere === matiere.nomMatiere && note.evaluation === 'Devoir'
-        );
+          // Mappage des matières avec leurs devoirs et examens
+          matieres.value = matieres.value.map(matiere => {
+            // Filtrer les devoirs pour chaque matière
+            const devoirs = notes.filter(note =>
+              note.matiere === matiere.nomMatiere && note.evaluation === 'Devoir'
+            );
 
-        // Filtrer la note de l'examen pour chaque matière (il devrait y avoir un seul examen par matière)
-        const examen = notes.find(note =>
-            note.matiere === matiere.nomMatiere && note.evaluation === 'Examen'
-        );
+            // Filtrer la note de l'examen pour chaque matière 
+            const examen = notes.find(note =>
+              note.matiere === matiere.nomMatiere && note.evaluation === 'Examen'
+            );
 
-        // Calcul de la moyenne des devoirs
-        const moyenneDevoirs = devoirs.length > 0 ?
-            (devoirs.reduce((a, b) => a + b.note, 0) / devoirs.length).toFixed(2)
-            : 0;
+            // Calcul de la moyenne des devoirs
+            const moyenneDevoirs = devoirs.length > 0 ?
+              (devoirs.reduce((a, b) => a + b.note, 0) / devoirs.length).toFixed(2)
+              : 0;
 
-        // Note d'examen (ou 0 si pas d'examen)
-        const noteExamen = examen ? examen.note : 0;
+            // Note d'examen (ou 0 si pas d'examen)
+            const noteExamen = examen ? examen.note : 0;
 
-        // Calcul de la moyenne de la matière : (moyenneDevoirs + noteExamen) / 2
-        const moyenneMatiere = ((parseFloat(moyenneDevoirs) + parseFloat(noteExamen)) / 2).toFixed(2);
+            // Calcul de la moyenne de la matière : (moyenneDevoirs + noteExamen) / 2
+            const moyenneMatiere = ((parseFloat(moyenneDevoirs) + parseFloat(noteExamen)) / 2).toFixed(2);
 
-        return {
-            nomMatiere: matiere.nomMatiere,
-            coeff: matiere.coefficient,
-            moyenneDevoirs: moyenneDevoirs,
-            noteExamen: noteExamen,
-            moyenneMatiere: moyenneMatiere, // Ajout de la moyenne de la matière
-        };
-    });
-}
+            return {
+              nomMatiere: matiere.nomMatiere,
+              coeff: matiere.coefficient,
+              moyenneDevoirs: moyenneDevoirs,
+              noteExamen: noteExamen,
+              moyenneMatiere: moyenneMatiere,
+            };
+          });
+        }
 
 
       }

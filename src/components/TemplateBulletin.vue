@@ -7,7 +7,7 @@
         <p>République du Sénégal</p>
         <p>Ministère de l'Éducation nationale</p>
         <h3>Les Cours Privés Général Mouhamadou Mansour Seck</h3>
-        <h4>ANNÉE SCOLAIRE : {{  anneeScolaire }}</h4>
+        <h4>ANNÉE SCOLAIRE : {{ anneeScolaire }}</h4>
       </div>
       <img src="@/assets/ministere.png" alt="Logo Droite" class="logo-right" />
     </header>
@@ -18,8 +18,8 @@
         <ul>
           <li>Tél: <span>338765678</span></li>
           <li>Email: <span>samaecole@gmail.com</span></li>
-          <li>Niveau: <span> {{  niveau }}</span></li>
-          <li>Effectif: <span>{{  effectif }}</span></li>
+          <li>Niveau: <span>{{ niveau }}</span></li>
+          <li>Effectif: <span>{{ effectif }}</span></li>
           <li>Moyenne Classe: <span>10.02</span></li>
         </ul>
       </div>
@@ -54,66 +54,16 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>Mathématiques</td>
-          <td>12</td>
-          <td>15</td>
-          <td>13.5</td>
-          <td>4</td>
-          <td>54</td>
-          <td>1</td>
-          <td>Très bien</td>
-        </tr>
-        <tr>
-          <td>Français</td>
-          <td>14</td>
-          <td>16</td>
-          <td>15</td>
-          <td>3</td>
-          <td>45</td>
-          <td>2</td>
-          <td>Bien</td>
-        </tr>
-        <tr>
-          <td>Histoire</td>
-          <td>13</td>
-          <td>14</td>
-          <td>13.5</td>
-          <td>2</td>
-          <td>27</td>
-          <td>3</td>
-          <td>Assez bien</td>
-        </tr>
-        <tr>
-          <td>Physique</td>
-          <td>10</td>
-          <td>12</td>
-          <td>11</td>
-          <td>4</td>
-          <td>44</td>
-          <td>4</td>
-          <td>Passable</td>
-        </tr>
-        <tr>
-          <td>Anglais</td>
-          <td>15</td>
-          <td>17</td>
-          <td>16</td>
-          <td>2</td>
-          <td>32</td>
-          <td>1</td>
-          <td>Très bien</td>
-        </tr>
-        <tr>
-          <td>SVT</td>
-          <td>13</td>
-          <td>14</td>
-          <td>13.5</td>
-          <td>3</td>
-          <td>40.5</td>
-          <td>2</td>
-          <td>Bien</td>
-        </tr>
+        <tr v-for="matiere in matieres" :key="matiere.nomMatiere">
+        <td>{{ matiere.nomMatiere }}</td>
+        <td>{{ matiere.devoirs || '-' }}</td> <!-- Utilise '-' si aucune donnée -->
+        <td>{{ matiere.examen || '-' }}</td>
+        <td>{{ matiere.moyenne || '-' }}</td>
+        <td>{{ matiere.coef || '-' }}</td>
+        <td>{{ (matiere.moyenne * matiere.coef).toFixed(2) || '-' }}</td>
+        <td>{{ matiere.rang || '-' }}</td>
+        <td>{{ matiere.appreciations || '-' }}</td>
+      </tr>
       </tbody>
       <tfoot>
         <tr>
@@ -121,127 +71,127 @@
           <td></td>
           <td></td>
           <td></td>
-          <td>18</td> <!-- Total Coef -->
-          <td>242.5</td> <!-- Total Moy*Coef -->
+          <td>{{ totalCoef }}</td> <!-- Calcul du total des coefficients -->
+          <td>{{ totalMoyCoef.toFixed(2) }}</td> <!-- Calcul du total Moy*Coef -->
           <td></td>
           <td></td>
         </tr>
       </tfoot>
     </table>
 
-  </div>
-  <div class="container1">
-    <!-- Div de gauche avec le tableau pour les moyennes, rangs et moyennes classe -->
-    <div class="column-left">
-      <table class="semestre-table">
-        <thead>
-          <tr>
-            <th></th>
-            <th>Moyennes</th>
-            <th>Rangs</th>
-            <th>Moyennes Classe</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1er Semestre</td>
-            <td>13.5</td>
-            <td>2</td>
-            <td>12.8</td>
-          </tr>
-          <tr>
-            <td>2ème Semestre</td>
-            <td>14.0</td>
-            <td>1</td>
-            <td>13.2</td>
-          </tr>
-          <tr>
-            <td>Moyenne Générale</td>
-            <td>13.75</td>
-            <td>1</td>
-            <td>13.0</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <div class="container1">
+      <!-- Div de gauche avec le tableau pour les moyennes, rangs et moyennes classe -->
+      <div class="column-left">
+        <table class="semestre-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Moyennes</th>
+              <th>Rangs</th>
+              <th>Moyennes Classe</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1er Semestre</td>
+              <td>13.5</td>
+              <td>2</td>
+              <td>12.8</td>
+            </tr>
+            <tr>
+              <td>2ème Semestre</td>
+              <td>14.0</td>
+              <td>1</td>
+              <td>13.2</td>
+            </tr>
+            <tr>
+              <td>Moyenne Générale</td>
+              <td>13.75</td>
+              <td>1</td>
+              <td>13.0</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-    <!-- Div de droite avec le tableau pour les absences et justifications -->
-    <div class="column-right">
-      <table class="absence-table">
-        <thead>
-          <tr>
-            <th>Absences</th>
-            <th>Justifiées</th>
-            <th>Non Justifiées</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>3</td>
-            <td>2</td>
-            <td>1</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-  <div class="container2">
-    <!-- Div pour les mentions -->
-    <div class="column-left">
-      <h3>Mentions</h3>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-        <label class="form-check-label" for="flexRadioDefault1">
-          Félicitations
-        </label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-        <label class="form-check-label" for="flexRadioDefault1">
-          Encouragements
-        </label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-        <label class="form-check-label" for="flexRadioDefault1">
-          Tableau d'honneur
-        </label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-        <label class="form-check-label" for="flexRadioDefault1">
-          Passable
-        </label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-        <label class="form-check-label" for="flexRadioDefault2">
-          Insuffisant
-        </label>
+      <!-- Div de droite avec le tableau pour les absences et justifications -->
+      <div class="column-right">
+        <table class="absence-table">
+          <thead>
+            <tr>
+              <th>Absences</th>
+              <th>Justifiées</th>
+              <th>Non Justifiées</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>3</td>
+              <td>2</td>
+              <td>1</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
+    <div class="container2">
+      <!-- Div pour les mentions -->
+      <div class="column-left">
+        <h3>Mentions</h3>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="mention" id="mention1" />
+          <label class="form-check-label" for="mention1">Félicitations</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="mention" id="mention2" />
+          <label class="form-check-label" for="mention2">Encouragements</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="mention" id="mention3" />
+          <label class="form-check-label" for="mention3">Tableau d'honneur</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="mention" id="mention4" />
+          <label class="form-check-label" for="mention4">Passable</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="mention" id="mention5" checked />
+          <label class="form-check-label" for="mention5">Insuffisant</label>
+        </div>
+      </div>
+    </div>
   </div>
-
 </template>
 
 <script setup>
+import { computed } from 'vue';
+
 // Déclaration des props pour passer les données dynamiques
-defineProps({
+const props = defineProps({
   anneeScolaire: String,
-  // tel: String,
-  // email: String,
-   niveau: String,
-   effectif: Number,
-  // moyenneClasse: Number,
+  niveau: String,
+  effectif: Number,
   matricule: String,
   sexe: String,
   classe: String,
   prenom: String,
   nom: String,
   dateNaissance: String,
+  matieres: Array,
+});
+
+// Calcul du total des coefficients
+const totalCoef = computed(() => {
+  return props.matieres.reduce((total, matiere) => total + 1, 0); // Ici, la valeur statique est 1
+});
+
+// Calcul du total Moy*Coef
+const totalMoyCoef = computed(() => {
+  return props.matieres.reduce((total, matiere) => total + (0 * 1), 0); // Ici, c'est basé sur les valeurs statiques
 });
 </script>
+
 
 <style scoped>
 /* Style du header */

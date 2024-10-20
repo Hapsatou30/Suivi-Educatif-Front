@@ -41,43 +41,44 @@
 
     <!-- Tableau des matières et des résultats -->
     <table class="bulletin-table">
-      <thead>
-        <tr>
-          <th>Matière</th>
-          <th>Devoirs</th>
-          <th>Examen</th>
-          <th>Moyenne</th>
-          <th>Coef</th>
-          <th>Moy*Coef</th>
-          <th>Rang</th>
-          <th>Appréciations</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="matiere in matieres" :key="matiere.nomMatiere">
-        <td>{{ matiere.nomMatiere }}</td>
-        <td>{{ matiere.devoirs || '-' }}</td> 
-        <td>{{ matiere.examen || '-' }}</td>
-        <td>{{ matiere.moyenne || '-' }}</td>
-        <td>{{ matiere.coef || '-' }}</td>
-        <td>{{ (matiere.moyenne * matiere.coef).toFixed(2) || '-' }}</td>
-        <td>{{ matiere.rang || '-' }}</td>
-        <td>{{ matiere.appreciations || '-' }}</td>
-      </tr>
-      </tbody>
-      <tfoot>
-        <tr>
-          <td>Totaux</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td>{{ totalCoef }}</td> <!-- Calcul du total des coefficients -->
-          <td>{{ totalMoyCoef.toFixed(2) }}</td> <!-- Calcul du total Moy*Coef -->
-          <td></td>
-          <td></td>
-        </tr>
-      </tfoot>
-    </table>
+  <thead>
+    <tr>
+      <th>Matière</th>
+      <th>Devoirs</th> 
+      <th>Examen</th>
+      <th>Moyenne</th>
+      <th>Coef</th>
+      <th>Moy*Coef</th>
+      <th>Rang</th>
+      <th>Appréciations</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr v-for="matiere in matieres" :key="matiere.nomMatiere">
+      <td>{{ matiere.nomMatiere }}</td>
+      <td>{{ matiere.moyenneDevoirs }}</td>
+      <td>{{ matiere.noteExamen || '-' }}</td>
+      <td>{{ matiere.moyenneMatiere || '-' }}</td>
+      <td>{{ matiere.coeff || '-' }}</td>
+      <td>{{ (matiere.moyenne * matiere.coeff).toFixed(2) || '-' }}</td>
+      <td>{{ matiere.rang || '-' }}</td>
+      <td>{{ matiere.appreciations || '-' }}</td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td>Totaux</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{{ totalCoef }}</td>
+      <td>{{ totalMoyCoef.toFixed(2) }}</td>
+      <td></td>
+      <td></td>
+    </tr>
+  </tfoot>
+</table>
+
 
     <div class="container1">
       <!-- Div de gauche avec le tableau pour les moyennes, rangs et moyennes classe -->
@@ -178,7 +179,10 @@ const props = defineProps({
   prenom: String,
   nom: String,
   dateNaissance: String,
-  matieres: Array,
+  matieres: {
+    type: Array,
+    default: () => [] 
+  },
    absences: {
     type: Object,
     default: () => ({
@@ -190,8 +194,9 @@ const props = defineProps({
 
 // Calcul du total des coefficients
 const totalCoef = computed(() => {
-  return props.matieres.reduce((total, matiere) => total + 1, 0); // Ici, la valeur statique est 1
+  return props.matieres.reduce((total, matiere) => total + (matiere.coeff || 0), 0);
 });
+
 
 // Calcul du total Moy*Coef
 const totalMoyCoef = computed(() => {

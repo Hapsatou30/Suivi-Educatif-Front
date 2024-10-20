@@ -2,12 +2,14 @@
   <sidebar_admin />
   <topbar_admin />
   <div class="main-content">
+   <div class="lien_boutons">
     <boutons
       title1="Matières" 
       title2="Professeurs"
       page1="matiere"
       page2="professeur"
     />
+   </div>
     <h2>Formulaire pour ajouter des Professeurs</h2>
     <div class="form-container mt-4">
       <form @submit.prevent="handleFormSubmit">
@@ -377,6 +379,9 @@ onMounted(fetchData);
 .main-content { 
   margin-top: 120px;
 }
+/* .lien_boutons{
+  margin-left: 300px;
+} */
 .main-content h2 {
     color: black;
     font-size: 24px;

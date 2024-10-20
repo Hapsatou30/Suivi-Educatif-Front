@@ -23,6 +23,7 @@
         :nom="detailsEleve.nom"
         :dateNaissance="formatDateFrancaise(detailsEleve.dateNaissance)"
         :matieres="matieres" 
+        :absences="absences"
       />
     </div>
   </div>
@@ -34,6 +35,7 @@ import topbar_parent from '@/components/topBarParent.vue';
 import { useRoute } from 'vue-router';
 import { getDetailsEleve, getEleveClasse } from '@/services/ClasseEleve';
 import { getProfClasse } from '@/services/ClasseProfs';
+import { getAbsencesEleve } from '@/services/AbsenceService';
 import TemplateBulletin from '@/components/TemplateBulletin.vue';
 import { ref, onMounted } from 'vue';
 import boutons from '@/components/boutons.vue';
@@ -55,7 +57,11 @@ const detailsEleve = ref({
   nom: '',
   dateNaissance: ''
 });
-
+const absences = ref({
+  total: 0,
+  justifiees: 0,
+  nonJustifiees: 0,
+});
 // Fonction de formatage de la date en jj/MM/aaaa
 const formatDateFrancaise = (dateString) => {
   if (!dateString) return '';
@@ -98,8 +104,20 @@ const fetchDetailsEleve = async () => {
         } else {
           console.error('Aucune matière trouvée dans la réponse.');
         }
+          // Appel pour obtenir les absences
+      const responseAbsences = await getAbsencesEleve(classeEleve_id.value);
+      console.log('responseAbsences', responseAbsences);
+      
+      if (responseAbsences.status === 200) {
+        absences.value.total = responseAbsences.données.length; // Total des absences
+        absences.value.justifiees = responseAbsences.données.filter(abs => abs.justification !== null).length; // Justifiées
+        absences.value.nonJustifiees = absences.value.total - absences.value.justifiees; // Non justifiées
+        console.log('absences', absences.value);
+      }
+        
       }
     }
+    
   } catch (error) {
     console.error("Erreur lors de la récupération des détails de l'élève:", error);
   }

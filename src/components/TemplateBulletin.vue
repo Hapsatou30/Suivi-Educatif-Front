@@ -56,7 +56,7 @@
       <tbody>
         <tr v-for="matiere in matieres" :key="matiere.nomMatiere">
         <td>{{ matiere.nomMatiere }}</td>
-        <td>{{ matiere.devoirs || '-' }}</td> <!-- Utilise '-' si aucune donnée -->
+        <td>{{ matiere.devoirs || '-' }}</td> 
         <td>{{ matiere.examen || '-' }}</td>
         <td>{{ matiere.moyenne || '-' }}</td>
         <td>{{ matiere.coef || '-' }}</td>
@@ -116,23 +116,23 @@
 
       <!-- Div de droite avec le tableau pour les absences et justifications -->
       <div class="column-right">
-        <table class="absence-table">
-          <thead>
-            <tr>
-              <th>Absences</th>
-              <th>Justifiées</th>
-              <th>Non Justifiées</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>3</td>
-              <td>2</td>
-              <td>1</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <table class="absence-table">
+        <thead>
+          <tr>
+            <th>Absences</th>
+            <th>Justifiées</th>
+            <th>Non Justifiées</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{ absences.total }}</td>
+            <td>{{ absences.justifiees }}</td>
+            <td>{{ absences.nonJustifiees }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     </div>
 
     <div class="container2">
@@ -179,6 +179,13 @@ const props = defineProps({
   nom: String,
   dateNaissance: String,
   matieres: Array,
+   absences: {
+    type: Object,
+    default: () => ({
+      total: 0,
+      justifiees: 0,
+      nonJustifiees: 0,
+    }),},
 });
 
 // Calcul du total des coefficients

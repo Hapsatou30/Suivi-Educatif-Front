@@ -33,6 +33,7 @@ import checkbox from '@/components/checkbox.vue';
 import { getAnneeClasseDetails } from '@/services/AnneeClasseService';
 import { getEleves } from '@/services/EleveService';
 import { ajouterEleveClasse, getElevesOntClasse } from '@/services/ClasseEleve';
+import { creerBulletinsPourTousLesEleves } from '@/services/BulletinService';
 import Swal from 'sweetalert2';
 import imageSource from '@/assets/classProf.png';
 
@@ -122,6 +123,8 @@ const attribuerEleveClasse = async () => {
                     showConfirmButton: false
                 });
                 await fetchEleveNonAttribue(); 
+                // Appeler la méthode pour créer des bulletins pour tous les élèves
+                 await creerBulletinsPourTousLesEleves(); 
             } else {
                 // Gérer les cas où la réponse n'est pas un succès
                 Swal.fire({

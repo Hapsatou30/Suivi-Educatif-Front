@@ -95,21 +95,21 @@
           <tbody>
             <tr>
               <td>1er Semestre</td>
-              <td>13.5</td>
-              <td>2</td>
-              <td>12.8</td>
+              <td>{{ moyennePremierSemestre.toFixed(2) }}</td>
+              <td>---</td>
+              <td>---</td>
             </tr>
             <tr>
               <td>2ème Semestre</td>
-              <td>14.0</td>
-              <td>1</td>
-              <td>13.2</td>
+              <td>---</td>
+              <td>---</td>
+              <td>---</td>
             </tr>
             <tr>
               <td>Moyenne Générale</td>
-              <td>13.75</td>
-              <td>1</td>
-              <td>13.0</td>
+              <td>---</td>
+              <td>---</td>
+              <td>-----</td>
             </tr>
           </tbody>
         </table>
@@ -137,36 +137,37 @@
     </div>
 
     <div class="container2">
-      <!-- Div pour les mentions -->
-      <div class="column-left">
-        <h3>Mentions</h3>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="mention" id="mention1" />
-          <label class="form-check-label" for="mention1">Félicitations</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="mention" id="mention2" />
-          <label class="form-check-label" for="mention2">Encouragements</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="mention" id="mention3" />
-          <label class="form-check-label" for="mention3">Tableau d'honneur</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="mention" id="mention4" />
-          <label class="form-check-label" for="mention4">Passable</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="mention" id="mention5" checked />
-          <label class="form-check-label" for="mention5">Insuffisant</label>
-        </div>
-      </div>
+  <!-- Div pour les mentions -->
+  <div class="column-left">
+    <h3>Mentions</h3>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="mention" id="mention1" value="Félicitations" v-model="mention" :disabled="true" />
+      <label class="form-check-label" for="mention1">Félicitations</label>
     </div>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="mention" id="mention2" value="Encouragements" v-model="mention" :disabled="true" />
+      <label class="form-check-label" for="mention2">Encouragements</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="mention" id="mention3" value="Tableau d'honneur" v-model="mention" :disabled="true" />
+      <label class="form-check-label" for="mention3">Tableau d'honneur</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="mention" id="mention4" value="Passable" v-model="mention" :disabled="true" />
+      <label class="form-check-label" for="mention4">Passable</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="mention" id="mention5" value="Insuffisant" v-model="mention" :disabled="true" checked />
+      <label class="form-check-label" for="mention5">Insuffisant</label>
+    </div>
+  </div>
+</div>
+
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 // Déclaration des props : ces données dynamiques sont passées au composant depuis le parent
 const props = defineProps({
@@ -227,6 +228,26 @@ const getAppreciation = (moyenneMatiere) => {
   return '-'; 
 };
 
+// Calcul de la moyenne du 1er semestre
+const moyennePremierSemestre = computed(() => {
+  return totalCoef.value > 0 ? (totalMoyCoef.value / totalCoef.value) : 0;
+});
+
+
+// Fonction pour obtenir la mention en fonction de la moyenne du 1er semestre
+const getMention = (moyenne) => {
+  if (moyenne < 10) return 'Insuffisant';
+  if (moyenne >= 10 && moyenne < 12) return 'Passable';
+  if (moyenne >= 12 && moyenne < 14) return 'Tableau d\'honneur';
+  if (moyenne >= 14 && moyenne < 16) return 'Encouragement';
+  return 'Félicitations'; // moyenne >= 16
+};
+const mention = ref(getMention(moyennePremierSemestre.value));
+
+// Mettre à jour la mention chaque fois que la moyenne change
+watch(moyennePremierSemestre, (newMoyenne) => {
+  mention.value = getMention(newMoyenne);
+});
 </script>
 
 

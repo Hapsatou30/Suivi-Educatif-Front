@@ -199,6 +199,7 @@ import { useRouter, useRoute } from 'vue-router';
 import Swal from 'sweetalert2';
 import { getAnneClasses } from '@/services/AnneeClasseService';
 import { ajouterEleveClasse, getElevesOntClasse } from '@/services/ClasseEleve';
+import { creerBulletinsPourTousLesEleves } from '@/services/BulletinService';
 
 // Initialisation des routeurs
 const router = useRouter();
@@ -356,6 +357,8 @@ const enregistrerClasse = async () => {
     fetchElevesAvecClasse();
     closeModal();
     classeSelectionnee.value = ''; // Réinitialiser la sélection de classe
+      // Appeler la méthode pour créer des bulletins pour tous les élèves
+      await creerBulletinsPourTousLesEleves(); 
   } catch (error) {
     console.error('Erreur lors de l\'attribution de la classe :', error);
     Swal.fire({

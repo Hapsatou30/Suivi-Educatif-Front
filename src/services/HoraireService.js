@@ -31,13 +31,24 @@ export const modifierHoraire = async (horaire) => {
             }
         });
   
-        // console.log('Horaire modifié :', response.data);
-        return response.data; // Renvoie les données de la réponse pour analyse
+        // Afficher la réponse pour le débogage
+        return response.data; // Renvoie toute la réponse pour analyse
     } catch (error) {
-        console.error('Erreur lors de la modification de l\'horaire :', error.response ? error.response.data : error.message);
-        return { error: error.response ? error.response.data.error : error.message }; // Renvoie l'erreur sous forme d'objet
+        console.error('Erreur lors de l\'ajout de l\'horaire :', error.response ? error.response.data : error.message);
+        
+        // Vérifier si l'erreur a une structure spécifique pour les erreurs 422
+        if (error.response && error.response.status === 422) {
+            // Retourner le message d'erreur général et les détails spécifiques
+            return { 
+                message: error.response.data.message,
+                errors: error.response.data.errors
+            };
+        }
+
+        // Retourner une erreur générique pour les autres types d'erreurs
+        return { error: error.response ? error.response.data.error : 'Une erreur est survenue.' };
     }
-  };
+};
   
 
   export const ajouterHoraire = async (horaire) => {
@@ -50,11 +61,21 @@ export const modifierHoraire = async (horaire) => {
         });
 
         // Afficher la réponse pour le débogage
-        // console.log('Horaires ajoutés :', response.data);
         return response.data; // Renvoie toute la réponse pour analyse
     } catch (error) {
         console.error('Erreur lors de l\'ajout de l\'horaire :', error.response ? error.response.data : error.message);
-        return { error: error.response ? error.response.data.error : error.message }; // Renvoie l'erreur sous forme d'objet
+        
+        // Vérifier si l'erreur a une structure spécifique pour les erreurs 422
+        if (error.response && error.response.status === 422) {
+            // Retourner le message d'erreur général et les détails spécifiques
+            return { 
+                message: error.response.data.message,
+                errors: error.response.data.errors
+            };
+        }
+
+        // Retourner une erreur générique pour les autres types d'erreurs
+        return { error: error.response ? error.response.data.error : 'Une erreur est survenue.' };
     }
 };
 

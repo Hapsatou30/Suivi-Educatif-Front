@@ -1,15 +1,13 @@
 <template>
   <div>
-    <!-- Vérifier si les données sont disponibles -->
-    <div v-if="!hasData">
-      <p>Aucune donnée disponible pour afficher le graphique.</p>
-    </div>
-    <div v-else>
-      <!-- Canvas pour le graphique en barres -->
-      <canvas ref="barChartCanvas" width="600" height="600"></canvas>
-    </div>
+    <!-- Message d'absence de données -->
+    <p v-if="!hasData">Aucune donnée disponible pour afficher le graphique.</p>
+
+    <!-- Canvas pour le graphique en barres (toujours visible) -->
+    <canvas ref="barChartCanvas" width="600" height="600"></canvas>
   </div>
 </template>
+
 
 <script setup>
 import { ref, onMounted } from 'vue';
@@ -30,13 +28,15 @@ const fetchHoraires = async (professeurId) => {
     const response = await geHoraireProf(professeurId);
     const horaires = response.données;
 
-    // Vérifier si des horaires ont été récupérés
+    console.log('Horaires récupérés:', horaires);  // Voir les données récupérées
+
     if (horaires.length === 0) {
-      hasData.value = false; // Pas de données
+      hasData.value = false;
+      console.log('Pas de données disponibles');
       return;
     }
 
-    // Transformer les données pour obtenir le nombre total d'heures par jour
+    // Transformation des données
     const joursSemaine = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi'];
     const heuresParJour = joursSemaine.map((jour) => {
       const totalHeures = horaires
@@ -50,12 +50,13 @@ const fetchHoraires = async (professeurId) => {
       return totalHeures;
     });
 
-    hasData.value = true; // Données disponibles
+    console.log('Heures par jour:', heuresParJour);  // Vérifier la transformation
+
+    hasData.value = true;
     updateBarChart(heuresParJour);
-    
   } catch (error) {
     console.error('Erreur lors de la récupération des horaires:', error);
-    hasData.value = false; // En cas d'erreur, pas de données
+    hasData.value = false;
   }
 };
 

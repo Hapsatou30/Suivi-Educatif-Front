@@ -7,7 +7,7 @@
         <p>République du Sénégal</p>
         <p>Ministère de l'Éducation nationale</p>
         <h3>Les Cours Privés Général Mouhamadou Mansour Seck</h3>
-        <h4>ANNÉE SCOLAIRE : 2024-2025</h4>
+        <h4>ANNÉE SCOLAIRE : {{ anneeScolaire }}</h4>
       </div>
       <img src="@/assets/ministere.png" alt="Logo Droite" class="logo-right" />
     </header>
@@ -18,19 +18,19 @@
         <ul>
           <li>Tél: <span>338765678</span></li>
           <li>Email: <span>samaecole@gmail.com</span></li>
-          <li>Niveau: <span>Troisième</span></li>
-          <li>Effectif: <span>25</span></li>
+          <li>Niveau: <span>{{ niveau }}</span></li>
+          <li>Effectif: <span>{{ effectif }}</span></li>
           <li>Moyenne Classe: <span>10.02</span></li>
         </ul>
       </div>
 
       <div class="column">
         <ul>
-          <li>Matricule: <span>EAM2345</span></li>
-          <li>Sexe: <span>Féminin</span></li>
-          <li>Classe: <span>3ème A</span></li>
-          <li>Prénom & Nom: <span>Amina Zahra Fall</span></li>
-          <li>Né(e) le: <span>20-04-2010</span></li>
+          <li>Matricule: <span>{{ matricule }}</span></li>
+          <li>Sexe: <span>{{ sexe }}</span></li>
+          <li>Classe: <span>{{ classe }}</span></li>
+          <li>Prénom & Nom: <span>{{ prenom }} {{ nom }}</span></li>
+          <li>Né(e) le: <span>{{ dateNaissance }}</span></li>
         </ul>
       </div>
     </div>
@@ -41,132 +41,82 @@
 
     <!-- Tableau des matières et des résultats -->
     <table class="bulletin-table">
-      <thead>
-        <tr>
-          <th>Matière</th>
-          <th>Devoirs</th>
-          <th>Examen</th>
-          <th>Moyenne</th>
-          <th>Coef</th>
-          <th>Moy*Coef</th>
-          <th>Rang</th>
-          <th>Appréciations</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Mathématiques</td>
-          <td>12</td>
-          <td>15</td>
-          <td>13.5</td>
-          <td>4</td>
-          <td>54</td>
-          <td>1</td>
-          <td>Très bien</td>
-        </tr>
-        <tr>
-          <td>Français</td>
-          <td>14</td>
-          <td>16</td>
-          <td>15</td>
-          <td>3</td>
-          <td>45</td>
-          <td>2</td>
-          <td>Bien</td>
-        </tr>
-        <tr>
-          <td>Histoire</td>
-          <td>13</td>
-          <td>14</td>
-          <td>13.5</td>
-          <td>2</td>
-          <td>27</td>
-          <td>3</td>
-          <td>Assez bien</td>
-        </tr>
-        <tr>
-          <td>Physique</td>
-          <td>10</td>
-          <td>12</td>
-          <td>11</td>
-          <td>4</td>
-          <td>44</td>
-          <td>4</td>
-          <td>Passable</td>
-        </tr>
-        <tr>
-          <td>Anglais</td>
-          <td>15</td>
-          <td>17</td>
-          <td>16</td>
-          <td>2</td>
-          <td>32</td>
-          <td>1</td>
-          <td>Très bien</td>
-        </tr>
-        <tr>
-          <td>SVT</td>
-          <td>13</td>
-          <td>14</td>
-          <td>13.5</td>
-          <td>3</td>
-          <td>40.5</td>
-          <td>2</td>
-          <td>Bien</td>
-        </tr>
-      </tbody>
-      <tfoot>
-        <tr>
-          <td>Totaux</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td>18</td> <!-- Total Coef -->
-          <td>242.5</td> <!-- Total Moy*Coef -->
-          <td></td>
-          <td></td>
-        </tr>
-      </tfoot>
-    </table>
+  <thead>
+    <tr>
+      <th>Matière</th>
+      <th>Devoirs</th> 
+      <th>Examen</th>
+      <th>Moyenne</th>
+      <th>Coef</th>
+      <th>Moy*Coef</th>
+      <th>Rang</th>
+      <th>Appréciations</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr v-for="matiere in matieres" :key="matiere.nomMatiere">
+      <td>{{ matiere.nomMatiere }}</td>
+      <td>{{ matiere.moyenneDevoirs }}</td>
+      <td>{{ matiere.noteExamen || '-' }}</td>
+      <td>{{ matiere.moyenneMatiere || '-' }}</td>
+      <td>{{ matiere.coeff || '-' }}</td>
+      <td>{{ (matiere.moyenneMatiere * matiere.coeff).toFixed(2) || '-' }}</td>
+      <td>{{ matiere.rang || '-' }}</td>
+      <td>{{ getAppreciation(matiere.moyenneMatiere) }}</td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td>Totaux</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{{ totalCoef }}</td>
+      <td>{{ totalMoyCoef.toFixed(2) }}</td>
+      <td></td>
+      <td></td>
+    </tr>
+  </tfoot>
+</table>
 
-  </div>
-  <div class="container1">
-    <!-- Div de gauche avec le tableau pour les moyennes, rangs et moyennes classe -->
-    <div class="column-left">
-      <table class="semestre-table">
-        <thead>
-          <tr>
-            <th></th>
-            <th>Moyennes</th>
-            <th>Rangs</th>
-            <th>Moyennes Classe</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1er Semestre</td>
-            <td>13.5</td>
-            <td>2</td>
-            <td>12.8</td>
-          </tr>
-          <tr>
-            <td>2ème Semestre</td>
-            <td>14.0</td>
-            <td>1</td>
-            <td>13.2</td>
-          </tr>
-          <tr>
-            <td>Moyenne Générale</td>
-            <td>13.75</td>
-            <td>1</td>
-            <td>13.0</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
 
-    <!-- Div de droite avec le tableau pour les absences et justifications -->
-    <div class="column-right">
+    <div class="container1">
+      <!-- Div de gauche avec le tableau pour les moyennes, rangs et moyennes classe -->
+      <div class="column-left">
+        <table class="semestre-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Moyennes</th>
+              <th>Rangs</th>
+              <th>Moyennes Classe</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1er Semestre</td>
+              <td>{{ moyennePremierSemestre.toFixed(2) }}</td>
+              <td>---</td>
+              <td>---</td>
+            </tr>
+            <tr>
+              <td>2ème Semestre</td>
+              <td>---</td>
+              <td>---</td>
+              <td>---</td>
+            </tr>
+            <tr>
+              <td>Moyenne Générale</td>
+              <td>---</td>
+              <td>---</td>
+              <td>-----</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Div de droite avec le tableau pour les absences et justifications -->
+      <div class="column-right">
       <table class="absence-table">
         <thead>
           <tr>
@@ -177,57 +127,129 @@
         </thead>
         <tbody>
           <tr>
-            <td>3</td>
-            <td>2</td>
-            <td>1</td>
+            <td>{{ absences.total }}</td>
+            <td>{{ absences.justifiees }}</td>
+            <td>{{ absences.nonJustifiees }}</td>
           </tr>
         </tbody>
       </table>
     </div>
-  </div>
-  <div class="container2">
-    <!-- Div pour les mentions -->
-    <div class="column-left">
-      <h3>Mentions</h3>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-        <label class="form-check-label" for="flexRadioDefault1">
-          Félicitations
-        </label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-        <label class="form-check-label" for="flexRadioDefault1">
-          Encouragements
-        </label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-        <label class="form-check-label" for="flexRadioDefault1">
-          Tableau d'honneur
-        </label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-        <label class="form-check-label" for="flexRadioDefault1">
-          Passable
-        </label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-        <label class="form-check-label" for="flexRadioDefault2">
-          Insuffisant
-        </label>
-      </div>
     </div>
 
+    <div class="container2">
+  <!-- Div pour les mentions -->
+  <div class="column-left">
+    <h3>Mentions</h3>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="mention" id="mention1" value="Félicitations" v-model="mention" :disabled="true" />
+      <label class="form-check-label" for="mention1">Félicitations</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="mention" id="mention2" value="Encouragements" v-model="mention" :disabled="true" />
+      <label class="form-check-label" for="mention2">Encouragements</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="mention" id="mention3" value="Tableau d'honneur" v-model="mention" :disabled="true" />
+      <label class="form-check-label" for="mention3">Tableau d'honneur</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="mention" id="mention4" value="Passable" v-model="mention" :disabled="true" />
+      <label class="form-check-label" for="mention4">Passable</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="mention" id="mention5" value="Insuffisant" v-model="mention" :disabled="true" checked />
+      <label class="form-check-label" for="mention5">Insuffisant</label>
+    </div>
   </div>
+</div>
 
+  </div>
 </template>
 
 <script setup>
-// Si des scripts sont nécessaires, tu peux les ajouter ici
+import { computed, ref, watch } from 'vue';
+
+// Déclaration des props : ces données dynamiques sont passées au composant depuis le parent
+const props = defineProps({
+  anneeScolaire: String, 
+  niveau: String,       
+  effectif: Number,      
+  matricule: String,    
+  sexe: String,          
+  classe: String,       
+  prenom: String,       
+  nom: String,          
+  dateNaissance: String, 
+
+  // Tableau des matières étudiées par l'élève, chaque matière contient des informations telles que la moyenne et le coefficient
+  matieres: {
+    type: Array,
+    default: () => [] // Valeur par défaut vide si aucune matière n'est passée
+  },
+
+  // Objet pour gérer les absences, avec un nombre total d'absences, justifiées et non justifiées
+  absences: {
+    type: Object,
+    default: () => ({
+      total: 0,           
+      justifiees: 0,      
+      nonJustifiees: 0,   
+    }),
+  },
+});
+
+// Calcul du total des coefficients pour toutes les matières
+const totalCoef = computed(() => {
+  // Utilisation de reduce() pour additionner les coefficients de toutes les matières
+  return props.matieres.reduce((total, matiere) => 
+    total + (matiere.coeff || 0),  // Ajoute le coefficient de la matière au total, ou 0 si le coefficient est non défini
+  0); // Le total commence à 0
+});
+
+// Calcul du total Moy*Coef pour toutes les matières
+const totalMoyCoef = computed(() => {
+  // Utilisation de reduce() pour calculer la somme des moyennes pondérées par le coefficient de chaque matière
+  return props.matieres.reduce((total, matiere) => {
+    const moyenneMatiere = parseFloat(matiere.moyenneMatiere) || 0; // Conversion de la moyenne en nombre, ou 0 si non définie
+    const coefficient = parseFloat(matiere.coeff) || 0;             // Conversion du coefficient en nombre, ou 0 si non défini
+    return total + (moyenneMatiere * coefficient);                  // Ajout du produit Moyenne * Coefficient au total
+  }, 0); // Le total commence à 0
+});
+
+// Fonction pour obtenir l'appréciation en fonction de la moyenne de la matière
+const getAppreciation = (moyenneMatiere) => {
+  const moyenne = parseFloat(moyenneMatiere) || 0;
+  if (moyenne < 10) return 'Faible';
+  if (moyenne >= 10 && moyenne < 12) return 'Passable';
+  if (moyenne >= 12 && moyenne < 14) return 'Assez-Bien';
+  if (moyenne >= 14 && moyenne < 16) return 'Bien';
+  if (moyenne >= 16 && moyenne < 18) return 'Très-Bien';
+  if (moyenne >= 18 && moyenne <= 20) return 'Excellent';
+  return '-'; 
+};
+
+// Calcul de la moyenne du 1er semestre
+const moyennePremierSemestre = computed(() => {
+  return totalCoef.value > 0 ? (totalMoyCoef.value / totalCoef.value) : 0;
+});
+
+
+// Fonction pour obtenir la mention en fonction de la moyenne du 1er semestre
+const getMention = (moyenne) => {
+  if (moyenne < 10) return 'Insuffisant';
+  if (moyenne >= 10 && moyenne < 12) return 'Passable';
+  if (moyenne >= 12 && moyenne < 14) return 'Tableau d\'honneur';
+  if (moyenne >= 14 && moyenne < 16) return 'Encouragement';
+  return 'Félicitations'; // moyenne >= 16
+};
+const mention = ref(getMention(moyennePremierSemestre.value));
+
+// Mettre à jour la mention chaque fois que la moyenne change
+watch(moyennePremierSemestre, (newMoyenne) => {
+  mention.value = getMention(newMoyenne);
+});
 </script>
+
 
 <style scoped>
 /* Style du header */

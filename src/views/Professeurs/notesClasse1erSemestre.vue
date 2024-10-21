@@ -350,7 +350,7 @@ const updateNote = async (student) => {
         id: editingNoteId.value,
         evaluation_id: student.evaluation,
         notes: student.note,
-        appreciation: student.appreciation,
+        commentaire: student.appreciation,
         id_bulletin: student.id_bulletin
     };
 

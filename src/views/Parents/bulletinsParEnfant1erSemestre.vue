@@ -17,7 +17,7 @@
         :matricule="detailsEleve.matricule" :sexe="detailsEleve.sexe" :classe="detailsEleve.classe"
         :prenom="detailsEleve.prenom" :nom="detailsEleve.nom"
         :dateNaissance="formatDateFrancaise(detailsEleve.dateNaissance)" :matieres="matieres" :absences="absences"
-        :moyenneClasse="moyenneClasse"  :RangSemestre="RangSemestre"/>
+        :moyenneClasse="moyenneClasse" :RangSemestre="RangSemestre" />
     </div>
   </div>
 </template>
@@ -82,12 +82,13 @@ const fetchDetailsEleve = async () => {
       anneeScolaire.value = detailsEleve.value.anneeScolaire;
       prenom.value = detailsEleve.value.prenom;
 
+      //récupéré l'effectif de la classe
       const responseEleves = await getEleveClasse(anneClasseId.value);
       if (responseEleves.status === 200) {
         const eleves = responseEleves.données[0].eleves;
         effectifClasse.value = eleves.length;
 
-        // Appel pour obtenir les matières
+        // Appel pour obtenir les matières et leur coefficients
         const responseMatieres = await getProfClasse(anneClasseId.value);
         if (responseMatieres.classes_matieres && Array.isArray(responseMatieres.classes_matieres)) {
           matieres.value = responseMatieres.classes_matieres.map(matiere => ({
@@ -135,32 +136,40 @@ const fetchDetailsEleve = async () => {
               moyenneDevoirs: moyenneDevoirs,
               noteExamen: noteExamen,
               moyenneMatiere: moyenneMatiere,
+             
             };
           });
         }
 
-        // Récupérer les Moyennes des élèves par matière
+        // Récupérer les notes par année et classe
         const responseMoyenneMAtiere = await getNotesParAnneeClasse(anneClasseId.value);
+
+        // Vérifier si la réponse est réussie (status 200)
         if (responseMoyenneMAtiere.status === 200) {
           const { données } = responseMoyenneMAtiere;
-          const moyennesParMatiere = {};
+          const moyennesParMatiere = {}; // Initialiser un objet pour stocker les moyennes par matière
 
           const elevesGlobalData = {};
-          let sommeMoyennesPonderees = 0;
+          let sommeMoyennesPonderees = 0; 
           let nombreEleves = 0;
 
+          // Boucle à travers chaque matière pour traiter les notes
           for (const matiere in données) {
             const coefficient = données[matiere].coefficient;
-            const eleves = données[matiere].eleves;
-            moyennesParMatiere[matiere] = [];
+            const eleves = données[matiere].eleves; 
+            moyennesParMatiere[matiere] = []; // Initialiser un tableau pour les moyennes de cette matière
 
+            // Boucle à travers chaque élève pour calculer les moyennes
             eleves.forEach(eleve => {
-              const { matricule, nom, prenom, notes } = eleve;
-              const moyenne_globale = notes?.moyenne_globale;
+              const { matricule, nom, prenom, notes } = eleve; // Extraire les informations de l'élève
+              const moyenne_globale = notes?.moyenne_globale; // Obtenir la moyenne globale
 
+              // Vérifier si la moyenne globale est définie
               if (moyenne_globale !== undefined) {
+                // Calculer le produit du coefficient et de la moyenne
                 const produitCoefficientMoyenne = coefficient * moyenne_globale;
 
+                // Ajouter les données de l'élève à la matière
                 moyennesParMatiere[matiere].push({
                   matricule,
                   nom,
@@ -168,7 +177,10 @@ const fetchDetailsEleve = async () => {
                   moyenne: moyenne_globale,
                   produitCoefficientMoyenne,
                 });
+                // console.log('moyenne par matiere tt',moyennesParMatiere[matiere] );
+                
 
+                // Vérifier si l'élève est déjà dans les données globales, sinon l'initialiser
                 if (!elevesGlobalData[matricule]) {
                   elevesGlobalData[matricule] = {
                     nom,
@@ -179,45 +191,59 @@ const fetchDetailsEleve = async () => {
                   };
                 }
 
+                // Mettre à jour les sommes des coefficients et des résultats
                 elevesGlobalData[matricule].sommeCoefficients += coefficient;
                 elevesGlobalData[matricule].sommeResultats += produitCoefficientMoyenne;
               }
             });
 
+            
+            // Trier les élèves par moyenne décroissante pour cette matière
             moyennesParMatiere[matiere].sort((a, b) => b.moyenne - a.moyenne);
 
+            // Calculer le rang de chaque élève pour cette matière
             moyennesParMatiere[matiere].forEach((eleve, index) => {
-              eleve.rang = index + 1;
+              eleve.rang = index + 1; // Le rang commence à 1
             });
+
           }
 
+          // Calculer la moyenne pondérée pour chaque élève
+          // Object.keys() est une méthode JavaScript qui retourne un tableau contenant les clés d'un objet.
           Object.keys(elevesGlobalData).forEach(matricule => {
             const eleveData = elevesGlobalData[matricule];
 
+            // Vérifier si la somme des coefficients est différente de 0 pour éviter la division par zéro
             if (eleveData.sommeCoefficients !== 0) {
-              eleveData.moyennePonderee = eleveData.sommeResultats / eleveData.sommeCoefficients;
+              eleveData.moyennePonderee = eleveData.sommeResultats / eleveData.sommeCoefficients; // Calculer la moyenne pondérée
             } else {
-              eleveData.moyennePonderee = 0;
+              eleveData.moyennePonderee = 0; // Affecter 0 si aucun coefficient
             }
 
+            // Ajouter à la somme des moyennes pondérées et incrémenter le compteur d'élèves
             sommeMoyennesPonderees += eleveData.moyennePonderee;
             nombreEleves++;
           });
 
+          // Calculer la moyenne de la classe
           moyenneClasse.value = parseFloat((sommeMoyennesPonderees / nombreEleves).toFixed(2));
 
+          // Trier les élèves selon leur moyenne pondérée de manière décroissante
           const elevesTries = Object.values(elevesGlobalData).sort((a, b) => b.moyennePonderee - a.moyennePonderee);
 
+          // Affecter un rang à chaque élève trié
           elevesTries.forEach((eleve, index) => {
-            eleve.rang = index + 1;
+            eleve.rang = index + 1; // Le rang commence à 1
           });
 
           // Affecter le rang de l'élève connecté
           const rangActuel = elevesTries.find(eleve => eleve.nom === detailsEleve.value.nom && eleve.prenom === detailsEleve.value.prenom)?.rang;
           RangSemestre.value = rangActuel || 0; // Attribuer le rang ou 0 si non trouvé
         } else {
+          // Gestion des erreurs si la réponse n'est pas réussie
           console.error('Erreur lors de la récupération des moyennes:', responseMoyenneMAtiere.message);
         }
+
       }
     }
   } catch (error) {

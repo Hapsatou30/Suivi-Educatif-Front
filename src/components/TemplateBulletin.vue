@@ -42,43 +42,43 @@
 
     <!-- Tableau des matières et des résultats -->
     <table class="bulletin-table">
-  <thead>
-    <tr>
-      <th>Matière</th>
-      <th>Devoirs</th> 
-      <th>Examen</th>
-      <th>Moyenne</th>
-      <th>Coef</th>
-      <th>Moy*Coef</th>
-      <th>Rang</th>
-      <th>Appréciations</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr v-for="matiere in matieres" :key="matiere.nomMatiere">
-      <td>{{ matiere.nomMatiere }}</td>
-      <td>{{ matiere.moyenneDevoirs }}</td>
-      <td>{{ matiere.noteExamen || '-' }}</td>
-      <td>{{ matiere.moyenneMatiere || '-' }}</td>
-      <td>{{ matiere.coeff || '-' }}</td>
-      <td>{{ (matiere.moyenneMatiere * matiere.coeff).toFixed(2) || '-' }}</td>
-      <td>{{ matiere.rang || '-' }}</td>
-      <td>{{ getAppreciation(matiere.moyenneMatiere) }}</td>
-    </tr>
-  </tbody>
-  <tfoot>
-    <tr>
-      <td>Totaux</td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td>{{ totalCoef }}</td>
-      <td>{{ totalMoyCoef.toFixed(2) }}</td>
-      <td></td>
-      <td></td>
-    </tr>
-  </tfoot>
-</table>
+      <thead>
+        <tr>
+          <th>Matière</th>
+          <th>Devoirs</th>
+          <th>Examen</th>
+          <th>Moyenne</th>
+          <th>Coef</th>
+          <th>Moy*Coef</th>
+          <th>Rang</th>
+          <th>Appréciations</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="matiere in matieres" :key="matiere.nomMatiere">
+          <td>{{ matiere.nomMatiere }}</td>
+          <td>{{ matiere.moyenneDevoirs }}</td>
+          <td>{{ matiere.noteExamen || '-' }}</td>
+          <td>{{ matiere.moyenneMatiere || '-' }}</td>
+          <td>{{ matiere.coeff || '-' }}</td>
+          <td>{{ (matiere.moyenneMatiere * matiere.coeff).toFixed(2) || '-' }}</td>
+          <td>{{ matiere.rang || '-' }}</td>
+          <td>{{ getAppreciation(matiere.moyenneMatiere) }}</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td>Totaux</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>{{ totalCoef }}</td>
+          <td>{{ totalMoyCoef.toFixed(2) }}</td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tfoot>
+    </table>
 
 
     <div class="container1">
@@ -118,51 +118,56 @@
 
       <!-- Div de droite avec le tableau pour les absences et justifications -->
       <div class="column-right">
-      <table class="absence-table">
-        <thead>
-          <tr>
-            <th>Absences</th>
-            <th>Justifiées</th>
-            <th>Non Justifiées</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>{{ absences.total }}</td>
-            <td>{{ absences.justifiees }}</td>
-            <td>{{ absences.nonJustifiees }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+        <table class="absence-table">
+          <thead>
+            <tr>
+              <th>Absences</th>
+              <th>Justifiées</th>
+              <th>Non Justifiées</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{ absences.total }}</td>
+              <td>{{ absences.justifiees }}</td>
+              <td>{{ absences.nonJustifiees }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <div class="container2">
-  <!-- Div pour les mentions -->
-  <div class="column-left">
-    <h3>Mentions</h3>
-    <div class="form-check">
-      <input class="form-check-input" type="radio" name="mention" id="mention1" value="Félicitations" v-model="mention" :disabled="true" />
-      <label class="form-check-label" for="mention1">Félicitations</label>
+      <!-- Div pour les mentions -->
+      <div class="column-left">
+        <h3>Mentions</h3>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="mention" id="mention1" value="Félicitations"
+            v-model="mention" :disabled="true" />
+          <label class="form-check-label" for="mention1">Félicitations</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="mention" id="mention2" value="Encouragements"
+            v-model="mention" :disabled="true" />
+          <label class="form-check-label" for="mention2">Encouragements</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="mention" id="mention3" value="Tableau d'honneur"
+            v-model="mention" :disabled="true" />
+          <label class="form-check-label" for="mention3">Tableau d'honneur</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="mention" id="mention4" value="Passable" v-model="mention"
+            :disabled="true" />
+          <label class="form-check-label" for="mention4">Passable</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="mention" id="mention5" value="Insuffisant"
+            v-model="mention" :disabled="true" checked />
+          <label class="form-check-label" for="mention5">Insuffisant</label>
+        </div>
+      </div>
     </div>
-    <div class="form-check">
-      <input class="form-check-input" type="radio" name="mention" id="mention2" value="Encouragements" v-model="mention" :disabled="true" />
-      <label class="form-check-label" for="mention2">Encouragements</label>
-    </div>
-    <div class="form-check">
-      <input class="form-check-input" type="radio" name="mention" id="mention3" value="Tableau d'honneur" v-model="mention" :disabled="true" />
-      <label class="form-check-label" for="mention3">Tableau d'honneur</label>
-    </div>
-    <div class="form-check">
-      <input class="form-check-input" type="radio" name="mention" id="mention4" value="Passable" v-model="mention" :disabled="true" />
-      <label class="form-check-label" for="mention4">Passable</label>
-    </div>
-    <div class="form-check">
-      <input class="form-check-input" type="radio" name="mention" id="mention5" value="Insuffisant" v-model="mention" :disabled="true" checked />
-      <label class="form-check-label" for="mention5">Insuffisant</label>
-    </div>
-  </div>
-</div>
 
   </div>
 </template>
@@ -172,17 +177,17 @@ import { computed, ref, watch } from 'vue';
 
 // Déclaration des props : ces données dynamiques sont passées au composant depuis le parent
 const props = defineProps({
-  anneeScolaire: String, 
-  niveau: String,       
-  effectif: Number,      
-  matricule: String,    
-  sexe: String,          
-  classe: String,       
-  prenom: String,       
-  nom: String,          
-  dateNaissance: String, 
-  moyenneClasse: Number, 
-  RangSemestre: Number, 
+  anneeScolaire: String,
+  niveau: String,
+  effectif: Number,
+  matricule: String,
+  sexe: String,
+  classe: String,
+  prenom: String,
+  nom: String,
+  dateNaissance: String,
+  moyenneClasse: Number,
+  RangSemestre: Number,
 
   // Tableau des matières étudiées par l'élève, chaque matière contient des informations telles que la moyenne et le coefficient
   matieres: {
@@ -194,9 +199,9 @@ const props = defineProps({
   absences: {
     type: Object,
     default: () => ({
-      total: 0,           
-      justifiees: 0,      
-      nonJustifiees: 0,   
+      total: 0,
+      justifiees: 0,
+      nonJustifiees: 0,
     }),
   },
   moyenneClasse: {
@@ -208,9 +213,9 @@ const props = defineProps({
 // Calcul du total des coefficients pour toutes les matières
 const totalCoef = computed(() => {
   // Utilisation de reduce() pour additionner les coefficients de toutes les matières
-  return props.matieres.reduce((total, matiere) => 
+  return props.matieres.reduce((total, matiere) =>
     total + (matiere.coeff || 0),  // Ajoute le coefficient de la matière au total, ou 0 si le coefficient est non défini
-  0); // Le total commence à 0
+    0); // Le total commence à 0
 });
 
 // Calcul du total Moy*Coef pour toutes les matières
@@ -232,7 +237,7 @@ const getAppreciation = (moyenneMatiere) => {
   if (moyenne >= 14 && moyenne < 16) return 'Bien';
   if (moyenne >= 16 && moyenne < 18) return 'Très-Bien';
   if (moyenne >= 18 && moyenne <= 20) return 'Excellent';
-  return '-'; 
+  return '-';
 };
 
 // Calcul de la moyenne du 1er semestre
@@ -429,7 +434,7 @@ span {
   display: flex;
   justify-content: space-between;
   align-items: center;
-margin-bottom: 50px;
+  margin-bottom: 50px;
   margin-top: 30px;
   width: 98%;
   margin-left: auto;

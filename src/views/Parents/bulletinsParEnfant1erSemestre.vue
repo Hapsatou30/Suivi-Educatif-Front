@@ -37,7 +37,7 @@ import { useRoute } from 'vue-router';
 import { getDetailsEleve, getEleveClasse } from '@/services/ClasseEleve';
 import { getProfClasse } from '@/services/ClasseProfs';
 import { getAbsencesEleve } from '@/services/AbsenceService';
-import { getNoteEleve } from '@/services/NotesService';
+import { getNoteEleve, getNotesParAnneeClasse } from '@/services/NotesService';
 import TemplateBulletin from '@/components/TemplateBulletin.vue';
 import { ref, onMounted } from 'vue';
 import boutons from '@/components/boutons.vue';
@@ -158,7 +158,54 @@ const fetchDetailsEleve = async () => {
             };
           });
         }
+   // Récupération des Moyennes des élèves par matières
+const responseMoyenneMAtiere = await getNotesParAnneeClasse(anneClasseId.value);
+console.log('responseMoyenneMAtiere', responseMoyenneMAtiere);
 
+if (responseMoyenneMAtiere.status === 200) {
+    const { données } = responseMoyenneMAtiere;
+    const moyennesParMatiere = {};
+
+    // Parcourir les matières et les élèves pour récupérer les moyennes
+    for (const matiere in données) {
+        const eleves = données[matiere].eleves;
+        moyennesParMatiere[matiere] = []; // Initialiser le tableau pour chaque matière
+        
+        eleves.forEach(eleve => {
+            const { matricule, nom, prenom, notes } = eleve;
+            const moyenne_globale = notes?.moyenne_globale; // Vérification de l'existence de notes
+
+            // Ajouter l'élève et sa moyenne à la liste de la matière
+            moyennesParMatiere[matiere].push({
+                matricule,
+                nom,
+                prenom,
+                moyenne: moyenne_globale,
+            });
+        });
+
+        // Trier les élèves par moyenne décroissante pour cette matière
+        moyennesParMatiere[matiere].sort((a, b) => b.moyenne - a.moyenne);
+
+        // Calculer le rang de chaque élève pour cette matière
+        moyennesParMatiere[matiere].forEach((eleve, index) => {
+            eleve.rang = index + 1; // Le rang commence à 1
+        });
+    }
+
+    // Mappage des matières avec leurs rangs
+    matieres.value = matieres.value.map(matiere => {
+        const rangMatiere = moyennesParMatiere[matiere.nomMatiere].find(eleve => eleve.matricule === detailsEleve.value.matricule)?.rang || '-';
+        return {
+            ...matiere,
+            rang: rangMatiere // Ajouter le rang de la matière
+        };
+    });
+
+    console.log('Moyennes avec rangs par matière:', moyennesParMatiere);
+} else {
+    console.error('Erreur lors de la récupération des moyennes:', responseMoyenneMAtiere.message);
+}
 
       }
     }

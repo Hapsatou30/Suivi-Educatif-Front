@@ -13,19 +13,10 @@
         page2="bulletins_par_enfant_2semestre" />
     </div>
     <div class="bulletin" v-if="matieres.length">
-      <TemplateBulletin
-      :anneeScolaire="anneeScolaire"
-      :effectif="effectifClasse" 
-      :niveau="detailsEleve.niveau"
-      :matricule="detailsEleve.matricule"
-      :sexe="detailsEleve.sexe"
-      :classe="detailsEleve.classe"
-      :prenom="detailsEleve.prenom" 
-      :nom="detailsEleve.nom"
-      :dateNaissance="formatDateFrancaise(detailsEleve.dateNaissance)"
-      :matieres="matieres" 
-      :absences="absences"
-       />
+      <TemplateBulletin :anneeScolaire="anneeScolaire" :effectif="effectifClasse" :niveau="detailsEleve.niveau"
+        :matricule="detailsEleve.matricule" :sexe="detailsEleve.sexe" :classe="detailsEleve.classe"
+        :prenom="detailsEleve.prenom" :nom="detailsEleve.nom"
+        :dateNaissance="formatDateFrancaise(detailsEleve.dateNaissance)" :matieres="matieres" :absences="absences" />
     </div>
   </div>
 </template>
@@ -94,7 +85,7 @@ const fetchDetailsEleve = async () => {
 
         // Appel pour obtenir les matières
         const responseMatieres = await getProfClasse(anneClasseId.value);
-        console.log('responseMat', responseMatieres);
+        // console.log('responseMat', responseMatieres);
 
         // Vérification si classes_matieres existe et est un tableau
         if (responseMatieres.classes_matieres && Array.isArray(responseMatieres.classes_matieres)) {
@@ -104,24 +95,24 @@ const fetchDetailsEleve = async () => {
             coefficient: matiere.coefficient
           }));
 
-          console.log('matieres', matieres.value);  // Vérification des matières mappées
+          // console.log('matieres', matieres.value);  // Vérification des matières mappées
         } else {
           console.error('Aucune matière trouvée dans la réponse.');
         }
         // Appel pour obtenir les absences
         const responseAbsences = await getAbsencesEleve(classeEleve_id.value);
-        console.log('responseAbsences', responseAbsences);
+        // console.log('responseAbsences', responseAbsences);
 
         if (responseAbsences.status === 200) {
           absences.value.total = responseAbsences.données.length; // Total des absences
           absences.value.justifiees = responseAbsences.données.filter(abs => abs.justification !== null).length; // Justifiées
           absences.value.nonJustifiees = absences.value.total - absences.value.justifiees; // Non justifiées
-          console.log('absences', absences.value);
+          // console.log('absences', absences.value);
         }
 
         // Récupération des notes de l'élève
         const responseNotes = await getNoteEleve(classeEleve_id.value);
-        console.log('responseNotes', responseNotes);
+        // console.log('responseNotes', responseNotes);
 
         if (responseNotes.status === 200) {
           const notes = responseNotes.eleve.notes;
@@ -158,54 +149,56 @@ const fetchDetailsEleve = async () => {
             };
           });
         }
-   // Récupération des Moyennes des élèves par matières
-const responseMoyenneMAtiere = await getNotesParAnneeClasse(anneClasseId.value);
-console.log('responseMoyenneMAtiere', responseMoyenneMAtiere);
+        // Récupération des Moyennes des élèves par matières
+        const responseMoyenneMAtiere = await getNotesParAnneeClasse(anneClasseId.value);
+        // console.log('responseMoyenneMAtiere', responseMoyenneMAtiere);
 
-if (responseMoyenneMAtiere.status === 200) {
-    const { données } = responseMoyenneMAtiere;
-    const moyennesParMatiere = {};
+        if (responseMoyenneMAtiere.status === 200) {
+          //déstructuration permet d'extraire des valeurs d'objets
+          const { données } = responseMoyenneMAtiere;
+          const moyennesParMatiere = {};
 
-    // Parcourir les matières et les élèves pour récupérer les moyennes
-    for (const matiere in données) {
-        const eleves = données[matiere].eleves;
-        moyennesParMatiere[matiere] = []; // Initialiser le tableau pour chaque matière
-        
-        eleves.forEach(eleve => {
-            const { matricule, nom, prenom, notes } = eleve;
-            const moyenne_globale = notes?.moyenne_globale; // Vérification de l'existence de notes
+          // Parcourir les matières et les élèves pour récupérer les moyennes
+          for (const matiere in données) {
+            //Extrait la liste des élèves pour la matière en cours.
+            const eleves = données[matiere].eleves;
+            moyennesParMatiere[matiere] = []; // Initialiser le tableau pour chaque matière
 
-            // Ajouter l'élève et sa moyenne à la liste de la matière
-            moyennesParMatiere[matiere].push({
+            eleves.forEach(eleve => {
+              const { matricule, nom, prenom, notes } = eleve;
+              const moyenne_globale = notes?.moyenne_globale; // Vérification de l'existence de notes
+
+              // Ajouter l'élève et sa moyenne à la liste de la matière
+              moyennesParMatiere[matiere].push({
                 matricule,
                 nom,
                 prenom,
                 moyenne: moyenne_globale,
+              });
             });
-        });
 
-        // Trier les élèves par moyenne décroissante pour cette matière
-        moyennesParMatiere[matiere].sort((a, b) => b.moyenne - a.moyenne);
+            // Trier les élèves par moyenne décroissante pour cette matière
+            moyennesParMatiere[matiere].sort((a, b) => b.moyenne - a.moyenne);
 
-        // Calculer le rang de chaque élève pour cette matière
-        moyennesParMatiere[matiere].forEach((eleve, index) => {
-            eleve.rang = index + 1; // Le rang commence à 1
-        });
-    }
+            // Calculer le rang de chaque élève pour cette matière
+            moyennesParMatiere[matiere].forEach((eleve, index) => {
+              eleve.rang = index + 1; // Le rang commence à 1
+            });
+          }
 
-    // Mappage des matières avec leurs rangs
-    matieres.value = matieres.value.map(matiere => {
-        const rangMatiere = moyennesParMatiere[matiere.nomMatiere].find(eleve => eleve.matricule === detailsEleve.value.matricule)?.rang || '-';
-        return {
-            ...matiere,
-            rang: rangMatiere // Ajouter le rang de la matière
-        };
-    });
+          // Mappage des matières avec leurs rangs
+          matieres.value = matieres.value.map(matiere => {
+            const rangMatiere = moyennesParMatiere[matiere.nomMatiere].find(eleve => eleve.matricule === detailsEleve.value.matricule)?.rang || '-';
+            return {
+              ...matiere,
+              rang: rangMatiere // Ajouter le rang de la matière
+            };
+          });
 
-    console.log('Moyennes avec rangs par matière:', moyennesParMatiere);
-} else {
-    console.error('Erreur lors de la récupération des moyennes:', responseMoyenneMAtiere.message);
-}
+          // console.log('Moyennes avec rangs par matière:', moyennesParMatiere);
+        } else {
+          console.error('Erreur lors de la récupération des moyennes:', responseMoyenneMAtiere.message);
+        }
 
       }
     }

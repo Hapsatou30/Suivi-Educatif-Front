@@ -19,22 +19,22 @@
           </router-link>
         </li>
         <li>
-          <router-link to="/gestion_evaluation_parent" class="menu-link" :class="{ active: isActive('/gestion_evaluation_parent') || isActive('/evaluation_enfant') }">
+          <router-link to="/mesEvaluations" class="menu-link" :class="{ active: isActive('/mesEvaluations') }">
             <Icon icon="pajamas:planning" /> Évaluations
           </router-link>
         </li>
         <li>
-          <router-link to="/gestion_absences_parent" class="menu-link" :class="{ active: isActive('/gestion_absences_parent') || isActive('/absences_par_enfant') }">
+          <router-link to="/mesAbsences" class="menu-link" :class="{ active: isActive('/mesAbsences') }">
             <Icon icon="healthicons:i-training-class" /> Absences
           </router-link>
         </li>
         <li>
-          <router-link to="/gestion_cahier_texte_parent" class="menu-link" :class="{ active: isActive('/cahier_texte_enfant') || isActive('/gestion_cahier_texte_parent') }">
+          <router-link to="/cahierDeTexteClasse" class="menu-link" :class="{ active: isActive('/cahierDeTexteClasse') }">
             <Icon icon="carbon:book" /> Cahiers de textes
           </router-link>
         </li>
         <li>
-          <router-link to="/gestion_emplois_du_temps_parent" class="menu-link" :class="{ active: isActive('/gestion_emplois_du_temps_parent') || isActive('/emplois_du_temps_enfant') }">
+          <router-link to="/emploisDuTemps" class="menu-link" :class="{ active: isActive('/emploisDuTemps')  }">
             <Icon icon="cil:calendar" /> Emplois du temps
           </router-link>
         </li>

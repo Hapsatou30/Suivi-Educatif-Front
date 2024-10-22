@@ -76,6 +76,10 @@ import SideBarEleve from '@/components/sideBarEleve.vue';
 import TopBarEleve from '@/components/topBarEleve.vue';
 import MesNotes from '@/views/Eleves/mesNotes1erSemestre.vue';
 import MesNotes2emeSemestre from '@/views/Eleves/mesNotes2emeSemestre.vue';
+import MesEvaluations from '@/views/Eleves/mesEvaluations.vue';
+import MesAbsences from '@/views/Eleves/mesAbsences.vue';
+import CahierDeTexte from '@/views/Eleves/cahierDeTexte.vue';
+import MonEmploisDuTemps from '@/views/Eleves/monEmploisDuTemps.vue';
 
 
 // Routes non protégées (accessible à tous)
@@ -175,6 +179,10 @@ const eleveRoutes = [
   { path: '/topBarEleve', name: 'topBarEleve', component: TopBarEleve},
   { path: '/mesNotes_1e_semestre', name: 'mesNotes_1e_semestre', component: MesNotes},
   { path: '/mesNotes_2e_semestre', name: 'mesNotes_2e_semestre', component: MesNotes2emeSemestre},
+  { path: '/mesEvaluations' , name: 'mesEvaluations', component: MesEvaluations},
+  { path: '/mesAbsences' , name: 'mesAbsences', component: MesAbsences},
+  { path: '/cahierDeTexteClasse' , name: 'cahierDeTexteClasse', component: CahierDeTexte},
+  { path: '/emploisDuTemps', name: 'emploisDuTemps', component: MonEmploisDuTemps},
 
 ];
 

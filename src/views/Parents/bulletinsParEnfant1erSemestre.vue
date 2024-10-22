@@ -17,7 +17,7 @@
         :matricule="detailsEleve.matricule" :sexe="detailsEleve.sexe" :classe="detailsEleve.classe"
         :prenom="detailsEleve.prenom" :nom="detailsEleve.nom"
         :dateNaissance="formatDateFrancaise(detailsEleve.dateNaissance)" :matieres="matieres" :absences="absences"
-        :moyenneClasse="moyenneClasse" />
+        :moyenneClasse="moyenneClasse" :RangSemestre="RangSemestre" />
     </div>
   </div>
 </template>
@@ -44,6 +44,7 @@ const anneeScolaire = ref(0);
 const matieres = ref([]);
 const notes = ref([]);
 const moyenneClasse = ref(0);
+const RangSemestre = ref(0); // Variable pour stocker le rang de l'élève dans la classe
 const detailsEleve = ref({
   niveau: '',
   matricule: '',
@@ -58,6 +59,7 @@ const absences = ref({
   justifiees: 0,
   nonJustifiees: 0,
 });
+
 // Fonction de formatage de la date en jj/MM/aaaa
 const formatDateFrancaise = (dateString) => {
   if (!dateString) return '';
@@ -80,183 +82,169 @@ const fetchDetailsEleve = async () => {
       anneeScolaire.value = detailsEleve.value.anneeScolaire;
       prenom.value = detailsEleve.value.prenom;
 
+      //récupéré l'effectif de la classe
       const responseEleves = await getEleveClasse(anneClasseId.value);
       if (responseEleves.status === 200) {
         const eleves = responseEleves.données[0].eleves;
         effectifClasse.value = eleves.length;
 
-        // Appel pour obtenir les matières
+        // Appel pour obtenir les matières et leur coefficients
         const responseMatieres = await getProfClasse(anneClasseId.value);
-        // console.log('responseMat', responseMatieres);
-
-        // Vérification si classes_matieres existe et est un tableau
         if (responseMatieres.classes_matieres && Array.isArray(responseMatieres.classes_matieres)) {
-          // Mappage des matières
           matieres.value = responseMatieres.classes_matieres.map(matiere => ({
             nomMatiere: matiere.matiere,
             coefficient: matiere.coefficient
           }));
-
-          // console.log('matieres', matieres.value);  // Vérification des matières mappées
         } else {
           console.error('Aucune matière trouvée dans la réponse.');
         }
-        // Appel pour obtenir les absences
+
+        // Récupérer les absences
         const responseAbsences = await getAbsencesEleve(classeEleve_id.value);
-        // console.log('responseAbsences', responseAbsences);
-
         if (responseAbsences.status === 200) {
-          absences.value.total = responseAbsences.données.length; // Total des absences
-          absences.value.justifiees = responseAbsences.données.filter(abs => abs.justification !== null).length; // Justifiées
-          absences.value.nonJustifiees = absences.value.total - absences.value.justifiees; // Non justifiées
-          // console.log('absences', absences.value);
+          absences.value.total = responseAbsences.données.length;
+          absences.value.justifiees = responseAbsences.données.filter(abs => abs.justification !== null).length;
+          absences.value.nonJustifiees = absences.value.total - absences.value.justifiees;
         }
 
-        // Récupération des notes de l'élève
-        const responseNotes = await getNoteEleve(classeEleve_id.value);
-        // console.log('responseNotes', responseNotes);
+       // Récupérer les notes de l'élève
+const responseNotes = await getNoteEleve(classeEleve_id.value);
+if (responseNotes.status === 200) {
+  const notes = responseNotes.eleve.notes.filter(note => note.periode === "1_semestre");
 
-        if (responseNotes.status === 200) {
-          const notes = responseNotes.eleve.notes;
+  // Mappage des matières avec leurs devoirs et examens
+  matieres.value = matieres.value.map(matiere => {
+    const devoirs = notes.filter(note =>
+      note.matiere === matiere.nomMatiere && note.evaluation === 'Devoir'
+    );
 
-          // Mappage des matières avec leurs devoirs et examens
-          matieres.value = matieres.value.map(matiere => {
-            // Filtrer les devoirs pour chaque matière
-            const devoirs = notes.filter(note =>
-              note.matiere === matiere.nomMatiere && note.evaluation === 'Devoir'
-            );
+    const examen = notes.find(note =>
+      note.matiere === matiere.nomMatiere && note.evaluation === 'Examen'
+    );
 
-            // Filtrer la note de l'examen pour chaque matière 
-            const examen = notes.find(note =>
-              note.matiere === matiere.nomMatiere && note.evaluation === 'Examen'
-            );
+    const moyenneDevoirs = devoirs.length > 0 ?
+      (devoirs.reduce((a, b) => a + b.note, 0) / devoirs.length).toFixed(2)
+      : 0;
 
-            // Calcul de la moyenne des devoirs
-            const moyenneDevoirs = devoirs.length > 0 ?
-              (devoirs.reduce((a, b) => a + b.note, 0) / devoirs.length).toFixed(2)
-              : 0;
+    const noteExamen = examen ? examen.note : 0;
 
-            // Note d'examen (ou 0 si pas d'examen)
-            const noteExamen = examen ? examen.note : 0;
+    const moyenneMatiere = ((parseFloat(moyenneDevoirs) + parseFloat(noteExamen)) / 2).toFixed(2);
 
-            // Calcul de la moyenne de la matière : (moyenneDevoirs + noteExamen) / 2
-            const moyenneMatiere = ((parseFloat(moyenneDevoirs) + parseFloat(noteExamen)) / 2).toFixed(2);
+    return {
+      nomMatiere: matiere.nomMatiere,
+      coeff: matiere.coefficient,
+      moyenneDevoirs: moyenneDevoirs,
+      noteExamen: noteExamen,
+      moyenneMatiere: moyenneMatiere,
+    };
+  });
+}
 
-            return {
-              nomMatiere: matiere.nomMatiere,
-              coeff: matiere.coefficient,
-              moyenneDevoirs: moyenneDevoirs,
-              noteExamen: noteExamen,
-              moyenneMatiere: moyenneMatiere,
-            };
-          });
+// Récupérer les notes par année et classe
+const responseMoyenneMAtiere = await getNotesParAnneeClasse(anneClasseId.value);
+
+// Vérifier si la réponse est réussie (status 200)
+if (responseMoyenneMAtiere.status === 200) {
+  const { données } = responseMoyenneMAtiere;
+
+  // Filtrer les données pour ne récupérer que celles du 1er semestre
+  const semestre1Data = données["1_semestre"];
+
+  const moyennesParMatiere = {}; // Initialiser un objet pour stocker les moyennes par matière
+  const elevesGlobalData = {};
+  let sommeMoyennesPonderees = 0;
+  let nombreEleves = 0;
+
+  // Boucle à travers chaque matière pour traiter les notes du 1er semestre
+  for (const matiere in semestre1Data) {
+    const coefficient = semestre1Data[matiere].coefficient;
+    const eleves = semestre1Data[matiere].eleves;
+    moyennesParMatiere[matiere] = []; // Initialiser un tableau pour les moyennes de cette matière
+
+    // Boucle à travers chaque élève pour calculer les moyennes
+    eleves.forEach(eleve => {
+      const { matricule, nom, prenom, notes } = eleve; // Extraire les informations de l'élève
+      const moyenne_globale = notes?.moyenne_globale; // Obtenir la moyenne globale
+
+      if (moyenne_globale !== undefined) {
+        const produitCoefficientMoyenne = coefficient * moyenne_globale;
+
+        // Ajouter les données de l'élève à la matière
+        moyennesParMatiere[matiere].push({
+          matricule,
+          nom,
+          prenom,
+          moyenne: moyenne_globale,
+          produitCoefficientMoyenne,
+        });
+
+        if (!elevesGlobalData[matricule]) {
+          elevesGlobalData[matricule] = {
+            nom,
+            prenom,
+            sommeCoefficients: 0,
+            sommeResultats: 0,
+            moyennePonderee: 0,
+          };
         }
-        // Récupération des Moyennes des élèves par matières
-        const responseMoyenneMAtiere = await getNotesParAnneeClasse(anneClasseId.value);
 
-        if (responseMoyenneMAtiere.status === 200) {
-          // Déstructuration permet d'extraire des valeurs d'objets
-          const { données } = responseMoyenneMAtiere;
-          const moyennesParMatiere = {};
+        elevesGlobalData[matricule].sommeCoefficients += coefficient;
+        elevesGlobalData[matricule].sommeResultats += produitCoefficientMoyenne;
+      }
+    });
 
-          // Variables pour calculs globaux par élève
-          const elevesGlobalData = {}; // Stockage pour chaque élève (matricule) : somme des coefficients et somme des produits
-          let sommeMoyennesPonderees = 0; // Variable pour stocker la somme des moyennes pondérées
-          let nombreEleves = 0; // Compteur du nombre d'élèves
+    // Trier les élèves par moyenne décroissante pour cette matière
+    moyennesParMatiere[matiere].sort((a, b) => b.moyenne - a.moyenne);
 
-          // Parcourir les matières et les élèves pour récupérer les moyennes
-          for (const matiere in données) {
-            // Extrait le coefficient pour la matière en cours
-            const coefficient = données[matiere].coefficient;
+    // Calculer le rang de chaque élève pour cette matière
+    moyennesParMatiere[matiere].forEach((eleve, index) => {
+      eleve.rang = index + 1;
+    });
+  }
 
-            // Extrait la liste des élèves pour la matière en cours
-            const eleves = données[matiere].eleves;
-            moyennesParMatiere[matiere] = []; // Initialiser le tableau pour chaque matière
+  // Calculer la moyenne pondérée pour chaque élève
+  Object.keys(elevesGlobalData).forEach(matricule => {
+    const eleveData = elevesGlobalData[matricule];
+    if (eleveData.sommeCoefficients !== 0) {
+      eleveData.moyennePonderee = eleveData.sommeResultats / eleveData.sommeCoefficients;
+    } else {
+      eleveData.moyennePonderee = 0;
+    }
+    sommeMoyennesPonderees += eleveData.moyennePonderee;
+    nombreEleves++;
+  });
 
-            eleves.forEach(eleve => {
-              const { matricule, nom, prenom, notes } = eleve;
-              const moyenne_globale = notes?.moyenne_globale; // Vérification de l'existence de notes
+  // Calculer la moyenne de la classe
+  moyenneClasse.value = parseFloat((sommeMoyennesPonderees / nombreEleves).toFixed(2));
 
-              if (moyenne_globale !== undefined) {
-                // Calculer le produit du coefficient et de la moyenne
-                const produitCoefficientMoyenne = coefficient * moyenne_globale;
+  // Mappage des matières avec leurs rangs
+  matieres.value = matieres.value.map(matiere => {
+    const rangMatiere = moyennesParMatiere[matiere.nomMatiere].find(eleve => eleve.matricule === detailsEleve.value.matricule)?.rang || '-';
+    return {
+      ...matiere,
+      rang: rangMatiere,
+    };
+  });
 
-                // Ajouter l'élève, sa moyenne, et le produit coefficient * moyenne à la liste de la matière
-                moyennesParMatiere[matiere].push({
-                  matricule,
-                  nom,
-                  prenom,
-                  moyenne: moyenne_globale,
-                  produitCoefficientMoyenne, // Ajout du produit du coefficient et de la moyenne
-                });
+  // Trier les élèves selon leur moyenne pondérée de manière décroissante
+  const elevesTries = Object.values(elevesGlobalData).sort((a, b) => b.moyennePonderee - a.moyennePonderee);
 
-                // Initialiser les données globales si ce n'est pas fait pour cet élève
-                if (!elevesGlobalData[matricule]) {
-                  elevesGlobalData[matricule] = {
-                    nom,
-                    prenom,
-                    sommeCoefficients: 0,
-                    sommeResultats: 0,
-                    moyennePonderee: 0 // Nouvelle propriété pour stocker la moyenne pondérée
-                  };
-                }
+  // Affecter un rang à chaque élève trié
+  elevesTries.forEach((eleve, index) => {
+    eleve.rang = index + 1;
+  });
 
-                // Ajouter le coefficient de la matière et le produit du coefficient et de la moyenne à l'élève
-                elevesGlobalData[matricule].sommeCoefficients += coefficient;
-                elevesGlobalData[matricule].sommeResultats += produitCoefficientMoyenne;
-              }
-            });
+  // Affecter le rang de l'élève connecté
+  const rangActuel = elevesTries.find(eleve => eleve.nom === detailsEleve.value.nom && eleve.prenom === detailsEleve.value.prenom)?.rang;
+  RangSemestre.value = rangActuel || 0; // Attribuer le rang ou 0 si non trouvé
 
-            // Trier les élèves par moyenne décroissante pour cette matière
-            moyennesParMatiere[matiere].sort((a, b) => b.moyenne - a.moyenne);
-
-            // Calculer le rang de chaque élève pour cette matière
-            moyennesParMatiere[matiere].forEach((eleve, index) => {
-              eleve.rang = index + 1; // Le rang commence à 1
-            });
-          }
-
-          // Calculer la moyenne pondérée pour chaque élève
-          Object.keys(elevesGlobalData).forEach(matricule => {
-            const eleveData = elevesGlobalData[matricule];
-
-            // On vérifie que la somme des coefficients n'est pas égale à zéro pour éviter la division par zéro
-            if (eleveData.sommeCoefficients !== 0) {
-              eleveData.moyennePonderee = eleveData.sommeResultats / eleveData.sommeCoefficients;
-            } else {
-              eleveData.moyennePonderee = 0; // Par défaut à 0 si aucun coefficient
-            }
-
-            // Ajouter la moyenne pondérée de l'élève à la somme totale
-            sommeMoyennesPonderees += eleveData.moyennePonderee;
-            nombreEleves++; // Incrémenter le compteur d'élèves
-          });
-
-          // Calculer la moyenne de la classe
-          moyenneClasse.value = parseFloat((sommeMoyennesPonderees / nombreEleves).toFixed(2));
-
-          // Affichage ou manipulation des résultats globaux pour chaque élève et la moyenne de la classe
-          console.log("Données globales par élève avec moyenne pondérée:", elevesGlobalData);
-          console.log("Moyenne de la classe:", moyenneClasse);
-
-          // Mappage des matières avec leurs rangs
-          matieres.value = matieres.value.map(matiere => {
-            const rangMatiere = moyennesParMatiere[matiere.nomMatiere].find(eleve => eleve.matricule === detailsEleve.value.matricule)?.rang || '-';
-            return {
-              ...matiere,
-              rang: rangMatiere // Ajouter le rang de la matière
-            };
-          });
-
-          // console.log('Moyennes avec rangs par matière:', moyennesParMatiere);
-        } else {
-          console.error('Erreur lors de la récupération des moyennes:', responseMoyenneMAtiere.message);
-        }
+} else {
+  console.error('Erreur lors de la récupération des moyennes:', responseMoyenneMAtiere.message);
+}
 
 
       }
     }
-
   } catch (error) {
     console.error("Erreur lors de la récupération des détails de l'élève:", error);
   }
@@ -266,6 +254,7 @@ onMounted(() => {
   fetchDetailsEleve();
 });
 </script>
+
 
 
 

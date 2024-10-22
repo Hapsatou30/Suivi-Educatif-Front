@@ -20,7 +20,8 @@
           <li>Email: <span>samaecole@gmail.com</span></li>
           <li>Niveau: <span>{{ niveau }}</span></li>
           <li>Effectif: <span>{{ effectif }}</span></li>
-          <li>Moyenne Classe: <span>10.02</span></li>
+          <li>Moyenne Classe: <span>{{ moyenneClasse }}</span></li>
+
         </ul>
       </div>
 
@@ -180,6 +181,7 @@ const props = defineProps({
   prenom: String,       
   nom: String,          
   dateNaissance: String, 
+  moyenneClasse: Number, 
 
   // Tableau des matières étudiées par l'élève, chaque matière contient des informations telles que la moyenne et le coefficient
   matieres: {
@@ -195,6 +197,10 @@ const props = defineProps({
       justifiees: 0,      
       nonJustifiees: 0,   
     }),
+  },
+  moyenneClasse: {
+    type: Number,
+    required: true
   },
 });
 

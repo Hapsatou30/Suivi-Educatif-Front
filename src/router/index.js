@@ -71,6 +71,15 @@ import GestionBulletins from '@/views/Parents/gestionBulletins.vue';
 import TemplateBulletin from '@/components/TemplateBulletin.vue';
 import BulletinsParEnfant2emeSemestre from '@/views/Parents/bulletinsParEnfant2emeSemestre.vue';
 import BulletinsParEnfant1erSemestre from '@/views/Parents/bulletinsParEnfant1erSemestre.vue';
+import DashboardEleve from '@/views/Eleves/dashboardEleve.vue';
+import SideBarEleve from '@/components/sideBarEleve.vue';
+import TopBarEleve from '@/components/topBarEleve.vue';
+import MesNotes from '@/views/Eleves/mesNotes1erSemestre.vue';
+import MesNotes2emeSemestre from '@/views/Eleves/mesNotes2emeSemestre.vue';
+import MesEvaluations from '@/views/Eleves/mesEvaluations.vue';
+import MesAbsences from '@/views/Eleves/mesAbsences.vue';
+import CahierDeTexte from '@/views/Eleves/cahierDeTexte.vue';
+import MonEmploisDuTemps from '@/views/Eleves/monEmploisDuTemps.vue';
 
 
 // Routes non protégées (accessible à tous)
@@ -163,12 +172,28 @@ const parentRoutes = [
   { path: '/bulletins_par_enfant_2semestre/:classeEleve_id', name:'bulletins_par_enfant_2semestre', component: BulletinsParEnfant2emeSemestre}
 ];
 
+//routes pour les eleves
+const eleveRoutes = [
+  { path: '/dashboardEleve', name: 'dashboardEleve', component: DashboardEleve },
+  { path: '/sidebarEleve', name:'sidebarEleve', component: SideBarEleve},
+  { path: '/topBarEleve', name: 'topBarEleve', component: TopBarEleve},
+  { path: '/mesNotes_1e_semestre', name: 'mesNotes_1e_semestre', component: MesNotes},
+  { path: '/mesNotes_2e_semestre', name: 'mesNotes_2e_semestre', component: MesNotes2emeSemestre},
+  { path: '/mesEvaluations' , name: 'mesEvaluations', component: MesEvaluations},
+  { path: '/mesAbsences' , name: 'mesAbsences', component: MesAbsences},
+  { path: '/cahierDeTexteClasse' , name: 'cahierDeTexteClasse', component: CahierDeTexte},
+  { path: '/emploisDuTemps', name: 'emploisDuTemps', component: MonEmploisDuTemps},
+
+];
+
+
 // Création du tableau des routes combinées
 const routes = [
   ...publicRoutes,
   ...adminRoutes.map(route => ({ ...route, meta: { requiresAuth: true, role: 'admin' } })),
   ...professorRoutes.map(route => ({ ...route, meta: { requiresAuth: true, role: 'professeur' } })),
-  ...parentRoutes.map(route => ({...route, meta: { requiresAuth: true, role: 'parent' } })), // Ajouter les routes parents si nécessaire
+  ...parentRoutes.map(route => ({...route, meta: { requiresAuth: true, role: 'parent' } })), 
+  ...eleveRoutes.map(route => ({...route, meta: { requiresAuth: true, role: 'eleve' } })), 
 ];
 
 

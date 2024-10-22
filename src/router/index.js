@@ -80,6 +80,7 @@ import MesEvaluations from '@/views/Eleves/mesEvaluations.vue';
 import MesAbsences from '@/views/Eleves/mesAbsences.vue';
 import CahierDeTexte from '@/views/Eleves/cahierDeTexte.vue';
 import MonEmploisDuTemps from '@/views/Eleves/monEmploisDuTemps.vue';
+import TemplateBulletin2 from '@/components/TemplateBulletin2.vue';
 
 
 // Routes non protégées (accessible à tous)
@@ -96,6 +97,8 @@ const publicRoutes = [
   {path: '/diagramme_barre_parent', name: 'diagramme_barre_parent', component: DiagrameBarreParent},
   { path: '/diagramme_matiere_notes', name: 'diagramme_matiere_notes', component: DiagrameBarreNotes},
   { path: '/templateBulletin', name: 'templateBulletin', component: TemplateBulletin},
+  { path: '/templateBulletin2', name: 'templateBulletin2', component: TemplateBulletin2}
+  
 ];
 
 // Routes protégées pour les administrateurs

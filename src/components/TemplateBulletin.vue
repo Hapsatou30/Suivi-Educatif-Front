@@ -97,7 +97,7 @@
             <tr>
               <td>1er Semestre</td>
               <td>{{ moyennePremierSemestre.toFixed(2) }}</td>
-              <td>---</td>
+              <td>{{ RangSemestre }}</td>
               <td>---</td>
             </tr>
             <tr>
@@ -182,6 +182,7 @@ const props = defineProps({
   nom: String,          
   dateNaissance: String, 
   moyenneClasse: Number, 
+  RangSemestre: Number, 
 
   // Tableau des matières étudiées par l'élève, chaque matière contient des informations telles que la moyenne et le coefficient
   matieres: {

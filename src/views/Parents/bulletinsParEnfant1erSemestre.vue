@@ -13,10 +13,20 @@
         page2="bulletins_par_enfant_2semestre" />
     </div>
     <div class="bulletin" v-if="matieres.length">
-      <TemplateBulletin :anneeScolaire="anneeScolaire" :effectif="effectifClasse" :niveau="detailsEleve.niveau"
-        :matricule="detailsEleve.matricule" :sexe="detailsEleve.sexe" :classe="detailsEleve.classe"
-        :prenom="detailsEleve.prenom" :nom="detailsEleve.nom"
-        :dateNaissance="formatDateFrancaise(detailsEleve.dateNaissance)" :matieres="matieres" :absences="absences" />
+      <TemplateBulletin 
+        :anneeScolaire="anneeScolaire" 
+        :effectif="effectifClasse" 
+        :niveau="detailsEleve.niveau"
+        :matricule="detailsEleve.matricule" 
+        :sexe="detailsEleve.sexe" 
+        :classe="detailsEleve.classe"
+        :prenom="detailsEleve.prenom" 
+        :nom="detailsEleve.nom"
+        :dateNaissance="formatDateFrancaise(detailsEleve.dateNaissance)" 
+        :matieres="matieres" 
+        :absences="absences" 
+        :moyenneClasse="moyenneClasse" 
+      />
     </div>
   </div>
 </template>
@@ -42,6 +52,7 @@ const effectifClasse = ref(0);
 const anneeScolaire = ref(0);
 const matieres = ref([]);
 const notes = ref([]);
+const moyenneClasse = ref(0);
 const detailsEleve = ref({
   niveau: '',
   matricule: '',
@@ -231,7 +242,7 @@ if (responseMoyenneMAtiere.status === 200) {
   });
 
   // Calculer la moyenne de la classe
-  const moyenneClasse = sommeMoyennesPonderees / nombreEleves;
+  moyenneClasse.value = parseFloat((sommeMoyennesPonderees / nombreEleves).toFixed(2));
 
   // Affichage ou manipulation des résultats globaux pour chaque élève et la moyenne de la classe
   console.log("Données globales par élève avec moyenne pondérée:", elevesGlobalData);

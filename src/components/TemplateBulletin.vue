@@ -181,6 +181,7 @@ const props = defineProps({
   prenom: String,       
   nom: String,          
   dateNaissance: String, 
+  moyenneClasse: Number, 
 
   // Tableau des matières étudiées par l'élève, chaque matière contient des informations telles que la moyenne et le coefficient
   matieres: {

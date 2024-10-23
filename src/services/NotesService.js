@@ -24,6 +24,29 @@ export const getNoteClasse = async (classeProf_id) => {
       return null; // Valeur par défaut en cas d'erreur
   }
 };
+
+export const getNotesParAnneeClasse = async (anneeClasse_id) => {
+  try {
+      const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
+
+      // Récupération des professeurs avec leur matière en utilisant le classeId
+      const response = await axios.get(`${apiUrl}/notes/annee-classe/${anneeClasse_id}`, { 
+          headers: {
+              Authorization: `Bearer ${token}` // Utiliser le token dans l'en-tête pour l'authentification
+          }
+      });
+
+      // Afficher les données reçues pour le débogage
+      // console.log('Données reçues Notes:', response.data); // Vérifie les données reçues de l'API
+
+      // Retourner l'objet complet
+      return response.data; // Assurez-vous de retourner la réponse complète
+  } catch (error) {
+      // Gérer les erreurs lors de la récupération des professeurs
+      console.error('Erreur:', error);
+      return null; // Valeur par défaut en cas d'erreur
+  }
+};
 export const getNoteEleve = async (classeEleve_id) => {
   try {
       const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local

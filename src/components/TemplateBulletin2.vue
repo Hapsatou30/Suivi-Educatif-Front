@@ -37,7 +37,7 @@
     </div>
 
     <div class="titre">
-      <h2 style=" text-align: center;">Bulletin du 1er Semestre</h2>
+      <h2>Bulletin du 2eme Semestre</h2>
     </div>
 
     <!-- Tableau des matières et des résultats -->
@@ -99,6 +99,18 @@
               <td>{{ moyennePremierSemestre.toFixed(2) }}</td>
               <td>{{ RangSemestre }}</td>
               <td> {{ moyenneClasse }}</td>
+            </tr>
+            <tr>
+              <td>2ème Semestre</td>
+              <td>---</td>
+              <td>---</td>
+              <td>---</td>
+            </tr>
+            <tr>
+              <td>Moyenne Générale</td>
+              <td>---</td>
+              <td>---</td>
+              <td>-----</td>
             </tr>
           </tbody>
         </table>

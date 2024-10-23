@@ -109,7 +109,10 @@ const login = async () => {
         router.push('/dashboard_prof');
       } else if (roles.includes('parent')) {
         router.push('/dashboardParent');
-      } else {
+      }  else if (roles.includes('eleve')) {
+        router.push('/dashboardEleve');
+      }
+      else {
         router.push('/login');
       }
     } else {

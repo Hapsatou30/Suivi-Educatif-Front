@@ -37,7 +37,7 @@
     </div>
 
     <div class="titre">
-      <h2>Bulletin du 1er Semestre</h2>
+      <h2 style=" text-align: center;">Bulletin du 1er Semestre</h2>
     </div>
 
     <!-- Tableau des matières et des résultats -->

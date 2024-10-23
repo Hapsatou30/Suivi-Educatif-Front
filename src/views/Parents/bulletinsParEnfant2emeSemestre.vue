@@ -19,6 +19,12 @@
         :dateNaissance="formatDateFrancaise(detailsEleve.dateNaissance)" :matieres="matieres" :absences="absences"
         :moyenneClasse="moyenneClasse" :RangSemestre="RangSemestre" />
     </div>
+    <div class="telecharger-container">
+      <button @click="telechargerBulletin" class="btn-telecharger">
+        <Icon class="icon" icon="ic:baseline-download" />
+        Télécharger le bulletin
+      </button>
+    </div>
   </div>
 </template>
 
@@ -30,11 +36,11 @@ import { getDetailsEleve, getEleveClasse } from '@/services/ClasseEleve';
 import { getProfClasse } from '@/services/ClasseProfs';
 import { getAbsencesEleve } from '@/services/AbsenceService';
 import { getNoteEleve, getNotesParAnneeClasse } from '@/services/NotesService';
-import TemplateBulletin from '@/components/TemplateBulletin.vue';
+import TemplateBulletin from '@/components/TemplateBulletin2.vue';
 import { ref, onMounted } from 'vue';
 import boutons from '@/components/boutons.vue';
 import { Icon } from '@iconify/vue';
-
+import html2pdf from 'html2pdf.js';
 const route = useRoute();
 const classeEleve_id = ref(route.params.classeEleve_id);
 const prenom = ref('');
@@ -59,6 +65,22 @@ const absences = ref({
   justifiees: 0,
   nonJustifiees: 0,
 });
+
+//methode pour télécharger le bulletins 
+const telechargerBulletin = () => {
+  // Sélectionner l'élément HTML du bulletin que l'on souhaite convertir en PDF
+  const element = document.querySelector('.bulletin');
+
+  // Options pour la génération du PDF
+  const options = {
+    filename: `Bulletin_${detailsEleve.value.prenom}_${detailsEleve.value.nom}.pdf`,
+    margin: 10,
+    jsPDF: { unit: 'pt', format: 'a4', orientation: 'portrait' }
+  };
+
+  // Générer et télécharger le PDF
+  html2pdf().set(options).from(element).save();
+};
 
 // Fonction de formatage de la date en jj/MM/aaaa
 const formatDateFrancaise = (dateString) => {
@@ -290,5 +312,29 @@ onMounted(() => {
   align-items: start;
   justify-content: start;
 
+}
+.telecharger-container {
+  margin-top: 20px; /* Ajoute un espacement au-dessus du bouton */
+}
+
+.btn-telecharger {
+  display: flex;
+  align-items: center;
+  background-color: #F7AE00; /* Couleur de fond du bouton */
+  color: white; /* Couleur du texte */
+  border: none; /* Enlève la bordure */
+  border-radius: 5px; /* Coins arrondis */
+  padding: 10px 15px; /* Espacement interne */
+  cursor: pointer; /* Curseur en main */
+  transition: background-color 0.3s; /* Transition pour l'effet de survol */
+}
+
+.btn-telecharger:hover {
+  background-color: #F7AE00; /* Couleur de fond au survol */
+}
+
+.icon {
+  margin-right: 8px; /* Espace entre l'icône et le texte */
+  font-size: 18px; /* Taille de l'icône */
 }
 </style>

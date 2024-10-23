@@ -315,17 +315,15 @@ input {
 
   .container .col-8 {
     flex: 0 0 100%;
-    /* Colonne principale prend toute la largeur */
     max-width: 100%;
     background-color: white;
-    /* Couleur de fond pour mobile */
     color: #407CEE;
-    /* Couleur du texte */
     border-radius: 0;
-    /* Pas de bordure arrondie */
     padding: 15px;
-    /* Espacement interne */
+    border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
   }
+  
 
   .logo {
     flex-direction: column;
@@ -351,13 +349,13 @@ input {
     margin-top: -50px;
     /* Marge pour superposer */
   }
-
   .formulaire {
-    width: 100%;
-    /* Largeur complète pour le formulaire */
-    padding: 20px;
-    /* Espacement interne */
-  }
+  margin-left: 0;
+
+  max-width: 100%;
+}
+
+ 
 
   .container .col-4 {
     display: none;

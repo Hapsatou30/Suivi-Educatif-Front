@@ -25,30 +25,36 @@
         </div>
 
         <!-- Boucle sur les évaluations récupérées pour afficher un maximum de 2 cartes -->
-<div class="list_planning" v-for="(evaluation, index) in evaluations.slice(0, 2)" :key="index">
-  <div class="custom-card">
-    <div class="card-header">
-      <h3 class="card-title">{{ evaluation.matiere }}</h3>
-      <span class="card-subtitle">{{ evaluation.type_evaluation }}</span>
-    </div>
-    <div class="card-body">
-      <div class="card-body-left">
-        <Icon icon="mdi:calendar-outline" class="icon" />
-        {{ evaluation.date }}
+        <div>
+    <div v-if="evaluations.length > 0">
+      <div class="list_planning" v-for="(evaluation, index) in evaluations.slice(0, 2)" :key="index">
+        <div class="custom-card">
+          <div class="card-header">
+            <h3 class="card-title">{{ evaluation.matiere }}</h3>
+            <span class="card-subtitle">{{ evaluation.type_evaluation }}</span>
+          </div>
+          <div class="card-body">
+            <div class="card-body-left">
+              <Icon icon="mdi:calendar-outline" class="icon" />
+              {{ evaluation.date }}
+            </div>
+            <div class="card-body-right">
+              <Icon icon="carbon:time" class="icon" />
+              {{ evaluation.heure }}
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="card-body-right">
-        <Icon icon="carbon:time" class="icon" />
-        {{ evaluation.heure }}
-      </div>
     </div>
-
+    <div v-else>
+      <p style="text-align: end;">Aucune évaluation à afficher pour le moment.</p>
+    </div>
   </div>
-</div>
 
       </div>
     </div>
     <div class="row">
-      <div class="chart-container1 col-8">
+      <div class="chart-container1 col-6">
       <h5 style="text-align: center; margin-bottom: 5px;">Mes heures de cours par jour</h5>
         <BarChart />
       </div>
@@ -330,7 +336,6 @@ text-align: right;
   background-color: #3f57a1;
 }
 .chart-container1{
-  background-color: rgb(241, 241, 241);
   margin-right: 50px;
   margin-top: 40px;
   border-radius: 10%;

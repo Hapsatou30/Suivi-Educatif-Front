@@ -81,6 +81,7 @@ import MesAbsences from '@/views/Eleves/mesAbsences.vue';
 import CahierDeTexte from '@/views/Eleves/cahierDeTexte.vue';
 import MonEmploisDuTemps from '@/views/Eleves/monEmploisDuTemps.vue';
 import TemplateBulletin2 from '@/components/TemplateBulletin2.vue';
+import NotesMatiere2 from '@/views/Admin/notesMatiere2.vue';
 
 
 // Routes non protégées (accessible à tous)
@@ -120,7 +121,8 @@ const adminRoutes = [
   { path: '/eleves_classe/:id', name: 'eleves_classe', component: ElevesCLasse },
   { path: '/gestion_notes_admin', name: 'gestion_notes_admin', component: GestionNotesAdmin },
   { path: '/notes_matieres/:anneeClasse_id', name: 'notes_matieres', component: NoteMatieres },
-  { path: '/notes/:id_profMat/:matiere', name: 'notes', component: NotesMatiere },
+  { path: '/notes/:id_classeProf/:matiere', name: 'notes', component: NotesMatiere },
+  { path: '/notes2/:id_classeProf/:matiere', name: 'notes2', component: NotesMatiere2},
   { path: '/gestion_cahier_texte_admin' , name: 'gestion_cahier_texte_admin', component: GestionCahierTexteAdmin},
   { path: '/cahier_texte_classe/:anneeClasse_id', name: 'cahier_texte_classe', component: CahierTexteClasse},
   { path: '/gestion_evaluations', name: 'gestion_evaluations', component: GestionEvaluationsAdmin},

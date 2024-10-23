@@ -1,4 +1,4 @@
-<template>
+b <template>
   <sidebar_admin />
   <topbar_admin />
   <div class="main-content">

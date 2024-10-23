@@ -1,5 +1,7 @@
 <template>
   <div>
+    <p v-if="!notesData" style="text-align: end;">Aucune donnée disponible pour afficher le graphique.</p>
+
     <!-- Canvas pour le graphique des notes -->
     <canvas ref="notesChartCanvas" width="700" height="400"></canvas>
   </div>

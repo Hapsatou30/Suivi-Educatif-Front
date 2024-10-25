@@ -142,10 +142,13 @@
               <button class="btn " @click="deleteStudent(row.id)" style="color: red;" title="Supprimer le professeur">
                 <Icon icon="mdi:trash-can-outline" />
               </button>
-              <button class="btn" @click="attribuerClasse(row)" :disabled="estDejaDansClasse(row)"
-                style="color: #407CEE; font-size: 40px;" title="Ajouter dans une classe">
+              <button class="btn" @click="attribuerClasse(row)" :style="{
+                color: estDejaDansClasse(row) ? 'green' : '#407CEE',
+                fontSize: '40px'
+              }" title="Ajouter dans une classe">
                 <Icon icon="material-symbols:school" />
               </button>
+
             </div>
           </template>
         </tabEvaluations>
@@ -159,7 +162,8 @@
       style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1000; display: flex; justify-content: center; align-items: center;">
       <div
         style="position: relative; width: 90%; max-width: 500px; padding: 20px; background: white; border-radius: 8px; z-index: 1001; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
-        <h3>Ajouter dans une classe</h3>
+        <h3 v-if="estDejaDansClasse(eleveSelectionne)">Modifier la classe</h3>
+        <h3 v-else>Ajouter dans une classe</h3>
         <span class="close" @click="closeModal"
           style="position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer;">&times;</span>
 
@@ -169,12 +173,11 @@
             <select id="classe" v-model="classeSelectionnee" class="form-control"
               style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 12px;">
               <option value="" disabled>Choisissez une classe</option>
-              <option v-for="classe in classes" :key="classe.id" :value="classe.id">{{ classe.nom }}
-              </option>
+              <option v-for="classe in classes" :key="classe.id" :value="classe.id">{{ classe.nom }}</option>
             </select>
           </div>
 
-          <div class="form-group" style="margin-top: 20px;  display: flex; justify-content: end">
+          <div class="form-group" style="margin-top: 20px; display: flex; justify-content: end">
             <button type="submit"
               style="background-color: #407CEE; color: white; padding: 10px 20px; border: none; border-radius: 12px; cursor: pointer; width: 200px; font-size: 20px;"
               class="btn btn-primary">Enregistrer</button>
@@ -182,6 +185,7 @@
         </form>
       </div>
     </div>
+
 
 
 
@@ -198,7 +202,7 @@ import { Icon } from '@iconify/vue';
 import { useRouter, useRoute } from 'vue-router';
 import Swal from 'sweetalert2';
 import { getAnneClasses } from '@/services/AnneeClasseService';
-import { ajouterEleveClasse, getElevesOntClasse } from '@/services/ClasseEleve';
+import { ajouterEleveClasse, getElevesOntClasse, modifierClasseEleve } from '@/services/ClasseEleve';
 import { creerBulletinsPourTousLesEleves } from '@/services/BulletinService';
 
 // Initialisation des routeurs
@@ -293,28 +297,48 @@ const fetchElevesAvecClasse = async () => {
   try {
     const response = await getElevesOntClasse();
     if (response && response.données && Array.isArray(response.données)) {
-      // Stocker les élèves avec une classe
-      elevesAvecClasse.value = response.données.map(eleveClasse => eleveClasse.eleve_id);
+      elevesAvecClasse.value = response.données.map(eleveClasse => ({
+        classeEleve_id: eleveClasse.id,
+        eleve_id: eleveClasse.eleve_id,
+        classe_id: eleveClasse.annee_classe_id
+      }));
     }
   } catch (error) {
     console.error("Erreur lors de la récupération des élèves avec classe:", error);
   }
 };
 
+
 // Méthode pour vérifier si un élève a déjà une classe
-const estDejaDansClasse = (eleve) => {
-  return elevesAvecClasse.value.includes(eleve.id);
-};
+// const estDejaDansClasse = (eleve) => {
+//   return elevesAvecClasse.value.includes(eleve.id);
+// };
 // Méthode pour ouvrir le modal
+// Méthode pour ouvrir le modal de modification
 const attribuerClasse = (eleve) => {
-  eleveSelectionne.value = eleve; // Définir l'élève actuellement sélectionné
-  showModal.value = true; // Ouvrir le modal
+  eleveSelectionne.value = eleve;
+  classeSelectionnee.value = ''; // Réinitialiser la classe sélectionnée
+
+  // Vérifier si l'élève a déjà une classe attribuée
+  const classeEleve = elevesAvecClasse.value.find(eleveClasse => eleveClasse.eleve_id === eleve.id);
+  if (classeEleve) {
+    classeSelectionnee.value = classeEleve.classe_id; // Assigner la classe trouvée
+    // Assurez-vous que l'ID de classe élève est bien assigné
+    eleveSelectionne.value.classeEleve_id = classeEleve.classeEleve_id;
+  }
+
+  showModal.value = true; // Afficher le modal
 };
 
+
 // Méthode pour fermer le modal
+// Fermer le modal
 const closeModal = () => {
-  showModal.value = false; // Fermer le modal
+  showModal.value = false; // Masque le modal
+  classeSelectionnee.value = ''; // Réinitialise la classe sélectionnée
+  eleveSelectionne.value = null; // Réinitialise l'élève sélectionné
 };
+
 
 // Méthode pour récupérer les classes à partir de l'API
 const fetchClasses = async () => {
@@ -327,48 +351,88 @@ const fetchClasses = async () => {
   }
 };
 
-// Méthode pour enregistrer la classe sélectionnée
 const enregistrerClasse = async () => {
   if (!classeSelectionnee.value || !eleveSelectionne.value) {
     Swal.fire({
-      icon: 'error',
       title: 'Erreur',
-      text: 'Veuillez sélectionner une classe.',
-      confirmButtonColor: '#d33',
+      text: 'Veuillez sélectionner une classe et un élève.',
+      icon: 'error',
+      timer: 3000,
+      showConfirmButton: false
     });
     return;
   }
 
-  try {
-    // Envoi des données à l'API
-    await ajouterEleveClasse({
-      eleve_id: eleveSelectionne.value.id,
-      annee_classe_id: classeSelectionnee.value
-    });
-    Swal.fire({
-      icon: 'success',
-      title: 'Succès',
-      text: 'Classe attribuée avec succès !',
-      confirmButtonColor: '#407CEE',
-      timer: 2000,
-      timerProgressBar: true,
-      showConfirmButton: false
-    });
-    fetchElevesAvecClasse();
-    closeModal();
-    classeSelectionnee.value = ''; // Réinitialiser la sélection de classe
-      // Appeler la méthode pour créer des bulletins pour tous les élèves
-      await creerBulletinsPourTousLesEleves(); 
-  } catch (error) {
-    console.error('Erreur lors de l\'attribution de la classe :', error);
-    Swal.fire({
-      icon: 'error',
-      title: 'Erreur',
-      text: error.message || 'Une erreur inattendue s\'est produite.',
-      confirmButtonColor: '#d33',
-    });
+  // Préparation des données pour l'ajout
+  const classeEleve = {
+    annee_classe_id: classeSelectionnee.value, // ID de la classe
+    eleve_id: eleveSelectionne.value.id // ID de l'élève
+  };
+
+  // Vérifiez si l'élève a déjà une classe assignée
+  if (estDejaDansClasse(eleveSelectionne.value)) {
+    const data = {
+      id: eleveSelectionne.value.classeEleve_id, // ID existant pour modification
+      annee_classe_id: classeSelectionnee.value,
+      eleve_id: eleveSelectionne.value.id
+    };
+
+    console.log('Données pour modifierClasseEleve:', data);
+    try {
+      await modifierClasseEleve(data); // Modifier la classe de l'élève
+      Swal.fire({
+        title: 'Succès',
+        text: 'La classe de l\'élève a été mise à jour.',
+        icon: 'success',
+        timer: 3000,
+        showConfirmButton: false
+      });
+    } catch (error) {
+      Swal.fire({
+        title: 'Erreur',
+        text: 'Une erreur est survenue lors de la mise à jour.',
+        icon: 'error',
+        timer: 3000,
+        showConfirmButton: false
+      });
+      console.error('Erreur lors de la mise à jour de la classe:', error);
+    }
+  } else {
+    // Ajouter l'élève à une nouvelle classe
+    console.log('Données pour ajouterEleveClasse:', classeEleve);
+    try {
+      await ajouterEleveClasse(classeEleve); // Ajouter l'élève à une nouvelle classe
+      Swal.fire({
+        title: 'Succès',
+        text: 'L\'élève a été ajouté à la classe.',
+        icon: 'success',
+        timer: 3000,
+        showConfirmButton: false
+      });
+      await creerBulletinsPourTousLesEleves();
+    } catch (error) {
+      Swal.fire({
+        title: 'Erreur',
+        text: 'Une erreur est survenue lors de l\'ajout.',
+        icon: 'error',
+        timer: 3000,
+        showConfirmButton: false
+      });
+      console.error('Erreur lors de l\'ajout de la classe:', error);
+    }
   }
+
+  await fetchElevesAvecClasse();
+  closeModal();
 };
+
+
+
+// Méthode pour vérifier si un élève est déjà attribué à une classe
+const estDejaDansClasse = (eleve) => {
+  return elevesAvecClasse.value.some(eleveClasse => eleveClasse.eleve_id === eleve.id);
+};
+
 
 
 // Données réactives pour le formulaire
@@ -438,44 +502,44 @@ const searchParent = () => {
 
 // Fonction pour gérer la soumission du formulaire
 const handleFormSubmit = async () => {
-    // Vérifiez la validité du formulaire
-    const isValid = isFormValid();
-    if (!isValid) {
-        return; // Arrêtez l'exécution si le formulaire n'est pas valide.
+  // Vérifiez la validité du formulaire
+  const isValid = isFormValid();
+  if (!isValid) {
+    return; // Arrêtez l'exécution si le formulaire n'est pas valide.
+  }
+
+  if (!Object.values(errors.value).some(error => error)) {
+    try {
+      const response = await (formData.value.id ? modifierEleve(formData.value) : ajouterEleve(formData.value));
+      console.log('Élève envoyé:', formData.value);
+
+      const successMessage = formData.value.id ? 'Élève modifié avec succès !' : 'Élève ajouté avec succès !';
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Succès',
+        text: successMessage,
+        confirmButtonColor: '#407CEE',
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false
+      });
+      await fetchData(); // Assurez-vous que cette fonction ne contient pas d'erreurs.
+      resetForm(); // Vérifiez également cette fonction.
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || error.message || 'Une erreur inattendue s\'est produite.';
+      console.log(errorMessage);
+      Swal.fire({
+        icon: 'error',
+        title: 'Erreur',
+        text: errorMessage,
+        confirmButtonColor: '#d33',
+        timer: 3000,
+        timerProgressBar: true,
+        showConfirmButton: false
+      });
     }
-
-    if (!Object.values(errors.value).some(error => error)) {
-        try {
-            const response = await (formData.value.id ? modifierEleve(formData.value) : ajouterEleve(formData.value));
-            console.log('Élève envoyé:', formData.value);
-
-            const successMessage = formData.value.id ? 'Élève modifié avec succès !' : 'Élève ajouté avec succès !';
-
-            Swal.fire({
-                icon: 'success',
-                title: 'Succès',
-                text: successMessage,
-                confirmButtonColor: '#407CEE',
-                timer: 2000,
-                timerProgressBar: true,
-                showConfirmButton: false
-            });
-            await fetchData(); // Assurez-vous que cette fonction ne contient pas d'erreurs.
-            resetForm(); // Vérifiez également cette fonction.
-        } catch (error) {
-            const errorMessage = error.response?.data?.message || error.message || 'Une erreur inattendue s\'est produite.';
-            console.log(errorMessage);
-            Swal.fire({
-                icon: 'error',
-                title: 'Erreur',
-                text: errorMessage,
-                confirmButtonColor: '#d33',
-                timer: 3000,
-                timerProgressBar: true,
-                showConfirmButton: false
-            });
-        }
-    }
+  }
 };
 
 

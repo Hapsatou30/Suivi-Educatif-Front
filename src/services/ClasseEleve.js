@@ -132,3 +132,24 @@ export const getClasseEleve = async (eleveId) => {
         return null; // Valeur par défaut en cas d'erreur
     }
   };
+
+  export const modifierClasseEleve = async (classeEleve) => {
+    if (!classeEleve.id) {
+        console.error('L\'ID de la classe ou de l\'élève est manquant');
+        return { error: 'ID manquant' };
+    }
+
+    try {
+        const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
+        const response = await axios.put(`${apiUrl}/classes-eleves/${classeEleve.id}`, classeEleve, {
+            headers: {
+                Authorization: `Bearer ${token}` // Utiliser le token dans l'en-tête pour l'authentification
+            }
+        });
+        return response.data; // Renvoie les données de la réponse
+    } catch (error) {
+        console.error('Erreur lors de la modification de la classe :', error.response ? error.response.data : error.message);
+        return { error: error.response ? error.response.data.error : error.message };
+    }
+};
+

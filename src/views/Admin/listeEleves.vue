@@ -308,12 +308,6 @@ const fetchElevesAvecClasse = async () => {
   }
 };
 
-
-// Méthode pour vérifier si un élève a déjà une classe
-// const estDejaDansClasse = (eleve) => {
-//   return elevesAvecClasse.value.includes(eleve.id);
-// };
-// Méthode pour ouvrir le modal
 // Méthode pour ouvrir le modal de modification
 const attribuerClasse = (eleve) => {
   eleveSelectionne.value = eleve;
@@ -322,8 +316,7 @@ const attribuerClasse = (eleve) => {
   // Vérifier si l'élève a déjà une classe attribuée
   const classeEleve = elevesAvecClasse.value.find(eleveClasse => eleveClasse.eleve_id === eleve.id);
   if (classeEleve) {
-    classeSelectionnee.value = classeEleve.classe_id; // Assigner la classe trouvée
-    // Assurez-vous que l'ID de classe élève est bien assigné
+    classeSelectionnee.value = classeEleve.classe_id;
     eleveSelectionne.value.classeEleve_id = classeEleve.classeEleve_id;
   }
 
@@ -331,7 +324,7 @@ const attribuerClasse = (eleve) => {
 };
 
 
-// Méthode pour fermer le modal
+
 // Fermer le modal
 const closeModal = () => {
   showModal.value = false; // Masque le modal

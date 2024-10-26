@@ -6,8 +6,11 @@
       Attribution des matières avec le professeur pour la classe : {{ nomClasse }}
     </h2>
     <div class="check">
-      <!-- Écoute de l'événement d'items sélectionnés depuis le composant checkbox -->
-      <checkbox :items="itemList" :imageSrc="imageSource" @update:selectedItems="updateSelectedItems" />
+      <checkbox 
+          :items="itemList" 
+          :imageSrc="imageSource" 
+          @update:selectedItems="updateSelectedItems" 
+      />
     </div>
     <div class="button-container">
       <button @click="attribuerProfClasse" class="btn btn-custom">Enregistrer</button>
@@ -15,6 +18,7 @@
     </div>
   </div>
 </template>
+
 
 <script setup>
 import { ref, onMounted } from 'vue';
@@ -39,56 +43,56 @@ const selectedProfMat = ref([]); // Référence pour stocker les IDs des prof_ma
 const profMatAttribue = ref([]); // Pour stocker les prof_mat déjà attribuées
 
 const fetchProfMatClasse = async () => {
-  const anneClasseId = route.params.id; 
-  try {
-    const profClasseData = await getProfClasse(anneClasseId); 
-    // console.log('Réponse de l\'API', profClasseDa 
+    const anneClasseId = route.params.id; 
+    try {
+        const profClasseData = await getProfClasse(anneClasseId); 
+        console.log('Réponse de l\'API', profClasseData); 
 
-      if (profClasseData) {
-      const { annee_classe, classes_matieres } = profClasseData;
+        if (profClasseData && profClasseData.data) {
+            const matieresProfesseurs = profClasseData.data;
 
-      // Mettre à jour le nom de la classe
-      if (annee_classe && annee_classe.nom_classe) {
-        nomClasse.value = annee_classe.nom_classe;
-      }
-
-      // Extraire les professeurs et les matières attribuées
-      if (Array.isArray(classes_matieres)) {
-        profMatAttribue.value = classes_matieres.map(profMat => profMat.id_profMat);
-        console.log('ProfMat attribuées à la classe:', profMatAttribue.value);
-      } else {
-        console.error('Format inattendu pour les classes_matieres.');
-      }
-    } else {
-      console.error('Aucune donnée trouvée dans la réponse.');
+            if (matieresProfesseurs.length > 0) {
+                // Extraction des ID des profMat attribués à partir de la réponse API
+                profMatAttribue.value = matieresProfesseurs.map(profMat => profMat.profMat_id);
+              
+            } else {
+                console.error('Aucune donnée trouvée dans la réponse.');
+            }
+        } else {
+            console.error('Aucune donnée trouvée dans la réponse ou le format est inattendu.');
+        }
+    } catch (error) {
+        console.error('Erreur lors de la récupération des professeurs pour la classe :', error);
     }
-  } catch (error) {
-    console.error('Erreur lors de la récupération des professeurs pour la classe :', error);
-  }
 };
-
 
 const fetchMatProf = async () => {
-  try {
-    const response = await getMatProf();
-    // console.log('Réponse API brute:', response);
+    try {
+        const response = await getMatProf();
+        
+        if (response && Array.isArray(response.données)) {
+            // Mise à jour de l'itemList avec la vérification du `checked`
+            itemList.value = response.données.map(profMat => ({
+                id: profMat.id,
+                matiere: profMat.matiere,
+                professeur: profMat.professeur,
+                checked: profMatAttribue.value.includes(profMat.id) // Marquer comme coché si attribué
+            }));
 
-    if (response && Array.isArray(response.données)) {
-      itemList.value = response.données.map(profMat => ({
-        id: profMat.id,
-        matiere: profMat.matiere,
-        professeur: profMat.professeur,
-        checked: profMatAttribue.value.includes(profMat.id) 
-      }));
+            console.log('Liste mise à jour des ProfMat:', itemList.value);
+            console.log('ProfMat attribuées à la classe:', profMatAttribue.value);
 
-      // console.log('Liste des ProfMat:', itemList.value);
-    } else {
-      console.error('La réponse n\'est pas un tableau.');
+        } else {
+            console.error('La réponse n\'est pas un tableau ou le format est inattendu.');
+        }
+    } catch (error) {
+        console.error('Erreur lors de la récupération des professeurs :', error);
     }
-  } catch (error) {
-    console.error('Erreur lors de la récupération des professeurs :', error);
-  }
 };
+
+
+
+
 
 // Méthode pour récupérer les détails d'une année
 const detailsAnneeClasse = async (id) => {
@@ -173,11 +177,14 @@ const retour = () => {
   router.back();
 };
 
-onMounted(() => {
-  // console.log('ID de la classe:', anneClasseId);
-  detailsAnneeClasse(anneClasseId);
-  fetchProfMatClasse().then(fetchMatProf);
+onMounted(async () => {
+  await detailsAnneeClasse(anneClasseId);
+    await fetchProfMatClasse(); // Récupérer les professeurs attribués en premier
+    await fetchMatProf();       // Puis récupérer la liste des professeurs/matières
+    
 });
+
+
 </script>
 
 <style scoped>

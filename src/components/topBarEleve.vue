@@ -29,7 +29,7 @@
   />
 
   <!-- Modal pour modifier le profil -->
-  <!-- <div v-if="isModalOpen"
+  <div v-if="isModalOpen"
       style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1000; display: flex; justify-content: center; align-items: center;">
     <div
         style="position: relative; width: 90%; max-width: 500px; padding: 20px; background: white; border-radius: 8px; z-index: 1001; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
@@ -40,20 +40,8 @@
       <div class="modal-body">
         <form @submit.prevent="submitForm">
           <div class="mb-3">
-            <label for="nom" class="form-label">Nom</label>
-            <input type="text" class="form-control" v-model="formData.nom" required />
-          </div>
-          <div class="mb-3">
-            <label for="prenom" class="form-label">Prénom</label>
-            <input type="text" class="form-control" v-model="formData.prenom" required />
-          </div>
-          <div class="mb-3">
             <label for="email" class="form-label">Email</label>
             <input type="email" class="form-control" v-model="formData.email" required />
-          </div>
-          <div class="mb-3">
-            <label for="telephone" class="form-label">Téléphone</label>
-            <input type="tel" class="form-control" v-model="formData.telephone" required />
           </div>
 
           <div class="mb-3">
@@ -69,59 +57,56 @@
         </form>
       </div>
     </div>
-  </div> -->
+  </div>
 </template>
 
 <script setup>
 // Importation des dépendances
 import { ref, onMounted,computed } from 'vue';
-import { logout } from '@/services/AuthService'; 
+import { logout,profile } from '@/services/AuthService'; 
 import { Icon } from '@iconify/vue';
-import { getDetailsEleve } from '@/services/EleveService';
+import { getDetailsEleve, modifierInfosEleve} from '@/services/EleveService';
 import { getNotifications } from '@/services/NotificationService';
 import NotificationModal from './NotificationModal.vue';
-
+import Swal from 'sweetalert2';
 
 // Variables réactives pour stocker les informations utilisateur
 const prenomUser = ref('');
 const classe = ref('');
-const photoUser = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF5-3YjBcXTqKUlOAeUUtuOLKgQSma2wGG1g&s';
+const photoUser = ref('');
 const isModalOpen = ref(false); // Déclaration de la variable pour contrôler l'ouverture du modal
 const isModalVisible = ref(false); // Gérer la visibilité du modal
 const notifications = ref([]); // Stocker les notifications récupérées
 
-// const formData = ref({
-//   nom: '',
-//   prenom: '',
-//   email: '',
-//   password: '',
-//   photo: null,
-//   eleveId,
-//   telephone: '',
-// });
+const formData = ref({
+  email: '',
+  password: '',
+  photo: null,
+ 
+});
 
 
 // // Fonction pour récupérer les informations de profil de l'utilisateur
-// const fetchProfile = async () => {
-//   try {
-//     const response = await profile(); 
-//     const user = response.user; 
-//     prenomUser.value = user.eleve.prenom;
-//     formData.value.nom = user.eleve.nom;
-//     formData.value.prenom = user.eleve.prenom;
-//     formData.value.email = user.email;
-//     formData.value.telephone = user.eleve.telephone;
-//     eleveId.value = user.eleve.id;
-//     // photoUser.value = `http://127.0.0.1:8000/storage//` + user.eleve.photo || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF5-3YjBcXTqKUlOAeUUtuOLKgQSma2wGG1g&s'; 
-//   }
+const fetchProfile = async () => {
+  try {
+    const response = await profile(); 
+    console.log('Fetching profile', response);
+    
+    const user = response.user; 
+    prenomUser.value = user.eleve.prenom;
+    formData.value.nom = user.eleve.nom;
+    formData.value.prenom = user.eleve.prenom;
+    formData.value.email = user.email;
+     photoUser.value = `http://127.0.0.1:8000/storage//` + user.eleve.photo || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF5-3YjBcXTqKUlOAeUUtuOLKgQSma2wGG1g&s'; 
+  }
 
   
-//    catch (error) {
-//     console.error('Erreur lors de la récupération du profil:', error);
-//   }
-//   // console.log('jj', photoUser);
-//   // console.log('iddd', eleveId) ;
-// };
+   catch (error) {
+    console.error('Erreur lors de la récupération du profil:', error);
+  }
+  // console.log('jj', photoUser);
+  // console.log('iddd', eleveId) ;
+};
 //recuperer les details de l'eleve
 // Récupération des détails de l'élève
 const fetchDetailsEleve = async () => {
@@ -175,41 +160,38 @@ const closeModal = () => {
 };
 
 // Gestion du formulaire de mise à jour du profil
-//   const submitForm = async () => {
-//     try {
-//       const formDataToSend = new FormData();
-//       formDataToSend.append('nom', formData.value.nom);
-//       formDataToSend.append('prenom', formData.value.prenom);
-//       formDataToSend.append('email', formData.value.email);
-//       formDataToSend.append('telephone', formData.value.telephone);
-//       if (formData.value.password) {
-//         formDataToSend.append('password', formData.value.password);
-//       }
-//       if (formData.value.photoUser) {
-//         formDataToSend.append('photo', formData.value.photoUser);
-//       }
+  const submitForm = async () => {
+    try {
+      const formDataToSend = new FormData();
+      formDataToSend.append('email', formData.value.email);
+      if (formData.value.password) {
+        formDataToSend.append('password', formData.value.password);
+      }
+      if (formData.value.photoUser) {
+        formDataToSend.append('photo', formData.value.photoUser);
+      }
    
     
-// //   console.log('ggggg', formDataToSend);
+//   console.log('ggggg', formDataToSend);
 
-//       // Passer formDataToSend ici
-//       await modifierProfileProfesseur(eleveId.value,formDataToSend);
+      // Passer formDataToSend ici
+      await modifierInfosEleve(formDataToSend);
     
-//       closeModal(); // Fermer le modal après la soumission
-//       Swal.fire({
-//         title: 'Succès',
-//         text: 'Profil modifié avec succès!',
-//         icon: 'success',
-//         timer: 2000, 
-//         timerProgressBar: true,
-//         showConfirmButton: false 
-//       });
-//       fetchProfile();
-//     } catch (error) {
-//       console.error('Erreur lors de la mise à jour du profil:', error);
-//       Swal.fire('Erreur', 'Une erreur est survenue lors de la mise à jour du profil.', 'error');
-//     }
-//   };
+      closeModal(); // Fermer le modal après la soumission
+      Swal.fire({
+        title: 'Succès',
+        text: 'Profil modifié avec succès!',
+        icon: 'success',
+        timer: 2000, 
+        timerProgressBar: true,
+        showConfirmButton: false 
+      });
+      fetchProfile();
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour du profil:', error);
+      Swal.fire('Erreur', 'Une erreur est survenue lors de la mise à jour du profil.', 'error');
+    }
+  };
 const handleFileUpload = (event) => {
     const file = event.target.files[0]; // Récupère le premier fichier sélectionné
     if (file) {
@@ -231,7 +213,7 @@ const handleLogout = async () => {
 };
 
 // Appel de la fonction fetchProfile lorsque le composant est monté
-// onMounted(fetchProfile);
+ onMounted(fetchProfile);
 onMounted(fetchNotifications);
 onMounted(fetchDetailsEleve);
 </script>

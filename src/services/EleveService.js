@@ -141,3 +141,29 @@ export const supprimerEleve = async (id) => {
     return null; // Valeur par défaut en cas d'erreur
   }
 };
+
+export const modifierInfosEleve = async (eleve) => {
+  try {
+    const token = localStorage.getItem('token');
+    // console.log('Envoi des données au serveur :', eleve); 
+    
+    const response = await axios.post(`${apiUrl}/modifierEleve`, eleve, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    
+    // console.log('eleve modifié :', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Erreur lors de la modification du eleve :', error.response ? error.response.data : error.message);
+
+    if (error.response && error.response.data.errors) {
+      // Afficher les erreurs spécifiques de validation
+      console.error('Détails des erreurs:', error.response.data.errors);
+    }
+    
+    return null;
+  }
+};
+

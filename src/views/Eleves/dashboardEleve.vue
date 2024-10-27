@@ -1,311 +1,325 @@
 <template>
-    <sideBarEleve />
-    <topBarEleve />
-    <div class="main-content">
-        <affiche />
-        
-        
+  <sideBarEleve />
+  <topBarEleve />
+  <div class="main-content">
+    <affiche />
+    <div class="card-container ">
+      <h2>Evaluations de la semaine</h2>
+      <div v-if="evaluations.length > 0" class="ligne">
+        <div v-for="(evaluation, index) in evaluations" :key="index" class="matiere-card">
+          <!-- Affichage du jour de la semaine -->
+          <h4 class="date">{{ evaluation.formattedDay }}</h4>
+          <div class="content">
+            <p class="matiere">{{ evaluation.matiere }}</p>
+            <p class="heure">{{ evaluation.heure }}</p>
+          </div>
+        </div>
+      </div>
+      <!-- Message s'il n'y a pas d'évaluations -->
+      <div v-else class="col-12">
+        <p class="alert alert-info text-center">Aucune évaluation pour cette semaine.</p>
+      </div>
     </div>
+    <div class="row">
+  <div class="col-6">
+    <h2>Emplois du temps du jour</h2>
+    
+    <div v-if="horaires.length > 0" class="d-flex flex-column align-items-center">
+      <div :style="{ backgroundColor: getMatiereColor(horaire.matiere) }" 
+           v-for="(horaire, index) in horaires"
+           :key="index" 
+           class="matiere-card shadow p-3 mb-3 rounded w-100">
+        <div class="card-content d-flex justify-content-between">
+          <!-- À gauche : Matière et Professeur -->
+          <div class="matiere-prof">
+            <p class="matiere font-weight-bold">{{ horaire.matiere }}</p>
+            <p class="prof">{{ horaire.professeur }}</p>
+          </div>
+          <!-- À droite : Horaire -->
+          <div class="horaire">
+            <p>{{ horaire.horaire }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div v-else class="col-12">
+      <p class="alert alert-info text-center">Aucun horaire disponible pour aujourd'hui.</p>
+    </div>
+  </div>
+</div>
+
+  </div>
 </template>
 
-
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted } from 'vue';
 import sideBarEleve from '@/components/sideBarEleve.vue';
 import topBarEleve from '@/components/topBarEleve.vue';
 import affiche from '@/components/affiche.vue';
-import widget from '@/components/widget.vue';
 import { profile } from '@/services/AuthService';
-// import tabEvaluations from '@/components/tabEvaluations.vue';
-// import pagination from '@/components/paginations.vue'; 
+import { getDetailsEleve } from '@/services/EleveService';
+import { getEvaluationsParEleve } from '@/services/Evaluations';
+import { geHoraireClasse } from '@/services/HoraireService';
 import dayjs from 'dayjs';
+import isBetween from 'dayjs/plugin/isBetween';
 import 'dayjs/locale/fr';
 
 dayjs.locale('fr');
+dayjs.extend(isBetween);
+
 const eleveId = ref([]);
-const tableData = ref([]); // Initialiser avec un tableau vide pour éviter undefined
-const currentPage = ref(1); // Page actuelle
-const pageSize = ref(5); // Nombre d'éléments par page
+const classeEleve_id = ref([]);
+const evaluations = ref([]);
+const anneeClasse_id = ref('');
+// Contient la liste des horaires
+const horaires = ref([]);
+
+
 
 // Fonction pour récupérer les informations de profil de l'utilisateur connecté
 const fetchProfile = async () => {
-    try {
-        const response = await profile();
-        const user = response.user;
+  try {
+    const response = await profile();
+    const user = response.user;
 
-        // Récupérer l'ID du parent connecté
-        if (user && user.eleve) {
-            eleveId.value = user.eleve.id;
-        }
-    } catch (error) {
-        console.error('Erreur lors de la récupération du profil:', error);
+    if (user && user.eleve) {
+      eleveId.value = user.eleve.id;
     }
+  } catch (error) {
+    console.error('Erreur lors de la récupération du profil:', error);
+  }
 };
 
+// Récupération des détails de l'élève
+const fetchDetailsEleve = async () => {
+  try {
+    const response = await getDetailsEleve();
 
+    if (response.status === 200) {
+      classeEleve_id.value = response.données.classeEleve_id;
+      anneeClasse_id.value = response.données.anneeClasse_id;
+      console.log('annee classe', anneeClasse_id.value);
+      await fetchEvaluations();
+      await fetchHoraires();
+    } else {
+      console.error('Erreur lors de la récupération des détails de l\'élève:', response.message);
+    }
+  } catch (error) {
+    console.error('Erreur lors de la récupération des détails de l\'élève:', error);
+  }
+};
 
+// Récupération des évaluations pour l'élève et filtrage
+const fetchEvaluations = async () => {
+  try {
+    const response = await getEvaluationsParEleve(classeEleve_id.value);
+    console.log('classeEleve_id:', classeEleve_id.value);
 
+    if (response.status === 200) {
+      const now = dayjs(); // Date actuelle
+      const startOfWeek = now.startOf('week'); // Début de la semaine
+      const endOfWeek = now.endOf('week'); // Fin de la semaine
 
+      // Filtrer les évaluations de la semaine courante, les trier par date, et formater le jour de la semaine
+      evaluations.value = response.evaluations
+        .filter(evaluation => {
+          const evalDate = dayjs(evaluation.date);
+          return evalDate.isBetween(startOfWeek, endOfWeek); // Évaluations de la semaine courante seulement
+        })
+        .sort((a, b) => dayjs(a.date).diff(dayjs(b.date))) // Trier par date croissante
+        .map(evaluation => ({
+          ...evaluation,
+          formattedDay: dayjs(evaluation.date).format('dddd'), // Formater le jour de la semaine
+        }));
 
+    } else {
+      console.error("Erreur lors de la récupération des évaluations:", response.message);
+    }
+  } catch (error) {
+    console.error("Erreur lors de la récupération des évaluations:", error);
+  }
+};
+// Fonction pour récupérer l'emploi du temps de l'eleve
+const fetchHoraires = async () => {
+  try {
+    const response = await geHoraireClasse(anneeClasse_id.value);
+    if (response.status === 200) {
+      const today = new Date();
+      const jourActuel = today.toLocaleString('fr-FR', { weekday: 'long' }).charAt(0).toUpperCase() + today.toLocaleString('fr-FR', { weekday: 'long' }).slice(1);
 
+      horaires.value = response.données
+        .filter(horaire => horaire.jour === jourActuel)
+        .map(horaire => ({
+          horaire: `${horaire.horaire}`,  // Affiche l'heure de début et fin
+          matiere: horaire.matiere,
+          professeur: horaire.professeur
+        }));
+    }
+  } catch (error) {
+    console.error('Erreur lors de la récupération des horaires:', error);
+  }
+};
 
+// Fonction pour obtenir la couleur associée à une matière
+const getMatiereColor = (matiere) => {
+  const colorsFromStorage = JSON.parse(localStorage.getItem('classeColors')) || {};
+  console.log('Couleurs stockées:', colorsFromStorage);  // Ajout du log pour vérifier les couleurs stockées
 
-// Calculer les données à afficher pour la page actuelle
-const paginatedData = computed(() => {
-    if (!tableData.value || tableData.value.length === 0) return [];
-    const start = (currentPage.value - 1) * pageSize.value;
-    const end = start + pageSize.value;
-    const dataToDisplay = tableData.value.slice(start, end);
-    // console.log('Paginated Data:', dataToDisplay); // Ajoutez ce log pour déboguer
-    return dataToDisplay;
-});
+  if (colorsFromStorage[matiere]) {
+    return colorsFromStorage[matiere];
+  }
 
-
-// Fonction pour gérer le changement de page
-const handlePageChange = (page) => {
-    currentPage.value = page;
+  // Si la couleur n'existe pas dans le localStorage, renvoyer une couleur par défaut
+  return '#ffffff'; // Couleur par défaut
 };
 
 // Appels aux fonctions lors du montage du composant
 onMounted(async () => {
-    await fetchProfile();
-    
+  await fetchProfile();
+
+});
+onMounted(() => {
+  fetchDetailsEleve();
 });
 </script>
 
+
 <style scoped>
 .main-content {
-    margin-top: 120px;
-    overflow-x: hidden;
+  margin-top: 120px;
+  overflow-x: hidden;
+
 }
 
-.evaluations{
-    margin-top: 80px;
-}
-.evaluations h2{
-    text-align: start;
-}
-
-.widgets-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 40px;
-    margin-left: 300px;
-    margin-right: 50px;
+.card-container {
+  margin-left: 300px;
+  margin-right: 50px;
+  margin-top: 40px;
 }
 
-.absence_jour {
-    margin-right: 50px;
+.card-container h2 {
+  text-align: start;
+  margin-left: 0;
 }
 
-.header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 50px;
+.ligne {
+  display: flex;
+  flex-wrap: wrap;
+  /* Permet aux cartes de passer à la ligne suivante si l'espace est insuffisant */
+  gap: 16px;
+  /* Espace entre les cartes */
+  margin-top: 20px;
+  justify-content: space-between;
+  /* Distribue les cartes équitablement */
 }
 
-.cards-container {
-    display: flex;
-    flex-wrap: wrap;
-    /* Pour autoriser le retour à la ligne si l'espace est insuffisant */
-    gap: 20px;
-    /* Espace entre les cartes */
-    justify-content: flex-start;
-    /* Aligner les cartes à gauche */
-    margin-top: 20px;
+.matiere-card {
+  flex: 1 1 calc(33.33% - 16px);
+  /* Chaque carte prend 33.33% de la largeur disponible moins l'espace du gap */
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  color: black;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box;
+  /* Inclut les marges et les bordures dans la largeur */
+  background-color: #ffffff;
+  /* Juste pour la visibilité */
 }
 
-.card {
-    flex: 1 1 300px;
-    /* Chaque carte occupera au moins 300px et pourra s'agrandir si de la place est disponible */
-    max-width: 300px;
+.matiere-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-
-.card {
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 16px;
-    width: 300px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background-color: #F7AE00;
+.evaluation-card {
+  border-radius: 8px;
+  padding: 16px;
+  background-color: #E6F1FF;
+  margin-bottom: 16px;
+  border-radius: 18px;
 }
 
-.card-title {
-    margin: 0 0 12px;
-    font-size: 24px;
-    color: white;
-    text-align: center;
+.date {
+  text-align: center;
+  font-weight: bold;
+}
+
+.content {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  /* Prendre toute la largeur */
+
+}
+
+.matiere {
+  text-align: left;
+  color: rgb(228, 12, 12);
+}
+
+.heure {
+  text-align: right;
+  color: rgb(228, 12, 12);
+}
+
+.row {
+  margin-top: 50px;
+  margin-left: 290px;
+}
+
+.row .col-6 h2 {
+  text-align: start;
+  margin-left: 0;
 }
 
 .card-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
+  display: flex;
+  align-items: center;
 }
 
-.left-paragraph {
-    margin: 0;
-    font-size: 18px;
-    color: white;
+.card-content p {
+  color: #ffffff;
 }
 
-.right-paragraph {
-    margin: 0;
-    font-size: 18px;
-    color: red;
-}
-.tableau1 {
-    margin-left: 300px;
-    margin-right: 50px;
-  }
-.diagrammes{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 40px;
-    margin-left: 300px;
-    margin-right: 50px;
-   
-}
-
-/* Media queries pour rendre la section responsive sur mobile */
-@media (max-width: 992px) {
-    .main-content {
-    width: 90%;
-    margin-left: auto !important;
-    margin-right: auto !important;
-}
-  .header {
-    flex-direction: column;
-    align-items: flex-start; /* Aligner les éléments à gauche sur mobile */
-    margin: 0; /* Supprimer les marges latérales */
+@media (max-width: 1000px) {
+  .main-content {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
   }
 
-  .widgets-container, .diagrammes {
-    flex-direction: column;
-    align-items: flex-start; 
-    justify-content: start;
-    margin-top: 30px;
-    margin-bottom: 20px;
+  .head h1 {
+    font-size: 24px;
+    margin-top: 25px;
     margin-left: 0;
-
-    
-  }
-  .evaluations{
-    margin-top: 8%;
-    margin-bottom: 70%;
-}
-.evaluations h2{
-    font-size: 20px;
-    width: 100%;
     text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: 0px;
-}
-.tableau1 {
-    margin-left: 0;
-    margin-right: 0;
-  }
-  .absence_jour {
-    margin: 20px 0; /* Ajouter un peu d'espace au-dessus et en-dessous sur mobile */
-    width: 100%; /* Faire en sorte que l'élément prenne toute la largeur disponible */
   }
 
-  .card {
-    flex: 1 1 100%; /* Les cartes occuperont toute la largeur sur mobile */
-    max-width: 100%; /* S'assurer qu'elles ne dépassent pas la largeur de l'écran */
+  .matiere-card {
+    flex: 1 1 calc(50% - 16px);
+    /* Passe à 2 cartes par ligne sur des écrans plus petits */
   }
-
-  .card-title {
-    font-size: 20px; /* Réduire la taille du titre sur mobile */
-  }
-
-  .left-paragraph, .right-paragraph {
-    font-size: 16px; /* Réduire la taille des paragraphes sur mobile */
-  }
-  .chart-container1{
-  margin-left: 0;
-  margin-top: 40px;
-  border-radius: 10%;
-  padding: 1%;
-  width: 90%;
-  margin-left: auto;
-  margin-right: auto;
-}
-.chart-container{
-margin-right: 0;
-  margin-top: 40px;
-  border-radius: 10%;
-  padding: 1%;
-  width: 90%;
-  height: auto;
-  margin-left: auto;
-  margin-right: auto;
- 
-}
-  
 }
 
-@media (max-width: 576px) {
+@media (max-width: 480px) {
   .main-content {
     width: 90%;
-    margin-left: auto !important;
-    margin-right: auto !important;
-}
- .evaluations{
-    margin-top: 0;
-    margin-bottom: 100%;
-}
-.evaluations h2{
-    font-size: 20px;
-    width: 100%;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: 0px;
-}
-    .tableau1 {
-    margin-left: 0;
-    margin-right: 0;
-  }
-  
-  .card-title {
-    font-size: 18px; /* Réduire encore plus la taille du titre pour les petits écrans */
+    margin-left: auto;
+    margin-right: auto;
   }
 
-  .left-paragraph, .right-paragraph {
-    font-size: 14px; /* Réduire la taille des paragraphes pour les petits écrans */
-  }
-  h5{
-    font-size: 18px;
+  .head h1 {
+    font-size: 24px;
+    margin-top: 25px;
+    margin-left: -48px;
     text-align: center;
   }
-  .chart-container1{
-  margin-left: 0;
-  margin-top: 40px;
-  border-radius: 10%;
-  padding: 1%;
-  width: 90%;
-  margin-left: auto;
-  margin-right: auto;
-}
-.chart-container{
 
-  margin-top: 40px;
-  border-radius: 10%;
-  padding: 1%;
-  width: 90%;
-  height: auto;
-  margin-left: auto;
-  margin-right: auto;
- 
-}
+  .matiere-card {
+    flex: 1 1 calc(100% - 16px);
+    /* Passe à 1 carte par ligne sur des petits écrans */
   }
+}
 </style>

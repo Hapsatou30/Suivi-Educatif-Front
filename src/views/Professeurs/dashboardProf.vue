@@ -118,6 +118,8 @@ const fetchData = async () => {
 const fetchHoraireProf = async () => {
   try {
     const response = await geHoraireProf(professeurId.value);
+    // console.log('response', response);
+    
     if (response.status === 200) {
       const horaires = response.données;
 

@@ -136,24 +136,28 @@ const fetchData = async () => {
     try {
         const response = await getNoteClasse(classeProf_id);
         
-        // Filtrer les données pour ne garder que celles avec la période '1_semestre'
-        const filteredData = response.données.filter(note => note.bulletin_id.periode === '1_semestre');
-        
-        // Mapper les données filtrées pour inclure les informations des élèves
-        tableData.value = filteredData.map(({ eleve, evaluation, classeEleve, note, appreciation, matiere, id, evaluation_id }) => ({
-            prenom: eleve.prenom,
-            nom: eleve.nom,
-            matricule: eleve.matricule,
-            evaluation: evaluation,
-            note: note,
-            appreciation: appreciation,
-            matiere: matiere,
-            id: id,
-            idClasseEleve: classeEleve.id,
-            evaluation_id: evaluation_id
-        }));
+        // Vérifier si les données contiennent le semestre 1
+        if (response.données && response.données['1_semestre']) {
+            const filteredData = response.données['1_semestre']; // Utiliser les données du 1er semestre
+            
+            // Mapper les données filtrées pour inclure les informations des élèves
+            tableData.value = filteredData.map(({ eleve, evaluation, bulletin_id, note, appreciation, matiere, id, evaluation_id }) => ({
+                prenom: eleve.prenom,
+                nom: eleve.nom,
+                matricule: eleve.matricule,
+                evaluation: evaluation,
+                note: note,
+                appreciation: appreciation,
+                matiere: matiere,
+                id: id,
+                idClasseEleve: bulletin_id.classe_eleve_id,
+                evaluation_id: evaluation_id
+            }));
 
-        // console.log('tableData: ', tableData);
+            console.log('tableData: ', tableData.value);
+        } else {
+            console.error('Aucune donnée trouvée pour le 1er semestre.');
+        }
     } catch (error) {
         console.error('Erreur lors du chargement des notes:', error);
     }

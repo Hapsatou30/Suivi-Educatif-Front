@@ -113,14 +113,16 @@ const fetchDetailsEleve = async () => {
 
         // Appel pour obtenir les matières et leur coefficients
         const responseMatieres = await getProfClasse(anneClasseId.value);
-        if (responseMatieres.classes_matieres && Array.isArray(responseMatieres.classes_matieres)) {
-          matieres.value = responseMatieres.classes_matieres.map(matiere => ({
-            nomMatiere: matiere.matiere,
-            coefficient: matiere.coefficient
-          }));
-        } else {
-          console.error('Aucune matière trouvée dans la réponse.');
-        }
+
+          if (responseMatieres.success && Array.isArray(responseMatieres.data) && responseMatieres.data.length > 0) {
+            matieres.value = responseMatieres.data.map(matiere => ({
+              nomMatiere: matiere.matiere,
+              coefficient: matiere.coefficient
+            }));
+          } else {
+            console.error('Aucune matière trouvée dans la réponse.');
+          }
+
 
         // Récupérer les absences
         const responseAbsences = await getAbsencesEleve(classeEleve_id.value);

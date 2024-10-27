@@ -1,9 +1,8 @@
 <template>
     <div>
-        <p v-if="!absencesResponse">Aucune donnée disponible pour afficher le graphique.</p>
-
+     
       <!-- Canvas pour le graphique en barres empilées -->
-      <canvas ref="assiduiteChartCanvas" width="400" height="400"></canvas>
+      <canvas  ref="assiduiteChartCanvas" width="400" height="400"></canvas>
     </div>
   </template>
   

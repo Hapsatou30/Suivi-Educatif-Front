@@ -6,11 +6,7 @@
       Attribution des matières avec le professeur pour la classe : {{ nomClasse }}
     </h2>
     <div class="check">
-      <checkbox 
-          :items="itemList" 
-          :imageSrc="imageSource" 
-          @update:selectedItems="updateSelectedItems" 
-      />
+      <checkbox :items="itemList" :imageSrc="imageSource" @update:selectedItems="updateSelectedItems" />
     </div>
     <div class="button-container">
       <button @click="attribuerProfClasse" class="btn btn-custom">Enregistrer</button>
@@ -43,51 +39,51 @@ const selectedProfMat = ref([]); // Référence pour stocker les IDs des prof_ma
 const profMatAttribue = ref([]); // Pour stocker les prof_mat déjà attribuées
 
 const fetchProfMatClasse = async () => {
-    const anneClasseId = route.params.id; 
-    try {
-        const profClasseData = await getProfClasse(anneClasseId); 
-        console.log('Réponse de l\'API', profClasseData); 
+  const anneClasseId = route.params.id;
+  try {
+    const profClasseData = await getProfClasse(anneClasseId);
+    // console.log('Réponse de l\'API', profClasseData);
 
-        if (profClasseData && profClasseData.data) {
-            const matieresProfesseurs = profClasseData.data;
+    if (profClasseData && profClasseData.data) {
+      const matieresProfesseurs = profClasseData.data;
 
-            if (matieresProfesseurs.length > 0) {
-                // Extraction des ID des profMat attribués à partir de la réponse API
-                profMatAttribue.value = matieresProfesseurs.map(profMat => profMat.profMat_id);
-              
-            } else {
-                console.error('Aucune donnée trouvée dans la réponse.');
-            }
-        } else {
-            console.error('Aucune donnée trouvée dans la réponse ou le format est inattendu.');
-        }
-    } catch (error) {
-        console.error('Erreur lors de la récupération des professeurs pour la classe :', error);
+      if (matieresProfesseurs.length > 0) {
+        // Extraction des ID des profMat attribués à partir de la réponse API
+        profMatAttribue.value = matieresProfesseurs.map(profMat => profMat.profMat_id);
+
+      } else {
+        console.error('Aucune donnée trouvée dans la réponse.');
+      }
+    } else {
+      console.error('Aucune donnée trouvée dans la réponse ou le format est inattendu.');
     }
+  } catch (error) {
+    console.error('Erreur lors de la récupération des professeurs pour la classe :', error);
+  }
 };
 
 const fetchMatProf = async () => {
-    try {
-        const response = await getMatProf();
-        
-        if (response && Array.isArray(response.données)) {
-            // Mise à jour de l'itemList avec la vérification du `checked`
-            itemList.value = response.données.map(profMat => ({
-                id: profMat.id,
-                matiere: profMat.matiere,
-                professeur: profMat.professeur,
-                checked: profMatAttribue.value.includes(profMat.id) // Marquer comme coché si attribué
-            }));
+  try {
+    const response = await getMatProf();
 
-            console.log('Liste mise à jour des ProfMat:', itemList.value);
-            console.log('ProfMat attribuées à la classe:', profMatAttribue.value);
+    if (response && Array.isArray(response.données)) {
+      // Mise à jour de l'itemList avec la vérification du `checked`
+      itemList.value = response.données.map(profMat => ({
+        id: profMat.id,
+        matiere: profMat.matiere,
+        professeur: profMat.professeur,
+        checked: profMatAttribue.value.includes(profMat.id) // Marquer comme coché si attribué
+      }));
 
-        } else {
-            console.error('La réponse n\'est pas un tableau ou le format est inattendu.');
-        }
-    } catch (error) {
-        console.error('Erreur lors de la récupération des professeurs :', error);
+      // console.log('Liste mise à jour des ProfMat:', itemList.value);
+      // console.log('ProfMat attribuées à la classe:', profMatAttribue.value);
+
+    } else {
+      console.error('La réponse n\'est pas un tableau ou le format est inattendu.');
     }
+  } catch (error) {
+    console.error('Erreur lors de la récupération des professeurs :', error);
+  }
 };
 
 
@@ -102,7 +98,7 @@ const detailsAnneeClasse = async (id) => {
 
     // Vérification si response contient un objet valide
     if (response && response.donnees_classe) {
-      const classe = response.donnees_classe; 
+      const classe = response.donnees_classe;
       // console.log('Détails de la classe:', classe);
       nomClasse.value = classe.nom; // Mise à jour de la variable ici
     } else {
@@ -143,7 +139,7 @@ const attribuerProfClasse = async () => {
         });
 
         // Rechargez les professeurs pour mettre à jour la liste
-        await  fetchProfMatClasse().then(fetchMatProf);
+        await fetchProfMatClasse().then(fetchMatProf);
       } else {
         throw new Error(response.message || 'Une erreur est survenue lors de l\'attribution.');
       }
@@ -179,9 +175,9 @@ const retour = () => {
 
 onMounted(async () => {
   await detailsAnneeClasse(anneClasseId);
-    await fetchProfMatClasse(); // Récupérer les professeurs attribués en premier
-    await fetchMatProf();       // Puis récupérer la liste des professeurs/matières
-    
+  await fetchProfMatClasse(); // Récupérer les professeurs attribués en premier
+  await fetchMatProf();       // Puis récupérer la liste des professeurs/matières
+
 });
 
 
@@ -189,9 +185,9 @@ onMounted(async () => {
 
 <style scoped>
 .main-content {
-  background-color: white; 
-  padding-top: 150px;          
-  margin-top: 0;     
+  background-color: white;
+  padding-top: 150px;
+  margin-top: 0;
   overflow-x: hidden;
 }
 
@@ -199,8 +195,10 @@ onMounted(async () => {
   margin-left: 300px;
   margin-right: 50px;
   display: flex;
-  justify-content: space-between; /* Centrer les boutons */
-  margin-top: 20px; /* Espacement au-dessus des boutons */
+  justify-content: space-between;
+  /* Centrer les boutons */
+  margin-top: 20px;
+  /* Espacement au-dessus des boutons */
 }
 
 .button-container .btn-custom {
@@ -217,7 +215,8 @@ onMounted(async () => {
   margin-bottom: 30px;
 }
 
-.button-container .btn-secondary, .button-container .btn-secondary:hover {
+.button-container .btn-secondary,
+.button-container .btn-secondary:hover {
   background-color: transparent;
   color: white;
   border: 1px solid #F7AE00;

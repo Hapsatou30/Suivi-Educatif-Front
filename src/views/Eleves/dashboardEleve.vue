@@ -47,6 +47,14 @@
       <p class="alert alert-info text-center">Aucun horaire disponible pour aujourd'hui.</p>
     </div>
   </div>
+  <div class="col-6">
+    <div class="diagramme mb-5">
+      <div class="chart-container1">
+        <h5 style="text-align: center; margin-bottom: 5px;">Performances de l'élève</h5>
+        <ChildPerformanceChart :subjects="subjects" :scores="scores" />
+      </div>
+      </div>
+  </div>
 </div>
 
   </div>
@@ -61,6 +69,8 @@ import { profile } from '@/services/AuthService';
 import { getDetailsEleve } from '@/services/EleveService';
 import { getEvaluationsParEleve } from '@/services/Evaluations';
 import { geHoraireClasse } from '@/services/HoraireService';
+import ChildPerformanceChart from '@/components/ChildPerformanceChart.vue';
+import { getNoteEleve } from '@/services/NotesService';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 import 'dayjs/locale/fr';
@@ -72,8 +82,9 @@ const eleveId = ref([]);
 const classeEleve_id = ref([]);
 const evaluations = ref([]);
 const anneeClasse_id = ref('');
-// Contient la liste des horaires
 const horaires = ref([]);
+const subjects = ref([]);
+const scores = ref([]);
 
 
 
@@ -102,6 +113,7 @@ const fetchDetailsEleve = async () => {
       console.log('annee classe', anneeClasse_id.value);
       await fetchEvaluations();
       await fetchHoraires();
+      await fetchNotesEleve();
     } else {
       console.error('Erreur lors de la récupération des détails de l\'élève:', response.message);
     }
@@ -160,6 +172,70 @@ const fetchHoraires = async () => {
     console.error('Erreur lors de la récupération des horaires:', error);
   }
 };
+const fetchNotesEleve = async () => {
+  try {
+    const response = await getNoteEleve(classeEleve_id.value); // Appel pour récupérer les notes
+
+    if (response && response.eleve && response.eleve.notes) {
+      const notes = response.eleve.notes; // Récupérer toutes les notes
+      
+      // Créer un objet pour stocker les moyennes par matière et semestre
+      const moyennes = {};
+
+      notes.forEach(note => {
+        const { matiere, note: score, periode, evaluation } = note;
+
+        // Initialiser l'objet pour la matière et le semestre si ce n'est pas encore fait
+        if (!moyennes[matiere]) {
+          moyennes[matiere] = {};
+        }
+
+        if (!moyennes[matiere][periode]) {
+          moyennes[matiere][periode] = {
+            devoirs: [],
+            examen: null,
+            moyenne: 0,
+          };
+        }
+
+        // Ajouter les notes de devoirs
+        if (evaluation === 'Devoir') {
+          moyennes[matiere][periode].devoirs.push(score);
+        }
+
+        // Enregistrer la note de l'examen
+        if (evaluation === 'Examen') {
+          moyennes[matiere][periode].examen = score;
+        }
+      });
+
+      // Calculer la moyenne par matière et semestre
+      Object.keys(moyennes).forEach(matiere => {
+        Object.keys(moyennes[matiere]).forEach(periode => {
+          const { devoirs, examen } = moyennes[matiere][periode];
+          const moyenneDevoirs = devoirs.length > 0 ? devoirs.reduce((a, b) => a + b) / devoirs.length : 0;
+
+          // Calculer la moyenne finale pour la matière et le semestre
+          moyennes[matiere][periode].moyenne = (moyenneDevoirs + (examen || 0)) / 2;
+        });
+      });
+
+      // Préparer les données pour le diagramme
+      subjects.value = Object.keys(moyennes).flatMap(matiere => 
+        Object.keys(moyennes[matiere]).map(periode => `${matiere} (${periode})`)
+      );
+      scores.value = Object.values(moyennes).flatMap(matiere => 
+        Object.values(matiere).map(p => p.moyenne)
+      );
+
+    } else {
+      console.error('Erreur lors de la récupération des notes :', response);
+    }
+  } catch (error) {
+    console.error('Erreur lors de la récupération des notes:', error);
+  }
+};
+
 
 // Fonction pour obtenir la couleur associée à une matière
 const getMatiereColor = (matiere) => {

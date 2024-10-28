@@ -4,7 +4,8 @@
     <div class="main-content">
         <boutons title1="1er Semestre" title2="2ème Semestre" page1="notes_classe_1erSemestre"
             page2="notes_classe_2emeSemestre" />
-        <h2>{{ isEditing ? "Modifier la note" : "Ajouter les notes du 1er semestre pour la classe de " + nom_classe }}</h2>
+        <h2>{{ isEditing ? "Modifier la note" : "Ajouter les notes du 1er semestre pour la classe de " + nom_classe }}
+        </h2>
         <div class="addNotes">
 
             <div class="tableau1">
@@ -61,8 +62,15 @@
 
 
         <div class="historiquesNotes">
+
             <h2>Historique des Notes</h2>
             <div class="tableauNotes">
+                <div v-if="successMessage" class="alert alert-success" role="alert">
+                {{ successMessage }}
+            </div>
+            <div v-if="errorMessage" class="alert alert-danger" role="alert">
+                {{ errorMessage }}
+            </div>
                 <tabEvaluations v-if="paginatedData.length > 0" class="tab-notes"
                     :headers="['Prenom & Nom', 'Matricule', 'Evaluation', 'Note', 'Appréciation', 'Action']" :data="paginatedData.map(({ prenom, nom, matricule, evaluation, note, appreciation, id, idClasseEleve, evaluation_id }) => ({
                         eleve: `${prenom} ${nom}`,
@@ -76,7 +84,8 @@
                     }))">
                     <template #actions="{ row }">
                         <div class="boutons">
-                            <button class="btn" @click="editNote(row.id)" style="color: #407CEE;" title="Modifier la note">
+                            <button class="btn" @click="editNote(row.id)" style="color: #407CEE;"
+                                title="Modifier la note">
                                 <Icon icon="mdi:pencil-outline" />
                             </button>
                             <button class="btn" @click="deleteNote(row.id)" style="color: red;"
@@ -130,16 +139,19 @@ const currentPageOther = ref(1);
 const evaluations = ref([]);
 const isEditing = ref(false);
 const editingNoteId = ref(null);
+const successMessage = ref('');
+const errorMessage = ref('');
+
 
 
 const fetchData = async () => {
     try {
         const response = await getNoteClasse(classeProf_id);
-        
+
         // Vérifier si les données contiennent le semestre 1
         if (response.données && response.données['1_semestre']) {
             const filteredData = response.données['1_semestre']; // Utiliser les données du 1er semestre
-            
+
             // Mapper les données filtrées pour inclure les informations des élèves
             tableData.value = filteredData.map(({ eleve, evaluation, bulletin_id, note, appreciation, matiere, id, evaluation_id }) => ({
                 prenom: eleve.prenom,
@@ -220,12 +232,7 @@ const fetchEvaluations = async () => {
     }
 };
 
-// const updateEvaluationId = (student) => {
-//     const selectedEvaluation = evaluations.value.find(evaluation => evaluation.id === student.evaluation);
-//     if (selectedEvaluation) {
-//         student.evaluation_id = selectedEvaluation.id;
-//     }
-// };
+
 const updateEvaluationId = (student) => {
     const selectedEvaluation = evaluations.value.find(evaluation => evaluation.id === student.evaluation);
     if (selectedEvaluation) {
@@ -286,28 +293,22 @@ const addNote = async (row) => {
     const periode = "1_semestre";
 
     if (!evaluationId || noteAttribuee === undefined || !appreciation) {
-        await Swal.fire({
-            icon: 'error',
-            title: 'Erreur',
-            text: 'Veuillez remplir tous les champs avant d\'ajouter la note.',
-            confirmButtonColor: '#d33',
-            timer: 1000,
-            timerProgressBar: true,
-        });
+        errorMessage.value = 'Veuillez remplir tous les champs avant d\'ajouter la note.';
+        // Masquer le message d'erreur après quelques secondes
+        setTimeout(() => {
+            errorMessage.value = '';
+        }, 3000);
         return;
     }
 
-    // Vérifier si une note existe déjà pour cet élève et cette évaluation
-    const noteExists = await checkNoteExistence(row.id_classeEleve, evaluationId);
+     // Vérifier si une note existe déjà pour cet élève et cette évaluation
+     const noteExists = await checkNoteExistence(row.id_classeEleve, evaluationId);
     if (noteExists) {
-        await Swal.fire({
-            icon: 'error',
-            title: 'Erreur',
-            text: 'Cet élève a déjà une note pour cette évaluation.',
-            confirmButtonColor: '#d33',
-            timer: 1000,
-            timerProgressBar: true,
-        });
+        errorMessage.value = 'Cet élève a déjà une note pour cette évaluation.';
+        // Masquer le message d'erreur après quelques secondes
+        setTimeout(() => {
+            errorMessage.value = '';
+        }, 3000);
         return;
     }
 
@@ -326,26 +327,24 @@ const addNote = async (row) => {
             row.appreciation = ''; // Réinitialiser l'appréciation
             row.evaluation = ''; // Réinitialiser l'évaluation (s'il y a un v-model)
 
-            await Swal.fire({
-                title: 'Succès',
-                text: 'La note a été ajoutée avec succès.',
-                icon: 'success',
-                timer: 1000,
-                timerProgressBar: true,
-                willClose: () => {
-                    fetchData(); // Assurez-vous que cela met à jour l'affichage
-                }
-            });
+            successMessage.value = 'La note a été ajoutée avec succès.';
+            // Mettre à jour les données
+            fetchData();
+
+            // Masquer le message de succès après quelques secondes
+            setTimeout(() => {
+                successMessage.value = '';
+            }, 3000);
         }
     } catch (error) {
         console.error('Erreur lors de l\'ajout de la note :', error);
-        const errorMessage = error.response?.data?.message || error.message || 'Une erreur inattendue s\'est produite.';
-        await Swal.fire({
-            icon: 'error',
-            title: 'Erreur',
-            text: errorMessage,
-            confirmButtonColor: '#d33',
-        });
+        const errorMessageContent = error.response?.data?.message || error.message || 'Une erreur inattendue s\'est produite.';
+        errorMessage.value = errorMessageContent;
+        
+        // Masquer le message d'erreur après quelques secondes
+        setTimeout(() => {
+            errorMessage.value = '';
+        }, 3000);
     }
 };
 
@@ -357,44 +356,42 @@ const updateNote = async (student) => {
         commentaire: student.appreciation,
         id_bulletin: student.id_bulletin
     };
-
     try {
         const response = await modifierNote(updatedNote);
         if (response.status === 200) {
-            await Swal.fire({
-                icon: 'success',
-                title: 'Modifié',
-                text: 'La note a été modifiée avec succès.',
-                confirmButtonColor: '#3085d6',
-                timer: 1000,
-                timerProgressBar: true,
-            });
+            successMessage.value = 'La note a été modifiée avec succès.';
+
             // Réinitialiser les champs de l'élève après la mise à jour
             notesStudents.value = notesStudents.value.map(student => {
                 return {
                     ...student,
-                    note: null, // Réinitialiser la note
-                    appreciation: '', // Réinitialiser l'appréciation
-                    evaluation: '', // Réinitialiser l'évaluation
+                    note: null,
+                    appreciation: '',
+                    evaluation: '',
                 };
             });
 
             // Rafraîchir les données après la modification
             await fetchData();
-            isEditing.value = false; // Réinitialiser l'état d'édition
-            editingNoteId.value = null; // Réinitialiser l'ID
+            isEditing.value = false;
+            editingNoteId.value = null;
+
+            // Cacher le message après quelques secondes
+            setTimeout(() => {
+                successMessage.value = '';
+            }, 2000);
+
         } else {
-            // Gestion des erreurs
             throw new Error('Erreur lors de la mise à jour de la note.');
         }
     } catch (error) {
         console.error('Erreur lors de la mise à jour de la note:', error);
-        await Swal.fire({
-            icon: 'error',
-            title: 'Erreur',
-            text: error.message || 'Erreur lors de la mise à jour de la note.',
-            confirmButtonColor: '#d33',
-        });
+        errorMessage.value = error.message || 'Erreur lors de la mise à jour de la note.';
+
+        // Cacher le message d'erreur après quelques secondes
+        setTimeout(() => {
+            errorMessage.value = '';
+        }, 3000);
     }
 };
 

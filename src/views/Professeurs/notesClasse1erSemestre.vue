@@ -270,8 +270,17 @@ const handlePageChangeOther = (newPage) => {
 const checkNoteExistence = async (eleveId, evaluationId) => {
     try {
         const response = await getNoteClasse(classeProf_id);
-        const existingNote = response.données.find(note =>
-            note.classeEleve.id === eleveId && note.evaluation_id === evaluationId
+
+        // Vérifier si chaque semestre est défini avant de les combiner
+        const notesPremierSemestre = response.données['1_semestre'] || [];
+        const notesDeuxiemeSemestre = response.données['2_semestre'] || [];
+
+        // Combiner toutes les notes disponibles
+        const allNotes = [...notesPremierSemestre, ...notesDeuxiemeSemestre];
+
+        // Rechercher la note existante dans toutes les périodes
+        const existingNote = allNotes.find(note =>
+            note.bulletin_id.classe_eleve_id === eleveId && note.evaluation_id === evaluationId
         );
 
         console.log('Note existante:', existingNote); // Log pour débogage
@@ -281,6 +290,8 @@ const checkNoteExistence = async (eleveId, evaluationId) => {
         return false; // En cas d'erreur, on considère que la note n'existe pas
     }
 };
+
+
 
 
 

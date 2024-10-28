@@ -9,14 +9,14 @@
 
             <div class="tableau1">
                 <tabEvaluations v-if="paginatedData.length > 0" class="tab-noteMatiere"
-                    :headers="['Professeur', 'Matière ', 'Note',]" :data="paginatedData.map(({ nom_professeur, prenom_professeur, matiere ,id_profMat}) => ({
+                    :headers="['Professeur', 'Matière ', 'Note',]" :data="paginatedData.map(({ nom_professeur, prenom_professeur, matiere ,id_classeProf}) => ({
                         professeur: `${prenom_professeur} ${nom_professeur}`,
                         matiere,
-                        id_profMat
+                        id_classeProf
                     }))">
                     <template #actions="{ row }">
                         <div class="boutons">
-                            <button class="btn " @click="redirectToNotes(row.id_profMat, row.matiere)"
+                            <button class="btn " @click="redirectToNotes(row.id_classeProf, row.matiere)"
                                 style="color: #407CEE; font-size: 40px;" title="Voir les notes par matières">
                                 <Icon icon="marketeq:eye" />
                             </button>
@@ -61,28 +61,29 @@ const pageSize = ref(5);
 
 
 const fetchData = async () => {
-    const response = await getProfClasse(anneClasseId);
+    try {
+        const response = await getProfClasse(anneClasseId);
 
-    // Vérifiez si la réponse est valide
-    if (response && response.classes_matieres) {
-        const classesMatieres = response.classes_matieres;
-
-        // Vérifiez si le tableau contient des professeurs
-        if (Array.isArray(classesMatieres) && classesMatieres.length > 0) {
-            // Mapper les données pour extraire les informations souhaitées
-            tableData.value = classesMatieres.map(({ nom_professeur, prenom_professeur, matiere, id_profMat, }) => ({
-                nom_professeur,
-                prenom_professeur,
+        // Vérifiez si la réponse contient des données et que c'est un tableau non vide
+        if (response && Array.isArray(response.data) && response.data.length > 0) {
+            // Extraire les informations et les assigner à tableData
+            tableData.value = response.data.map(({ nom_prof, prenom_prof, matiere, id_classeProf }) => ({
+                nom_professeur: nom_prof,
+                prenom_professeur: prenom_prof,
                 matiere,
-                id_profMat,
+                id_classeProf,
             }));
         } else {
-            console.log('Aucun professeur trouvé pour cette classe.');
+            // Si pas de données, affichez un message approprié
+            console.log('Aucun professeur ou matière trouvé pour cette classe.');
+            tableData.value = []; // Réinitialiser si pas de données
         }
-    } else {
-        console.log('Erreur lors de la récupération des données ou pas de classes_matieres.');
+    } catch (error) {
+        console.error('Erreur lors de la récupération des données :', error);
     }
 };
+
+
 
 
 
@@ -97,11 +98,11 @@ const paginatedData = computed(() => {
     const end = start + pageSize.value;
     return tableData.value.slice(start, end);
 });
-const redirectToNotes = (id_profMat, matiere) => {
-    // console.log('id et matiere', id_profMat, matie 
+const redirectToNotes = (id_classeProf, matiere) => {
+    // console.log('id et matiere', id_classeProf, matie 
     
     // Redirige vers la page notes avec l'id et le nom de la matière dans les paramètres de l'URL
-    router.push({ name: 'notes', params: { id_profMat, matiere } });
+    router.push({ name: 'notes', params: { id_classeProf, matiere } });
 };
 
 

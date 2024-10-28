@@ -63,6 +63,12 @@
         <div class="historiquesNotes">
             <h2>Historique des Notes</h2>
             <div class="tableauNotes">
+                <div v-if="successMessage" class="alert alert-success" role="alert">
+                {{ successMessage }}
+            </div>
+            <div v-if="errorMessage" class="alert alert-danger" role="alert">
+                {{ errorMessage }}
+            </div>
                 <tabEvaluations v-if="paginatedData.length > 0" class="tab-notes"
                     :headers="['Prenom & Nom', 'Matricule', 'Evaluation', 'Note', 'Appréciation', 'Action']" :data="paginatedData.map(({ prenom, nom, matricule, evaluation, note, appreciation, id, idClasseEleve, evaluation_id }) => ({
                         eleve: `${prenom} ${nom}`,
@@ -131,34 +137,41 @@ const currentPageOther = ref(1);
 const evaluations = ref([]);
 const isEditing = ref(false);
 const editingNoteId = ref(null);
+const successMessage = ref('');
+const errorMessage = ref('');
 
 
 const fetchData = async () => {
     try {
         const response = await getNoteClasse(classeProf_id);
+        
+        // Vérifier si les données contiennent le semestre 1
+        if (response.données && response.données['2_semestre']) {
+            const filteredData = response.données['2_semestre']; // Utiliser les données du 1er semestre
+            
+            // Mapper les données filtrées pour inclure les informations des élèves
+            tableData.value = filteredData.map(({ eleve, evaluation, bulletin_id, note, appreciation, matiere, id, evaluation_id }) => ({
+                prenom: eleve.prenom,
+                nom: eleve.nom,
+                matricule: eleve.matricule,
+                evaluation: evaluation,
+                note: note,
+                appreciation: appreciation,
+                matiere: matiere,
+                id: id,
+                idClasseEleve: bulletin_id.classe_eleve_id,
+                evaluation_id: evaluation_id
+            }));
 
-        // Filtrer les données pour ne garder que celles avec la période '2_semestre'
-        const filteredData = response.données.filter(note => note.bulletin_id.periode === '2_semestre');
-
-        // Mapper les données filtrées pour inclure les informations des élèves
-        tableData.value = filteredData.map(({ eleve, evaluation, classeEleve, note, appreciation, matiere, id, evaluation_id }) => ({
-            prenom: eleve.prenom,
-            nom: eleve.nom,
-            matricule: eleve.matricule,
-            evaluation: evaluation,
-            note: note,
-            appreciation: appreciation,
-            matiere: matiere,
-            id: id,
-            idClasseEleve: classeEleve.id,
-            evaluation_id: evaluation_id
-        }));
-
-        // console.log('tableData: ', tableData);
+            console.log('tableData: ', tableData.value);
+        } else {
+            console.error('Aucune donnée trouvée pour le 1er semestre.');
+        }
     } catch (error) {
         console.error('Erreur lors du chargement des notes:', error);
     }
 };
+
 
 // Récupération des données des élèves
 const fetchStudents = async () => {
@@ -217,12 +230,7 @@ const fetchEvaluations = async () => {
     }
 };
 
-// const updateEvaluationId = (student) => {
-//     const selectedEvaluation = evaluations.value.find(evaluation => evaluation.id === student.evaluation);
-//     if (selectedEvaluation) {
-//         student.evaluation_id = selectedEvaluation.id;
-//     }
-// };
+
 const updateEvaluationId = (student) => {
     const selectedEvaluation = evaluations.value.find(evaluation => evaluation.id === student.evaluation);
     if (selectedEvaluation) {
@@ -260,8 +268,17 @@ const handlePageChangeOther = (newPage) => {
 const checkNoteExistence = async (eleveId, evaluationId) => {
     try {
         const response = await getNoteClasse(classeProf_id);
-        const existingNote = response.données.find(note =>
-            note.classeEleve.id === eleveId && note.evaluation_id === evaluationId
+
+        // Vérifier si chaque semestre est défini avant de les combiner
+        const notesPremierSemestre = response.données['1_semestre'] || [];
+        const notesDeuxiemeSemestre = response.données['2_semestre'] || [];
+
+        // Combiner toutes les notes disponibles
+        const allNotes = [...notesPremierSemestre, ...notesDeuxiemeSemestre];
+
+        // Rechercher la note existante dans toutes les périodes
+        const existingNote = allNotes.find(note =>
+            note.bulletin_id.classe_eleve_id === eleveId && note.evaluation_id === evaluationId
         );
 
         console.log('Note existante:', existingNote); // Log pour débogage
@@ -274,6 +291,7 @@ const checkNoteExistence = async (eleveId, evaluationId) => {
 
 
 
+
 // Méthode pour ajouter une note
 const addNote = async (row) => {
     const evaluationId = row.evaluation_id;
@@ -283,31 +301,24 @@ const addNote = async (row) => {
     const periode = "2_semestre";
 
     if (!evaluationId || noteAttribuee === undefined || !appreciation) {
-        await Swal.fire({
-            icon: 'error',
-            title: 'Erreur',
-            text: 'Veuillez remplir tous les champs avant d\'ajouter la note.',
-            confirmButtonColor: '#d33',
-            timer: 1000,
-            timerProgressBar: true,
-        });
+        errorMessage.value = 'Veuillez remplir tous les champs avant d\'ajouter la note.';
+        // Masquer le message d'erreur après quelques secondes
+        setTimeout(() => {
+            errorMessage.value = '';
+        }, 3000);
         return;
     }
 
-    // Vérifier si une note existe déjà pour cet élève et cette évaluation
-    const noteExists = await checkNoteExistence(row.id_classeEleve, evaluationId);
+      // Vérifier si une note existe déjà pour cet élève et cette évaluation
+      const noteExists = await checkNoteExistence(row.id_classeEleve, evaluationId);
     if (noteExists) {
-        await Swal.fire({
-            icon: 'error',
-            title: 'Erreur',
-            text: 'Cet élève a déjà une note pour cette évaluation.',
-            confirmButtonColor: '#d33',
-            timer: 1000,
-            timerProgressBar: true,
-        });
+        errorMessage.value = 'Cet élève a déjà une note pour cette évaluation.';
+        // Masquer le message d'erreur après quelques secondes
+        setTimeout(() => {
+            errorMessage.value = '';
+        }, 3000);
         return;
     }
-
     try {
         const response = await ajouterNote({
             notes: noteAttribuee,
@@ -323,26 +334,24 @@ const addNote = async (row) => {
             row.appreciation = ''; // Réinitialiser l'appréciation
             row.evaluation = ''; // Réinitialiser l'évaluation (s'il y a un v-model)
 
-            await Swal.fire({
-                title: 'Succès',
-                text: 'La note a été ajoutée avec succès.',
-                icon: 'success',
-                timer: 1000,
-                timerProgressBar: true,
-                willClose: () => {
-                    fetchData(); // Assurez-vous que cela met à jour l'affichage
-                }
-            });
+            successMessage.value = 'La note a été ajoutée avec succès.';
+            // Mettre à jour les données
+            fetchData();
+
+            // Masquer le message de succès après quelques secondes
+            setTimeout(() => {
+                successMessage.value = '';
+            }, 3000);
         }
     } catch (error) {
         console.error('Erreur lors de l\'ajout de la note :', error);
-        const errorMessage = error.response?.data?.message || error.message || 'Une erreur inattendue s\'est produite.';
-        await Swal.fire({
-            icon: 'error',
-            title: 'Erreur',
-            text: errorMessage,
-            confirmButtonColor: '#d33',
-        });
+        const errorMessageContent = error.response?.data?.message || error.message || 'Une erreur inattendue s\'est produite.';
+        errorMessage.value = errorMessageContent;
+        
+        // Masquer le message d'erreur après quelques secondes
+        setTimeout(() => {
+            errorMessage.value = '';
+        }, 3000);
     }
 };
 
@@ -358,40 +367,38 @@ const updateNote = async (student) => {
     try {
         const response = await modifierNote(updatedNote);
         if (response.status === 200) {
-            await Swal.fire({
-                icon: 'success',
-                title: 'Modifié',
-                text: 'La note a été modifiée avec succès.',
-                confirmButtonColor: '#3085d6',
-                timer: 1000,
-                timerProgressBar: true,
-            });
+            successMessage.value = 'La note a été modifiée avec succès.';
+
             // Réinitialiser les champs de l'élève après la mise à jour
             notesStudents.value = notesStudents.value.map(student => {
                 return {
                     ...student,
-                    note: null, // Réinitialiser la note
-                    appreciation: '', // Réinitialiser l'appréciation
-                    evaluation: '', // Réinitialiser l'évaluation
+                    note: null,
+                    appreciation: '',
+                    evaluation: '',
                 };
             });
-
             // Rafraîchir les données après la modification
             await fetchData();
             isEditing.value = false; // Réinitialiser l'état d'édition
             editingNoteId.value = null; // Réinitialiser l'ID
+
+              // Cacher le message après quelques secondes
+              setTimeout(() => {
+                successMessage.value = '';
+            }, 2000);
         } else {
             // Gestion des erreurs
             throw new Error('Erreur lors de la mise à jour de la note.');
         }
     } catch (error) {
         console.error('Erreur lors de la mise à jour de la note:', error);
-        await Swal.fire({
-            icon: 'error',
-            title: 'Erreur',
-            text: error.message || 'Erreur lors de la mise à jour de la note.',
-            confirmButtonColor: '#d33',
-        });
+        errorMessage.value = error.message || 'Erreur lors de la mise à jour de la note.';
+
+        // Cacher le message d'erreur après quelques secondes
+        setTimeout(() => {
+            errorMessage.value = '';
+        }, 3000);
     }
 };
 

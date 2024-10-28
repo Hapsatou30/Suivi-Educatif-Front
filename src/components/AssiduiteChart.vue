@@ -1,7 +1,8 @@
 <template>
     <div>
+     
       <!-- Canvas pour le graphique en barres empilées -->
-      <canvas ref="assiduiteChartCanvas" width="400" height="400"></canvas>
+      <canvas  ref="assiduiteChartCanvas" width="400" height="400"></canvas>
     </div>
   </template>
   

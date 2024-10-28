@@ -45,6 +45,11 @@
             <Icon icon="mdi:account-off" /> Absences
           </router-link>
         </li>
+        <li>
+          <router-link to="/gestion_bulletins_admins" class="menu-link"  :class="{ active: isActive('/gestion_bulletins_admins') || isActive('/bulletins_par_classe')  || isActive('/bulletins_1er_Semestre_par_eleve')  || isActive('/bulletins_2eme_Semestre_par_eleve')     }">
+            <Icon icon="clarity:note-line" /> Bulletins
+          </router-link>
+        </li>
       </ul>
     </div>
   </template>

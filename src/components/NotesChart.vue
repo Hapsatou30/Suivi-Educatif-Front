@@ -1,5 +1,6 @@
 <template>
   <div>
+
     <!-- Canvas pour le graphique des notes -->
     <canvas ref="notesChartCanvas" width="700" height="400"></canvas>
   </div>

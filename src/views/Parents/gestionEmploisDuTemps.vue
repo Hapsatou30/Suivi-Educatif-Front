@@ -9,7 +9,7 @@
                     <div class="card mb-4 shadow-sm custom-card">
                         <div class="card-header">
                             <div class="image-wrapper">
-                                <img :src="card.photo || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZv5fMEw3s3nvP0sxLIG8bO6RzCLmqgzW5ww&s'" alt="image" class="hexagon-image">
+                                <img :src="card.photo" alt="image" class="hexagon-image">
                             </div>
                         </div>
                         <div class="card-body text-center">
@@ -56,7 +56,7 @@ const fetchElevesParParent = async () => {
                 id: index + 1,  // Générer un id pour chaque carte
                 prenomNom: `${eleve.prenom} ${eleve.nom}`,
                 classe: eleve.annee_classe[0]?.classe || 'Classe non définie',
-                photo: eleve.photo,
+                photo: eleve.photo ? `http://127.0.0.1:8000/storage/${eleve.photo}` : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZv5fMEw3s3nvP0sxLIG8bO6RzCLmqgzW5ww&s',
                 classeEleve_id: eleve.annee_classe[0]?.classeEleve_id
             }));
         }

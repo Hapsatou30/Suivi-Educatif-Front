@@ -63,9 +63,7 @@
   justify-content: space-between;
   align-items: center;
   margin-left: 300px;
-  max-width: 1200px; /* Limiter la largeur maximale */
-  padding: 0 20px; /* Ajouter du padding sur les côtés */
-  gap: 20px; /* Espacement entre les boutons */
+  margin-right: 50px;
 }
 
 .btn {

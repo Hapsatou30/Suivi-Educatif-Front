@@ -11,7 +11,7 @@
     />
    </div>
         <h2>
-            Les notes  du 1er semestre de la matière : {{ matiere }}
+            Les notes du 2ème semestre de la matière : {{ matiere }}
         </h2>
         <div class="search-container" style="display: flex; align-items:  center; justify-content: end; margin-right: 50px;">
       <input 
@@ -66,8 +66,8 @@ const pageSize = ref(5);
 const fetchData = async () => {
     const response = await getNoteClasse(id_classeProf);
 
-    if (response && response.données && response.données["1_semestre"].length > 0) {
-        const notesData = response.données["1_semestre"];
+    if (response && response.données && response.données["2_semestre"].length > 0) {
+        const notesData = response.données["2_semestre"];
         console.log('Notes 1er semestre', notesData);
         
         const groupedData = notesData.reduce((acc, note) => {

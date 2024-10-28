@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div  class="contenue">
     <!-- Header avec deux logos et un texte centré -->
     <header class="header ">
       <img src="@/assets/Flag_of_Senegal.svg.png" alt="Logo Gauche" class="logo-left" />
@@ -13,7 +13,7 @@
     </header>
 
     <!-- Conteneur pour les deux div alignés -->
-    <div class="container-fluid">
+    <div class="container3">
       <div class="column">
         <ul>
           <li>Tél: <span>338765678</span></li>
@@ -37,7 +37,7 @@
     </div>
 
     <div class="titre">
-      <h2>Bulletin du 2eme Semestre</h2>
+      <h1>Bulletin du 2eme Semestre</h1>
     </div>
 
     <!-- Tableau des matières et des résultats -->
@@ -264,16 +264,17 @@ watch(moyennePremierSemestre, (newMoyenne) => {
 
 
 <style scoped>
+.contenue{
+  margin-right: 50px;
+}
 /* Style du header */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
   border-bottom: 10px solid #000000;
-  width: 98%;
-  margin-left: auto;
-  margin-right: auto;
+  width: 100%;
+  
 }
 
 .logo-left,
@@ -302,15 +303,16 @@ p {
   margin-bottom: 0;
 }
 
-/* Conteneur pour les deux div */
-.container-fluid {
-  display: flex;
-  justify-content: space-between;
-  padding: 20px;
+.container3 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+    width: 100%;
+    
 }
 
 .column {
-  margin: 0 10px;
   width: 40%;
   border: 1px solid black;
   border-radius: 20px;
@@ -336,22 +338,22 @@ span {
 .titre {
   background-color: transparent;
   width: 98%;
-  margin-left: -10%;
-  margin-right: auto;
   text-align: center;
   color: rgb(0, 0, 0);
   margin-top: 30px;
-  padding: 10px;
+}
+.titre h1{
+  text-align: center;
 }
 
 /* Style du tableau */
 .bulletin-table {
-  width: 98%;
-  margin-left: auto;
-  margin-right: auto;
+  width: 100%;
+  
   margin-top: 30px;
   border-collapse: collapse;
   text-align: center;
+  margin-bottom: 20px
 }
 
 .bulletin-table th,
@@ -375,18 +377,18 @@ span {
   justify-content: space-between;
   align-items: center;
   margin-top: 30px;
-  width: 98%;
-  margin-left: auto;
-  margin-right: auto;
+  width: 100%;
+  
+  padding: 0;
 }
 
 .column-left {
   width: 48%;
-  padding: 10px;
 }
 
 .semestre-table {
   width: 100%;
+  
   border-collapse: collapse;
 }
 
@@ -405,11 +407,11 @@ span {
 /* Style pour le tableau de droite (absences et justifications) */
 .column-right {
   width: 48%;
-  padding: 10px;
 }
 
 .absence-table {
   width: 100%;
+  
   border-collapse: collapse;
 }
 
@@ -436,16 +438,11 @@ span {
   align-items: center;
   margin-bottom: 50px;
   margin-top: 30px;
-  width: 98%;
-  margin-left: auto;
-  margin-right: auto;
+  width: 100%;
+  
 }
 
-/* Style pour la colonne de gauche (mentions) */
-.column-left {
-  width: 48%;
-  padding: 10px;
-}
+
 
 .mentions-list li {
   padding: 10px;

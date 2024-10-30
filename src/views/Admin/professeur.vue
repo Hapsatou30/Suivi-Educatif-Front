@@ -92,6 +92,12 @@
     </div>
       </div>
       <div class="tableau">
+        <div v-if="successMessage" class="alert alert-success" role="alert">
+                {{ successMessage }}
+            </div>
+            <div v-if="errorMessage" class="alert alert-danger" role="alert">
+                {{ errorMessage }}
+            </div>
         <tabEvaluations 
           v-if="paginatedData.length > 0"
           class="tab-evaluation" 
@@ -167,6 +173,8 @@ const errors = ref({
 const tableData = ref([]);
 const currentPage = ref(1);
 const pageSize = ref(5);
+const successMessage = ref('');
+const errorMessage = ref('');
 
 // Méthode de validation pour chaque champ
 const validateField = (field) => {
@@ -264,34 +272,26 @@ const handleFormSubmit = async () => {
         // console.log("Réponse du serveur:", response);
         
         if (response) {  // Vérification modifiée
-          await fetchData();  // Récupérez de nouveau la liste des professeurs après la modification
+            await fetchData();  // Récupérez de nouveau la liste des professeurs après la modification
+            
+            // Définir le message de succès
+            successMessage.value = 'Professeur modifié avec succès !';
+            errorMessage.value = ''; // Réinitialiser le message d'erreur
+
+            // Réinitialiser le formulaire après un délai
+            setTimeout(() => {
+                successMessage.value = '';
+                resetForm();
+            }, 2000);
         } else {
-          console.error("La réponse du serveur est vide ou invalide.");
+            console.error("La réponse du serveur est vide ou invalide.");
+            errorMessage.value = 'Une erreur s\'est produite lors de la modification du professeur.';
         }
-        
-        Swal.fire({
-          icon: 'success',
-          title: 'Succès',
-          text: 'Professeur modifié avec succès !',
-          confirmButtonColor: '#407CEE',
-          timer: 2000,
-          timerProgressBar: true,
-          showConfirmButton: false
-        });
-        
-        resetForm();
-        
     } catch (error) {
         console.error('Erreur lors de la soumission du formulaire :', error);
-        Swal.fire({
-          icon: 'error',
-          title: 'Erreur',
-          text: error.message || 'Une erreur inattendue s\'est produite.',
-          confirmButtonColor: '#d33',
-          timer: 3000,
-          timerProgressBar: true,
-          showConfirmButton: false
-        });
+        errorMessage.value = error.message || 'Une erreur inattendue s\'est produite.';
+        successMessage.value = ''; // Réinitialiser le message de succès
+    
     }
 };
 

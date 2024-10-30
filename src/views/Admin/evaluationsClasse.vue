@@ -8,8 +8,8 @@
         <div class="mon_planning">
             <div class="tableau1">
                 <tabEvaluations v-if="paginatedOtherProf.length > 0" class="tab-planning1"
-                    :headers="['Matière', 'Professeur', 'Date', 'Heure', 'Durée (mins)','Evaluation', ]"
-                    :data="paginatedOtherProf.map(({ matiere,professeur, date, heure, duree,type_evaluation}) => ({ matiere, professeur,date, heure, duree ,type_evaluation}))">
+                    :headers="['Matière', 'Professeur', 'Date', 'Heure', 'Durée (mins)', 'Evaluation',]"
+                    :data="paginatedOtherProf.map(({ matiere, professeur, date, heure, duree, type_evaluation }) => ({ matiere, professeur, date, heure, duree, type_evaluation }))">
                 </tabEvaluations>
                 <p v-else class="alert alert-info">Aucune évaluation prévue.</p>
             </div>
@@ -20,23 +20,27 @@
 
         <div class="historique" style="margin-top: 100px;">
             <h2>
-            Les évaluations Passées 
-        </h2>
-        <div class="tableau1">
-            <tabEvaluations v-if="pastEvaluations.length > 0" class="tab-planning2"
-                :headers="['Matière', 'Professeur', 'Date', 'Heure', 'Durée (mins)', 'Évaluation']"
-                :data="pastEvaluations.map(({ matiere,professeur, date, heure, duree,type_evaluation }) => ({ matiere,professeur, date, heure, duree,type_evaluation }))">
-            </tabEvaluations>
-            <p v-else class="alert alert-info">Aucune évaluation passée.</p>
-            <pagination 
-        class="pagination2" 
-        v-if="tableData.length > pageSize" 
-        :totalItems="tableData.length" 
-        :pageSize="pageSize" 
-        :currentPage="currentPage" 
-        @pageChange="handlePageChange" 
+                Les évaluations Passées
+            </h2>
+             <!-- Barre de recherche -->
+    <div class="search-container" >
+      <input 
+        type="text" 
+        v-model="searchQuery" 
+        class="form-control mb-3" 
+        placeholder="Recherchez un professeur " 
       />
-        </div>
+    </div>
+            <div class="tableau1">
+                <tabEvaluations v-if="paginatedData.length > 0" class="tab-planning2"
+                    :headers="['Matière', 'Professeur', 'Date', 'Heure', 'Durée (mins)', 'Évaluation']"
+                    :data="paginatedData.map(({ matiere, professeur, date, heure, duree, type_evaluation }) => ({ matiere, professeur, date, heure, duree, type_evaluation }))">
+                </tabEvaluations>
+
+                <p v-else class="alert alert-info">Aucune évaluation passée.</p>
+                <pagination class="pagination2" v-if="tableData.length > pageSize" :totalItems="tableData.length"
+                    :pageSize="pageSize" :currentPage="currentPage" @pageChange="handlePageChange" />
+            </div>
         </div>
 
         <div class="retour">
@@ -77,14 +81,14 @@ const fetchEvaluationsFutur = async () => {
     try {
         const response = await getEvaluationsParAnneeClasse(anneClasseId);
         // console.log('response', response);
-        
+
         if (response.status === 200) {
             // Filtrer pour garder seulement les évaluations à venir
-            const evaluationsFutures = response.evaluations.filter(evaluation => 
+            const evaluationsFutures = response.evaluations.filter(evaluation =>
                 dayjs(evaluation.date).isAfter(dayjs())
             );
 
-            otherProfEvaluations.value = evaluationsFutures; 
+            otherProfEvaluations.value = evaluationsFutures;
         } else {
             console.error('Erreur lors de la récupération des évaluations:', response.message);
         }
@@ -95,20 +99,41 @@ const fetchEvaluationsFutur = async () => {
 const fetchEvaluationsPasses = async () => {
     try {
         const response = await getEvaluationsParAnneeClasse(anneClasseId);
-        
+
         if (response.status === 200) {
-            // Filtrer pour garder seulement les évaluations passées
-            const evaluationsPasses = response.evaluations.filter(evaluation => 
+            const evaluationsPasses = response.evaluations.filter(evaluation =>
                 dayjs(evaluation.date).isBefore(dayjs())
             );
 
-            pastEvaluations.value = evaluationsPasses; 
+            pastEvaluations.value = evaluationsPasses;
+            tableData.value = evaluationsPasses; // Ajoutez cette ligne pour assigner à tableData
+        } else {
             console.error('Erreur lors de la récupération des évaluations:', response.message);
         }
     } catch (error) {
         console.error('Erreur lors de la récupération des évaluations:', error);
     }
 };
+// Propriété pour stocker la requête de recherche
+const searchQuery = ref('');
+
+// Filtrer les evaluations en fonction de la requête de recherche
+const filtrerEvaluations = computed(() => {
+  // Si la requête de recherche est vide, on retourne tous les evaluations
+  if (!searchQuery.value) {
+    return tableData.value;
+  }
+
+  // Convertir la requête de recherche en minuscules pour ignorer la casse
+  const lowerCaseQuery = searchQuery.value.toLowerCase();
+  
+  // Filtrer les evaluations en fonction du nom, prénom, email ou matricule
+  return tableData.value.filter(evaluation =>
+    evaluation.matiere.toLowerCase().includes(lowerCaseQuery) || 
+    evaluation.professeur.toLowerCase().includes(lowerCaseQuery) || 
+    evaluation.date.toLowerCase().includes(lowerCaseQuery)  
+  );
+});
 
 // Pagination pour les évaluations des autres professeurs
 const paginatedOtherProf = computed(() => {
@@ -128,7 +153,7 @@ const handlePageChange = (page) => {
 const paginatedData = computed(() => {
     const start = (currentPage.value - 1) * pageSize.value;
     const end = start + pageSize.value;
-    return tableData.value.slice(start, end);
+    return filtrerEvaluations.value.slice(start, end); // Utiliser tableData pour la pagination
 });
 
 // Méthode pour récupérer les détails d'une année
@@ -167,9 +192,11 @@ onMounted(() => {
 
 
 <style scoped>
-  ::v-deep .tab-noteMatiere td:nth-child(6)  { 
-    display: none; /* Masquer la colonne de l'ID */
-  }
+::v-deep .tab-noteMatiere td:nth-child(6) {
+    display: none;
+    /* Masquer la colonne de l'ID */
+}
+
 .main-content {
     margin-top: 120px;
 }
@@ -231,4 +258,24 @@ onMounted(() => {
     color: #F7AE00;
 
 }
+.pagination2 {
+    display: flex;
+    justify-content: end;
+  }
+  .search-container{
+    display: flex;
+     align-items:  center; 
+     justify-content: end;
+     margin-right: 50px;
+  }
+  .search-container input{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    border-radius: 12px;
+    width: 350px;
+  }
+  
 </style>

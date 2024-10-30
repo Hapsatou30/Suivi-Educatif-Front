@@ -22,10 +22,7 @@ b <template>
       </div>
    </div>
 
-    <!-- <router-link to="/professeurs" class="addTeacher">
-      <Icon icon="ei:plus" class="plus" />
-      <h3>Ajouter un professeur</h3>
-    </router-link> -->
+   
 
     <div class="evaluations">
       <h2>Les évaluations du jour</h2>
@@ -177,14 +174,14 @@ onMounted(() => {
   justify-content: end;
 }
 .chart-container{
-  background-color: rgb(241, 241, 241);
+  /* background-color: rgb(241, 241, 241); */
   margin-left: 300px;
   margin-top: 40px;
   border-radius: 10%;
   padding: 1%;
 }
 .chart-container1{
-  background-color: rgb(241, 241, 241);
+  /* background-color: rgb(241, 241, 241); */
   margin-right: 50px;
   margin-top: 40px;
   border-radius: 10%;

@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex justify-content-center align-items-center vh-100">
+  <div class="d-flex justify-content-center align-items-center vh-100 contenu" >
     <div class="container row my-2">
       <div class="col-lg-8 col-12">
         <div class="logo">
@@ -9,7 +9,7 @@
         <div class="formulaire">
           <h2>Connexion</h2>
           <form @submit.prevent="login">
-            <!-- Champ Email -->
+            <!-- Champ Email -->  
             <div class="mb-3">
               <label for="email" class="form-label">Email</label>
               <input
@@ -128,7 +128,7 @@ const login = async () => {
 
 
 <style>
-/* Styles généraux */
+/* Styles généraux - Inchangés */
 body,
 html {
   height: 100%;
@@ -137,143 +137,97 @@ html {
   font-family: "Poppins", sans-serif;
 }
 
+/* Styles desktop - Inchangés */
 .container {
-  min-height: 100vh; /* Assure une hauteur minimale égale à la fenêtre */
-  height: 100%; /* Garde la hauteur à 100% */
+  height: auto;
   border-radius: 20px;
 }
-
+.container {
+  display: flex;
+  align-items: stretch; /* Assure la même hauteur pour les colonnes */
+}
 
 .container .col-lg-8 {
   background-color: white;
-  /* Couleur de fond pour la colonne principale */
   color: #407CEE;
-  /* Couleur du texte */
   border-top-left-radius: 30px;
-  /* Arrondir les coins supérieurs gauche */
   border-bottom-left-radius: 30px;
-  /* Arrondir les coins inférieurs gauche */
-  height: 90%;
+  padding: 1px 0;
 }
 
 .logo {
   display: flex;
-  /* Utilise le flexbox pour centrer le logo */
   justify-content: center;
   align-items: center;
-  margin-top: -4%;
 }
 
 .logo h1 {
-  font-size: 28px;
-  /* Taille du texte */
-  margin-top: 12%;
-  /* Marge supérieure */
+  font-size: 30px;
+  margin-top: 12.1%;
   font-family: "Poppins", sans-serif;
-  /* Police utilisée */
   font-weight: 600;
-  /* Épaisseur de la police */
   color: #407CEE;
-  /* Couleur du texte */
 }
 
 .logo img {
-  /* width: 371px; */
   width: 30%;
-  /* Largeur de l'image du logo */
   height: auto;
-  /* Hauteur de l'image du logo */
- 
-
 }
 
 .formulaire {
   margin-left: 8%;
   padding: 30px;
-  /* Espacement interne */
   background-color: #f9f9f9;
-  /* Couleur de fond du formulaire */
   border-radius: 20px;
-  /* Bordure arrondie */
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
-  /* Ombre portée */
-
   max-width: 70%;
-  /* Largeur maximale du formulaire */
   margin-bottom: 30px;
-  /* Marge inférieure */
 }
 
 .formulaire h2 {
   font-size: 30px;
-  /* Taille du titre */
   margin-bottom: 20px;
-  /* Marge inférieure */
   text-align: center;
-  /* Centrer le texte */
   color: black;
-  /* Couleur du texte */
   font-family: "Poppins", sans-serif;
-  /* Police utilisée */
   font-weight: 500;
-  /* Épaisseur de la police */
 }
 
 .form-label {
   font-size: 18px;
-  /* Taille des labels */
   margin-bottom: 15px;
-  /* Marge inférieure */
   font-family: "Poppins", sans-serif;
-  /* Police utilisée */
   color: black;
-  /* Couleur du texte */
 }
 
 .form-control {
   width: 100%;
-  /* Largeur complète pour les champs de formulaire */
   height: 58px;
-  /* Hauteur des champs */
 }
 
 input {
   border-radius: 12px;
-  /* Bordure arrondie pour les champs de saisie */
 }
 
 .btn-custom {
   background-color: #407cee;
-  /* Couleur de fond du bouton */
   color: white;
-  /* Couleur du texte */
   border: none;
-  /* Pas de bordure */
   width: 100%;
-  /* Largeur complète */
   height: 58px;
-  /* Hauteur du bouton */
   border-radius: 12px;
-  /* Bordure arrondie */
   font-size: 24px;
-  /* Taille de la police */
   cursor: pointer;
-  /* Curseur en forme de main sur le bouton */
 }
 
 .container .col-4 {
   background-color: #407cee;
-  /* Couleur de fond pour la colonne d'image */
   border-top-right-radius: 30px;
-  /* Arrondir le coin supérieur droit */
   border-bottom-right-radius: 30px;
-  /* Arrondir le coin inférieur droit */
   display: flex;
-  /* Utilise le flexbox pour centrer l'image */
   justify-content: center;
   align-items: center;
-  height: 90%;
-
+  height: auto; 
 }
 
 .container .col-4 img {
@@ -282,84 +236,165 @@ input {
   object-fit: cover;
   margin-top: 65%;
   margin-left: -50%;
-  transition: transform 0.3s ease; 
+  transition: transform 0.3s ease;
 }
 
 .container .col-4 img:hover {
-  transform: scale(1.1); /* L'effet de zoom au survol */
+  transform: scale(1.1);
+}
+@media (min-width: 992px) and (max-width: 1399px) {
+ 
+  .container .col-4 {
+ padding: 1% 0;
+}
+
+
+}
+/* Styles pour tablette et petit écran */
+@media screen and (max-width: 991px) {
+  body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .container {
+    width: 90%;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .container .col-lg-8 {
+    width: 100%;
+    height: auto;
+    padding: 20px;
+    border-radius: 20px;
+  }
+
+  .logo {
+    margin-top: 0;
+    padding: 20px 0;
+  }
+
+  .logo h1 {
+  font-size: 25px;
+  margin-top: 18%;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  color: #407CEE;
+}
+
+.logo img {
+  width: 45%;
+  height: auto;
+}
+
+  .formulaire {
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 85%;
+  }
+
+  .container .col-4 {
+    display: none;
+  }
 }
 
 /* Styles pour mobile */
 @media screen and (max-width: 576px) {
-  body {
-    margin-top: 0;
-    /* Supprime la marge supérieure sur mobile */
-    overflow: scroll;
-    /* Permet le défilement */
-  }
-
   .container {
-    height: 100%;
-    /* Conteneur prenant toute la hauteur */
-    display: flex;
-    /* Utilise le flexbox pour aligner le contenu */
-    justify-content: center;
-    align-items: center;
-    border-radius: 0;
-    /* Pas de bordure pour un alignement complet */
-    padding: 0;
-    /* Pas de padding */
-    width: 100%;
-    /* Prendre toute la largeur */
+    width: 95%;
+    margin: 10px auto;
   }
-
-  .container .col-8 {
-    flex: 0 0 100%;
-    max-width: 100%;
-    background-color: white;
-    color: #407CEE;
-    border-radius: 0;
-    padding: 15px;
-    border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  }
-  
-
-  .logo {
-    flex-direction: column;
-    /* Aligner le logo verticalement */
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    /* Centrer le texte */
-  }
-
-  .logo h1 {
-    font-size: 30px;
-    /* Taille du titre sur mobile */
-    margin-top: 50px;
-    /* Marge supérieure */
-  }
-
-  .logo img {
-    width: 250px;
-    /* Largeur de l'image du logo sur mobile */
-    height: auto;
-    /* Hauteur automatique */
-    margin-top: -50px;
-    /* Marge pour superposer */
-  }
-  .formulaire {
-  margin-left: 0;
-
-  max-width: 100%;
-}
 
  
 
-  .container .col-4 {
-    display: none;
-    /* Cacher l'image en mode mobile */
+  .logo h1 {
+  font-size: 25px;
+  margin-top: 18%;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  color: #407CEE;
+}
+
+.logo img {
+  width: 45%;
+  height: auto;
+}
+  .formulaire {
+    padding: 15px;
+    max-width: 90%;
+    margin: 15px auto;
   }
+
+  .formulaire h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+  }
+
+  .form-label {
+    font-size: 16px;
+  }
+
+  .form-control {
+    height: 50px;
+  }
+
+  .btn-custom {
+    height: 50px;
+    font-size: 20px;
+  }
+}
+
+/* Très petits écrans */
+@media screen and (max-width: 450px) {
+  .container {
+    width: 98%;
+  }
+
+  .logo h1 {
+  font-size: 120%;
+  margin-top: 19.4%;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  color: #407CEE;
+}
+
+.logo img {
+  width: 47%;
+  height: auto;
+}
+  .formulaire {
+    padding: 12px;
+    max-width: 95%;
+  }
+
+  .formulaire h2 {
+    font-size: 20px;
+  }
+
+  .btn-custom {
+    font-size: 18px;
+  }
+}
+@media screen and (max-width: 360px) {
+
+
+  .logo h1 {
+  font-size: 100%;
+  margin-top: 19.4%;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  color: #407CEE;
+}
+
+.logo img {
+  width: 45%;
+  height: auto;
+}
+  
 }
 </style>

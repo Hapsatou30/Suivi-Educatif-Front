@@ -68,6 +68,12 @@
     <div class="annees">
       <h3 style="font-size: 24px;">Liste des Années scolaires</h3>
       <div class="tableau1">
+        <div v-if="successMessage" class="alert alert-success" role="alert">
+                {{ successMessage }}
+            </div>
+            <div v-if="errorMessage" class="alert alert-danger" role="alert">
+                {{ errorMessage }}
+            </div>
         <tabEvaluations 
           v-if="paginatedData.length > 0"
           class="tab-evaluations" 
@@ -137,7 +143,8 @@ const formData = ref({
   id: null  
 });
 
-
+const successMessage = ref('');
+const errorMessage = ref('');
 const errors = ref({
   annee_debut: null,
   annee_fin: null,
@@ -263,66 +270,47 @@ const handleFormSubmit = async () => {
     
     // Vérifier le statut de la réponse
     if (response.status === 201) {
-      const successMessage = formData.value.id !== null ? 'Année modifiée avec succès !' : 'Année ajoutée avec succès !';
-
-      Swal.fire({
-        icon: 'success',
-        title: 'Succès',
-        text: successMessage,
-        confirmButtonColor: '#407CEE',
-        timer: 2000,
-        timerProgressBar: true,
-        showConfirmButton: false
-      });
+      // Utiliser la variable réactive pour définir le message de succès
+      successMessage.value = formData.value.id !== null ? 'Année modifiée avec succès !' : 'Année ajoutée avec succès !';
+      errorMessage.value = ''; // Réinitialiser le message d'erreur
 
       await fetchData();
       resetForm();
+      
+      // Réinitialiser le message de succès après un délai
+      setTimeout(() => {
+        successMessage.value = '';
+      }, 2000);
     }
   } catch (error) {
     console.error('Erreur lors de la soumission du formulaire :', error);
 
     // Vérifiez si l'erreur a une réponse
     if (error.response) {
-      const errorMessage = error.response.data.message || 'Une erreur inattendue s\'est produite.';
-      
-      // Vérifier les codes d'erreur spécifiques
-      if (error.response.status === 409 || error.response.status === 422) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Erreur',
-          text: errorMessage,
-          confirmButtonColor: '#d33',
-          timer: 3000,
-          timerProgressBar: true,
-          showConfirmButton: false
-        });
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Erreur',
-          text: errorMessage,
-          confirmButtonColor: '#d33',
-          timer: 3000,
-          timerProgressBar: true,
-          showConfirmButton: false
-        });
-      }
-    } else {
-      // Si aucune réponse n'est reçue
-      Swal.fire({
-        icon: 'error',
-        title: 'Erreur',
-        text: 'Une erreur inattendue s\'est produite. Veuillez vérifier votre connexion.',
-        confirmButtonColor: '#d33',
-        timer: 3000,
-        timerProgressBar: true,
-        showConfirmButton: false
-      });
-    }
-    resetForm();
-  }
-};
+        const errorMsg = error.response.data.message || 'Une erreur inattendue s\'est produite.';
+        errorMessage.value = errorMsg; // Définir le message d'erreur
+        successMessage.value = ''; // Réinitialiser le message de succès
 
+        // Réinitialiser le message d'erreur après un délai
+        setTimeout(() => {
+            errorMessage.value = '';
+        }, 3000); // 3 secondes (vous pouvez ajuster ce délai selon vos besoins)
+        
+    } else {
+        // Si aucune réponse n'est reçue
+        errorMessage.value = 'Une erreur inattendue s\'est produite. Veuillez vérifier votre connexion.';
+        successMessage.value = ''; // Réinitialiser le message de succès
+
+        // Réinitialiser le message d'erreur après un délai
+        setTimeout(() => {
+            errorMessage.value = '';
+        }, 3000); // 3 secondes
+    }
+    
+    resetForm();
+}
+
+};
 
 
 const deleteAnnee = async (id) => {

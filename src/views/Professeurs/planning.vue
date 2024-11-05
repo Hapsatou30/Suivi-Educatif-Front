@@ -92,6 +92,12 @@
         <div class="mon_planning">
             <h2>Mon Planning</h2>
             <div class="tableau1">
+                <div v-if="successMessage" class="alert alert-success" role="alert">
+                {{ successMessage }}
+            </div>
+            <div v-if="errorMessage" class="alert alert-danger" role="alert">
+                {{ errorMessage }}
+            </div>
                 <tabEvaluations v-if="paginatedData.length > 0" class="tab-planning1"
                     :headers="['Matière ', 'Date', 'Heure', 'Durée(mins)', 'Evaluation', 'Classe', 'Action']"
                     :data="paginatedData.map(({ matiere, date, heure, duree, type_evaluation, classe, id }) => ({ matiere, date, heure, duree, type_evaluation, classe, id }))">
@@ -180,6 +186,8 @@ const pageSize = ref(5);
 const otherProfEvaluations = ref([]);
 const currentPageOther = ref(1);
 const classes = ref([]);
+const successMessage = ref('');
+const errorMessage = ref('');
 
 
 
@@ -288,34 +296,24 @@ const submitForm = async () => {
         if (formData.value.id) {
             // Modifier l'évaluation si un ID est présent dans formData
             await modifierEvaluation(formData.value);
-            Swal.fire({
-                title: 'Succès!',
-                text: 'Évaluation modifiée avec succès!',
-                icon: 'success',
-                timer: 1000,
-                timerProgressBar: true
-            });
+            successMessage.value = 'Évaluation modifiée avec succès!';
         } else {
             // Ajouter une nouvelle évaluation si pas d'ID
             await ajouterEvaluation(formData.value);
-            Swal.fire({
-                title: 'Succès!',
-                text: 'Évaluation ajoutée avec succès!',
-                icon: 'success',
-                timer: 1000,
-                timerProgressBar: true
-            });
+            successMessage.value = 'Évaluation ajoutée avec succès!';
         }
+
         fetchData();
         resetForm();
-    } catch (error) {
-        Swal.fire({
-            title: 'Erreur!',
-            text: error.message || 'Une erreur est survenue lors de l\'enregistrement de l\'évaluation.',
-            icon: 'error',
-            timer: 3000,
-            timerProgressBar: true
-        });
+    }  catch (error) {
+        console.error('Erreur lors de l\'ajout de l\'evaluation :', error);
+        const errorMessageContent = error.response?.data?.message || error.message || 'Une erreur inattendue s\'est produite.';
+        errorMessage.value = errorMessageContent;
+        
+        // Masquer le message d'erreur après quelques secondes
+        setTimeout(() => {
+            errorMessage.value = '';
+        }, 3000);
     }
 };
 

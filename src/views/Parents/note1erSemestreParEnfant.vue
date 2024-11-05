@@ -10,7 +10,7 @@
     </div>
     <div class="boutons">
       <boutons title1="1er Semestre" title2="2ème Semestre" page1="notes_enfant_1er_Semestre"
-    page2="notes_enfant_2eme_Semestre" />
+        page2="notes_enfant_2eme_Semestre" />
     </div>
     <div class="diagramme mb-5">
       <div class="chart-container1">
@@ -21,27 +21,28 @@
 
     <!-- Notes par matière -->
     <div class="notes">
-  <div v-for="(notesParMatiere, matiere) in notesGroupByMatiere" :key="matiere" class="matiere-section">
-    <div class="title-container">
-      <h1>{{ matiere }}</h1>
-    </div>
+      <div v-for="(notesParMatiere, matiere) in notesGroupByMatiere" :key="matiere" class="matiere-section">
+        <div class="title-container">
+          <h1>{{ matiere }}</h1>
+        </div>
 
-    <div class="row ligne">
-      <div v-for="note in notesParMatiere" :key="note.nom_evaluation" class="matiere-card col-12 col-sm-6 col-md-4 mb-3">
-        <div :style="{ backgroundColor: getMatiereColor(note.matiere) }" class="card">
-          <div class="card-title">{{ note.evaluation }} : {{ note.nom_evaluation }}</div>
-          <div class="card-content">
-            <h1>{{ note.note }}</h1>
-          </div>
-          <div class="card-footer">
-            <p class="coef">Coef: {{ note.coefficient }}</p>
-            <p class="comment">{{ note.commentaire }}</p>
+        <div class="row ligne">
+          <div v-for="note in notesParMatiere" :key="note.nom_evaluation"
+            class="matiere-card col-12 col-sm-6 col-md-4 mb-3">
+            <div :style="{ backgroundColor: getMatiereColor(note.matiere) }" class="card">
+              <div class="card-title">{{ note.evaluation }} : {{ note.nom_evaluation }}</div>
+              <div class="card-content">
+                <h1>{{ note.note }}</h1>
+              </div>
+              <div class="card-footer">
+                <p class="coef">Coef: {{ note.coefficient }}</p>
+                <p class="comment">{{ note.commentaire }}</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
 
   </div>
 </template>
@@ -69,7 +70,7 @@ const notesGroupByMatiere = ref({});
 const fetchDetailsEleve = async () => {
   try {
     const response = await getDetailsEleve(classeEleve_id.value);
-    
+
     if (response.status === 200) {
       prenom.value = response.données.prenom;
     } else {
@@ -87,10 +88,10 @@ const fetchNotesEleve = async () => {
     if (response) {
       const filteredNotes = response.eleve.notes.filter(note => note.periode === "1_semestre");
       notes.value = filteredNotes;
-      
+
       // Grouper les notes par matière
       notesGroupByMatiere.value = groupNotesByMatiere(filteredNotes);
-      
+
       // Préparer les données pour le diagramme
       subjects.value = notes.value.map(note => note.matiere);
       scores.value = notes.value.map(note => note.note);
@@ -134,13 +135,15 @@ onMounted(() => {
 
 <style scoped>
 .matiere-card {
-  flex: 1 1 calc(33.33% - 16px); /* Chaque carte prend 33.33% de la largeur disponible moins l'espace du gap */
+  flex: 1 1 calc(33.33% - 16px);
+  /* Chaque carte prend 33.33% de la largeur disponible moins l'espace du gap */
   padding: 15px;
   border-radius: 10px;
   margin-bottom: 20px;
   color: #fff;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-sizing: border-box; /* Inclut les marges et les bordures dans la largeur */
+  box-sizing: border-box;
+  /* Inclut les marges et les bordures dans la largeur */
 
 }
 
@@ -174,12 +177,15 @@ onMounted(() => {
   margin-right: 20px;
   /* Ajustement de la marge */
 }
-.boutons{
+
+.boutons {
   display: block;
 }
+
 .btn-group[data-v-958842ab] {
- margin-left: 0;
+  margin-left: 0;
 }
+
 .notes {
   margin-top: 20px;
   width: 100%;
@@ -187,7 +193,7 @@ onMounted(() => {
 
 .title-container {
   display: flex;
-  align-items: center; 
+  align-items: center;
   text-align: center;
 }
 
@@ -198,11 +204,15 @@ onMounted(() => {
 
 .ligne {
   display: flex;
-  flex-wrap: wrap; /* Permet aux cartes de passer à la ligne suivante si l'espace est insuffisant */
-  gap: 16px; /* Espace entre les cartes */
+  flex-wrap: wrap;
+  /* Permet aux cartes de passer à la ligne suivante si l'espace est insuffisant */
+  gap: 16px;
+  /* Espace entre les cartes */
   margin-top: 20px;
-  justify-content: space-between; /* Distribue les cartes équitablement */
+  justify-content: space-between;
+  /* Distribue les cartes équitablement */
 }
+
 .title {
   text-align: center;
   /* Centre le titre */
@@ -272,47 +282,56 @@ onMounted(() => {
     font-size: 20px;
     margin-top: 25px
   }
- 
-  .matiere-card {
-  flex: 1 1 calc(50% - 16px); /* Chaque carte prend 33.33% de la largeur disponible moins l'espace du gap */
-  padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  color: #fff;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-sizing: border-box; /* Inclut les marges et les bordures dans la largeur */
 
-}
+  .matiere-card {
+    flex: 1 1 calc(50% - 16px);
+    /* Chaque carte prend 33.33% de la largeur disponible moins l'espace du gap */
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    color: #fff;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;
+    /* Inclut les marges et les bordures dans la largeur */
+
+  }
+
   .card-title {
     font-size: 16px;
   }
 
 }
+
 @media (max-width: 576px) {
   .matiere-card {
-  flex: 1 1 calc(100% - 16px); /* Chaque carte prend 33.33% de la largeur disponible moins l'espace du gap */
-  padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  color: #fff;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-sizing: border-box; /* Inclut les marges et les bordures dans la largeur */
+    flex: 1 1 calc(100% - 16px);
+    /* Chaque carte prend 33.33% de la largeur disponible moins l'espace du gap */
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    color: #fff;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;
+    /* Inclut les marges et les bordures dans la largeur */
 
-}
+  }
+
   .main-content {
     margin-left: 0;
     margin-top: 100px;
   }
-  .row{
+
+  .row {
     margin: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
   }
-.col-6{
-width: 100%;
-}
+
+  .col-6 {
+    width: 100%;
+  }
 }
 </style>

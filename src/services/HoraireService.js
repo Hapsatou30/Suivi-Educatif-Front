@@ -3,6 +3,11 @@ import axios from 'axios'; // Importation de la bibliothèque axios
 
 export const geHoraireClasse = async (anneeClasseId) => {
     try {
+        if (!anneeClasseId) {
+            console.error('L\'ID de la classe est manquant');
+            return; // Sortir de la fonction si l'ID est absent
+        }
+
         const token = localStorage.getItem('token'); // Récupérer le token depuis le stockage local
 
         // Récupération du nombre total de professeurs en utilisant axios.get

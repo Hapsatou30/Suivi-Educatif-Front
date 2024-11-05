@@ -1,4 +1,4 @@
-<template>
+ <template>
   <div>
     <!-- Canvas pour le graphique en forme de camembert -->
     <canvas ref="pieChartCanvas" width="400" height="400"></canvas>

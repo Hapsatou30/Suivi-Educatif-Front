@@ -28,11 +28,11 @@ const fetchHoraires = async (professeurId) => {
     const response = await geHoraireProf(professeurId);
     const horaires = response.données;
 
-    console.log('Horaires récupérés:', horaires);  // Voir les données récupérées
+    // console.log('Horaires récupérés:', horaires);  // Voir les données récupérées
 
     if (horaires.length === 0) {
       hasData.value = false;
-      console.log('Pas de données disponibles');
+      // console.log('Pas de données disponibles');
       return;
     }
 
@@ -50,7 +50,7 @@ const fetchHoraires = async (professeurId) => {
       return totalHeures;
     });
 
-    console.log('Heures par jour:', heuresParJour);  // Vérifier la transformation
+    // console.log('Heures par jour:', heuresParJour);  // Vérifier la transformation
 
     hasData.value = true;
     updateBarChart(heuresParJour);

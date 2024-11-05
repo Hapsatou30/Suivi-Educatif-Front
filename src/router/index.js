@@ -81,6 +81,13 @@ import MesAbsences from '@/views/Eleves/mesAbsences.vue';
 import CahierDeTexte from '@/views/Eleves/cahierDeTexte.vue';
 import MonEmploisDuTemps from '@/views/Eleves/monEmploisDuTemps.vue';
 import TemplateBulletin2 from '@/components/TemplateBulletin2.vue';
+import NotesMatiere2 from '@/views/Admin/notesMatiere2.vue';
+import GestionBulletinsAdmin from '@/views/Admin/gestionBulletins.vue';
+import BulletinsParClasse from '@/views/Admin/bulletinsParClasse.vue';
+import Bulletins1erSemestre from '@/views/Admin/bulletins1erSemestre.vue';
+import Bulletins2emeSemestre from '@/views/Admin/bulletins2emeSemestre.vue';
+import MonBulletin1erSemestre from '@/views/Eleves/monBulletin1erSemestre.vue';
+import MonBulletin2emeSemestre from '@/views/Eleves/monBulletin2emeSemestre.vue';
 
 
 // Routes non protégées (accessible à tous)
@@ -120,13 +127,18 @@ const adminRoutes = [
   { path: '/eleves_classe/:id', name: 'eleves_classe', component: ElevesCLasse },
   { path: '/gestion_notes_admin', name: 'gestion_notes_admin', component: GestionNotesAdmin },
   { path: '/notes_matieres/:anneeClasse_id', name: 'notes_matieres', component: NoteMatieres },
-  { path: '/notes/:id_profMat/:matiere', name: 'notes', component: NotesMatiere },
+  { path: '/notes/:id_classeProf/:matiere', name: 'notes', component: NotesMatiere },
+  { path: '/notes2/:id_classeProf/:matiere', name: 'notes2', component: NotesMatiere2},
   { path: '/gestion_cahier_texte_admin' , name: 'gestion_cahier_texte_admin', component: GestionCahierTexteAdmin},
   { path: '/cahier_texte_classe/:anneeClasse_id', name: 'cahier_texte_classe', component: CahierTexteClasse},
   { path: '/gestion_evaluations', name: 'gestion_evaluations', component: GestionEvaluationsAdmin},
   { path: '/evaluations_classe/:anneeClasse_id', name: 'evaluations_classe', component: EvaluationsClasse},
   { path: '/gestion_absences_admin', name: 'gestion_absences_admin', component: GestionAbsencesAdmins},
   { path: '/absences_classe_admin/:anneeClasse_id', name: 'absences_classe_admin', component: AbsencesClasse},
+  { path: '/gestion_bulletins_admins' , name: 'gestion_bulletins_admins', component: GestionBulletinsAdmin},
+  { path: '/bulletins_par_classe/:anneeClasse_id/:nom', name: 'bulletins_par_classe', component: BulletinsParClasse},
+  { path: '/bulletins_1er_Semestre_par_eleve/:id_classeEleve', name: 'bulletins_1er_Semestre_par_eleve', component: Bulletins1erSemestre},
+  { path: '/bulletins_2eme_Semestre_par_eleve/:id_classeEleve', name: 'bulletins_2eme_Semestre_par_eleve', component: Bulletins2emeSemestre},
 
 ];
 
@@ -186,6 +198,8 @@ const eleveRoutes = [
   { path: '/mesAbsences' , name: 'mesAbsences', component: MesAbsences},
   { path: '/cahierDeTexteClasse' , name: 'cahierDeTexteClasse', component: CahierDeTexte},
   { path: '/emploisDuTemps', name: 'emploisDuTemps', component: MonEmploisDuTemps},
+  { path: '/monBulletin1erSemestre', name: 'monBulletin1erSemestre', component: MonBulletin1erSemestre},
+  { path: '/monBulletin2emeSemestre', name:'monBulletin2emeSemestre', component: MonBulletin2emeSemestre},
 
 ];
 

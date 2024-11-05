@@ -43,6 +43,12 @@
     </div>
 
     <div class="matieres">
+      <div v-if="successMessage" class="alert alert-success" role="alert">
+                {{ successMessage }}
+            </div>
+            <div v-if="errorMessage" class="alert alert-danger" role="alert">
+                {{ errorMessage }}
+            </div>
       <div class="title_recherche" style="display: flex; align-items:  center; justify-content: space-between;">
         <h3>Liste des Matières</h3>
     
@@ -111,6 +117,8 @@ const errors = ref({
   coefficient: null,
   description: null
 });
+const successMessage = ref('');
+const errorMessage = ref('');
 const validateField = (field) => {
   const nameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ]+(?:\s[A-Za-zÀ-ÖØ-öø-ÿ]+)*$/;  // Pour valider nom et prénom
 
@@ -198,45 +206,42 @@ const paginatedData = computed(() => {
   return filteredMatieres.value.slice(start, end);
 });
 
+
+
 const handleFormSubmit = async () => {
-  validateField('nom');
-  validateField('coefficient');
-  validateField('description');
+    validateField('nom');
+    validateField('coefficient');
+    validateField('description');
 
-  if (!formIsValid.value) {
-    return; // Stop if the form is invalid
-  }
+    if (!formIsValid.value) {
+        return; // Stop if the form is invalid
+    }
 
-  try {
-    const response = await (formData.value.id !== null ? modifierMatiere(formData.value) : ajouterMatiere(formData.value));
+    try {
+        const response = await (formData.value.id !== null ? modifierMatiere(formData.value) : ajouterMatiere(formData.value));
 
-    const successMessage = formData.value.id !== null ? 'Matière modifiée avec succès !' : 'Matière ajoutée avec succès !';
+        // Utiliser la variable réactive pour définir le message de succès
+        successMessage.value = formData.value.id !== null 
+            ? 'Matière modifiée avec succès !' 
+            : 'Matière ajoutée avec succès !';
 
-    Swal.fire({
-      icon: 'success',
-      title: 'Succès',
-      text: successMessage,
-      confirmButtonColor: '#407CEE',
-      timer: 2000,
-      timerProgressBar: true,
-      showConfirmButton: false
-    });
+        errorMessage.value = ''; // Réinitialiser le message d'erreur
 
-    await fetchData();
-    resetForm();
-  } catch (error) {
-    console.error('Erreur lors de la soumission du formulaire :', error);
-    Swal.fire({
-      icon: 'error',
-      title: 'Erreur',
-      text: error.message || 'Une erreur inattendue s\'est produite.',
-      confirmButtonColor: '#d33',
-      timer: 3000,
-      timerProgressBar: true,
-      showConfirmButton: false
-    });
-  }
+        // Réinitialiser le formulaire et les messages après un délai
+        setTimeout(() => {
+            successMessage.value = '';
+            resetForm();
+        }, 2000);
+
+        await fetchData();
+    } catch (error) {
+        console.error('Erreur lors de la soumission du formulaire :', error);
+        // Définir le message d'erreur
+        errorMessage.value = error.message || 'Une erreur inattendue s\'est produite.';
+        successMessage.value = ''; // Réinitialiser le message de succès
+    }
 };
+
 
 const deleteMatiere = async (id) => {
   const confirmDelete = await Swal.fire({

@@ -86,7 +86,7 @@ const fetchEleveNonAttribue = async () => {
 
             // Filtrer les élèves pour ne garder que ceux qui ne sont pas attribués
             itemList.value = tousEleves.filter(eleve => !elevesAttribueIds.has(eleve.id));
-            console.log('Élèves non attribués:', itemList.value);
+            // console.log('Élèves non attribués:', itemList.value);
         } else {
             console.warn("Aucune donnée d'élèves attribués trouvée ou structure inattendue.");
             // Si aucune classe n'est trouvée, afficher tous les élèves

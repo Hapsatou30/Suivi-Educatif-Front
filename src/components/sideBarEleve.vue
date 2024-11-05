@@ -39,7 +39,7 @@
           </router-link>
         </li>
         <li>
-          <router-link to="/gestion_bulletins" class="menu-link" :class="{ active: isActive('/gestion_bulletins') || isActive('/bulletins_par_enfant_1semestre') || isActive('/bulletins_par_enfant_2semestre') }">
+          <router-link to="/monBulletin1erSemestre" class="menu-link" :class="{ active: isActive('/monBulletin1erSemestre') || isActive('/monBulletin2emeSemestre') }">
             <Icon icon="clarity:note-line" /> Bulletins
           </router-link>
         </li>

@@ -76,6 +76,12 @@
       </div>
 
       <div class="tableau1">
+        <div v-if="successMessage" class="alert alert-success" role="alert">
+                {{ successMessage }}
+            </div>
+            <div v-if="errorMessage" class="alert alert-danger" role="alert">
+                {{ errorMessage }}
+            </div>
         <tabEvaluations 
           v-if="paginatedData.length > 0"
           class="tab-evaluations"
@@ -134,7 +140,8 @@ const formData = ref({
   id: null  
 });
 
-
+const successMessage = ref('');
+const errorMessage = ref('');
 const errors = ref({
   nom: null,
   niveau: null,
@@ -223,44 +230,44 @@ const paginatedData = computed(() => {
 });
 
 const handleFormSubmit = async () => {
-  // Valider tous les champs avant de soumettre
-  validateField('nom');
-  validateField('niveau');
-  validateField('capacite');
+    // Valider tous les champs avant de soumettre
+    validateField('nom');
+    validateField('niveau');
+    validateField('capacite');
 
-  if (!formIsValid.value) {
-    return; // Arrêter la soumission si le formulaire n'est pas valide
-  }
+    if (!formIsValid.value) {
+        return; // Arrêter la soumission si le formulaire n'est pas valide
+    }
 
-  try {
-    const response = await (formData.value.id !== null ? modifierClasse(formData.value) : ajouterClasse(formData.value));
-    const successMessage = formData.value.id !== null ? 'Classe modifiée avec succès !' : 'Classe ajoutée avec succès !';
+    try {
+        const response = await (formData.value.id !== null ? modifierClasse(formData.value) : ajouterClasse(formData.value));
+        const msg = formData.value.id !== null ? 'Classe modifiée avec succès !' : 'Classe ajoutée avec succès !';
 
-    Swal.fire({
-      icon: 'success',
-      title: 'Succès',
-      text: successMessage,
-      confirmButtonColor: '#407CEE',
-      timer: 2000,
-      timerProgressBar: true,
-      showConfirmButton: false
-    });
+        // Afficher le message de succès
+        successMessage.value = msg; // Utilisez msg ici
+        errorMessage.value = ''; // Réinitialiser le message d'erreur
 
-    await fetchData();
-    resetForm();
-  } catch (error) {
-    console.error('Erreur lors de la soumission du formulaire :', error);
-    Swal.fire({
-      icon: 'error',
-      title: 'Erreur',
-      text: error.message || 'Une erreur inattendue s\'est produite.',
-      confirmButtonColor: '#d33',
-      timer: 3000,
-      timerProgressBar: true,
-      showConfirmButton: false
-    });
-    resetForm();
-  }
+        // Réinitialiser le message de succès après un délai
+        setTimeout(() => {
+            successMessage.value = '';
+        }, 2000); // 2 secondes
+
+        await fetchData();
+        resetForm();
+    } catch (error) {
+        console.error('Erreur lors de la soumission du formulaire :', error);
+        
+        // Définir le message d'erreur
+        errorMessage.value = error.message || 'Une erreur inattendue s\'est produite.';
+        successMessage.value = ''; // Réinitialiser le message de succès
+
+        // Réinitialiser le message d'erreur après un délai
+        setTimeout(() => {
+            errorMessage.value = '';
+        }, 3000); // 3 secondes
+        
+        resetForm();
+    }
 };
 
 const deleteClasse = async (id) => {

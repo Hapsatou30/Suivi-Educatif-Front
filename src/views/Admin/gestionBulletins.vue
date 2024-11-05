@@ -3,7 +3,7 @@
     <topbar_admin />
     <div class="main-content">
 
-      <h2>Gestion des absences  </h2>
+      <h2>Gestion des Bulletins   </h2>
       <div class="search-container" style="display: flex; align-items:  center; justify-content: end;">
       <input 
         type="text" 
@@ -32,7 +32,7 @@
           >
             <template #actions="{ row }">
               <div class="boutons">
-                <button class="btn " @click="redirectToSubeject(row.anneeClasse_id)"style="color: #407CEE; font-size: 40px;" title="Voir les absences">
+                <button class="btn " @click="redirectToSubeject(row.anneeClasse_id, row.nom)"style="color: #407CEE; font-size: 40px;" title="Voir la liste des élèves">
                   <Icon icon="marketeq:eye"/> 
                 </button>
               </div>
@@ -129,9 +129,9 @@ const filteredClasses = computed(() => {
   });
 
 
-  const redirectToSubeject = (anneeClasse_id) => {
+  const redirectToSubeject = (anneeClasse_id,nom) => {
   // Redirige vers la page annee_classes avec l'id dans l'URL
-  router.push({ name: 'absences_classe_admin', params: { anneeClasse_id } });
+  router.push({ name: 'bulletins_par_classe', params: { anneeClasse_id,nom } });
 };
   
   onMounted(fetchData);

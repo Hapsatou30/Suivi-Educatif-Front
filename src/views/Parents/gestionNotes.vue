@@ -10,7 +10,7 @@
                     <div class="card mb-4 shadow-sm custom-card">
                         <div class="card-header">
                             <div class="image-wrapper">
-                                <img :src="card.photo || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZv5fMEw3s3nvP0sxLIG8bO6RzCLmqgzW5ww&s'" alt="image" class="hexagon-image">
+                                <img :src="card.photo" alt="image" class="hexagon-image"> 
                             </div>
                         </div>
                         <div class="card-body text-center">
@@ -33,7 +33,6 @@ import { ref, onMounted } from 'vue';
 
 const parentId = ref('');
 const cards = ref([]);  
-
 const fetchProfile = async () => {
     try {
         const response = await profile();
@@ -56,15 +55,16 @@ const fetchElevesParParent = async () => {
                 id: index + 1,
                 prenomNom: `${eleve.prenom} ${eleve.nom}`,
                 classe: eleve.annee_classe[0]?.classe || 'Classe non définie',
-                photo: eleve.photo,
+                photo: eleve.photo ? `https://suivieducatifapi.thiamhapstou.simplonfabriques.com/storage/${eleve.photo}` : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZv5fMEw3s3nvP0sxLIG8bO6RzCLmqgzW5ww&s',
                 classeEleve_id: eleve.annee_classe[0]?.classeEleve_id
-            }));
+            }
+        ));
         }
     } catch (error) {
         console.error('Erreur lors de la récupération des élèves:', error);
     }
 };
-
+ 
 onMounted(async () => {
     await fetchProfile();
 });

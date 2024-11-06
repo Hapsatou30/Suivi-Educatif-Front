@@ -65,11 +65,12 @@ onMounted(fetchAnneeEnCours);
 }
 
 .title {
-  font-size: 30px;
+  font-size: 150%;
   font-family: "Poppins", sans-serif;
   font-weight: 600;
   margin: 0;
   color: black;
+  padding-top: 5%;
 }
 
 span {
@@ -108,7 +109,9 @@ span {
   }
 }
 
-@media (max-width: 810px) {
+
+
+/* @media (max-width: 810px) {
   .card-container {
     width: 100%;
     margin-left: auto !important;
@@ -130,11 +133,11 @@ span {
   .school-image {
     width: 250px; 
   }
-}
+} */
 
 @media (max-width: 576px) {
   .title {
-    font-size: 18px; 
+    font-size: 100%; 
   }
 
   .sub-title {

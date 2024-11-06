@@ -1,6 +1,6 @@
 <template>
   <div>
-    <canvas ref="performanceChart" :width="chartWidth" :height="chartHeight"></canvas>
+  <canvas ref="performanceChart" width="400" height="400"></canvas>
   </div>
 </template>
 
@@ -23,16 +23,7 @@ const props = defineProps({
 
 const performanceChart = ref(null);
 
-// Variables pour la largeur et la hauteur du graphique
-const chartWidth = ref(600);
-const chartHeight = ref(500);
 
-// Ajuster la taille du graphique en fonction de la fenêtre
-const updateChartSize = () => {
-  const width = window.innerWidth;
-  chartWidth.value = width < 900 ? width - 20 : 900; // Réduire pour les petits écrans
-  chartHeight.value = chartWidth.value / 2; // Hauteur proportionnelle à la largeur
-};
 
 // Fonction pour obtenir la couleur associée à une matière
 const getMatiereColor = (matiere) => {
@@ -76,7 +67,7 @@ const renderChart = () => {
           beginAtZero: true,
         },
       },
-      responsive: true,
+      responsive: false,
       plugins: {
         legend: {
           position: 'bottom',
@@ -110,5 +101,7 @@ window.addEventListener('resize', updateChartSize);
 canvas {
   max-width: 100%; /* Utiliser 100% pour une adaptabilité maximale */
   margin: auto; /* Centre le graphique */
+
 }
+
 </style>

@@ -59,11 +59,12 @@ onMounted(fetchAnneeEnCours);
 }
 
 .title {
-  font-size: 30px;
+  font-size: 150%;
   font-family: "Poppins", sans-serif;
   font-weight: 600;
   margin: 0;
   color: black;
+  padding-top: 5%;
 }
 
 span {
@@ -93,8 +94,15 @@ span {
   font-weight: bold;
   color: black;
 }
-@media (max-width: 992px) {
- 
+@media (max-width: 1000px) {
+  .card-container {
+   width: 100%;
+   margin-left: auto !important;
+    margin-right: auto !important;
+    
+    padding: 10px;
+    height: auto;
+  }
   .title {
   font-size: 20px;
   font-family: "Poppins", sans-serif;
@@ -119,7 +127,7 @@ span {
 }
 
 
-@media (max-width: 810px) {
+/* @media (max-width: 810px) {
   .card-container {
    width: 100%;
    margin-left: auto !important;
@@ -147,11 +155,11 @@ span {
     width: 280px; 
     height: auto;
   }
-}
+} */
 
 @media (max-width: 576px) {
   .title {
-    font-size: 18px; 
+    font-size: 100%; 
   }
 
   .sub-title {

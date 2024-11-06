@@ -1,7 +1,7 @@
 <template>
     <sidebar_parent />
     <topbar_parent />
-    <div class="main-content container">
+    <div class="main-content ">
         <h1>Voir les cahiers de texte de mes enfants</h1>
         <div class="row">
             <div class="col-lg-4 col-md-6 col-12" v-for="card in cards" :key="card.id">

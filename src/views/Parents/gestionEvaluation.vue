@@ -1,10 +1,10 @@
 <template>
     <sidebar_parent />
     <topbar_parent />
-    <div class="main-content container">
+    <div class="main-content ">
         <h1>Voir les plannings d'évaluations de mes enfants</h1>
         <div class="row">
-            <div class="col-lg-4 col-md-6 col-12"  v-for="card in cards" :key="card.id">
+            <div  v-for="card in cards" :key="card.id">
                 <!-- Envelopper la carte dans un lien -->
                 <router-link :to="{ name: 'evaluation_enfant', params: { classeEleve_id: card.classeEleve_id } }" class="text-decoration-none">
                     <div class="card mb-4 shadow-sm custom-card">

@@ -2,7 +2,9 @@
     <sidebar_parent />
     <topbar_parent />
     <div class="main-content">
-        <affiche />
+        <div class="affche">
+          <affiche />
+        </div>
         <div class="header">
             <div class="widgets-container">
                 <widget title="Enfants" :number="enfantsCount" iconClass="openmoji:child" />
@@ -186,6 +188,7 @@ onMounted(async () => {
     margin-top: 120px;
     overflow-x: hidden;
 }
+
 
 .evaluations{
     margin-top: 80px;

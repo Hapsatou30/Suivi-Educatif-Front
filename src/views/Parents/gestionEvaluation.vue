@@ -1,7 +1,7 @@
 <template>
     <sidebar_parent />
     <topbar_parent />
-    <div class="main-content ">
+    <div class="main-content1 ">
         <h1>Voir les plannings d'évaluations de mes enfants</h1>
         <div class="row">
             <div  v-for="card in cards" :key="card.id">
@@ -74,7 +74,7 @@ onMounted(async () => {
 
 
 <style scoped>
-.main-content {
+ .main-content1 {
     margin-top: 100px;
     margin-left: 270px; 
     margin-right: 50px;
@@ -192,7 +192,7 @@ h1 {
 
 /* Styles pour les appareils mobiles et tablettes */
 @media (max-width: 992px) {
-    .main-content {
+      .main-content1 {
         overflow-x: hidden;
         width: 90%;
         margin-left: auto !important;
@@ -207,66 +207,12 @@ h1 {
 
 }
 
-@media (max-width: 810px) {
-    .main-content {
-        width: 90%;
-        margin-left: auto !important;
-        margin-right: auto !important;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
 
-    .main-content h1 {
-        font-size: 1.5rem; 
-        margin-top: 30px; 
-        margin-bottom: 30px;
-    }
-
-    .row>* {
-    flex: 1 1 calc(50% - 16px); /* Chaque carte prend 33.33% de la largeur disponible moins l'espace du gap */
-  padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  color: #fff;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-sizing: border-box; 
-  overflow-x: hidden;
-}
-.custom-card {
-  flex: 1 1 calc(50% - 16px); /* Chaque carte prend 33.33% de la largeur disponible moins l'espace du gap */
-  padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  color: #fff;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-sizing: border-box; /* Inclut les marges et les bordures dans la largeur */
-}
-
-    .card {
-        height: auto; 
-        margin-bottom: 20px; 
-    }
-
-    .hexagon-image {
-        width: 150px;  
-        height: 150px; 
-        margin-top: 20px; 
-    }
-
-    .image-wrapper {
-        bottom: -60px; 
-    }
-
-    .card-header {
-        height: 120px; 
-    }
-
-    .card-body h3 {
-        font-size: 1rem; 
-    }
-}
 @media (max-width: 576px) {
+      .main-content1 {
+        margin-top: 500px;
+        
+    }
     .row>* {
     flex: 1 1 calc(100% - 16px); /* Chaque carte prend 33.33% de la largeur disponible moins l'espace du gap */
   padding: 15px;
@@ -286,5 +232,12 @@ h1 {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   box-sizing: border-box; /* Inclut les marges et les bordures dans la largeur */
 }
+}
+@media (max-width: 330px)
+{
+    .main-content1 {
+        margin-top: 700px;
+        
+    }
 }
 </style>

@@ -230,7 +230,7 @@ h1 {
 
 @media (max-width: 576px) {
       .main-content1 {
-        margin-top: 200px;
+        margin-top: 450px;
         width: 95%;
         margin-left: auto;
         margin-right: auto;
@@ -259,7 +259,7 @@ h1 {
 @media (max-width: 330px)
 {
     .main-content1 {
-        margin-top: 200px;
+        margin-top: 700px;
         
     }
 }

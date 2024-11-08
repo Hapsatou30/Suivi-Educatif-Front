@@ -97,7 +97,7 @@ const fetchProfile = async () => {
     formData.value.nom = user.eleve.nom;
     formData.value.prenom = user.eleve.prenom;
     formData.value.email = user.email;
-     photoUser.value = `SuiviEducatifFrontEnd.thiamhapstou.simplonfabriques.com/storage//` + user.eleve.photo || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF5-3YjBcXTqKUlOAeUUtuOLKgQSma2wGG1g&s'; 
+     photoUser.value = `suiviEducatifAPI.thiamhapstou.simplonfabriques.com/storage//` + user.eleve.photo || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF5-3YjBcXTqKUlOAeUUtuOLKgQSma2wGG1g&s'; 
   }
 
   

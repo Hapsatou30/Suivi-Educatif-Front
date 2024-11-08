@@ -1,5 +1,5 @@
 // apiConfig.js
-// export const apiUrl = 'SuiviEducatifFrontEnd.thiamhapstou.simplonfabriques.com';
-export const apiUrl = 'SuiviEducatifFrontEnd.thiamhapstou.simplonfabriques.com/api';
+// export const apiUrl = 'suiviEducatifAPI.thiamhapstou.simplonfabriques.com';
+export const apiUrl = 'suiviEducatifAPI.thiamhapstou.simplonfabriques.com/api';
 
  

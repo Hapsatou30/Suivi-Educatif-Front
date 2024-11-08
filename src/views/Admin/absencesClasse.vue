@@ -14,7 +14,7 @@
                     eleve: `${eleve.prenom} ${eleve.nom}`,
                     date_presence,
                     matiere: matiere ? matiere.nom : 'Non spécifié',
-                    justification: justification ? `https://suivieducatifapi.thiamhapstou.simplonfabriques.com/storage//` + justification : 'vide',
+                    justification: justification ? `http://127.0.0.1:8000/storage//` + justification : 'vide',
                     motif: motif || 'vide',  
                 }))">
                 <template #justification="{ justification }">
@@ -36,7 +36,7 @@
                         eleve: `${eleve.prenom} ${eleve.nom}`,
                         date_absence,
                         matiere: matiere ? matiere.nom : 'Non spécifié',
-                        justification: justification ? `https://suivieducatifapi.thiamhapstou.simplonfabriques.com/storage//` + justification : 'vide',
+                        justification: justification ? `http://127.0.0.1:8000/storage//` + justification : 'vide',
                         motif: motif || 'vide',  // Affiche 'vide' si motif est vide
                     }))">
                     <template #justification="{ justification }">

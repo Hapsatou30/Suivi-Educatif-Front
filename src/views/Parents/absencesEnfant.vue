@@ -248,9 +248,8 @@ onMounted(() => {
 }
 @media (max-width: 992px) {
    .main-content {
-    width: 90%;
-    margin-left: auto !important;
-    margin-right: auto !important;
+    width: 100%;
+    margin-top: -60%;
 }
 .head {
     gap: 15% ;
@@ -273,9 +272,9 @@ onMounted(() => {
     margin: 0;
   }
 }
-@media (max-width: 480px) {
+@media (max-width: 576px) {
     .head{
-        margin-top: 20%;
+        
         display: flex;
         align-items: center;
         justify-content: space-around;
@@ -303,7 +302,7 @@ onMounted(() => {
     margin: 0;
   }
     .main-content {
-        margin: 0;
+   margin-top: -65%;
     width: 90%;
     margin-left: auto !important;
     margin-right: auto !important;

@@ -196,9 +196,10 @@ onMounted(() => {
 }
 @media (max-width: 992px) {
   .main-content{
-    width: 95%;
-    margin-left: auto;
-    margin-right: auto;
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
   }
   .head h1{
     font-size: 24px;
@@ -210,11 +211,12 @@ onMounted(() => {
     flex: 1 1 calc(50% - 16px); /* Passe à 2 cartes par ligne sur des écrans plus petits */
   }
 }
-@media (max-width: 480px) {
+@media (max-width: 576px) {
   .main-content{
     width: 90%;
     margin-left: auto;
     margin-right: auto;
+    margin-top: 0;
   }
   .head h1{
     font-size: 24px;

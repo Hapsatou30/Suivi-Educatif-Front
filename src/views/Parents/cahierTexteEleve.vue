@@ -222,6 +222,7 @@ const openModal = (resume) => {
     width: 90%;
     margin-left: auto !important;
     margin-right: auto !important;
+    margin-top: -48%;
 }
 .head {
     gap: 2% ;
@@ -243,9 +244,8 @@ const openModal = (resume) => {
     margin: 0;
   }
 }
-@media (max-width: 480px) {
+@media (max-width: 576px) {
     .head{
-        margin-top: 20%;
         display: flex;
         align-items: center;
         justify-content: space-around;
@@ -266,11 +266,8 @@ const openModal = (resume) => {
     margin-top: 20px;
 }
 
-    .tableau1 {
-    margin: 0;
-  }
     .main-content {
-        margin: 0;
+   overflow-x: hidden;
     width: 90%;
     margin-left: auto !important;
     margin-right: auto !important;

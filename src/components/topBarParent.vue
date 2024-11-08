@@ -110,7 +110,7 @@ const notifications = ref([]); // Stocker les notifications récupérées
       formData.value.email = user.email;
       formData.value.telephone = user.parent.telephone;
       parentId.value = user.parent.id;
-      photoUser.value = `suiviEducatifAPI.thiamhapstou.simplonfabriques.com/storage//` + user.parent.photo || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF5-3YjBcXTqKUlOAeUUtuOLKgQSma2wGG1g&s'; 
+      photoUser.value = `https://suivieducatifapi.thiamhapstou.simplonfabriques.com/storage//` + user.parent.photo || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF5-3YjBcXTqKUlOAeUUtuOLKgQSma2wGG1g&s'; 
     }
   
     

@@ -185,44 +185,44 @@ h1 {
 }
 
 /* Styles pour les appareils mobiles et tablettes */
- @media (max-width: 992px) {
+@media (max-width: 992px) {
 
-    .main-content1 {
-   margin-left: 0%;
-   margin-top: 40%;
-   width: 100%;
-   
+.main-content1 {
+margin-left: 0%;
+margin-top: 40%;
+width: 100%;
+
 }
 .main-content1 .row {
-    display: block;
-    justify-content: center;
-    margin-bottom: 15px;
-    overflow-x: hidden;
+display: block;
+justify-content: center;
+margin-bottom: 15px;
+overflow-x: hidden;
 }
 .row>* {
-  flex: 1 1 calc(100% - 16px);
-  padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  color: #fff;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-sizing: border-box; 
-  overflow-x: hidden;
-  width: 100%;
+flex: 1 1 calc(100% - 16px);
+padding: 15px;
+border-radius: 10px;
+margin-bottom: 20px;
+color: #fff;
+transition: transform 0.3s ease, box-shadow 0.3s ease;
+box-sizing: border-box; 
+overflow-x: hidden;
+width: 100%;
 }
 .custom-card {
-  flex: 1 1 calc(100% - 16px); 
-  padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  color: #fff;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-sizing: border-box; 
+flex: 1 1 calc(100% - 16px); 
+padding: 15px;
+border-radius: 10px;
+margin-bottom: 20px;
+color: #fff;
+transition: transform 0.3s ease, box-shadow 0.3s ease;
+box-sizing: border-box; 
 }
 
 .card {
-    height: 360px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+height: 360px;
+transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 
@@ -230,38 +230,38 @@ h1 {
 
 
 @media (max-width: 576px) {
-      .main-content1 {
-        margin-top: 200px;
-        width: 95%;
-        margin-left: auto;
-        margin-right: auto;
-        
-    }
-    .row>* {
-    flex: 1 1 calc(100% - 16px); /* Chaque carte prend 33.33% de la largeur disponible moins l'espace du gap */
-  padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  color: #fff;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-sizing: border-box; 
-  overflow-x: hidden;
+  .main-content1 {
+    margin-top: 450px;
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+    
+}
+.row>* {
+flex: 1 1 calc(100% - 16px); /* Chaque carte prend 33.33% de la largeur disponible moins l'espace du gap */
+padding: 15px;
+border-radius: 10px;
+margin-bottom: 20px;
+color: #fff;
+transition: transform 0.3s ease, box-shadow 0.3s ease;
+box-sizing: border-box; 
+overflow-x: hidden;
 }
 .custom-card {
-  flex: 1 1 calc(50% - 16px); /* Chaque carte prend 33.33% de la largeur disponible moins l'espace du gap */
-  padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  color: #fff;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-sizing: border-box; /* Inclut les marges et les bordures dans la largeur */
+flex: 1 1 calc(50% - 16px); /* Chaque carte prend 33.33% de la largeur disponible moins l'espace du gap */
+padding: 15px;
+border-radius: 10px;
+margin-bottom: 20px;
+color: #fff;
+transition: transform 0.3s ease, box-shadow 0.3s ease;
+box-sizing: border-box; /* Inclut les marges et les bordures dans la largeur */
 }
 }
 @media (max-width: 330px)
 {
-    .main-content1 {
-        margin-top: 200px;
-        
-    }
+.main-content1 {
+    margin-top: 700px;
+    
+}
 }
 </style>

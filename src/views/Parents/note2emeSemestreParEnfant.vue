@@ -122,13 +122,15 @@ onMounted(() => {
 
 <style scoped>
 .matiere-card {
-  flex: 1 1 calc(33.33% - 16px); /* Chaque carte prend 33.33% de la largeur disponible moins l'espace du gap */
+  flex: 1 1 calc(33.33% - 16px);
+  /* Chaque carte prend 33.33% de la largeur disponible moins l'espace du gap */
   padding: 15px;
   border-radius: 10px;
   margin-bottom: 20px;
   color: #fff;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-sizing: border-box; /* Inclut les marges et les bordures dans la largeur */
+  box-sizing: border-box;
+  /* Inclut les marges et les bordures dans la largeur */
 
 }
 
@@ -142,7 +144,9 @@ onMounted(() => {
 .main-content {
   overflow-x: hidden;
   padding: 20px;
-  margin-left: 300px
+  margin-left: 300px; 
+  margin-right: 50px;
+
 }
 
 .head {
@@ -162,12 +166,16 @@ onMounted(() => {
   margin-right: 20px;
   /* Ajustement de la marge */
 }
+
 .boutons{
   display: block;
 }
+
 .btn-group[data-v-958842ab] {
- margin-left: 0;
+  margin-left: 0;
+  margin-right: 0;
 }
+
 .notes {
   margin-top: 20px;
   width: 100%;
@@ -175,7 +183,7 @@ onMounted(() => {
 
 .title-container {
   display: flex;
-  align-items: center; 
+  align-items: center;
   text-align: center;
 }
 
@@ -186,11 +194,16 @@ onMounted(() => {
 
 .ligne {
   display: flex;
-  flex-wrap: wrap; /* Permet aux cartes de passer à la ligne suivante si l'espace est insuffisant */
-  gap: 16px; /* Espace entre les cartes */
+  flex-wrap: wrap;
+  align-items: center;
+  /* Permet aux cartes de passer à la ligne suivante si l'espace est insuffisant */
+  gap: 16px;
+  /* Espace entre les cartes */
   margin-top: 20px;
-  justify-content: space-between; /* Distribue les cartes équitablement */
+  justify-content: space-between;
+  /* Distribue les cartes équitablement */
 }
+
 .title {
   text-align: center;
   /* Centre le titre */
@@ -243,64 +256,133 @@ onMounted(() => {
   margin-top: 10px;
   font-size: 0.9rem;
   color: white;
+  margin-bottom: 20px;
+
 }
 
 .coef,
 .comment {
   color: white;
 }
+.date{
+  text-align: center;
+  margin-top: -30px;
+  
+}
 
-@media (max-width: 1000px) {
+@media (max-width: 992px) {
   .main-content {
-    margin-left: 0;
-    margin-top: 50px;
+    margin-left: 0px; 
+    margin-right: 0px;
+    /* margin-top: 540%; */
+    margin-top: 500%;
   }
 
   .head h1 {
     font-size: 20px;
     margin-top: 25px
   }
- 
-  .matiere-card {
-  flex: 1 1 calc(50% - 16px); /* Chaque carte prend 33.33% de la largeur disponible moins l'espace du gap */
-  padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  color: #fff;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-sizing: border-box; /* Inclut les marges et les bordures dans la largeur */
 
-}
+  .matiere-card {
+    flex: 1 1 calc(50% - 16px);
+    display: flex;
+    align-items: center;
+    justify-content:  center;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    color: #fff;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;
+   align-items: center;
+
+  }
+
   .card-title {
     font-size: 16px;
   }
 
 }
-@media (max-width: 576px) {
-  .matiere-card {
-  flex: 1 1 calc(100% - 16px); /* Chaque carte prend 33.33% de la largeur disponible moins l'espace du gap */
-  padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  color: #fff;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-sizing: border-box; /* Inclut les marges et les bordures dans la largeur */
-
-}
+@media (max-width: 768px) {
   .main-content {
     margin-left: 0;
-    margin-top: 100px;
+    margin-top: 580%;
   }
-  .row{
+}
+@media (max-width: 740px) {
+  .main-content {
+    margin-top: 530%;
+  }
+}
+@media (max-width: 576px) {
+  .matiere-card {
+    flex: 1 1 calc(100% - 16px);
+    /* Chaque carte prend 33.33% de la largeur disponible moins l'espace du gap */
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    color: #fff;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;
+    /* Inclut les marges et les bordures dans la largeur */
+
+  }
+
+  .main-content {
+    margin-top: 1630%;
+    width: 100%;
+   
+  }
+
+  .row {
     margin: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
   }
-.col-6{
-width: 100%;
+
+  .col-6 {
+    width: 100%;
+  }
+  .head h1 {
+    font-size: 20px;
+    margin-top: 25px
+  }
+
 }
+@media (max-width: 420px)
+{
+  .main-content {
+    margin-top: 1500%;
+    width: 100%;
+   
+  }
 }
+@media (max-width: 400px)
+{
+  .main-content {
+    margin-top: 1620%;
+    width: 100%;
+   
+  }
+}
+@media (max-width: 360px)
+{
+  .main-content {
+    margin-top: 1720%;
+    width: 100%;
+   
+  }
+}
+@media (max-width: 320px)
+{
+  .main-content {
+    margin-top: 1890%;
+    width: 100%;
+   
+  }
+}
+
 </style>

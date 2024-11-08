@@ -96,14 +96,16 @@
 
 
 /* Responsivité pour les mobiles */
-@media (max-width: 480px) {
+@media (max-width: 576px) {
   .btn-group {
     flex-direction: column; /* Aligne les boutons en colonne */
     gap: 15px; /* Espacement entre les boutons réduit */
+    
+   
   }
 
   .btn {
-    font-size: 18px; /* Taille de police encore plus petite pour les très petits écrans */
+    font-size: 20px; /* Taille de police encore plus petite pour les très petits écrans */
     padding: 8px 15px; /* Réduit l'espacement pour les boutons */
   }
 }

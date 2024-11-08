@@ -1,7 +1,7 @@
 <template>
     <sidebar_parent />
     <topbar_parent />
-    <div class="main-content ">
+    <div class="main-content1 ">
         <h1>Voir les cahiers de texte de mes enfants</h1>
         <div class="row">
             <div class="col-lg-4 col-md-6 col-12" v-for="card in cards" :key="card.id">
@@ -57,7 +57,7 @@ const fetchElevesParParent = async () => {
                 id: index + 1,  // Générer un id pour chaque carte
                 prenomNom: `${eleve.prenom} ${eleve.nom}`,
                 classe: eleve.annee_classe[0]?.classe || 'Classe non définie',
-                photo: eleve.photo ? `https://suivieducatifapi.thiamhapstou.simplonfabriques.com/storage/${eleve.photo}` : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZv5fMEw3s3nvP0sxLIG8bO6RzCLmqgzW5ww&s',
+                photo: eleve.photo ? `http://127.0.0.1:8000/storage/${eleve.photo}` : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZv5fMEw3s3nvP0sxLIG8bO6RzCLmqgzW5ww&s',
                 classeEleve_id: eleve.annee_classe[0]?.classeEleve_id
             }));
         }
@@ -72,7 +72,7 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.main-content {
+ .main-content1 {
     margin-top: 100px;
     margin-left: 270px; 
     margin-right: 50px;
@@ -138,11 +138,7 @@ h1 {
     z-index: 2;  
 }
 
-.custom-card {
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
+
 
 .custom-card:hover {
     transform: translateY(-10px);
@@ -189,40 +185,22 @@ h1 {
 }
 
 /* Styles pour les appareils mobiles et tablettes */
-@media (max-width: 992px) {
-    .main-content {
-        overflow-x: hidden;
-        width: 90%;
-        margin-left: auto !important;
-        margin-right: auto !important;
-        
-    }
+ @media (max-width: 992px) {
 
-    .custom-card {
-        margin: 0; /* Ajustez l'espacement autour des cartes */
-    }
-
-
+    .main-content1 {
+   margin-left: 0%;
+   margin-top: 40%;
+   width: 100%;
+   
 }
-
-@media (max-width: 810px) {
-    .main-content {
-        width: 90%;
-        margin-left: auto !important;
-        margin-right: auto !important;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .main-content h1 {
-        font-size: 1.5rem; 
-        margin-top: 30px; 
-        margin-bottom: 30px;
-    }
-
-    .row>* {
-    flex: 1 1 calc(50% - 16px); /* Chaque carte prend 33.33% de la largeur disponible moins l'espace du gap */
+.main-content1 .row {
+    display: block;
+    justify-content: center;
+    margin-bottom: 15px;
+    overflow-x: hidden;
+}
+.row>* {
+  flex: 1 1 calc(100% - 16px);
   padding: 15px;
   border-radius: 10px;
   margin-bottom: 20px;
@@ -230,41 +208,35 @@ h1 {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   box-sizing: border-box; 
   overflow-x: hidden;
+  width: 100%;
 }
 .custom-card {
-  flex: 1 1 calc(50% - 16px); /* Chaque carte prend 33.33% de la largeur disponible moins l'espace du gap */
+  flex: 1 1 calc(100% - 16px); 
   padding: 15px;
   border-radius: 10px;
   margin-bottom: 20px;
   color: #fff;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-sizing: border-box; /* Inclut les marges et les bordures dans la largeur */
+  box-sizing: border-box; 
 }
 
-    .card {
-        height: auto; 
-        margin-bottom: 20px; 
-    }
-
-    .hexagon-image {
-        width: 150px;  
-        height: 150px; 
-        margin-top: 20px; 
-    }
-
-    .image-wrapper {
-        bottom: -60px; 
-    }
-
-    .card-header {
-        height: 120px; 
-    }
-
-    .card-body h3 {
-        font-size: 1rem; 
-    }
+.card {
+    height: 360px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
+
+}
+
+
 @media (max-width: 576px) {
+      .main-content1 {
+        margin-top: 200px;
+        width: 95%;
+        margin-left: auto;
+        margin-right: auto;
+        
+    }
     .row>* {
     flex: 1 1 calc(100% - 16px); /* Chaque carte prend 33.33% de la largeur disponible moins l'espace du gap */
   padding: 15px;
@@ -284,5 +256,12 @@ h1 {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   box-sizing: border-box; /* Inclut les marges et les bordures dans la largeur */
 }
+}
+@media (max-width: 330px)
+{
+    .main-content1 {
+        margin-top: 200px;
+        
+    }
 }
 </style>

@@ -38,6 +38,9 @@
                 <p class="coef">Coef: {{ note.coefficient }}</p>
                 <p class="comment">{{ note.commentaire }}</p>
               </div>
+              <div class="date">
+                {{ formatDateFrancaise(note.date) }}
+              </div>
             </div>
           </div>
         </div>
@@ -66,6 +69,15 @@ const subjects = ref([]);
 const scores = ref([]);
 const notesGroupByMatiere = ref({});
 
+// Fonction de formatage de la date en jj/MM/aaaa
+const formatDateFrancaise = (dateString) => {
+  if (!dateString) return '';
+  const date = new Date(dateString);
+  const jour = date.getDate().toString().padStart(2, '0');
+  const mois = (date.getMonth() + 1).toString().padStart(2, '0');
+  const année = date.getFullYear();
+  return `${jour}/${mois}/${année}`;
+};
 // Récupération des détails de l'élève
 const fetchDetailsEleve = async () => {
   try {
@@ -157,7 +169,9 @@ onMounted(() => {
 .main-content {
   overflow-x: hidden;
   padding: 20px;
-  margin-left: 300px
+  margin-left: 300px; 
+  margin-right: 50px;
+
 }
 
 .head {
@@ -178,12 +192,13 @@ onMounted(() => {
   /* Ajustement de la marge */
 }
 
-.boutons {
+.boutons{
   display: block;
 }
 
 .btn-group[data-v-958842ab] {
   margin-left: 0;
+  margin-right: 0;
 }
 
 .notes {
@@ -205,6 +220,7 @@ onMounted(() => {
 .ligne {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   /* Permet aux cartes de passer à la ligne suivante si l'espace est insuffisant */
   gap: 16px;
   /* Espace entre les cartes */
@@ -265,17 +281,26 @@ onMounted(() => {
   margin-top: 10px;
   font-size: 0.9rem;
   color: white;
+  margin-bottom: 20px;
+
 }
 
 .coef,
 .comment {
   color: white;
 }
+.date{
+  text-align: center;
+  margin-top: -30px;
+  
+}
 
-@media (max-width: 1000px) {
+@media (max-width: 992px) {
   .main-content {
-    margin-left: 0;
-    margin-top: 50px;
+    margin-left: 0px; 
+    margin-right: 0px;
+    /* margin-top: 540%; */
+    margin-top: 500%;
   }
 
   .head h1 {
@@ -285,14 +310,16 @@ onMounted(() => {
 
   .matiere-card {
     flex: 1 1 calc(50% - 16px);
-    /* Chaque carte prend 33.33% de la largeur disponible moins l'espace du gap */
+    display: flex;
+    align-items: center;
+    justify-content:  center;
     padding: 15px;
     border-radius: 10px;
     margin-bottom: 20px;
     color: #fff;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-sizing: border-box;
-    /* Inclut les marges et les bordures dans la largeur */
+   align-items: center;
 
   }
 
@@ -301,7 +328,17 @@ onMounted(() => {
   }
 
 }
-
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+    margin-top: 580%;
+  }
+}
+@media (max-width: 740px) {
+  .main-content {
+    margin-top: 530%;
+  }
+}
 @media (max-width: 576px) {
   .matiere-card {
     flex: 1 1 calc(100% - 16px);
@@ -317,8 +354,9 @@ onMounted(() => {
   }
 
   .main-content {
-    margin-left: 0;
-    margin-top: 100px;
+    margin-top: 1630%;
+    width: 100%;
+   
   }
 
   .row {
@@ -333,5 +371,43 @@ onMounted(() => {
   .col-6 {
     width: 100%;
   }
+  .head h1 {
+    font-size: 20px;
+    margin-top: 25px
+  }
+
 }
+@media (max-width: 420px)
+{
+  .main-content {
+    margin-top: 1500%;
+    width: 100%;
+   
+  }
+}
+@media (max-width: 400px)
+{
+  .main-content {
+    margin-top: 1620%;
+    width: 100%;
+   
+  }
+}
+@media (max-width: 360px)
+{
+  .main-content {
+    margin-top: 1720%;
+    width: 100%;
+   
+  }
+}
+@media (max-width: 320px)
+{
+  .main-content {
+    margin-top: 1890%;
+    width: 100%;
+   
+  }
+}
+
 </style>

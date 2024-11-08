@@ -175,9 +175,9 @@
   }
   
   /* Styles responsifs */
-  @media (max-width: 1000px) {
+  @media (max-width: 992px) {
     .burger-menu {
-      display: block; /* Afficher le bouton burger pour les appareils inférieurs à 1000px */
+      display: block; /* Afficher le bouton burger pour les appareils inférieurs à 992px */
     }
   
     .sidebar {

@@ -270,7 +270,7 @@ const fetchNotesEleve = async () => {
     color: white;
   }
   
-  @media (max-width: 1000px) {
+  @media (max-width: 992px) {
     .main-content {
       margin-left: 0;
       margin-top: 50px;

@@ -180,7 +180,7 @@
     text-align: right;
     color: white;
   }
-  @media (max-width: 1000px) {
+  @media (max-width: 992px) {
     .main-content{
       width: 95%;
       margin-left: auto;

@@ -279,7 +279,7 @@ onMounted(async () => {
 }
 
 
-@media (max-width: 1000px) {
+@media (max-width: 992px) {
   .main-content {
     width: 90%;
     margin-left: auto !important;

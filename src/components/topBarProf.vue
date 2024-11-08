@@ -107,7 +107,7 @@ const fetchProfile = async () => {
     formData.value.email = user.email;
     formData.value.telephone = user.professeur.telephone;
     professeurId.value = user.professeur.id;
-    photoUser.value = `http://127.0.0.1:8000/storage//` + user.professeur.photo || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF5-3YjBcXTqKUlOAeUUtuOLKgQSma2wGG1g&s'; 
+    photoUser.value = `SuiviEducatifFrontEnd.thiamhapstou.simplonfabriques.com/storage//` + user.professeur.photo || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF5-3YjBcXTqKUlOAeUUtuOLKgQSma2wGG1g&s'; 
     // photoUser.value = `https://suivieducatif.thiamhapstou.simplonfabriques.com/storage//` + user.professeur.photo || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF5-3YjBcXTqKUlOAeUUtuOLKgQSma2wGG1g&s'; 
    
 

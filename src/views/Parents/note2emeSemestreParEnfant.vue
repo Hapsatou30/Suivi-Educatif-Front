@@ -275,7 +275,7 @@ onMounted(() => {
     margin-left: 0px; 
     margin-right: 0px;
     /* margin-top: 540%; */
-    margin-top: 560%;
+    /* margin-top: 560%; */
   }
 
   .head h1 {
@@ -306,12 +306,12 @@ onMounted(() => {
 @media (max-width: 768px) {
   .main-content {
     margin-left: 0;
-    margin-top: 580%;
+    /* margin-top: 580%; */
   }
 }
 @media (max-width: 740px) {
   .main-content {
-    margin-top: 530%;
+    /* margin-top: 530%; */
   }
 }
 @media (max-width: 576px) {
@@ -329,7 +329,7 @@ onMounted(() => {
   }
 
   .main-content {
-    margin-top: 1630%;
+    margin-top: 100%;
     width: 100%;
    
   }
@@ -355,7 +355,7 @@ onMounted(() => {
 @media (max-width: 420px)
 {
   .main-content {
-    margin-top: 1500%;
+    /* margin-top: 1500%; */
     width: 100%;
    
   }
@@ -363,7 +363,7 @@ onMounted(() => {
 @media (max-width: 400px)
 {
   .main-content {
-    margin-top: 1620%;
+    /* margin-top: 1620%; */
     width: 100%;
    
   }
@@ -371,7 +371,7 @@ onMounted(() => {
 @media (max-width: 360px)
 {
   .main-content {
-    margin-top: 1720%;
+    /* margin-top: 1720%; */
     width: 100%;
    
   }
@@ -379,7 +379,7 @@ onMounted(() => {
 @media (max-width: 320px)
 {
   .main-content {
-    margin-top: 1890%;
+    /* margin-top: 1890%; */
     width: 100%;
    
   }

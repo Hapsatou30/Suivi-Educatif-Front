@@ -44,7 +44,7 @@
         </div>
       </div>
       <div class="col-4 d-none d-lg-block">
-        <img src="@/assets/login.png" alt="personne machine" />
+        <img src="@/assets/login.png" alt="personne machine" width="300" height="auto">
       </div>
     </div>
   </div>

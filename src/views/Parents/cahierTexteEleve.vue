@@ -219,6 +219,7 @@ const openModal = (resume) => {
 }
 @media (max-width: 992px) {
    .main-content {
+    overflow-x: hidden;
     width: 90%;
     margin-left: auto !important;
     margin-right: auto !important;
@@ -256,20 +257,22 @@ const openModal = (resume) => {
     margin-left: 0;
 }
 
- .head h1{
-    font-size: 24px;
+.head h1{
+    font-size: 20px;
     margin-top: 25px;
-    text-align: justify;
-    
+    margin-left: -50px;
+    text-align: center;
 }
 .cahiers{
     margin-top: 20px;
 }
 
-    .main-content {
-   overflow-x: hidden;
-    width: 90%;
+  .main-content {
+    overflow-x: hidden;
+    width: 75%;
     margin-left: auto !important;
     margin-right: auto !important;
-}}
+}
+
+}
 </style>

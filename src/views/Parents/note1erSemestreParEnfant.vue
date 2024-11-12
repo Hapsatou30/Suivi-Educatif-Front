@@ -373,7 +373,8 @@ onMounted(() => {
   }
   .head h1 {
     font-size: 20px;
-    margin-top: 25px
+    margin-top: 25px;
+    margin-left: -50px;
   }
 
 }

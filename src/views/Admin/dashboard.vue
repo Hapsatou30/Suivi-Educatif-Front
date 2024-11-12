@@ -122,6 +122,7 @@ onMounted(() => {
 .main-content { 
   margin-top: 120px;
   overflow-x: hidden;
+  background-color: #FAFAF7;
 }
 
 .widgets-container {

@@ -298,6 +298,8 @@ const retour = () => {
     overflow-x: hidden;
     padding: 20px;
     margin-left: 300px;
+    background-color: #FAFAF7;
+    height: 100vh;
   }
   
 

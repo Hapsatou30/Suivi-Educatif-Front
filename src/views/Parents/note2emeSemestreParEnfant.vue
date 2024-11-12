@@ -310,9 +310,7 @@ onMounted(() => {
   }
 }
 @media (max-width: 740px) {
-  .main-content {
-    /* margin-top: 530%; */
-  }
+ 
 }
 @media (max-width: 576px) {
   .matiere-card {
@@ -348,7 +346,8 @@ onMounted(() => {
   }
   .head h1 {
     font-size: 20px;
-    margin-top: 25px
+    margin-top: 25px;
+    margin-left: -50px;
   }
 
 }

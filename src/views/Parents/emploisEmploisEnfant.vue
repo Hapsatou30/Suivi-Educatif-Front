@@ -1,15 +1,18 @@
 <template>
-    <sidebar_parent />
-    <topbar_parent />
-    <div class="main-content">
-       <div class="head">
-       <router-link to="/gestion_emplois_du_temps_parent"> <Icon class="retour" icon="formkit:arrowleft" /></router-link>
-        <h1 style="text-align: center; ">L'emplois du temps de la classe  de <span class="prenom">{{ prenom }}</span></h1>
-       </div>
-       <div class="emplois">
-            <matrice :horaires="horaires" :data="donnees" :jours="joursDeLaSemaine" :classeColors="classeColors" :isMatiere="true" />
-        </div>
+  <sidebar_parent />
+  <topbar_parent />
+  <div class="main-content">
+    <div class="head">
+      <router-link to="/gestion_emplois_du_temps_parent">
+        <Icon class="retour" icon="formkit:arrowleft" />
+      </router-link>
+      <h1 style="text-align: center; ">L'emplois du temps de la classe de <span class="prenom">{{ prenom }}</span></h1>
     </div>
+    <div class="emplois">
+      <matrice :horaires="horaires" :data="donnees" :jours="joursDeLaSemaine" :classeColors="classeColors"
+        :isMatiere="true" />
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -18,14 +21,14 @@ import topbar_parent from '@/components/topBarParent.vue';
 import { ref, onMounted } from 'vue';
 import { Icon } from '@iconify/vue';
 import { getDetailsEleve } from '@/services/ClasseEleve';
-import { useRoute } from 'vue-router'; 
+import { useRoute } from 'vue-router';
 import matrice from '@/components/matrice.vue';
-import { geHoraireClasse } from '@/services/HoraireService'; 
+import { geHoraireClasse } from '@/services/HoraireService';
 
 
 const route = useRoute();
-const classeEleve_id = ref(route.params.classeEleve_id); 
-const prenom = ref(''); 
+const classeEleve_id = ref(route.params.classeEleve_id);
+const prenom = ref('');
 const anneeClasse_id = ref('');
 // Données pour l'affichage
 const horaires = ref([
@@ -70,18 +73,18 @@ const getMatiereColor = (matiere) => {
 
 // Récupération des détails de l'élève
 const fetchDetailsEleve = async () => {
-    try {
-        const response = await getDetailsEleve(classeEleve_id.value);
-        if (response.status === 200) {
-            prenom.value = response.données.prenom; 
-            anneeClasse_id.value = response.données.anneeClasse_id;  
-            await fetchHoraires(anneeClasse_id.value); 
-        } else {
-            console.error('Erreur lors de la récupération des détails de l\'élève:', response.message);
-        }
-    } catch (error) {
-        console.error('Erreur lors de la récupération des détails de l\'élève:', error);
+  try {
+    const response = await getDetailsEleve(classeEleve_id.value);
+    if (response.status === 200) {
+      prenom.value = response.données.prenom;
+      anneeClasse_id.value = response.données.anneeClasse_id;
+      await fetchHoraires(anneeClasse_id.value);
+    } else {
+      console.error('Erreur lors de la récupération des détails de l\'élève:', response.message);
     }
+  } catch (error) {
+    console.error('Erreur lors de la récupération des détails de l\'élève:', error);
+  }
 };
 
 
@@ -89,17 +92,17 @@ const fetchDetailsEleve = async () => {
 const fetchHoraires = async (anneeClasse_id) => {
   try {
     const response = await geHoraireClasse(anneeClasse_id);
-    const horaireEnfant = response.données; 
+    const horaireEnfant = response.données;
 
     // Réinitialisation du tableau temporaire pour stocker les données selon les jours et les horaires
-    const donneesTemp = [[], [], [], [], []]; 
+    const donneesTemp = [[], [], [], [], []];
 
     // Boucle à travers chaque horaire récupéré
     horaireEnfant.forEach(horaire => {
       // Si l'horaire est manquant ou non rempli, afficher un avertissement et ignorer cet horaire
       if (!horaire.horaire || horaire.horaire === "Pas encore rempli") {
         // console.warn(`L'horaire pour la matière ${horaire.matiere} n'est pas rempli.`);
-        return; 
+        return;
       }
 
       // Séparer les heures de début et de fin à partir de la chaîne d'horaire
@@ -108,7 +111,7 @@ const fetchHoraires = async (anneeClasse_id) => {
       // Si les heures de début et de fin existent
       if (heureDebut && heureFin) {
         // Trouver l'index correspondant au jour dans le tableau des jours de la semaine
-        const jourIndex = joursDeLaSemaine.value.indexOf(horaire.jour.trim()); 
+        const jourIndex = joursDeLaSemaine.value.indexOf(horaire.jour.trim());
 
         // Trouver l'index correspondant à la plage horaire (ex: "08:00 - 10:00") dans le tableau des horaires
         const tempsIndex = horaires.value.findIndex(h => h.temps === `${heureDebut.slice(0, 5)} - ${heureFin.slice(0, 5)}`);
@@ -131,7 +134,7 @@ const fetchHoraires = async (anneeClasse_id) => {
           donneesTemp[tempsIndex][jourIndex].push({
             id: horaire.horaire_id, // ID de l'horaire
             Matiere: horaire.matiere,
-            classe:horaire.nom_classe ,
+            classe: horaire.nom_classe,
             professeur: horaire.professeur
           });
         } else {
@@ -145,7 +148,7 @@ const fetchHoraires = async (anneeClasse_id) => {
     });
 
     // Mettre à jour le tableau principal avec les nouvelles données organisées
-    donnees.value = donneesTemp; 
+    donnees.value = donneesTemp;
   } catch (error) {
     // Gestion des erreurs lors de la récupération des données depuis l'API
     console.error('Erreur lors de la récupération des horaires:', error);
@@ -155,8 +158,8 @@ const fetchHoraires = async (anneeClasse_id) => {
 
 
 onMounted(() => {
-    fetchDetailsEleve();  
-     
+  fetchDetailsEleve();
+
 });
 </script>
 
@@ -164,82 +167,100 @@ onMounted(() => {
 
 <style scoped>
 .main-content {
-    overflow-x: hidden;
+  overflow-x: hidden;
 }
-.head{
-    display: flex;
-    align-items: center;
+
+.head {
+  display: flex;
+  align-items: center;
 }
+
 .prenom {
-    color: #FFCD1E;
+  color: #FFCD1E;
 }
 
 .retour {
-    font-size: 30px;
-    color: black;
-    margin-left: 300px;
+  font-size: 30px;
+  color: black;
+  margin-left: 300px;
 }
+
 .emplois {
-    margin-left: 16%;
+  margin-left: 16%;
 }
+
 @media (max-width: 992px) {
-   .main-content {
+  .main-content {
     width: 90%;
     margin-left: auto !important;
     margin-right: auto !important;
-}
-.head {
-    gap: 2% ;
-}
-.head h1{
+  }
+
+  .head {
+    gap: 2%;
+  }
+
+  .head h1 {
     margin-left: 10%;
-    
- }
- .head h1{
+
+  }
+
+  .head h1 {
     font-size: 24px;
     margin-top: 25px;
     text-align: center;
-}
-.retour {
-    
+  }
+
+  .retour {
+
     margin-left: 0;
-}
-.emplois {
+  }
+
+  .emplois {
     margin-left: 0%;
   }
 }
-@media (max-width: 480px) {
-    .main-content{
-      width: 90%;
-      margin-right: auto;
-      margin-left: auto;
-    }
-    .head h1{
-    margin-left: 0%;
-    
- }
-    .head{
-        margin-top: 20%;
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
-       
-    }
-    .retour {
-    
-    margin-left: 0;
-}
 
- .head h1{
+@media (max-width: 576px) {
+  .main-content {
+    overflow-x: hidden;
+    width: 90%;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .head h1 {
+    margin-left: 0%;
+
+  }
+
+  .head {
+    gap: 0px;
+  }
+
+  .head {
+    margin-top: 20%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+  }
+
+  .retour {
+
+    margin-left: 0;
+  }
+
+  .head h1 {
     font-size: 20px;
     margin-top: 25px;
-    text-align: justify;
- }
- .emplois{
+    margin-left: -50px;
+    text-align: center;
+  }
+
+  /* .emplois{
   margin-left: 0%;
   
- }
+ } */
 }
-
-
 </style>

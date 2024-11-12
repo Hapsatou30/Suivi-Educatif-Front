@@ -140,11 +140,11 @@ export default {
 }
 
 /* Responsivité pour mobiles */
-@media (max-width: 480px) {
+@media (max-width: 576px) {
   .tableau-horaires {
-    margin-left: 0;
+    margin-left: 17%;
     margin-right: 0;
-    width: 100%;
+    width: 67%;
     padding: 0 10px;
   }
 
@@ -153,15 +153,16 @@ export default {
   }
 
   .tableau-horaires td {
-    font-size: 0.8rem;
+    font-size: 14px;
   }
 
   .carte {
     padding: 6px;
+    width: 150px;
   }
 
   .carte h4 {
-    font-size: 0.8rem;
+    font-size: 16px;
   }
 
   .carte p {

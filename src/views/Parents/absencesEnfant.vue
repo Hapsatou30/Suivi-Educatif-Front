@@ -274,7 +274,7 @@ onMounted(() => {
 }
 @media (max-width: 576px) {
     .head{
-        
+        gap: 0 ;
         display: flex;
         align-items: center;
         justify-content: space-around;
@@ -284,14 +284,14 @@ onMounted(() => {
     
     margin-left: 0;
 }
- .head h1{
+ /* .head h1{
     margin-left: -150px;
     
- }
+ } */
  .head h1{
-    font-size: 24px;
+    font-size: 20px;
     margin-top: 25px;
-    margin-left: -48px;
+    margin-left: -50px;
     text-align: center;
 }
 .absences{
@@ -306,5 +306,6 @@ onMounted(() => {
     width: 90%;
     margin-left: auto !important;
     margin-right: auto !important;
-}}
+}
+}
 </style>

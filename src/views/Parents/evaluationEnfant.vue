@@ -213,15 +213,16 @@ onMounted(() => {
 }
 @media (max-width: 576px) {
   .main-content{
+    gap: 0 ;
     width: 90%;
     margin-left: auto;
     margin-right: auto;
     margin-top: 0;
   }
   .head h1{
-    font-size: 24px;
+    font-size: 20px;
     margin-top: 25px;
-    margin-left: -48px;
+    margin-left: -50px;
     text-align: center;
 }
 .matiere-card {

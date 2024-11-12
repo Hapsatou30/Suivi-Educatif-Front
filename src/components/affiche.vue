@@ -39,6 +39,7 @@ onMounted(fetchAnneeEnCours);
   overflow: hidden;
   width: 100%;
   max-width: 100%;
+  
 
 }
 .card-containeraffiche {
@@ -136,16 +137,38 @@ span {
 
 
 @media (max-width: 576px) {
+  .container{
+    max-width: 100%;
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+  overflow: hidden;
+}
+.card-containeraffiche {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+ max-width: 100%;
+ width: 100%;
+ margin-right: auto;
+    margin-left: auto;
+
+}
   .title {
-    font-size: 100%; 
+    font-size: 20px;
   }
 
   .sub-title {
-    font-size: 14px; 
+    font-size: 16px;
+    text-align: center;
   }
 
   .school-image {
-    width: 200px; 
+    width: 280px;
   }
 }
 </style>

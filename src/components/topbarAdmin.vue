@@ -171,7 +171,7 @@ onMounted(() => {
 /* Rendre la topbar responsive */
 @media (max-width: 992px) {
   .topbar {
-    flex-direction: column; /* Passer à une disposition en colonne sur petits écrans */
+    flex-direction: column; 
     padding: 10px;
     margin-left: 0;
     height: auto;
@@ -183,12 +183,14 @@ onMounted(() => {
     margin-left: 0; /* Supprimer la marge */
     margin-right: 0;
     margin-bottom: 10px; /* Espacement entre les sections sur petits écrans */
+
   }
 
   .left-section {
     height: auto; /* Ajuster la hauteur pour l'adapter au contenu */
     padding: 10px; /* Ajouter un peu d'espace autour du contenu */
-    font-size: 18px; /* Réduire la taille de la police */
+    font-size: 20px; /* Réduire la taille de la police */
+    display: flex;
   }
 
   .icon {
@@ -197,11 +199,11 @@ onMounted(() => {
   }
 
   .date {
-    font-size: 16px; /* Réduire la taille de la date sur petits écrans */
+    font-size: 18px; /* Réduire la taille de la date sur petits écrans */
   }
 
   .notifications, .logout {
-    font-size: 24px; /* Ajuster la taille des icônes de notification et de déconnexion */
+    font-size: 20px; /* Ajuster la taille des icônes de notification et de déconnexion */
   }
 
   .badge {
@@ -213,10 +215,14 @@ onMounted(() => {
 }
 
 /* Pour les très petits écrans */
-@media (max-width: 480px) {
-  .left-section, .right-section {
-    flex-direction: column;
+@media (max-width: 576px) {
+  .right-section {
+    display: flex;
     align-items: center;
+
+  }
+  .left-section{
+    display: none;
   }
 
   .topbar {
@@ -227,9 +233,7 @@ onMounted(() => {
     font-size: 20px; /* Encore réduire la taille des icônes */
   }
 
-  .date {
-    font-size: 14px;
-  }
+ 
 }
 
 </style>

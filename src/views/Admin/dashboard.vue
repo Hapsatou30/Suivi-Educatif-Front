@@ -163,14 +163,23 @@ onMounted(() => {
   display: flex;
   justify-content: end;
 }
+.diagrammes{
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+    margin-left: 300px;
+    margin-right: 50px;
+
+    
+  }
 .chart-container{
-  margin-left: 300px;
+ 
   margin-top: 40px;
   border-radius: 10%;
   padding: 1%;
 }
 .chart-container1{
-  margin-right: 50px;
+ 
   margin-top: 40px;
   border-radius: 10%;
   padding: 1%;
@@ -218,15 +227,57 @@ onMounted(() => {
 }
 @media (max-width: 768px) {
   .main-content { 
-  margin-top: 1700px;
+  margin-top: 1600px;
   overflow-x: hidden;
   width: 95%;
   margin-left: auto;
   margin-right: auto;
 }
-
-  
-  
 }
-
+@media (max-width: 576px) {
+  .main-content { 
+  margin-top: 1500px;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  overflow-x: hidden;
+}
+.widgets-container {
+    flex-direction: column; /* Disposition en colonne sur mobile */
+    align-items: center; /* Centrer les widgets */
+    margin-left: 20px;
+    margin-right: 20px;
+    gap: 20px; 
+  }
+  .diagrammes{
+    display: flex;
+    flex-direction: column; /* Disposition en colonne sur mobile */
+    align-items: center; /* Centrer les diagrammes */
+    margin-left: 0px;
+    margin-right: 0px;
+    gap: 50px;
+    
+  }
+  .chart-container{
+    margin: 0 ;
+  }
+ .chart-container1{
+  margin-right: 0;
+  margin-left: 0vw;
+  width: 100%;
+ }
+ .evaluations h2{
+ font-size: 20px;
+    margin-left: 0;
+}
+.tableau{
+  margin-left: 0;
+  margin-right: 0;
+}
+}
+/* @media (max-width: 468px) {
+  .main-content { 
+  margin-top: 1100px;
+}
+} */
 </style>

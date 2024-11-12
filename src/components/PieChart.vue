@@ -79,4 +79,12 @@ canvas {
   max-width: 600px;
   margin: auto;
 }
+@media (max-width: 576px) {
+  canvas {
+  max-width: 100%;
+ 
+  margin: auto;
+}
+}
+
 </style>

@@ -195,4 +195,13 @@ onMounted(() => {
     left: 0;
   }
 }
+@media (max-width: 576px) {
+
+  .burger-menu {
+ 
+  position: fixed;
+  top: 2px;
+  left: 15px;
+}
+}
 </style>

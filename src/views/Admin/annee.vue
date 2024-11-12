@@ -504,11 +504,11 @@ label:hover {
 
 
 }
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
   .main-content2{
-  /* margin-top: 550px; */
+  margin-top: 550px;
  }
-}
+} */
 @media (max-width: 576px) {
   .main-content2{
   margin-top: 500px;

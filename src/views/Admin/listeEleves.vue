@@ -1,7 +1,7 @@
 <template>
   <sidebar_admin />
   <topbar_admin />
-  <div class="main-content">
+  <div class="main-content3">
     <div class="mb-3"
       style="display: flex; align-items: end; justify-content: end ; margin-left: 300px; border-radius: 12px; margin-right: 50px;">
       <input type="text" class="form-control" v-model="searchQuery" @input="searchParent"
@@ -682,11 +682,11 @@ onMounted(fetchElevesAvecClasse); // Appeler la méthode pour récupérer les é
   /* Masquer la colonne de l'ID */
 }
 
-.main-content {
+.main-content3 {
   margin-top: 120px;
 }
 
-.main-content h2 {
+.main-content3 h2 {
   color: black;
   font-size: 24px;
   font-family: "Poppins", sans-serif;
@@ -764,7 +764,6 @@ input::placeholder {
   margin-left: 300px;
   margin-right: 50px;
 
-
 }
 
 .eleves h3 {
@@ -808,5 +807,53 @@ p {
   font-weight: 500;
   color: #F7AE00;
 
+}
+@media (max-width: 992px) {
+  .main-content3 {
+  margin-top: 500px;
+ 
+}
+.main-content3 h2 {
+  margin-left: 0px;
+}
+.form-container {
+  margin-left: 50px;
+  margin-right: 50px;
+}
+.eleves {
+  margin-top: 50px;
+  margin-left: 50px;
+  margin-right: 50px;
+
+}
+}
+@media (max-width: 768px) {
+  .main-content3{
+  margin-top: 850px;
+ }
+}
+@media (max-width: 576px) {
+  .main-content3{
+  margin-top: 1500px;
+  overflow-x: hidden;
+  max-width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+
+ }
+ .main-content3 h2 {
+  font-size: 18px;
+}
+
+}
+@media (max-width: 360px) {
+  .main-content3{
+  margin-top: 1500px;
+ overflow-x: hidden;
+  max-width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+
+ }
 }
 </style>

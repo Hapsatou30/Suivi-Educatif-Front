@@ -168,5 +168,68 @@ onMounted(() => {
 .badge {
   opacity: 1; /* Assure que l'élément est visible */
 }
+/* Rendre la topbar responsive */
+@media (max-width: 992px) {
+  .topbar {
+    flex-direction: column; /* Passer à une disposition en colonne sur petits écrans */
+    padding: 10px;
+    margin-left: 0;
+    height: auto;
+  }
+
+  .left-section, .right-section {
+    width: 100%;
+    justify-content: center; /* Centrer les éléments */
+    margin-left: 0; /* Supprimer la marge */
+    margin-right: 0;
+    margin-bottom: 10px; /* Espacement entre les sections sur petits écrans */
+  }
+
+  .left-section {
+    height: auto; /* Ajuster la hauteur pour l'adapter au contenu */
+    padding: 10px; /* Ajouter un peu d'espace autour du contenu */
+    font-size: 18px; /* Réduire la taille de la police */
+  }
+
+  .icon {
+    font-size: 24px; /* Réduire la taille de l'icône sur petits écrans */
+    margin-right: 5px;
+  }
+
+  .date {
+    font-size: 16px; /* Réduire la taille de la date sur petits écrans */
+  }
+
+  .notifications, .logout {
+    font-size: 24px; /* Ajuster la taille des icônes de notification et de déconnexion */
+  }
+
+  .badge {
+    font-size: 12px; /* Réduire la taille du badge */
+    padding: 3px 6px;
+    top: -10px;
+    right: 2px;
+  }
+}
+
+/* Pour les très petits écrans */
+@media (max-width: 480px) {
+  .left-section, .right-section {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .topbar {
+    padding: 5px;
+  }
+
+  .icon, .notifications, .logout {
+    font-size: 20px; /* Encore réduire la taille des icônes */
+  }
+
+  .date {
+    font-size: 14px;
+  }
+}
 
 </style>

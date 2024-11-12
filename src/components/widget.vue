@@ -57,4 +57,30 @@ img {
   /* Assurez-vous que la largeur est appliquée */
   height: 90px !important;
 }
+@media (max-width: 992px) {
+  .widget {
+    width: 100%; /* S'assurer que chaque widget prend toute la largeur disponible */
+  max-width: 95%; 
+  margin-left: auto;
+  margin-right: auto; 
+  height: 200px;
+  }
+  .iconify {
+  font-size: 120px;
+}
+
+img {
+  width: 180px !important;
+  /* Assurez-vous que la largeur est appliquée */
+  height: 180px !important;
+}
+.widget-content h3,
+.widget-number {
+  font-size: 30px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  color: #F7AE00;
+  text-align: center;
+}
+}
 </style>

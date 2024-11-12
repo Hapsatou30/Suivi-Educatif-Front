@@ -111,7 +111,7 @@ export default {
 }
 
 /* Responsivité pour tablettes */
-@media (max-width: 768px) {
+@media (max-width: 992px) {
   .tableau-horaires {
     margin-left: auto;
     margin-right: auto;

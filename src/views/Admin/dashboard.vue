@@ -1,4 +1,4 @@
-b <template>
+<template>
   <sidebar_admin />
   <topbar_admin />
   <div class="main-content">
@@ -10,17 +10,16 @@ b <template>
     </div>
 
     <!-- Ajout du graphique circulaire -->
-   <div class="row mt-5" >
-    <div class="chart-container col-3">
-      <h5 style="text-align: center; margin-bottom: 5px;">Répartition des élèves par sexe</h5>
-      <PieChart  />
-    </div>
-    <!-- Ajout du graphique en barres pour les présences et absences -->
-    <div class="chart-container1 col-6">
-      <h5 style="text-align: center; margin-bottom: 5px;">Présences et Absences par jour de la semaine</h5>
-        <BarChart />
-      </div>
-   </div>
+    <div class="row mt-5 diagrammes">
+  <div class="chart-container col-lg-3 col-md-6 col-12">
+    <h5 style="text-align: center; margin-bottom: 5px;">Répartition des élèves par sexe</h5>
+    <PieChart />
+  </div>
+  <div class="chart-container1 col-lg-6 col-md-6 col-12">
+    <h5 style="text-align: center; margin-bottom: 5px;">Présences et Absences par jour de la semaine</h5>
+    <BarChart />
+  </div>
+</div>
 
    
 
@@ -30,7 +29,7 @@ b <template>
         <!-- Vérifier si la tableData est vide -->
         <tabEvaluations 
           v-if="paginatedData.length > 0"
-          :headers="['Matière', 'Professeur', 'Type', 'Heure', 'Classe', 'Durée(mins)']" 
+          :headers="['Matière', 'Professeur', 'Typeauto', 'Heure', 'Classe', 'Durée(mins)']" 
           :data="paginatedData" 
         />
 
@@ -132,16 +131,7 @@ onMounted(() => {
   margin-left: 300px;
   margin-right: 50px;
 }
-.addTeacher {
-  display: flex;
-  align-items: center;
-  justify-content: end;
-  margin-top: 30px;
-  margin-right: 50px;
-  cursor: pointer;
-  text-decoration: none;
-  color: black;
-}
+
 .addTeacher h3 {
   margin-left: 10px;
   font-size: 24px;
@@ -174,18 +164,69 @@ onMounted(() => {
   justify-content: end;
 }
 .chart-container{
-  /* background-color: rgb(241, 241, 241); */
   margin-left: 300px;
   margin-top: 40px;
   border-radius: 10%;
   padding: 1%;
 }
 .chart-container1{
-  /* background-color: rgb(241, 241, 241); */
   margin-right: 50px;
   margin-top: 40px;
   border-radius: 10%;
   padding: 1%;
+}
+@media (max-width: 992px) {
+  .main-content { 
+  margin-top: 1500px;
+  overflow-x: hidden;
+  width: 98%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.widgets-container {
+    flex-direction: column; /* Disposition en colonne sur mobile */
+    align-items: center; /* Centrer les widgets */
+    margin-left: 20px;
+    margin-right: 20px;
+    gap: 20px; 
+  }
+  .diagrammes{
+    display: flex;
+    flex-direction: column; /* Disposition en colonne sur mobile */
+    align-items: center; /* Centrer les diagrammes */
+    margin-left: 20px;
+    margin-right: 20px;
+    gap: 50px;
+    
+  }
+  .chart-container{
+    margin: 0 ;
+  }
+ .chart-container1{
+  margin-right: 0;
+  margin-left: 0vw;
+  width: 100%;
+ }
+ .evaluations h2{
+ 
+    margin-left: 0;
+}
+.tableau{
+  margin-left: 0;
+  margin-right: 0;
+}
+}
+@media (max-width: 768px) {
+  .main-content { 
+  margin-top: 1700px;
+  overflow-x: hidden;
+  width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+  
+  
 }
 
 </style>

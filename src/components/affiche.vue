@@ -1,11 +1,11 @@
 <template>
   <div class="container">
-    <div class="card-container row align-items-center">
-      <div class="left-section col-lg-6 col-md-12 text-lg-start text-center">
+    <div class="card-containeraffiche ">
+      <div class="left-section ">
         <h1 class="title">Bienvenue dans <span>SAMA ÉCOLE</span></h1>
         <p class="sub-title">Année scolaire : <span class="annee_cours"> {{ anneeEnCours ? anneeEnCours.annee_debut + ' - ' + anneeEnCours.annee_fin : 'Non disponible' }}</span></p>
       </div>
-      <div class="right-section col-lg-6 col-md-12 text-center mt-md-3">
+      <div class="right-section ">
         <img src="@/assets/Teacher and student.png" alt="Image école" class="school-image" />
       </div>
     </div>
@@ -35,11 +35,13 @@ onMounted(fetchAnneeEnCours);
 
 <style scoped>
 .container{
-  max-width: 100%;
   margin: 30px 0;
   overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+
 }
-.card-container {
+.card-containeraffiche {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -48,12 +50,14 @@ onMounted(fetchAnneeEnCours);
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  max-width: 100%;
   width: 100%;
   margin-left:284px;
-  margin-right: 30px;
+  margin-right: 50px;
+  margin-right: 50px;
 }
 
-.card-container:hover {
+.card-containeraffiche:hover {
   transform: scale(1.05); /* Zoom à 105% au survol */
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Ombre supplémentaire au survol */
 }
@@ -96,6 +100,25 @@ span {
 
 /* Responsivité */
 @media (max-width: 992px) {
+  .container{
+    max-width: 95%;
+    width: 95%;
+   margin-right: auto;
+   margin-left: auto;
+  overflow: hidden;
+}
+.card-containeraffiche {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+ max-width: 97%;
+ width: 100%;
+   margin-right: auto;
+   margin-left: auto;
+}
   .title {
     font-size: 24px;
   }
@@ -111,29 +134,6 @@ span {
 
 
 
-/* @media (max-width: 810px) {
-  .card-container {
-    width: 100%;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    margin: 0; 
-    padding: 10px;
-  }
-
-  .title {
-    font-size: 20px; 
-    text-align: center;
-  }
-
-  .sub-title {
-    font-size: 16px; 
-    text-align: center;
-  }
-
-  .school-image {
-    width: 250px; 
-  }
-} */
 
 @media (max-width: 576px) {
   .title {

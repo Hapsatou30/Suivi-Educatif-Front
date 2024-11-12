@@ -88,11 +88,13 @@ import Bulletins1erSemestre from '@/views/Admin/bulletins1erSemestre.vue';
 import Bulletins2emeSemestre from '@/views/Admin/bulletins2emeSemestre.vue';
 import MonBulletin1erSemestre from '@/views/Eleves/monBulletin1erSemestre.vue';
 import MonBulletin2emeSemestre from '@/views/Eleves/monBulletin2emeSemestre.vue';
+import Boutons from '@/components/boutons.vue';
 
 
 // Routes non protégées (accessible à tous)
 const publicRoutes = [
   { path: '/', name: 'login', component: Login },
+  { path: '/boutons', name: 'boutons', component: Boutons},
   { path: '/login', redirect: '/' },
   { path: '/affiche', name: 'affiche', component: Affiche},
   { path: '/widget', name: 'widget', component: Widget},

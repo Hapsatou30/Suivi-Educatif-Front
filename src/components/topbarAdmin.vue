@@ -171,6 +171,7 @@ onMounted(() => {
 /* Rendre la topbar responsive */
 @media (max-width: 992px) {
   .topbar {
+    max-width: 98%;
     flex-direction: column; 
     padding: 10px;
     margin-left: 0;

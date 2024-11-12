@@ -1,7 +1,7 @@
 <template>
   <sidebar_admin />
   <topbar_admin />
-  <div class="main-content">
+  <div class="main-content2">
    <div class="lien_boutons">
     <boutons
       title1="Matières" 
@@ -80,8 +80,7 @@
     <div class="professeurs">
       <div class="title_recherche" style="display: flex; align-items:  center; justify-content: space-between;">
         <h3>Liste des Professeurs</h3>
-    
-    <!-- Barre de recherche -->
+        
     <div class="search-container">
       <input 
         type="text" 
@@ -375,14 +374,14 @@ const redirectToProfMatiere = (id) => {
 onMounted(fetchData);
 </script>
 
-<style>
-.main-content { 
+<style >
+.main-content2 { 
   margin-top: 120px;
 }
 /* .lien_boutons{
   margin-left: 300px;
 } */
-.main-content h2 {
+.main-content2 h2 {
     color: black;
     font-size: 24px;
     font-family: "Poppins", sans-serif;
@@ -390,7 +389,7 @@ onMounted(fetchData);
     text-align: center;
     margin-left: 300px;
 }
-.form-container {
+.main-content2 .form-container {
     max-width: 100%;
     border: 1px solid #F7AE00;
     border-radius: 12px;
@@ -446,6 +445,7 @@ onMounted(fetchData);
   flex-direction: column;
   margin-left: 300px;
   margin-right: 50px;
+
  
 }
 .professeurs h3{
@@ -468,6 +468,7 @@ onMounted(fetchData);
 
 .professeurs .tableau {
   width: 100%;
+  margin-bottom: 50px;
  
 }
 .professeurs .paginate{
@@ -501,6 +502,72 @@ label:hover {
   color: #666666; /* texte grisé */
   cursor: not-allowed; /* curseur modifié pour indiquer qu'il n'est pas cliquable */
   opacity: 0.6; /* rendre le bouton semi-transparent */
+}
+@media (max-width: 992px) {
+ .main-content2{
+  margin-top: 260px;
+ 
+  margin-left: 0;
+ }
+ .main-content2 h2 {
+    font-size: 24px;
+    text-align: center;
+    margin-left: 0px;
+}
+.main-content2 .form-container {
+    max-width: 100%;
+    margin-top: 30px;
+    padding: 30px;
+    margin-left: 10%;
+    margin-right: 10%;
+  }
+  .professeurs {
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+
+}
+@media (max-width: 768px) {
+  .main-content2{
+  margin-top: 550px;
+ }
+}
+@media (max-width: 576px) {
+  .main-content2{
+  margin-top: 720px;
+ }
+ .main-content2 h2{
+  font-size: 18px;
+ }
+ .title_recherche{
+  flex-direction: column
+ }
+ .search-container input{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    border-radius: 12px;
+    width: 300px;
+  }
+  .bouton{
+    display: flex;
+    align-items:center;
+    justify-content: center;
+  }
+}
+@media (max-width: 360px) {
+  .main-content2{
+  margin-top: 720px;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto
+ }
+ .main-content2 h2{
+  font-size: 16px;
+ }
 }
 </style>
 

@@ -39,6 +39,8 @@ onMounted(fetchAnneeEnCours);
   overflow: hidden;
   width: 100%;
   max-width: 100%;
+  margin-left: auto;
+  margin-right: auto
   
 
 }
@@ -102,10 +104,10 @@ span {
 /* Responsivité */
 @media (max-width: 992px) {
   .container{
-    max-width: 95%;
-    width: 95%;
-   margin-right: auto;
-   margin-left: auto;
+    /* max-width: 100%;
+    width: 100%;
+   margin-right: 90px;
+   margin-left: 90px; */
   overflow: hidden;
 }
 .card-containeraffiche {
@@ -117,8 +119,8 @@ span {
   border-radius: 10px;
  max-width: 97%;
  width: 100%;
-   margin-right: auto;
-   margin-left: auto;
+   margin-right: 90px;
+   margin-left: 90px;
 }
   .title {
     font-size: 24px;

@@ -188,9 +188,9 @@ onMounted(() => {
   .main-content { 
   margin-top: 1500px;
   overflow-x: hidden;
-  width: 98%;
-  margin-left: auto;
-  margin-right: auto;
+  /* width: 100%;
+  margin-left: 90px;
+  margin-right: 90px; */
 }
 .widgets-container {
     flex-direction: column; /* Disposition en colonne sur mobile */
@@ -217,12 +217,12 @@ onMounted(() => {
   width: 100%;
  }
  .evaluations h2{
- 
-    margin-left: 0;
+  margin-left: 20px;
+  margin-right: 20px;
 }
 .tableau{
-  margin-left: 0;
-  margin-right: 0;
+  margin-left: 20px;
+  margin-right: 20px;
 }
 }
 @media (max-width: 768px) {

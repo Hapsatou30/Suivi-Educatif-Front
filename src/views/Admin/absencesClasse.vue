@@ -220,4 +220,88 @@ onMounted(() => {
     color: #F7AE00;
 
 }
+@media (max-width: 992px) {
+  .main-content {
+ width: 100%;
+ margin-top: -22%;
+  
+}
+  .main-content h2 {
+  margin-left: 0px;
+}
+.form-container {
+  margin-left: 0px;
+  margin-right: 50px;
+}
+.classes h3 {
+  margin-left: 0px;
+}
+.tableau-absences {
+  margin-left: 50px;
+}
+.classes {
+  margin-top: 0px;
+}
+
+}
+@media (max-width: 768px) {
+  .main-content {
+    width: 95%;
+ margin-top: -12%;
+ margin-left: auto;
+ margin-right: auto;
+  
+}
+.lien_boutons{
+    margin-left: -50px;
+  
+}
+}
+@media (max-width: 576px) {
+  .main-content {
+width: 83%;
+ margin-left: 12%;
+ margin-top: 100px;
+  
+}
+.main-content h2 {
+  font-size: 18px;
+  text-align: center;
+  width: 82%;
+}
+.search-container input {
+ display: flex;
+ align-items: center;
+ justify-content: center;
+  width: 100%;
+}
+.absences {
+  width: 100%;
+  margin-left: -5%;
+}
+.retour .btn-secondary,
+.retour .btn-secondary:hover {
+ 
+  width: 120px;
+  height: 50px;
+  font-size: 20px;
+
+}
+}
+@media (max-width: 390px) {
+  .main-content {
+width: 80%;
+ margin-left: 15%;
+ margin-top: 180px;
+  
+}
+}
+@media (max-width: 360px) {
+  .main-content {
+width: 75%;
+margin-left: 17.5%;
+ margin-top: 200px;
+  
+}
+}
 </style>

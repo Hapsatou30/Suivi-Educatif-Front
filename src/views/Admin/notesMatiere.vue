@@ -277,6 +277,14 @@ width: 90%;
   width: 113%;
   margin-left: -13%;
 }
+.retour .btn-secondary,
+.retour .btn-secondary:hover {
+ 
+  width: 120px;
+  height: 50px;
+  font-size: 20px;
+
+}
 }
 @media (max-width: 390px) {
   .main-content {

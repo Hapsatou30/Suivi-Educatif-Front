@@ -186,4 +186,81 @@ p {
     color: #F7AE00;
 
 }
+@media (max-width: 992px) {
+  .main-content {
+ margin-top: -50%;
+ width: 180%;
+ margin-left: -38%;
+}
+  .main-content h2 {
+  margin-left: 0px;
+}
+.form-container {
+  margin-left: 0px;
+  margin-right: 50px;
+}
+.classes h3 {
+  margin-left: 0px;
+}
+.tableau1 {
+  margin-left: 0px;
+}
+.classes {
+  margin-top: 0px;
+}
+}
+@media (max-width: 768px) {
+  .main-content {
+ width: 160%;
+ margin-left: -30%;
+ margin-top:-70px ;
+  
+}
+}
+@media (max-width: 576px) {
+  .main-content {
+width: 105%;
+ margin-left: -02%;
+ margin-top: -80;
+  
+}
+.main-content h2 {
+  font-size: 18px;
+  text-align: center;
+  width: 70%;
+  margin-left: 13%;
+}
+.search-container input {
+ display: flex;
+ align-items: center;
+ justify-content: center;
+  width: 100%;
+  margin-right: 50px;
+  margin-left: 0;
+}
+.retour .btn-secondary,
+.retour .btn-secondary:hover {
+ 
+  width: 120px;
+  height: 50px;
+  font-size: 20px;
+
+}
+}
+@media (max-width: 390px) {
+    .main-content {
+width: 105%;
+ margin-left: -02%;
+ margin-top: -80;
+  
+}
+}
+@media (max-width: 360px) {
+    .main-content {
+width: 105%;
+ margin-left: -02%;
+ margin-top: -80;
+  
+}
+}
 </style>

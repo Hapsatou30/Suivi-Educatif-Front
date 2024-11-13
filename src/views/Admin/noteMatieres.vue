@@ -214,10 +214,8 @@ p {
 }
 @media (max-width: 992px) {
   .main-content {
- width: 130%;
- margin-left: -10%;
- margin-top: 50px;
-  
+
+ margin-top: 50px;  
 }
   .main-content h2 {
   margin-left: 0px;

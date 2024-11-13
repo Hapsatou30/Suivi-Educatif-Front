@@ -203,5 +203,12 @@ onMounted(() => {
   top: 2px;
   left: 15px;
 }
+.menu {
+  margin-top: -15%;
+}
+.menu li {
+  margin: 12px 0;
+}
+
 }
 </style>

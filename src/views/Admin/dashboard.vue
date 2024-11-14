@@ -6,7 +6,7 @@
     <div class="widgets-container">
       <widget title="Élèves" :number="elevesCount" iconClass="twemoji:man-student-medium-dark-skin-tone" />
       <widget title="Professeurs" :number="professeursCount" iconClass="noto-v1:woman-teacher-dark-skin-tone" />
-      <widget title="Classes" :number="classesCount" :iconSrc="vectorIconSrc" />
+      <widget title="Classes" :number="classesCount" iconClass="icon-park:preschool" />
     </div>
 
     <!-- Ajout du graphique circulaire -->

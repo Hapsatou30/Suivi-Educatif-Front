@@ -229,4 +229,39 @@ onMounted(async () => {
   font-weight: 500;
   color: #F7AE00;
 }
+@media (max-width: 992px) {
+  .main-content{
+    height: 100vh;
+  }
+  .main-content h2{
+   margin-left: 0%;
+}
+.button-container {
+    margin-left: 50px;
+    margin-right: 50px;
+    display: flex;
+    justify-content: space-between; 
+    margin-top: 20px;      
+}
+}
+@media (max-width: 576px) {
+  .main-content{
+   margin-top: -20%;
+  }
+  .main-content h2{
+   margin-left: 10%;
+   font-size: 20px;
+   width: 75%;
+}
+.button-container {
+    margin-left: 15%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center;    
+}
+.check{
+  width: 200%;
+}
+}
 </style>

@@ -89,7 +89,7 @@ th {
 }
 
 /* Media queries pour améliorer la responsivité */
-@media (max-width: 768px) {
+@media (max-width: 992px) {
   th,
   td {
     padding: 10px; /* Réduire le padding pour les petits écrans */

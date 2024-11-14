@@ -86,15 +86,15 @@
         <table class="semestre-table">
           <thead>
             <tr>
-              <th></th>
+              <th>Periode</th>
               <th>Moyennes</th>
               <th>Rangs</th>
-              <th>Moyennes Classe</th>
+              <th>Moy. Classe</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>1er Semestre</td>
+              <td>1er Semest.</td>
               <td>{{ moyennePremierSemestre.toFixed(2) }}</td>
               <td>{{ RangSemestre }}</td>
               <td> {{ moyenneClasse }}</td>
@@ -249,17 +249,15 @@ watch(moyennePremierSemestre, (newMoyenne) => {
 });
 </script>
 
-
+ 
 <style scoped>
-.contenue{
-  margin-right: 50px;
-}
+
 /* Style du header */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 10px solid #000000;
+  border-bottom: 5px solid #000000;
   width: 100%;
   
 }
@@ -271,7 +269,7 @@ watch(moyennePremierSemestre, (newMoyenne) => {
 }
 
 .header-text {
-  font-size: 24px;
+  
   text-align: center;
   margin-top: 0;
   margin-bottom: 0;
@@ -282,12 +280,14 @@ h4 {
   font-weight: bold;
   margin-top: 0;
   margin-bottom: 0;
+  font-size: 18px;
 }
 
 p {
   color: #000000;
   margin-top: 0;
   margin-bottom: 0;
+  font-size: 18px;
 }
 
 .container3 {
@@ -311,33 +311,30 @@ ul {
 }
 
 li {
-  padding: 10px;
-  margin: 5px 0;
+  margin: 5px ;
   border-radius: 5px;
   text-align: start;
-  font-size: 20px;
+  font-size: 18px;
 }
 
 span {
   font-weight: bold;
 }
 
-.titre {
+.titre h1{
   background-color: transparent;
-  width: 98%;
+  width: 100%;
   text-align: center;
   color: rgb(0, 0, 0);
-  margin-top: 30px;
+  margin-top: 24px;
+  font-size: 28px;
 }
-.titre h1{
-  text-align: center;
-}
+
 
 /* Style du tableau */
 .bulletin-table {
   width: 100%;
-  
-  margin-top: 30px;
+  margin-top: 20px;
   border-collapse: collapse;
   text-align: center;
   margin-bottom: 20px
@@ -346,12 +343,13 @@ span {
 .bulletin-table th,
 .bulletin-table td {
   border: 1px solid black;
-  padding: 10px;
+  padding: 5px;
 }
 
 .bulletin-table th {
   background-color: #407CEE;
   color: white;
+  
 }
 
 .bulletin-table tfoot {
@@ -363,9 +361,8 @@ span {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 30px;
+  margin-top: 20px;
   width: 100%;
-  
   padding: 0;
 }
 
@@ -375,14 +372,13 @@ span {
 
 .semestre-table {
   width: 100%;
-  
   border-collapse: collapse;
 }
 
 .semestre-table th,
 .semestre-table td {
   border: 1px solid black;
-  padding: 10px;
+  padding: 5px;
   text-align: center;
 }
 
@@ -398,14 +394,13 @@ span {
 
 .absence-table {
   width: 100%;
-  
   border-collapse: collapse;
 }
 
 .absence-table th,
 .absence-table td {
   border: 1px solid black;
-  padding: 10px;
+  padding: 5px;
   text-align: center;
 }
 
@@ -424,20 +419,24 @@ span {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 50px;
-  margin-top: 30px;
-  width: 100%;
-  
+  margin-top: 25px;
+  width: 100%; 
 }
-
-
+.container2 h3{
+  margin-bottom: 10px;
+}
 
 .mentions-list li {
-  padding: 10px;
+  padding: 5px;
   margin: 5px 0;
-  font-size: 20px;
+  font-size: 16px;
 }
 
+.form-check-label{
+  font-size: 16px;
+}
 input[type="radio"] {
   margin-right: 10px;
 }
+
 </style>

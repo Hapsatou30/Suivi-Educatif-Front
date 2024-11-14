@@ -138,7 +138,7 @@ canvas {
   margin: auto; /* Centre le graphique */
 }
 
-@media (max-width: 768px) {
+@media (max-width: 992px) {
   canvas {
     max-width: 100%;
     height: 500px; /* Ajuste la hauteur pour les petits écrans */

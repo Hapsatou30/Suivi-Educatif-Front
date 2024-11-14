@@ -1,7 +1,7 @@
 <template>
   <sidebar_admin />
   <topbar_admin />
-  <div class="main-content">
+  <div class="main-content2">
     <boutons
       title1="Classes"
       title2="Années Scolaires"
@@ -380,17 +380,17 @@ onMounted(fetchData);
 </script>
 
 
-<style>
+<style scoped>
 /* Masquer la colonne ID dans le tableau */
-.tab-evaluations td:nth-child(5) { 
+::v-deep  .annees .tableau1 .tab-evaluations td:nth-child(5) { 
   display: none; /* Masquer la colonne de l'ID */
 }
 
 
-.main-content { 
+.main-content2 { 
     margin-top: 120px;
   }
-  .main-content h2 {
+  .main-content2 h2 {
     color: black;
     font-size: 24px;
     font-family: "Poppins", sans-serif;
@@ -399,13 +399,14 @@ onMounted(fetchData);
     margin-left: 300px;
   }
   .form-container {
-    border: 1px solid #F7AE00;
-    border-radius: 12px;
-    background-color: white;
-    margin-left: 300px;
-    margin-right: 50px;
-    margin-top: 30px;
-    padding: 30px;
+    max-width: 100%;
+  border: 1px solid #F7AE00;
+  border-radius: 12px;
+  background-color: white;
+  margin-left: 300px;
+  margin-right: 50px;
+  margin-top: 30px;
+  padding: 30px;
   }
   .row {
     display: flex;
@@ -421,11 +422,11 @@ onMounted(fetchData);
     font-size: 20px;
   }
   input {
-    width: 395px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    height: 58px;
+    width: 100%; /* Changez ceci pour s'adapter à votre mise en page */
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  height: 58px;
   }
   input::placeholder {
     color: #ccc;
@@ -452,9 +453,8 @@ onMounted(fetchData);
   }
   .annees {
     margin-top: 50px;
-    margin-left: 300px; 
+    margin-left: 300px;
     margin-right: 50px;
-   
    
   }
    .annees h3{
@@ -479,5 +479,83 @@ label:hover {
       cursor: pointer; /* Change le curseur lors du survol */
       color: #407CEE; /* Couleur au survol */
   }
+  @media (max-width: 992px) {
+ .main-content2{
+  margin-top: -50px;
+ 
+  margin-left: 0;
+ }
+ .main-content2 h2 {
+    font-size: 24px;
+    text-align: center;
+    margin-left: 0px;
+}
+.main-content2 .form-container {
+    max-width: 100%;
+    margin-top: 30px;
+    padding: 30px;
+    margin-left: 10%;
+    margin-right: 10%;
+  }
+  .annees {
+    margin-left: 10%;
+    margin-right: 10%;
+}
 
+
+}
+/* @media (max-width: 768px) {
+  .main-content2{
+  margin-top: 550px;
+ }
+} */
+@media (max-width: 576px) {
+  .main-content2{
+  margin-top: 500px;
+ }
+ .main-content2 h2{
+  font-size: 18px;
+ }
+ .title_recherche{
+  flex-direction: column
+ }
+ .search-container input{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    border-radius: 12px;
+    width: 300px;
+  }
+  .bouton{
+    display: flex;
+    align-items:center;
+    justify-content: center;
+  }
+}
+@media (max-width: 390px) {
+  .main-content2 {
+width: 85%;
+ margin-left: 8%;
+ margin-top: 800px;
+  
+}
+.main-content2 h2{
+ text-align: center;
+ margin-left: 7%;
+  width: 80%;
+ }
+}
+@media (max-width: 360px) {
+  .main-content2{
+  margin-top: 720px;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto
+ }
+ .main-content2 h2{
+  font-size: 16px;
+ }
+}
 </style>

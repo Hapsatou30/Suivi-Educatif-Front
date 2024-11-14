@@ -1,7 +1,7 @@
 <template>
   <sidebar_admin />
   <topbar_admin />
-  <div class="main-content">
+  <div class="main-content2">
     <boutons title1="Matières" title2="Professeurs" page1="matiere" page2="professeur" />
 
     <h2>Formulaire pour ajouter des Matières</h2>
@@ -298,12 +298,13 @@ const resetForm = () => {
 onMounted(fetchData);
 </script>
 
-<style>
-.main-content {
+<style scoped>
+.main-content2 {
   margin-top: 120px;
+  overflow-x: hidden;
 }
 
-.main-content h2 {
+.main-content2 h2 {
   color: black;
   font-size: 24px;
   font-family: "Poppins", sans-serif;
@@ -331,10 +332,13 @@ onMounted(fetchData);
 }
 
 label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-}
+    display: block;
+    margin-bottom: 5px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-size: 20px;
+
+  }
 
 label:hover {
   cursor: pointer;
@@ -411,5 +415,71 @@ p {
   /* curseur modifié pour indiquer qu'il n'est pas cliquable */
   opacity: 0.6;
   /* rendre le bouton semi-transparent */
+}
+@media (max-width: 992px) {
+ .main-content2{
+  margin-top: 600px;
+  margin-left: 0;
+  overflow: hidden;
+ }
+ .main-content2 h2 {
+    font-size: 24px;
+    text-align: center;
+    margin-left: 0px;
+}
+.main-content2 .form-container {
+    max-width: 100%;
+    margin-top: 30px;
+    padding: 30px;
+    margin-left: 10%;
+    margin-right: 10%;
+  }
+  .matieres {
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+}
+@media (max-width: 768px) {
+  .main-content2{
+  margin-top: 750px;
+
+ }
+}
+@media (max-width: 576px) {
+  .main-content2{
+  margin-top: 950px;
+ }
+ .main-content2 h2{
+  font-size: 18px;
+ }
+ .title_recherche{
+  flex-direction: column
+ }
+ .search-container input{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    border-radius: 12px;
+    width: 300px;
+  }
+  .bouton{
+    display: flex;
+    align-items:center;
+    justify-content: center;
+  }
+}
+@media (max-width: 360px) {
+  .main-content2{
+  margin-top: 1020px;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto
+ }
+ .main-content2 h2{
+  font-size: 16px;
+ }
 }
 </style>

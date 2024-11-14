@@ -1,74 +1,69 @@
 <template>
-    <sidebar_admin />
-    <topbar_admin />
-    <div class="main-content">
-      <h2>Liste des classes ouvertes pour l’année : {{ anneeScolaire }} </h2>
-  
-      <div class="classes">
-        <div class="tableau1">
-        <tabEvaluations 
-          v-if="paginatedData.length > 0"
-          class="tab-evaluations"
-          :headers="['N°', 'Nom ', 'Capacité','Niveau', 'Matières', 'Elèves']"
-          :data="paginatedData.map(({ numero, nom, capacite, niveau, id }) => ({
+  <sidebar_admin />
+  <topbar_admin />
+  <div class="main-content">
+    <h2>Liste des classes ouvertes pour l’année : {{ anneeScolaire }} </h2>
+
+    <div class="classes">
+      <div class="tableau1">
+        <tabEvaluations v-if="paginatedData.length > 0" class="tab-evaluations"
+          :headers="['N°', 'Nom ', 'Capacité', 'Niveau', 'Matières', 'Elèves']" :data="paginatedData.map(({ numero, nom, capacite, niveau, id }) => ({
             numero,
             nom,
             capacite,
             niveau,
             id
-            
-          }))"
-        >
+
+          }))">
           <template #actions="{ row }">
             <div class="boutons">
-              <button class="btn" @click="editClasse(row.id)" style=" color: #407CEE; font-size: 30px;" title="Attribuer des professeurs à cette classe">
-                <Icon icon="mdi:pencil-outline" /> 
+              <button class="btn" @click="editClasse(row.id)" style=" color: #407CEE; font-size: 30px;"
+                title="Attribuer des professeurs à cette classe">
+                <Icon icon="mdi:pencil-outline" />
               </button>
-              <button class="btn" @click="seeClasse(row.id)" style="color: red; font-size: 40px;" title="Voir les horaires de cette classe">
-                <Icon icon="marketeq:eye" /> 
+              <button class="btn" @click="seeClasse(row.id)" style="color: red; font-size: 40px;"
+                title="Voir les horaires de cette classe">
+                <Icon icon="marketeq:eye" />
               </button>
             </div>
           </template>
           <template #action="{ col }">
             <div class="boutons">
-              <button class="btn" @click="redirectToStudentsList(col.id)"  style="color: black; font-size: 40px;" title="Voir la liste des élèves de cette classe">
-                <Icon icon="la:users" /> 
+              <button class="btn" @click="redirectToStudentsList(col.id)" style="color: black; font-size: 40px;"
+                title="Voir la liste des élèves de cette classe">
+                <Icon icon="la:users" />
               </button>
-              <button class="btn" @click="redirectToAddStudents(col.id)"  style="color: black; font-size: 40px;" title="Ajouter des élèves dans cette classe">
-                <Icon icon="ei:plus" /> 
+              <button class="btn" @click="redirectToAddStudents(col.id)" style="color: black; font-size: 40px;"
+                title="Ajouter des élèves dans cette classe">
+                <Icon icon="ei:plus" />
               </button>
             </div>
           </template>
         </tabEvaluations>
 
-        <p v-else class="alert alert-info" >
+        <p v-else class="alert alert-info">
           Aucune classe trouvée.
         </p>
       </div>
 
-      <pagination class="pagination1"
-        v-if="tableData.length > pageSize"
-        :totalItems="tableData.length"
-        :pageSize="pageSize"
-        :currentPage="currentPage"
-        @pageChange="handlePageChange"
-      />
-      </div>
-     <div class="retour">
-      <button @click="retour" class="btn btn-secondary">Retour</button>
-     </div>
+      <pagination class="pagination1" v-if="tableData.length > pageSize" :totalItems="tableData.length"
+        :pageSize="pageSize" :currentPage="currentPage" @pageChange="handlePageChange" />
     </div>
-  </template>
+    <div class="retour">
+      <button @click="retour" class="btn btn-secondary">Retour</button>
+    </div>
+  </div>
+</template>
 
-  <script setup>
+<script setup>
 import { ref, computed, onMounted } from 'vue';
 import sidebar_admin from '@/components/sidebarAdmin.vue';
 import topbar_admin from '@/components/topbarAdmin.vue';
 import tabEvaluations from '@/components/tabEvaluations.vue';
-import pagination from '@/components/paginations.vue'; 
-import {  useRoute, useRouter } from 'vue-router';
+import pagination from '@/components/paginations.vue';
+import { useRoute, useRouter } from 'vue-router';
 import { getAnneClasses } from '@/services/AnneeClasseService';
-import {  getAnneeDetails } from '@/services/AnneeScolaireService';
+import { getAnneeDetails } from '@/services/AnneeScolaireService';
 import { Icon } from '@iconify/vue';
 const route = useRoute();
 
@@ -85,11 +80,11 @@ const fetchData = async () => {
     const response = await getAnneClasses();
     // Filtrer pour trouver l'année correspondant à l'ID passé dans l'URL
     const selectedAnnee = response.données.find(annee => annee.id === parseInt(anneeId));
-    
+
     if (selectedAnnee) {
       // Si l'année est trouvée, on mappe ses classes pour les afficher
       tableData.value = selectedAnnee.classes.map((item, index) => ({
-        numero: index + 1, 
+        numero: index + 1,
         nom: item.nom,
         niveau: item.niveau,
         capacite: item.capacite,
@@ -136,7 +131,7 @@ const detailsAnnee = async (id) => {
 onMounted(() => {
   // console.log('ID de l\'annee:', anneeId);
   detailsAnnee(anneeId);
-  fetchData(); 
+  fetchData();
 });
 
 // Méthode pour retourner à la page précédente
@@ -165,28 +160,33 @@ const redirectToStudentsList = (id) => {
 
 <style scoped>
 /* Masquer la colonne ID dans le tableau */
-.classes .tableau1 .tab-evaluations td:nth-child(3)  { 
-  display: none; /* Masquer la colonne de l'ID */
+.classes .tableau1 .tab-evaluations td:nth-child() {
+  display: none;
+  /* Masquer la colonne de l'ID */
 }
-.classes .tableau1 .tab-evaluations td:nth-child(4)  { 
-  display: none; 
+
+::v-deep .classes .tableau1 .tab-evaluations td:nth-child(5) {
+  display: none;
 }
 
 
 .boutons {
-    background-color: transparent; 
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.boutons .btn{
+
+.boutons .btn {
   font-size: 24px;
 }
-.main-content { 
+
+.main-content {
   margin-top: 120px;
 }
+
 .main-content h2 {
   color: black;
   font-size: 24px;
@@ -199,43 +199,127 @@ const redirectToStudentsList = (id) => {
 .classes {
   margin-top: 50px;
 }
-.classes h3{
+
+.classes h3 {
   font-size: 24px;
   font-family: "Poppins", sans-serif;
   font-weight: 500;
   text-align: start;
   margin-left: 300px;
 }
+
 .tableau1 {
   margin-left: 300px;
   margin-right: 50px;
 }
+
 .pagination1 {
   margin-left: 275px;
   margin-right: 50px;
   display: flex;
   justify-content: end;
 }
-.retour{
+
+.retour {
   display: flex;
   justify-content: end;
   margin-right: 50px;
   margin-bottom: 20px;
 }
-.retour .btn-secondary, .retour .btn-secondary:hover {
-    background-color: transparent;
-    color: white;
-    border: 1px solid #F7AE00;
-    border-radius: 12px;
-    cursor: pointer;
-    width: 200px;
-    height: 58px;
-    font-size: 24px;
-    font-family: "Poppins", sans-serif;
-    font-weight: 500;
-    color: #F7AE00;
-   
+
+.retour .btn-secondary,
+.retour .btn-secondary:hover {
+  background-color: transparent;
+  color: white;
+  border: 1px solid #F7AE00;
+  border-radius: 12px;
+  cursor: pointer;
+  width: 200px;
+  height: 58px;
+  font-size: 24px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  color: #F7AE00;
+
 }
+@media (max-width: 992px) {
+  .main-content {
+    width: 133%;
+    margin-left: -13%;
+ margin-top: 10%;
+  
+}
+  .main-content h2 {
+  margin-left: 0px;
+  margin-bottom: 30px;
+}
+.form-container {
+  margin-left: 0px;
+  margin-right: 50px;
+}
+.classes h3 {
+  margin-left: 0px;
+}
+.tableau1 {
+  margin-left: 0px;
+}
+.classes {
+  margin-top: 0px;
+}
+}
+@media (max-width: 768px) {
+  .main-content {
+    width: 115%;
+    margin-left: -3%;
+ margin-top: 22%;
+  
+}
+.main-content h2 {
+  margin-left: -8%;
+  margin-bottom: 30px;
+}
+}
+@media (max-width: 576px) {
+  .main-content {
+width: 77%;
+ margin-left: 16%;
+ margin-top: 35%;
+  
+}
+.main-content h2 {
+  font-size: 18px;
+  text-align: center;
+  width: 80%;
+  margin-right: 50px;
+  margin-left: 20px;
+}
+/* .classes {
+  width: 85%;
+  margin-left: 5%;
+} */
+.retour .btn-secondary,
+.retour .btn-secondary:hover {
+ 
+  width: 120px;
+  height: 50px;
+  font-size: 20px;
 
-
+}
+}
+@media (max-width: 390px) {
+  .main-content {
+width: 70%;
+ margin-left: 20%;
+ margin-top: 45%;
+  
+}
+}
+@media (max-width: 360px) {
+  .main-content {
+width: 75%;
+margin-left: 17.5%;
+ margin-top: -60px;
+  
+}
+}
 </style>

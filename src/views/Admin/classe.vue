@@ -505,6 +505,13 @@ input::placeholder {
     justify-content: center;
   }
 }
+@media (max-width: 390px) {
+  .main-content2 {
+    margin-top: 900px;
+  width: 85%;
+  
+}
+}
 @media (max-width: 360px) {
   .main-content2{
   margin-top: 770px;

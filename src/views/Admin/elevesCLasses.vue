@@ -168,9 +168,7 @@ onMounted(() => {
 
 <style scoped>
 .main-content {
-    background-color: white;
-    min-height: 100vh;
-    /* S'assure que la section couvre au moins 100% de la hauteur de la fenêtre */
+    height: 100vh;
     padding-top: 150px;
     margin-top: 0;
     overflow-x: hidden;
@@ -214,5 +212,70 @@ onMounted(() => {
     font-family: "Poppins", sans-serif;
     font-weight: 500;
     color: #F7AE00;
+}
+@media (max-width: 992px) {
+ .main-content{
+    width: 140%;
+    margin-left: -20%;
+ }
+   .main-content h2{
+    font-size: 24px;
+    text-align: center;
+    margin-left: -10%;
+}
+
+
+}
+@media (max-width: 768px) {
+    .main-content{
+    width: 120%;
+    margin-left: -10%;
+ }
+}
+@media (max-width: 576px) {
+    .main-content{
+    width: 85%;
+    margin-left: 7%;
+ }
+ .main-content h2{
+    width: 85%;
+    text-align: center;
+    margin-left: 10%;
+ }
+ h3{
+    display: none;
+ }
+ 
+ .title_recherche{
+  flex-direction: column
+ }
+ .search-container input{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    border-radius: 12px;
+    width: 300px;
+  }
+  .bouton{
+    display: flex;
+    align-items:center;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 360px) {
+  .main-content{
+  width: 75%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: -15%;
+ }
+ .main-content h2{
+    width: 80%;
+    text-align: center;
+    margin-left: 10%;
+ }
 }
 </style>

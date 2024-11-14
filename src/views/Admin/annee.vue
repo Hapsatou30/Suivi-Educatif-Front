@@ -534,6 +534,19 @@ label:hover {
     justify-content: center;
   }
 }
+@media (max-width: 390px) {
+  .main-content2 {
+width: 85%;
+ margin-left: 8%;
+ margin-top: 800px;
+  
+}
+.main-content2 h2{
+ text-align: center;
+ margin-left: 7%;
+  width: 80%;
+ }
+}
 @media (max-width: 360px) {
   .main-content2{
   margin-top: 720px;

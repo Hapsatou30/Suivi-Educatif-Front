@@ -129,6 +129,10 @@ input[type="checkbox"]:checked::after {
     .row {
     width: 100%;
 }
-
+.list-item {
+    gap: 10px;
+    margin: 10px;
+    
+}
 }
 </style>

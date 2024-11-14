@@ -264,5 +264,8 @@ onMounted(() => {
     justify-content: center; 
     align-items: center;    
 }
+.check{
+  width: 200%;
+}
 }
 </style>

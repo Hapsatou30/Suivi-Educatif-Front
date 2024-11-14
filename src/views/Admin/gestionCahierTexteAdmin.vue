@@ -262,13 +262,14 @@ p {
 }
 @media (max-width: 992px) {
   .main-content {
- width: 150%;
- margin-left: -20%;
+    width: 160%;
+    margin-left: -25%;
  margin-top: 0px;
   
 }
   .main-content h2 {
   margin-left: 0px;
+  margin-bottom: 20px;
 }
 .form-container {
   margin-left: 0px;

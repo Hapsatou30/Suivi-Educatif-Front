@@ -2,7 +2,7 @@
   <sidebar_admin />
   <topbar_admin />
   <div class="main-content3">
-    <div class="mb-3"
+    <div class="mb-3  recherche" 
       style="display: flex; align-items: end; justify-content: end ; margin-left: 300px; border-radius: 12px; margin-right: 50px;">
       <input type="text" class="form-control" v-model="searchQuery" @input="searchParent"
         placeholder="Rechercher un parent (email ou téléphone)" style="width: 300px;" />
@@ -813,6 +813,7 @@ p {
   margin-top: 500px;
  
 }
+
 .main-content3 h2 {
   margin-left: 0px;
 }
@@ -824,6 +825,7 @@ p {
   margin-top: 50px;
   margin-left: 50px;
   margin-right: 50px;
+  margin-bottom: 50px;
 
 }
 }

@@ -481,7 +481,7 @@ label:hover {
   }
   @media (max-width: 992px) {
  .main-content2{
-  /* margin-top: -200px; */
+  margin-top: -50px;
  
   margin-left: 0;
  }

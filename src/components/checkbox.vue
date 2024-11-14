@@ -13,7 +13,7 @@
                         {{ item.prenom }}
                     </span>
                     <span class="item-name">{{ item.nom }}</span>
-                    <span class="item-name">{{ item.professeur }} -> {{ item.matiere }}</span>
+                    <span class="item-name">{{ item.professeur }} {{ item.matiere }}</span>
                     
                 </li>
             </ul>
@@ -105,8 +105,30 @@ input[type="checkbox"]:checked::after {
     color: white;
     font-size: 16px; 
     position: relative;
-  left: -5px;
-  top: -10px;
+  left: -9px;
+  top: -13px;
+}
+@media (max-width: 992px) {
+    .img-fluid {
+    max-width: 500px;
+}
+.row {
+    margin-left: 0px;
+    margin-top: 50px;
+    margin-right: 50px;
+    width: 80%;
+}
+.item-name {
+    font-size: 18px;
+}
+}
+@media (max-width: 576px) {
+    .img-fluid{
+        display: none;
+    }
+    .row {
+    width: 100%;
 }
 
+}
 </style>

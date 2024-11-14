@@ -276,8 +276,8 @@ const openModal = (resume) => {
 }
 @media (max-width: 992px) {
   .main-content {
- width: 105%;
- margin-left: 0%;
+ width: 100%;
+ margin-left: 3%;
  margin-top: -40%;
   
 }

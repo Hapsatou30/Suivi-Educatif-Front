@@ -279,13 +279,14 @@ onMounted(() => {
   }
   @media (max-width: 992px) {
   .main-content {
- width: 105%;
- margin-left: 0%;
+ width: 115%;
+ margin-left: -4%;
  margin-top: 50px;
   
 }
   .main-content h2 {
   margin-left: 0px;
+  margin-left: -4%;
 }
 .form-container {
   margin-left: 0px;

@@ -9,7 +9,8 @@
         <span class="badge">{{ unreadCount }}</span>
       </div>
       <div class="dropdown">
-        <img :src="photoUser" alt="Photo de profil" class="dropdown-toggle" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" />
+        <img :src="photoUser" alt="Photo de profil" class="dropdown-toggle" id="dropdownMenuButton"
+          data-bs-toggle="dropdown" aria-expanded="false" />
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
           <li><a class="dropdown-item" @click="openModal" style="cursor: pointer;">Modifier Profil</a></li>
           <li><a class="dropdown-item" @click="handleLogout">Déconnexion</a></li>
@@ -17,20 +18,14 @@
       </div>
     </div>
   </div>
-<!-- Modal de notifications -->
-<NotificationModal
-      v-if="isModalVisible"
-      :title="'Notifications'"
-      :notifications="notifications"
-      :confirmText="'Fermer'"
-      :cancelText="null"
-      @close="handleCloseModal"
-    />
+  <!-- Modal de notifications -->
+  <NotificationModal v-if="isModalVisible" :title="'Notifications'" :notifications="notifications"
+    :confirmText="'Fermer'" :cancelText="null" @close="handleCloseModal" />
   <!-- Modal pour modifier le profil -->
   <div v-if="isModalOpen"
-      style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1000; display: flex; justify-content: center; align-items: center;">
+    style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1000; display: flex; justify-content: center; align-items: center;">
     <div
-        style="position: relative; width: 90%; max-width: 500px; padding: 20px; background: white; border-radius: 8px; z-index: 1001; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+      style="position: relative; width: 90%; max-width: 500px; padding: 20px; background: white; border-radius: 8px; z-index: 1001; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
       <div class="modal-header">
         <h5 class="modal-title" id="modalProfileLabel">Modifier Profil</h5>
         <span class="close" @click="closeModal" style="cursor: pointer;">&times;</span>
@@ -59,9 +54,9 @@
             <input type="password" class="form-control" v-model="formData.password" />
           </div>
           <div class="mb-3">
-    <label for="photo" class="form-label">Photo</label>
-    <input type="file" class="form-control" @change="handleFileUpload" />
-</div>
+            <label for="photo" class="form-label">Photo</label>
+            <input type="file" class="form-control" @change="handleFileUpload" />
+          </div>
 
           <button type="submit" class="btn btn-primary">Sauvegarder</button>
         </form>
@@ -72,8 +67,8 @@
 
 <script setup>
 // Importation des dépendances
-import { ref, onMounted,computed } from 'vue';
-import { profile, logout, modifierProfileProfesseur } from '@/services/AuthService'; 
+import { ref, onMounted, computed } from 'vue';
+import { profile, logout, modifierProfileProfesseur } from '@/services/AuthService';
 import { Icon } from '@iconify/vue';
 import Swal from 'sweetalert2';
 import { getNotifications } from '@/services/NotificationService';
@@ -99,23 +94,23 @@ const formData = ref({
 // Fonction pour récupérer les informations de profil de l'utilisateur
 const fetchProfile = async () => {
   try {
-    const response = await profile(); 
-    const user = response.user; 
+    const response = await profile();
+    const user = response.user;
     prenomUser.value = user.professeur.prenom;
     formData.value.nom = user.professeur.nom;
     formData.value.prenom = user.professeur.prenom;
     formData.value.email = user.email;
     formData.value.telephone = user.professeur.telephone;
     professeurId.value = user.professeur.id;
-    photoUser.value = `http://127.0.0.1:8000/storage//` + user.professeur.photo || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF5-3YjBcXTqKUlOAeUUtuOLKgQSma2wGG1g&s'; 
+    photoUser.value = `http://127.0.0.1:8000/storage//` + user.professeur.photo || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF5-3YjBcXTqKUlOAeUUtuOLKgQSma2wGG1g&s';
     // photoUser.value = `https://suivieducatif.thiamhapstou.simplonfabriques.com/storage//` + user.professeur.photo || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF5-3YjBcXTqKUlOAeUUtuOLKgQSma2wGG1g&s'; 
-   
+
 
   }
-  
 
-  
-   catch (error) {
+
+
+  catch (error) {
     console.error('Erreur lors de la récupération du profil:', error);
   }
   // console.log('jj', photoUser);
@@ -172,21 +167,21 @@ const submitForm = async () => {
     if (formData.value.photoUser) {
       formDataToSend.append('photo', formData.value.photoUser);
     }
-   
-    
-console.log('ggggg', formDataToSend);
+
+
+    console.log('ggggg', formDataToSend);
 
     // Passer formDataToSend ici
-    await modifierProfileProfesseur(professeurId.value,formDataToSend);
-    
+    await modifierProfileProfesseur(professeurId.value, formDataToSend);
+
     closeModal(); // Fermer le modal après la soumission
     Swal.fire({
       title: 'Succès',
       text: 'Profil modifié avec succès!',
       icon: 'success',
-      timer: 2000, 
+      timer: 2000,
       timerProgressBar: true,
-      showConfirmButton: false 
+      showConfirmButton: false
     });
     fetchProfile();
   } catch (error) {
@@ -195,10 +190,10 @@ console.log('ggggg', formDataToSend);
   }
 };
 const handleFileUpload = (event) => {
-    const file = event.target.files[0]; // Récupère le premier fichier sélectionné
-    if (file) {
-        formData.value.photoUser = file; // Stocke le fichier dans formData
-    }
+  const file = event.target.files[0]; // Récupère le premier fichier sélectionné
+  if (file) {
+    formData.value.photoUser = file; // Stocke le fichier dans formData
+  }
 };
 
 
@@ -220,96 +215,128 @@ onMounted(fetchNotifications);
 </script>
 
 
-  
 
-  
-  <style scoped>
-  .close {
-    font-size: 35px; 
-    color: #dc3545;
-    transition: color 0.3s ease; 
-    cursor: pointer; 
-    margin-left: 300px;
+
+
+<style scoped>
+/* Style principal de la topbar */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 90px;
+  padding: 0 20px;
+  background-color: #FAFAF7;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 10;
+  border-bottom: 1px dashed #F7AE00;
 }
 
-.close:hover {
-    color: #c82333; /* Couleur plus foncée au survol */
+.topbar .left-section h4 {
+  font-size: 18px;
+  color: #F7AE00;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
 }
 
-  .topbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 90px;
-    padding: 0 20px;
-    margin-left: 250px; 
-    background-color: #FAFAF7;
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
-    z-index: 10;
-    border-bottom: 1px dashed #F7AE00;
-  }
-  .topbar  .left-section h4{
-    font-size: 18px; 
-    color: #F7AE00; 
-    font-family: "Poppins", sans-serif;
-    font-weight: 500; 
-  }
-  
-  .left-section {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: 30px;
-    
-  }
-  
-  .right-section {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 35px;
-  }
-  
-  .icon {
-    font-size: 30px;
-    margin-right: 10px;
-  }
-  
- 
-  
-  .notifications {
-    font-size: 30px;
-    margin-right: 10px;
-    color: #F7AE00;
-    margin-bottom: 5px;
-  }
-  
- .dropdown img{
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    object-fit: cover;
-    cursor: pointer;
- 
- }
- .badge {
-  position: relative; /* Positionner le badge sur l'icône */
-  top: -15px; /* Ajuster la position verticale */
-  right: 4px; /* Ajuster la position horizontale */
-  background-color: red; /* Couleur de fond du badge */
-  color: white; /* Couleur du texte */
-  border-radius: 50%; /* Rendre le badge circulaire */
-  padding: 5px 8px; /* Espacement interne */
-  font-size: 14px; /* Taille de police */
+.left-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 30px;
 }
 
-/* Optionnel: rendre le badge moins visible quand il affiche 0 */
+.right-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 35px;
+}
+
+.notifications {
+  font-size: 30px;
+  margin-right: 10px;
+  color: #F7AE00;
+}
+
+.dropdown img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+}
+
 .badge {
-  opacity: 1; /* Assure que l'élément est visible */
+  position: relative;
+  top: -15px;
+  right: 4px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 5px 8px;
+  font-size: 14px;
 }
 
-  </style>
-  
+/* Media queries pour petits écrans */
+@media (max-width: 992px) {
+  .topbar {
+display: flex;
+justify-content: space-around;
+align-items: center;
+    height: auto;
+    padding: 10px;
+  }
+
+  .left-section {
+    margin-left: 0;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+  .topbar .left-section h4 {
+    font-size: 16px;
+  }
+
+  .notifications,
+  .dropdown img {
+    font-size: 24px;
+    width: 40px;
+    height: 40px;
+  }
+  .badge {
+  position: relative;
+  top: -55px;
+  right: 4px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 5px 8px;
+  font-size: 14px;
+}
+}
+
+/* Media queries pour très petits écrans */
+@media (max-width: 480px) {
+  .topbar {
+    flex-direction: row;
+    justify-content: flex-end;
+    height: 70px;
+    padding: 5px;
+  }
+
+  .left-section {
+    display: none;
+  }
+
+  .notifications,
+  .dropdown img {
+    font-size: 20px;
+    width: 35px;
+    height: 35px;
+  }
+}
+</style>

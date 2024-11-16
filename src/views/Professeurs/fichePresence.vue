@@ -266,8 +266,6 @@ onMounted(() => {
 
 </script>
 
-
-
 <style>
 /* Masquer la colonne ID dans le tableau */
 .eleves .tableau .tab-eleves td:nth-child(2) {
@@ -345,4 +343,80 @@ p {
     color: #F7AE00;
 
 }
+@media (max-width: 992px) {
+ .main-content{
+  width: 185%;
+  margin-left: -43%;
+  margin-top: -20%;
+ }
+ .main-content  h2{
+    font-size: 24px;
+    text-align: center;
+    margin-left: 0;
+}
+
+.tableau-absences, .absences{
+ width: 93%;
+  margin-left: auto;
+  margin-right: auto
+}
+p{
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto
+}
+}
+@media (max-width: 768px) {
+    .main-content{
+  width: 175%;
+  margin-left: -38%;
+  margin-top: -10%;
+ }
+}
+@media (max-width: 576px) {
+    .main-content{
+  width: 110%;
+  margin-left: -5%;
+  margin-top: 28%;
+ }
+ .main-content h2{
+  font-size: 18px;
+ }
+
+ .tableau-absences, .absences{
+ width: 90%;
+  margin-left: auto;
+  margin-right: auto
+}
+
+
+.retour .btn-secondary,
+.retour .btn-secondary:hover {
+ 
+  width: 120px;
+  height: 50px;
+  font-size: 20px;
+}
+}
+@media (max-width: 390px) {
+    .main-content {
+
+ margin-top: 50%;
+  
+}
+}
+
+@media (max-width: 360px) {
+    .main-content{
+  width: 110%;
+  margin-left: -5%;
+  margin-top: 80%;
+ }
+ .main-content h2{
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto
+ }
+}
+
 </style>

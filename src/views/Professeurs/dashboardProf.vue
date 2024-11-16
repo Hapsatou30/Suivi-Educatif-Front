@@ -4,20 +4,14 @@
   <div class="main-content">
     <affiche />
     <div class="row">
-      <div class="col-6">
+      <div class="col-6 ">
         <div class="widgets-container">
-          <widget title="Cours" :number="classesCount" :iconSrc="vectorIconSrc" />
+          <widget title="Cours" :number="classesCount" iconClass="icon-park:preschool" />
           <widget title="Matières" :number="matiereCount" :iconSrc="Icons" />
         </div>
-        <div class="emploisDuTemps" style="background-color: white;">
-          <h3>Emploi du temps d’aujourd’hui</h3>
-          <tabEvaluations v-if="tableData.length > 0" :headers="[]" :data="tableData" class="custom-table" />
-
-          <p v-else class="no-evaluations-message">Vous n'avez pas de cours aujourd'hui.</p>
-        </div>
       </div>
-      <div class="col-6" style="display: flex; flex-direction: column; justify-content: end;">
-        <div class="planning" >
+      <div class="col-6" >
+        <div class="planning">
           <router-link to="/planning" class="addTeacher">
             <Icon icon="ei:plus" class="plus" />
             <h3>Programmer un devoir/examen</h3>
@@ -26,36 +20,42 @@
 
         <!-- Boucle sur les évaluations récupérées pour afficher un maximum de 2 cartes -->
         <div>
-    <div v-if="evaluations.length > 0">
-      <div class="list_planning" v-for="(evaluation, index) in evaluations.slice(0, 2)" :key="index">
-        <div class="custom-card">
-          <div class="card-header">
-            <h3 class="card-title">{{ evaluation.matiere }}</h3>
-            <span class="card-subtitle">{{ evaluation.type_evaluation }}</span>
+          <div v-if="evaluations.length > 0">
+            <div class="list_planning" v-for="(evaluation, index) in evaluations.slice(0, 2)" :key="index">
+              <div class="custom-card">
+                <div class="card-header">
+                  <h3 class="card-title">{{ evaluation.matiere }}</h3>
+                  <span class="card-subtitle">{{ evaluation.type_evaluation }}</span>
+                </div>
+                <div class="card-body">
+                  <div class="card-body-left">
+                    <Icon icon="mdi:calendar-outline" class="icon" />
+                    {{ evaluation.date }}
+                  </div>
+                  <div class="card-body-right">
+                    <Icon icon="carbon:time" class="icon" />
+                    {{ evaluation.heure }}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="card-body">
-            <div class="card-body-left">
-              <Icon icon="mdi:calendar-outline" class="icon" />
-              {{ evaluation.date }}
-            </div>
-            <div class="card-body-right">
-              <Icon icon="carbon:time" class="icon" />
-              {{ evaluation.heure }}
-            </div>
+          <div v-else>
+            <p>Aucune évaluation à afficher pour le moment.</p>
           </div>
         </div>
-      </div>
-    </div>
-    <div v-else>
-      <p style="text-align: end;">Aucune évaluation à afficher pour le moment.</p>
-    </div>
-  </div>
 
       </div>
     </div>
     <div class="row">
+      <div class="emploisDuTemps col-5" style="background-color: white;">
+        <h3>Emploi du temps d’aujourd’hui</h3>
+        <tabEvaluations v-if="tableData.length > 0" :headers="[]" :data="tableData" class="custom-table" />
+
+        <p v-else class="no-evaluations-message">Vous n'avez pas de cours aujourd'hui.</p>
+      </div>
       <div class="chart-container1 col-6">
-      <h5 style="text-align: center; margin-bottom: 5px;">Mes heures de cours par jour</h5>
+        <h5 style="text-align: center; margin-bottom: 5px;">Mes heures de cours par jour</h5>
         <BarChart />
       </div>
     </div>
@@ -69,7 +69,7 @@ import topBarProf from '@/components/topBarProf.vue';
 import affiche from '@/components/affiche.vue';
 import widget from '@/components/widget.vue';
 import { getNbrClasseProf } from '@/services/ClasseProfs';
-import { getEvaluationsParProf} from '@/services/Evaluations';
+import { getEvaluationsParProf } from '@/services/Evaluations';
 import { profile } from '@/services/AuthService';
 import { getNbrMatiere } from '@/services/MatiereService';
 import tabEvaluations from '@/components/tabEvaluations.vue';
@@ -99,7 +99,7 @@ const fetchProfile = async () => {
     if (user && user.professeur) {
       professeurId.value = user.professeur.id;
     }
-    
+
   } catch (error) {
     console.error('Erreur lors de la récupération du profil:', error);
   }
@@ -119,7 +119,7 @@ const fetchHoraireProf = async () => {
   try {
     const response = await geHoraireProf(professeurId.value);
     // console.log('response', response);
-    
+
     if (response.status === 200) {
       const horaires = response.données;
 
@@ -173,25 +173,20 @@ onMounted(async () => {
 }
 
 .main-content .row {
-  display: flex;
+  /* display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-between; */
   margin-left: 300px;
   margin-right: 50px;
   margin-top: 40px;
 }
 
-.main-content .row .col-6 {
-  display: flex;
-  flex-direction: column;
-}
 
 .main-content .row .col-6 .widgets-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 50px;
-  margin-bottom: 80px;
 }
 
 ::v-deep .emploisDuTemps {
@@ -245,19 +240,22 @@ onMounted(async () => {
   background-color: white;
 }
 
+p {
+  text-align: end;
+}
+
 .planning .addTeacher {
   display: flex;
   align-items: center;
   justify-content: end;
   gap: 10px;
-  margin-top: 30px;
   cursor: pointer;
   text-decoration: none;
   color: #F7AE00;
 }
 
 .planning .addTeacher h3 {
-text-align: right;
+  text-align: right;
   font-size: 24px;
   font-weight: bold;
 }
@@ -265,13 +263,15 @@ text-align: right;
 .plus {
   font-size: 60px;
 }
-.list_planning{
+
+.list_planning {
   margin-top: 20px;
   display: flex;
   flex-direction: column;
   justify-content: end;
   margin-left: 32%;
 }
+
 .custom-card {
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -280,13 +280,17 @@ text-align: right;
   max-width: 420px;
   background-color: white;
   text-align: center;
-  
+
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
 .custom-card:hover {
-  transform: scale(1.05); /* Zoom à 105% au survol */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Ombre supplémentaire au survol */
+  transform: scale(1.05);
+  /* Zoom à 105% au survol */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  /* Ombre supplémentaire au survol */
 }
+
 .card-header {
   display: flex;
   justify-content: space-between;
@@ -337,10 +341,162 @@ text-align: right;
 .btn:hover {
   background-color: #3f57a1;
 }
-.chart-container1{
-  margin-right: 50px;
+
+.chart-container1 {
+  /* margin-right: 50px; */
   margin-top: 40px;
   border-radius: 10%;
   padding: 1%;
+}
+
+@media (max-width: 992px) {
+  .main-content {
+    margin-top: 75%;
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .main-content .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 20px;
+    margin-right: 20px;
+    gap: 50px;
+  }
+
+  .main-content .row .col-6 {
+    width: 100%;
+  }
+
+  .main-content .row .col-6 .widgets-container {
+    width: 100%;
+  }
+
+  .emploisDuTemps,
+  .planning {
+    width: 100%;
+
+  }
+
+  ::v-deep .custom-table td:nth-child(-n+1),
+::v-deep .custom-table th:nth-child(-n+1) {
+  background-color: #F7AE00;
+  width: 150px;
+  border-radius: 8px;
+  color: white
+}
+::v-deep .custom-table td:nth-last-child(-n+1) {
+  font-size: 18px;
+  /* Petite police pour les dernières colonnes */
+  color: #407CEE;
+  /* Texte en bleu */
+}
+
+  .planning {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  p {
+    text-align: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-top: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .main-content {
+    margin-top: 260%;
+  }
+
+  .main-content .row .col-6 {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .main-content .row .col-6 .widgets-container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .emploisDuTemps,
+  .planning {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+
+  }
+
+  .addTeacher {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+  }
+
+  .planning .addTeacher h3 {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .plus {
+    font-size: 40px;
+  }
+
+  p {
+    text-align: center;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .chart-container1 {
+    margin-right: 50px;
+    margin-top: 40px;
+  }
+}
+
+@media (max-width: 390px) {
+  .main-content {
+    margin-top: 300%;
+  }
+  .addTeacher {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0px;
+
+  }
+  .planning{
+    width: 100%;
+    margin: auto;
+  }
+  .planning .addTeacher h3 {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    width: 100%;
+  }
+  .plus {
+    font-size: 40px;
+  }
+}
+@media (max-width: 360px) {
+  .main-content {
+    margin-top: 340%;
+  }
 }
 </style>

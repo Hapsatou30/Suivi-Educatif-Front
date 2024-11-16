@@ -5,8 +5,7 @@
         <h1>Planifier un Devoir ou un Examen</h1>
 
         <!-- Conteneur pour aligner le formulaire et le calendrier -->
-        <div class="row "
-            style="margin-left: 265px;margin-right: 30px; display: flex; align-items: center; justify-content: space-between;">
+        <div class="row row1">
             <!-- Calendrier interactif dans l'autre colonne -->
             <div class="col-md-6">
                 <div id="calendar" class="calendar-container">
@@ -49,7 +48,7 @@
                         <div class="col-md-6 mb-3">
                             <label for="date" class="form-label">Date</label>
                             <input type="date" id="date" v-model="formData.date" class="form-control"
-    @blur="validateField('date')" :class="{ 'is-invalid': errors.date }" required />
+                                @blur="validateField('date')" :class="{ 'is-invalid': errors.date }" required />
 
                             <div v-if="errors.date" class="text-danger">{{ errors.date }}</div>
                         </div>
@@ -81,11 +80,10 @@
                         </div>
                     </div>
 
-                    <div class="mt-4" style="display: flex; justify-content: end;">
-                        <button type="submit" class="btn btn-submit" >Enregistrer</button>
+                    <div class="mt-4 boutonss">
+                        <button type="submit" class="btn btn-submit">Enregistrer</button>
                     </div>
                 </form>
-
             </div>
         </div>
 
@@ -93,11 +91,11 @@
             <h2>Mon Planning</h2>
             <div class="tableau1">
                 <div v-if="successMessage" class="alert alert-success" role="alert">
-                {{ successMessage }}
-            </div>
-            <div v-if="errorMessage" class="alert alert-danger" role="alert">
-                {{ errorMessage }}
-            </div>
+                    {{ successMessage }}
+                </div>
+                <div v-if="errorMessage" class="alert alert-danger" role="alert">
+                    {{ errorMessage }}
+                </div>
                 <tabEvaluations v-if="paginatedData.length > 0" class="tab-planning1"
                     :headers="['Matière ', 'Date', 'Heure', 'Durée(mins)', 'Evaluation', 'Classe', 'Action']"
                     :data="paginatedData.map(({ matiere, date, heure, duree, type_evaluation, classe, id }) => ({ matiere, date, heure, duree, type_evaluation, classe, id }))">
@@ -305,11 +303,11 @@ const submitForm = async () => {
 
         fetchData();
         resetForm();
-    }  catch (error) {
+    } catch (error) {
         console.error('Erreur lors de l\'ajout de l\'evaluation :', error);
         const errorMessageContent = error.response?.data?.message || error.message || 'Une erreur inattendue s\'est produite.';
         errorMessage.value = errorMessageContent;
-        
+
         // Masquer le message d'erreur après quelques secondes
         setTimeout(() => {
             errorMessage.value = '';
@@ -352,7 +350,7 @@ const fetchData = async () => {
     try {
         const response = await getEvaluationsParProf(professeurId.value);
         console.log('Response', response);
-        
+
         if (response.status === 200) {
             const evaluationsFutures = response.evaluations.filter(evaluation => dayjs(evaluation.date).isAfter(dayjs()));
             evaluationsFutures.sort((a, b) => dayjs(a.date).diff(dayjs(b.date)));
@@ -469,7 +467,6 @@ onMounted(async () => {
 <style scoped>
 ::v-deep .mon_planning .tableau1 .tab-planning1 td:nth-child(7) {
     display: none;
-    /* Masquer la colonne de l'ID */
 }
 
 .calendar-container {
@@ -479,10 +476,17 @@ onMounted(async () => {
 .main-content {
     padding: 20px;
 }
-
+.planning .row1{
+    margin-left: 265px;
+    margin-right: 30px;
+     display: flex;
+      align-items: center;
+       justify-content: space-between;
+}
 .planning h1 {
     margin-left: 300px;
     text-align: center;
+    margin-bottom: 30px;
 }
 
 
@@ -589,7 +593,7 @@ label:hover {
     margin-right: 38px;
 }
 
-::v-deep  .bouton .btn-submit:disabled {
+::v-deep .bouton .btn-submit:disabled {
     background-color: #407CEE;
     /* couleur gris pour montrer qu'il est désactivé */
     color: #666666;
@@ -598,5 +602,93 @@ label:hover {
     /* curseur modifié pour indiquer qu'il n'est pas cliquable */
     opacity: 0.6;
     /* rendre le bouton semi-transparent */
+}
+.boutonss{
+    display: flex; justify-content: end;
+}
+@media (max-width: 992px) {
+    .main-content {
+        width: 95%;
+        margin-top: 130%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+  
+.planning .row1{
+    flex-direction: column;
+    margin-left: 0;
+    width: 100%;
+}
+.planning h1 {
+    margin-left: 0px;
+    text-align: center;
+    margin-bottom: 50px;
+}
+.col-md-6{
+    width: 100%;
+}
+.planning .row .col-6 .form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+.mon_planning .tableau1 {
+    margin-left: 0px;
+    margin-right: 38px;
+}
+.mon_planning h2{
+    margin-left: 0px;
+}
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        width: 95%;
+        margin-top: 150%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+
+}
+
+@media (max-width: 576px) {
+    .main-content {
+        width: 98%;
+        margin-top: 270%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .planning h1 {
+    font-size: 20px;
+}
+::v-deep  .fc .fc-toolbar-title {
+    font-size: 14px;
+    margin: 0px;
+}
+.boutonss{
+    display: block;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    margin-left: 20%;
+}
+.mon_planning h2 {
+    font-size: 20px;
+}
+
+}
+
+
+@media (max-width: 360px) {
+    .main-content {
+        width: 98%;
+        margin-top: 300%;
+        margin-left: auto;
+        margin-right: auto;
+    }
 }
 </style>

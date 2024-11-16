@@ -353,6 +353,7 @@ p {
   .main-content {
     margin-top: 75%;
     margin-left: 0;
+    width: 100%;
   }
 
   .main-content .row {

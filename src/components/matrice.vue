@@ -96,6 +96,7 @@ export default {
   border-radius: 10px;
   background-color: black;
   margin-bottom: 10px;
+  width: 160px;
 }
 
 .carte h4 {
@@ -113,11 +114,21 @@ export default {
 /* Responsivité pour tablettes */
 @media (max-width: 992px) {
   .tableau-horaires {
-    margin-left: auto;
     margin-right: auto;
-    width: 100%;
+    width: 80%;
   }
 
+  .tableau-horaires {
+  width: 75%;
+  padding: 0 20px;
+  overflow-x: auto;
+  margin-left: auto;
+  margin-right: auto;
+}
+.tableau-horaires table {
+  width: 90%;
+  border-collapse: collapse;
+}
   .tableau-horaires th {
     font-size: 1.1rem;
   }
@@ -138,16 +149,30 @@ export default {
     font-size: 0.7rem;
   }
 }
-
-/* Responsivité pour mobiles */
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   .tableau-horaires {
-    margin-left: 0;
-    margin-right: 0;
-    width: 100%;
-    padding: 0 10px;
+    margin-right: auto;
+    width: 80%;
   }
 
+  .tableau-horaires {
+  width: 65%;
+  padding: 0 20px;
+  overflow-x: auto;
+  margin-left: auto;
+  margin-right: auto;
+}
+}
+
+/* Responsivité pour mobiles */
+@media (max-width: 576px) {
+  .tableau-horaires {
+  width: 50%;
+  padding: 0 20px;
+  overflow-x: auto;
+  margin-left: auto;
+  margin-right: auto;
+}
   .tableau-horaires th {
     font-size: 1rem;
   }
@@ -158,7 +183,9 @@ export default {
 
   .carte {
     padding: 6px;
+    width: 120px;
   }
+
 
   .carte h4 {
     font-size: 0.8rem;

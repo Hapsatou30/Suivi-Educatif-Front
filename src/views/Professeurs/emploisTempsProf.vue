@@ -2,7 +2,7 @@
   <sidebarProf />
   <topBarProf />
   <div class="main-content">
-    <h1 style="text-align: center; margin-left: 300px; margin-bottom: 50px;">
+    <h1 >
       Mon Emplois du temps
     </h1>
     <matrice :horaires="horaires" :data="donnees" :jours="joursDeLaSemaine" :classeColors="classeColors" :isMatiere="false"/>
@@ -126,5 +126,42 @@ onMounted(async () => {
   margin-top: 120px;
   margin-left: 250px;
 }
-
+h1{
+  text-align: center;
+   margin-left: 0px; 
+   margin-bottom: 50px;
+}
+@media (max-width: 992px) {
+  .main-content {
+  margin-top: 0px;
+  margin-left: 0px;
+  width: 100%;
+}
+}
+/* Responsivité pour mobiles */
+@media (max-width: 576px) {
+  .main-content {
+  margin-top: 250px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 95%;
+  margin-bottom: 100px;
+}
+}
+@media (max-width: 390px) {
+  .main-content {
+  margin-top: 280px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 95%;
+}
+}
+@media (max-width: 360px) {
+  .main-content {
+  margin-top: 350px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+}
+}
 </style>

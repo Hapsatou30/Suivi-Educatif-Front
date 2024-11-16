@@ -351,7 +351,7 @@ p {
 
 @media (max-width: 992px) {
   .main-content {
-    margin-top: 100%;
+    margin-top: 75%;
     margin-left: 0;
   }
 
@@ -405,13 +405,13 @@ p {
 
 @media (max-width: 768px) {
   .main-content {
-    margin-top: 130%;
+    margin-top: 100%;
   }
 }
 
 @media (max-width: 576px) {
   .main-content {
-    margin-top: 310%;
+    margin-top: 260%;
   }
 
   .main-content .row .col-6 {
@@ -470,7 +470,7 @@ p {
 
 @media (max-width: 390px) {
   .main-content {
-    margin-top: 360%;
+    margin-top: 300%;
   }
   .addTeacher {
     display: flex;
@@ -495,7 +495,7 @@ p {
 }
 @media (max-width: 360px) {
   .main-content {
-    margin-top: 400%;
+    margin-top: 340%;
   }
 }
 </style>

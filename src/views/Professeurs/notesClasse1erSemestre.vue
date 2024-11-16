@@ -612,4 +612,125 @@ input {
     box-sizing: border-box;
     border-radius: 12px;
 }
+@media (max-width: 992px) {
+  .main-content {
+ width: 95%;
+ margin-top: 50%;
+ margin-left: auto;
+ margin-right: auto;
+  
+}
+  .main-content h2 {
+  margin-left: 0px;
+}
+
+
+.tableauNote {
+  margin-left: 50px;
+}
+.classes {
+  margin-top: 0px;
+}
+
+.tableauNotes,
+.addNotes {
+    margin-left: 50px;
+    margin-right: 50px;
+}
+select,
+input {
+    width: 130px;
+}
+table {
+        font-size: 14px;
+    }
+
+    th,
+    td {
+        padding: 15px;
+        font-size: 16px;
+    }
+
+    select,
+    input {
+        font-size: 14px;
+    }
+}
+@media (max-width: 768px) {
+    .main-content {
+ width: 90%;
+ margin-top: 60%;
+ margin-left: auto;
+ margin-right: auto;
+  
+}
+::v-deep .addNotes .tableau1 .tab-planning1 td:nth-child(2) {
+    display: none;
+}
+::v-deep .addNotes .tableau1 .tab-planning1 th:nth-child(2) {
+    display: none;
+}
+.main-content h2 {
+    font-size: 20px;
+}
+    table {
+        display: block;
+        overflow-x: auto; /* Permet le défilement horizontal */
+    }
+
+    tbody td:last-child {
+        border-bottom: none; /* Pas de bordure pour la dernière cellule */
+    }
+
+    select,
+    input {
+        width: 100%;
+        font-size: 12px;
+    }
+
+   
+}
+@media (max-width: 576px) {
+  .main-content {
+    width: 80%;
+ margin-top: 225%;
+ margin-left: auto;
+ margin-right: auto;
+  
+}
+.main-content h2 {
+  font-size: 18px;
+  text-align: center;
+  width: 75%;
+  margin-left: 15%;
+}
+
+
+.retour .btn-secondary,
+.retour .btn-secondary:hover {
+ 
+  width: 120px;
+  height: 50px;
+  font-size: 20px;
+}
+
+}
+@media (max-width: 390px) {
+    .main-content {
+    width: 70%;
+ margin-top: 225%;
+ margin-left: auto;
+ margin-right: auto;
+  
+}
+}
+@media (max-width: 360px) {
+    .main-content {
+    width: 70%;
+ margin-top: 230%;
+ margin-left: auto;
+ margin-right: auto;
+  
+}
+}
 </style>

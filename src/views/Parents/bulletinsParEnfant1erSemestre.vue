@@ -340,4 +340,73 @@ onMounted(() => {
   margin-right: 8px; /* Espace entre l'icône et le texte */
   font-size: 18px; /* Taille de l'icône */
 }
+@media (max-width: 992px) {
+ .main-content{
+  margin-top: 50%;
+ width: 85%;
+  margin-left: auto;
+  margin-right: auto;
+ }
+ .title {
+    font-size: 24px;
+    text-align: center;
+    margin-left: 0px;
+    margin-top: 40px;
+}
+.boutons {
+  display: flex;
+  margin-left: -10%;
+}
+.retour {
+  margin-left: -170%;
+
+}
+}
+@media (max-width: 768px) {
+  .main-content{
+  margin-top: 75%;
+ width: 78%;
+  margin-left: auto;
+  margin-right: auto;
+ }
+}
+@media (max-width: 576px) {
+  .main-content{
+  margin-top: 60%;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+ }
+ .title {
+    font-size: 18px;
+    text-align: center;
+    margin-left: 0px;
+    margin-top: 40px;
+}
+.boutons {
+  display: flex;
+  margin-left: -10%;
+}
+.retour {
+  margin-left: 0%;
+
+}
+.boutons {
+  display: flex;
+  margin-left: 0;
+}
+.telecharger-container{
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+}
+@media (max-width: 390px) {
+  .main-content{
+  margin-top: 80%;
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+ }
+}
 </style>

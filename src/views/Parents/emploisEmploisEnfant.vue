@@ -184,15 +184,17 @@ onMounted(() => {
 }
 @media (max-width: 992px) {
    .main-content {
-    width: 90%;
+    margin-top: 0%;
+    width: 95%;
     margin-left: auto !important;
     margin-right: auto !important;
 }
 .head {
-    gap: 2% ;
+    gap: 0 ;
+    margin-left: 14%;
 }
 .head h1{
-    margin-left: 10%;
+    margin-left: 0;
     
  }
  .head h1{
@@ -208,38 +210,66 @@ onMounted(() => {
     margin-left: 0%;
   }
 }
-@media (max-width: 480px) {
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-top: 8%;
+    width: 95%;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+}
+@media (max-width: 567px) {
     .main-content{
+      margin-top: 20%;
       width: 90%;
       margin-right: auto;
       margin-left: auto;
     }
-    .head h1{
-    margin-left: 0%;
-    
- }
+  
     .head{
-        margin-top: 20%;
         display: flex;
         align-items: center;
         justify-content: space-around;
+        width: 70%;
+        margin-right: auto;
+        margin-left: auto;
+       
        
     }
     .retour {
-    
     margin-left: 0;
 }
 
  .head h1{
-    font-size: 20px;
+    font-size: 18px;
     margin-top: 25px;
     text-align: justify;
+    width: 60%;
+    margin-left: -200px;
  }
  .emplois{
   margin-left: 0%;
   
  }
 }
-
+@media (max-width: 390px) {
+  .main-content{
+      margin-top: 30%;
+      width: 85%;
+      margin-right: auto;
+      margin-left: auto;
+    }
+  
+}
+@media (max-width: 360px) {
+  .main-content{
+      margin-top: 40%;
+      width: 80%;
+      margin-right: auto;
+      margin-left: auto;
+    }
+  
+}
 
 </style>

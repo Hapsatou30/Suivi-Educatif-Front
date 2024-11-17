@@ -188,9 +188,10 @@ h1 {
 @media (max-width: 992px) {
 
 .main-content1 {
-margin-left: 0%;
-margin-top: 40%;
-width: 100%;
+margin-top: 30%;
+width: 130%;
+margin-left: -13%;
+
 
 }
 .main-content1 .row {
@@ -227,7 +228,16 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
 
 
 }
+@media (max-width: 768px) {
 
+.main-content1 {
+margin-top: 50%;
+width: 120%;
+margin-left: -10%;
+
+
+}
+}
 
 @media (max-width: 576px) {
   .main-content1 {

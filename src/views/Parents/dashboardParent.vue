@@ -284,7 +284,7 @@ onMounted(async () => {
     width: 90%;
     margin-left: auto !important;
     margin-right: auto !important;
-    /* margin-top: 130%; */
+    margin-top: 900px;
   }
 
  
@@ -357,18 +357,18 @@ onMounted(async () => {
   }
 
 }
-@media (max-width:992px) {
+@media (max-width:768px) {
   .main-content {
-    width: 100%;
+    width: 94%;
     margin-left: auto !important;
     margin-right: auto !important;
-    margin-top: 85%;
+    margin-top: 1000px;
   }
 
 }
 @media (max-width: 576px) {
   .main-content {
-    width: 100%;
+    width: 90%;
     margin-left: auto !important;
     margin-right: auto !important;
     /* margin-top: 155%; */
@@ -414,7 +414,7 @@ onMounted(async () => {
     text-align: center;
   }
 
-  .chart-container1 {
+  /* .chart-container1 {
     margin-left: 0;
     margin-top: 40px;
     border-radius: 10%;
@@ -433,6 +433,13 @@ onMounted(async () => {
     margin-left: auto;
     margin-right: auto;
 
+  } */
+} @media (max-width: 390px) {
+  .main-content {
+    width: 90%;
+    margin-left: auto !important;
+    margin-right: auto !important;
+   margin-top: 1100px;
   }
-}
+  }
 </style>

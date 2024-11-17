@@ -248,14 +248,19 @@ onMounted(() => {
 }
 @media (max-width: 992px) {
    .main-content {
-    width: 100%;
-    margin-top: -60%;
+    width: 140%;
+    margin-top: -70%;
+    margin-left: -20%;
+    margin-right: auto;
 }
 .head {
-    gap: 15% ;
+    gap: 10% ;
+    margin-left: 10%;
+
 }
 .head h1{
     margin-left: 0;
+    text-align: center;
     
  }
  .head h1{
@@ -270,7 +275,16 @@ onMounted(() => {
 }
 .tableau-absences {
     margin: 0;
+    width: 100%;
   }
+}
+@media (max-width: 768px) {
+   .main-content {
+    width: 130%;
+    margin-top: -60%;
+    margin-left: -15%;
+    margin-right: auto;
+}
 }
 @media (max-width: 576px) {
     .head{
@@ -289,9 +303,9 @@ onMounted(() => {
     
  }
  .head h1{
-    font-size: 24px;
+    font-size: 18px;
     margin-top: 25px;
-    margin-left: -48px;
+    margin-left: -70px;
     text-align: center;
 }
 .absences{
@@ -307,4 +321,11 @@ onMounted(() => {
     margin-left: auto !important;
     margin-right: auto !important;
 }}
+@media (max-width: 360px) {
+    .main-content {
+        width: 85%;
+    margin-top: -50%;
+    margin-right: auto;
+}
+}
 </style>

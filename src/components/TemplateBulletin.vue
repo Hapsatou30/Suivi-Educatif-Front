@@ -438,5 +438,69 @@ span {
 input[type="radio"] {
   margin-right: 10px;
 }
+@media (max-width: 576px) {
+  .header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 5px solid #000000;
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 90%;
+}
+h3,
+h4 {
+  font-size: 16px;
+}
+p {
+  font-size: 16px;
+}
+.container3 {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+    width: 100%;
+    gap: 50px;
+    
+}
+.column {
+  width: 70%;
+}
+.bulletin-table {
+    display: block;
+    overflow-x: auto; /* Défilement horizontal */
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+ 
+.container1 {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  width: 100%;
+  padding: 0;
+  gap: 50px;
+}
+.container2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 50px;
+  margin-top: 25px;
+  width: 100%; 
+}
+.column-right, .column-left{
+  width: 70%;
+}
+
+}
 
 </style>

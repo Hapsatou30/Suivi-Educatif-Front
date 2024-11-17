@@ -257,7 +257,7 @@ const openModal = (resume) => {
 }
 
  .head h1{
-    font-size: 24px;
+    font-size: 18px;
     margin-top: 25px;
     text-align: justify;
     
@@ -268,8 +268,18 @@ const openModal = (resume) => {
 
     .main-content {
    overflow-x: hidden;
-    width: 90%;
+    width: 70%;
     margin-left: auto !important;
     margin-right: auto !important;
-}}
+}
+}
+@media (max-width: 360px) {
+    .main-content {
+   overflow-x: hidden;
+    width: 60%;
+    margin-left: auto !important;
+    margin-right: auto !important;
+   margin-top: 0;
+}
+}
 </style>

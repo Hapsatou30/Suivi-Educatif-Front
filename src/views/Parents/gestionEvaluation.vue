@@ -191,8 +191,11 @@ h1 {
 
 .main-content1 {
 margin-left: 0%;
-margin-top: 40%;
-width: 100%;
+margin-top: 30%;
+width: 95%;
+
+margin-left: auto;
+    margin-right: auto;
 
 }
 .main-content1 .row {
@@ -229,7 +232,15 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
 
 
 }
-
+@media (max-width: 768px) {
+    
+    .main-content1 {
+    margin-left: 5%;
+    margin-top: 50%;
+    width: 90%;
+    
+    }
+}
 
 @media (max-width: 576px) {
   .main-content1 {

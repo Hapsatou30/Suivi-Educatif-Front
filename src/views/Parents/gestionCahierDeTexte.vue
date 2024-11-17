@@ -188,9 +188,9 @@ h1 {
 @media (max-width: 992px) {
 
 .main-content1 {
-margin-left: 0%;
+margin-left: -5%;
 margin-top: 40%;
-width: 100%;
+width: 110%;
 
 }
 .main-content1 .row {

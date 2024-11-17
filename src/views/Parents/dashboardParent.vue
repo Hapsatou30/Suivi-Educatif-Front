@@ -371,7 +371,7 @@ onMounted(async () => {
     width: 90%;
     margin-left: auto !important;
     margin-right: auto !important;
-    /* margin-top: 155%; */
+    margin-top: 300%;
   }
 
   .header {
@@ -413,8 +413,14 @@ onMounted(async () => {
     font-size: 18px;
     text-align: center;
   }
+  .widgets-container {
+width: 90%;
+margin-left: 10%;
 
-  /* .chart-container1 {
+
+}
+
+  .chart-container1 {
     margin-left: 0;
     margin-top: 40px;
     border-radius: 10%;
@@ -433,13 +439,14 @@ onMounted(async () => {
     margin-left: auto;
     margin-right: auto;
 
-  } */
+  }
+  
 } @media (max-width: 390px) {
   .main-content {
     width: 90%;
     margin-left: auto !important;
     margin-right: auto !important;
-   margin-top: 1100px;
+    margin-top: 380%;
   }
   }
 </style>

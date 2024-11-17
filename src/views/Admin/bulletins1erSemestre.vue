@@ -384,38 +384,41 @@ const retour = () => {
 
 @media (max-width: 576px) {
   .main-content{
-  margin-top: 500px;
- }
- .main-content h2{
-  font-size: 18px;
- }
- .title_recherche{
-  flex-direction: column
- }
- .search-container input{
-    display: flex;
-    flex-direction: column;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 10px;
-    border-radius: 12px;
-    width: 300px;
-  }
-  .bouton{
-    display: flex;
-    align-items:center;
-    justify-content: center;
-  }
-}
-@media (max-width: 360px) {
-  .main-content{
-  margin-top: 720px;
+  margin-top: 60%;
   width: 80%;
   margin-left: auto;
-  margin-right: auto
+  margin-right: auto;
  }
- .main-content h2{
-  font-size: 16px;
+ .title {
+    font-size: 18px;
+    text-align: center;
+    margin-left: 0px;
+    margin-top: 40px;
+}
+.boutons {
+  display: flex;
+  margin-left: -10%;
+}
+.retour {
+  margin-left: 0%;
+
+}
+.boutons {
+  display: flex;
+  margin-left: 0;
+}
+.telecharger-container{
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+}
+@media (max-width: 390px) {
+  .main-content{
+  margin-top: 80%;
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
  }
 }
 </style>

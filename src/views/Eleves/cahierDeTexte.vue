@@ -176,6 +176,14 @@ const openModal = (resume) => {
     margin-top: 120px;
 }
 
+.head {
+    display: flex;
+    align-items: center;
+}
+
+.prenom {
+    color: #FFCD1E;
+}
 
 .retour {
     font-size: 30px;
@@ -212,13 +220,11 @@ const openModal = (resume) => {
     width: 90%;
     margin-left: auto !important;
     margin-right: auto !important;
+    margin-top: -40%;
 }
-.head {
-    gap: 2% ;
-}
+
 .head h1{
-    margin-left: 10%;
-    
+    margin-left: 30%;
  }
  .head h1{
     font-size: 24px;
@@ -233,21 +239,19 @@ const openModal = (resume) => {
     margin: 0;
   }
 }
-@media (max-width: 480px) {
+@media (max-width: 576px) {
     .head{
-        margin-top: 20%;
         display: flex;
         align-items: center;
         justify-content: space-around;
        
     }
-    .retour {
-    
-    margin-left: 0;
-}
+    .head h1{
+    margin-left: 5%;
+ }
 
  .head h1{
-    font-size: 24px;
+    font-size: 18px;
     margin-top: 25px;
     text-align: justify;
     
@@ -256,13 +260,20 @@ const openModal = (resume) => {
     margin-top: 20px;
 }
 
-    .tableau1 {
-    margin: 0;
-  }
     .main-content {
-        margin: 0;
-    width: 90%;
+   overflow-x: hidden;
+    width: 70%;
     margin-left: auto !important;
     margin-right: auto !important;
-}}
+}
+}
+@media (max-width: 360px) {
+    .main-content {
+   overflow-x: hidden;
+    width: 60%;
+    margin-left: auto !important;
+    margin-right: auto !important;
+   margin-top: -30%;
+}
+}
 </style>

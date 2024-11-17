@@ -275,7 +275,7 @@ onMounted(() => {
     margin-left: 0px; 
     margin-right: 0px;
     /* margin-top: 540%; */
-    /* margin-top: 560%; */
+    margin-top: 560%;
   }
 
   .head h1 {
@@ -377,5 +377,6 @@ onMounted(() => {
    
   }
 }
+
 
 </style>

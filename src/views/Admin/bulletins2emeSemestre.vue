@@ -381,5 +381,44 @@ const retour = () => {
     margin-top: 40px;
 }
 }
+@media (max-width: 576px) {
+  .main-content{
+  margin-top: 60%;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+ }
+ .title {
+    font-size: 18px;
+    text-align: center;
+    margin-left: 0px;
+    margin-top: 40px;
+}
+.boutons {
+  display: flex;
+  margin-left: -10%;
+}
+.retour {
+  margin-left: 0%;
+
+}
+.boutons {
+  display: flex;
+  margin-left: 0;
+}
+.telecharger-container{
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+}
+@media (max-width: 390px) {
+  .main-content{
+  margin-top: 80%;
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+ }
+}
 
 </style>

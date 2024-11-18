@@ -186,6 +186,7 @@ const openModal = (resume) => {
     display: none;
     /* Masquer la colonne de l'ID */
 }
+
 .head h1{
     text-align: center;
     margin-left: 10%;

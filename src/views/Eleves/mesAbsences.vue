@@ -11,7 +11,7 @@
                     :headers="['Date d\'absence', 'Matière', 'Motif', 'Justification']" :data="paginatedAbsencesData.map(({ formattedDate, classe_prof: { prof_matiere: { matiere } }, justification, id, motif }) => ({
                         formattedDate,
                         matiere: matiere ? matiere.nom : 'Non spécifié',
-                        justification: justification ? `https://suivieducatifapi.thiamhapstou.simplonfabriques.com//storage//` + justification : 'vide',
+                        justification: justification ? `https://suivieducatifapi.thiamhapstou.simplonfabriques.com/storage//` + justification : 'vide',
                         motif: motif || 'vide',  // Affiche 'vide' si motif est vide
                         id,
                     }))">

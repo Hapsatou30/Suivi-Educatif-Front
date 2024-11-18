@@ -132,24 +132,13 @@ onMounted(() => {
     overflow-x: hidden;
 }
 
-.head {
-    display: flex;
-    align-items: center;
-}
 
-.prenom {
-    color: #FFCD1E;
-}
-
-.retour {
-    font-size: 30px;
-    color: black;
-    margin-left: 300px;
-}
 .head h1{
-    text-align: center; 
-    margin-left: 150px;
-}
+    text-align: center;
+    margin-left: 10%;
+    margin-bottom: 50px;
+    
+ }
 @media (max-width: 992px) {
    .main-content {
     width: 160%;

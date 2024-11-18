@@ -176,20 +176,6 @@ const openModal = (resume) => {
     margin-top: 120px;
 }
 
-.head {
-    display: flex;
-    align-items: center;
-}
-
-.prenom {
-    color: #FFCD1E;
-}
-
-.retour {
-    font-size: 30px;
-    color: black;
-    margin-left: 300px;
-}
 
 ::v-deep .tab-noteMatiere td:nth-child(7) {
     display: none;
@@ -201,7 +187,9 @@ const openModal = (resume) => {
     /* Masquer la colonne de l'ID */
 }
 .head h1{
-    margin-left: 15%;
+    text-align: center;
+    margin-left: 10%;
+    margin-bottom: 50px;
     
  }
 .tableau1 {

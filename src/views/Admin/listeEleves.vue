@@ -11,6 +11,10 @@
     <h2>Formulaire pour ajouter des eleves</h2>
     <div class="form-container mt-4">
       <form @submit.prevent="handleFormSubmit">
+        <div v-if="loading" class="loader">
+          <p>Traitement en cours...</p>
+        </div>
+        <div v-else>
         <!-- Étape 1 : Informations du parent -->
         <div v-if="currentStep === 1">
           <h3 style="text-align: center; margin-bottom: 20px;">Informations du parent</h3>
@@ -112,6 +116,7 @@
             <button type="submit" class="btn btn-submit">Enregistrer</button>
           </div>
         </div>
+      </div>
       </form>
     </div>
     <div class="eleves">
@@ -208,6 +213,7 @@ import { creerBulletinsPourTousLesEleves } from '@/services/BulletinService';
 // Initialisation des routeurs
 const router = useRouter();
 const route = useRoute();
+const loading = ref(false);  //  variable pour gérer l'affichage du loader
 
 // Variables réactives
 const tableData = ref([]); // Données des eleves
@@ -500,6 +506,7 @@ const handleFormSubmit = async () => {
   if (!isValid) {
     return; // Arrêtez l'exécution si le formulaire n'est pas valide.
   }
+  loading.value = true;  // Active le loader
 
   if (!Object.values(errors.value).some(error => error)) {
     try {
@@ -531,6 +538,9 @@ const handleFormSubmit = async () => {
         timerProgressBar: true,
         showConfirmButton: false
       });
+    }
+    finally {
+        loading.value = false;  // Désactive le loader, que l'opération soit réussie ou échouée
     }
   }
 };
@@ -681,7 +691,33 @@ onMounted(fetchElevesAvecClasse); // Appeler la méthode pour récupérer les é
   display: none;
   /* Masquer la colonne de l'ID */
 }
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  font-size: 18px;
+}
 
+.loader p {
+  margin: 0;
+  color: #4862C4;
+}
+
+.loader::after {
+  content: '';
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #4862C4;
+  border-radius: 50%;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 .main-content3 {
   margin-top: 120px;
 }

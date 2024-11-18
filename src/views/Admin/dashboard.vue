@@ -188,9 +188,9 @@ onMounted(() => {
   .main-content { 
   margin-top: 1500px;
   overflow-x: hidden;
-  /* width: 100%;
-  margin-left: 90px;
-  margin-right: 90px; */
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
 }
 .widgets-container {
     flex-direction: column; /* Disposition en colonne sur mobile */

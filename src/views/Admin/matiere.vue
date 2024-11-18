@@ -8,6 +8,10 @@
 
     <div class="form-container mt-4">
       <form @submit.prevent="handleFormSubmit">
+        <div v-if="loading" class="loader">
+          <p>Traitement en cours...</p>
+        </div>
+        <div v-else>
         <div class="row mb-3">
           <div class="col-md-6">
             <label for="nom" class="form-label">Nom de la matière :</label>
@@ -34,7 +38,7 @@
             <div class="text-muted">{{ 100 - formData.description.length }} caractères.</div>
           </div>
         </div>
-
+      </div>
 
         <div class="bouton">
           <button type="submit" class="btn btn-submit" :disabled="!formIsValid">Enregistrer</button>
@@ -104,6 +108,7 @@ import { getMatieres, ajouterMatiere, modifierMatiere, supprimerMatiere } from '
 import Swal from 'sweetalert2';
 import boutons from '@/components/boutons.vue';
 import { Icon } from '@iconify/vue';
+const loading = ref(false);  //  variable pour gérer l'affichage du loader
 
 const formData = ref({
   nom: '',
@@ -216,6 +221,7 @@ const handleFormSubmit = async () => {
     if (!formIsValid.value) {
         return; // Stop if the form is invalid
     }
+    loading.value = true;  // Active le loader
 
     try {
         const response = await (formData.value.id !== null ? modifierMatiere(formData.value) : ajouterMatiere(formData.value));
@@ -239,6 +245,9 @@ const handleFormSubmit = async () => {
         // Définir le message d'erreur
         errorMessage.value = error.message || 'Une erreur inattendue s\'est produite.';
         successMessage.value = ''; // Réinitialiser le message de succès
+    }
+    finally {
+        loading.value = false;  // Désactive le loader, que l'opération soit réussie ou échouée
     }
 };
 
@@ -299,6 +308,9 @@ onMounted(fetchData);
 </script>
 
 <style scoped>
+  ::v-deep .tableau1 td:nth-child(5)  { 
+    display: none; /* Masquer la colonne de l'ID */
+  }
 .main-content2 {
   margin-top: 120px;
   overflow-x: hidden;

@@ -7,7 +7,7 @@
         </h2>
 
         <!-- Bouton pour ouvrir le modal d'ajout -->
-        <div style="text-align: right; margin-bottom: 20px;" class="btn">
+        <div style="text-align: right; margin-bottom: 20px;" class="btns">
             <button @click="openAddModal"
                 style="background-color: #F7AE00; color: white; padding: 10px 20px; border: none; border-radius: 12px; cursor: pointer; margin-right: 50px; font-size: 24px;">
                 Ajouter un horaire
@@ -487,7 +487,10 @@ const retour = () => {
     display: none;
 }
 
-
+.btns{
+    display: flex;
+    justify-content: end;
+}
 .main-content {
     margin-top: 120px;
 }
@@ -548,9 +551,15 @@ input::placeholder {
 
 .bouton {
     display: flex;
-    justify-content: end;
-}
+    justify-content: center;
+    align-items: center;
 
+}
+.boutons{
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
 .bouton .btn-submit {
     background-color: #407CEE;
     color: white;
@@ -606,6 +615,7 @@ p {
 .retour {
     display: flex;
     justify-content: end;
+    text-align: center;
     margin-right: 50px;
     margin-bottom: 20px;
     margin-top: 50px;
@@ -616,6 +626,7 @@ p {
     background-color: transparent;
     color: white;
     border: 1px solid #F7AE00;
+    text-align: center;
     border-radius: 12px;
     cursor: pointer;
     width: 200px;

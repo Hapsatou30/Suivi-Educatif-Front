@@ -330,11 +330,7 @@ onMounted(async () => {
     width: 100%;
   }
 }
-@media (max-width: 768px) {
-  .main-content {
-    /* margin-top: 580%; */
-  }
-}
+
 @media (max-width: 576px) {
   .matiere-card {
     flex: 1 1 calc(100% - 16px);

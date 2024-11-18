@@ -344,16 +344,17 @@ const handlePageChange = (newPage) => {
 
 <style scoped>
 .cahier-text{
-  margin-left: 290px;
+  width: 100%;
+  margin-left: 300px;
   margin-right: 50px;
-  width: 90%;
 }
 .image-container {
   position: relative;
+  width: 95%;
 }
 
 .image-background {
-  width: 98%;
+  width: 100%;
   height: auto;
   border-radius: 12px;
 }
@@ -417,6 +418,7 @@ label{
 }
 .main-content {
   margin-top: 120px;
+  overflow-x: hidden;
 }
 
 .main-content h2 {
@@ -449,6 +451,7 @@ label{
 .cahiers{
   margin-right: 50px;
   width: 100%;
+  margin-top: 100px;
 }
 ::v-deep .cahiers .tableau .tab-cahiers td:nth-child(5) {
  display: none;

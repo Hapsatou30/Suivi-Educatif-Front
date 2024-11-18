@@ -166,13 +166,12 @@ onMounted(() => {
 .main-content {
     overflow-x: hidden;
 }
-.head{
-    display: flex;
-    align-items: center;
-}
-.prenom {
-    color: #FFCD1E;
-}
+.head h1{
+    text-align: center;
+    margin-left: 10%;
+    margin-bottom: 50px;
+    
+ }
 
 .emplois {
     margin-left: 16%;

@@ -13,6 +13,10 @@
     <h2>Formulaire pour ajouter des Professeurs</h2>
     <div class="form-container mt-4">
       <form @submit.prevent="handleFormSubmit">
+        <div v-if="loading" class="loader">
+          <p>Traitement en cours...</p>
+        </div>
+        <div v-else>
         <div class="row mb-3">
           <div class="col-md-6">
             <label for="nom" class="form-label">Nom :</label>
@@ -69,6 +73,7 @@
             />
             <div v-if="errors.telephone" class="text-danger">{{ errors.telephone }}</div>
           </div>
+        </div>
         </div>
 
         <div class="bouton">
@@ -153,6 +158,7 @@ import { Icon } from '@iconify/vue';
 import { useRouter } from 'vue-router';
 
 import boutons from '@/components/boutons.vue';
+const loading = ref(false);  //  variable pour gérer l'affichage du loader
 
 const router = useRouter();
 const newProfesseur = ref({
@@ -261,6 +267,7 @@ const handleFormSubmit = async () => {
   if (!formIsValid.value) {
     return; // Arrêter la soumission si le formulaire n'est pas valide
   }
+  loading.value = true;  // Active le loader
 
     try {
         // console.log("Données à envoyer:", newProfesseur.value);
@@ -291,6 +298,9 @@ const handleFormSubmit = async () => {
         errorMessage.value = error.message || 'Une erreur inattendue s\'est produite.';
         successMessage.value = ''; // Réinitialiser le message de succès
     
+    }
+    finally {
+        loading.value = false;  // Désactive le loader, que l'opération soit réussie ou échouée
     }
 };
 
@@ -399,7 +409,34 @@ onMounted(fetchData);
     margin-top: 30px;
     padding: 30px;
   }
-  
+  .loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  font-size: 18px;
+}
+
+.loader p {
+  margin: 0;
+  color: #4862C4;
+}
+
+.loader::after {
+  content: '';
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #4862C4;
+  border-radius: 50%;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
   .row {
     display: flex;
     justify-content: space-between;
@@ -434,9 +471,24 @@ onMounted(fetchData);
     color: #ccc;
     font-size: 12px;
   }
- 
- .bouton .btn-submit:hover {
+  .bouton {
+    display: flex;
+    justify-content: end;
+  }
+  .bouton .btn-submit {
     background-color: #407CEE;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    width: 200px;
+    height: 58px;
+    font-size: 24px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+  }
+  .bouton .btn-submit:hover {
+    background-color: #365F9B; /* Change la couleur au survol */
     color: white;
   }
 .professeurs {

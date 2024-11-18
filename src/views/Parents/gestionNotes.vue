@@ -4,7 +4,7 @@
     <div class="main-content1 ">
         <h1 style="text-align: center;">Voir les notes de mes enfants</h1>
         <div class="row" >
-            <div class=""  v-for="card in cards" :key="card.id">
+            <div class="col-lg-4 col-md-6 col-12"  v-for="card in cards" :key="card.id">
                 <!-- Envelopper la carte dans un lien -->
                 <router-link :to="{ name: 'notes_enfant_1er_Semestre', params: { classeEleve_id: card.classeEleve_id } }" class="text-decoration-none">
                     <div class="card mb-4 shadow-sm custom-card">
@@ -55,7 +55,7 @@ const fetchElevesParParent = async () => {
                 id: index + 1,
                 prenomNom: `${eleve.prenom} ${eleve.nom}`,
                 classe: eleve.annee_classe[0]?.classe || 'Classe non définie',
-                photo: eleve.photo ? `https://suivieducatifapi.thiamhapstou.simplonfabriques.com/storage/${eleve.photo}` : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZv5fMEw3s3nvP0sxLIG8bO6RzCLmqgzW5ww&s',
+                photo: eleve.photo ? `http://127.0.0.1:8000/storage/${eleve.photo}` : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZv5fMEw3s3nvP0sxLIG8bO6RzCLmqgzW5ww&s',
                 classeEleve_id: eleve.annee_classe[0]?.classeEleve_id
             }
         ));
@@ -184,83 +184,91 @@ h1 {
 }
 
 /* Styles pour les appareils mobiles et tablettes */
- @media (max-width: 992px) {
+@media (max-width: 992px) {
 
-    .main-content1 {
-   margin-left: 0%;
-   margin-top: 40%;
-   width: 100%;
-   
+.main-content1 {
+margin-left: -20%;
+margin-top: 40%;
+width: 140%;
+
 }
 .main-content1 .row {
-    display: block;
-    justify-content: center;
-    margin-bottom: 15px;
-    overflow-x: hidden;
+display: block;
+justify-content: center;
+margin-bottom: 15px;
+overflow-x: hidden;
 }
 .row>* {
-  flex: 1 1 calc(100% - 16px);
-  padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  color: #fff;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-sizing: border-box; 
-  overflow-x: hidden;
-  width: 100%;
+flex: 1 1 calc(100% - 16px);
+padding: 15px;
+border-radius: 10px;
+margin-bottom: 20px;
+color: #fff;
+transition: transform 0.3s ease, box-shadow 0.3s ease;
+box-sizing: border-box; 
+overflow-x: hidden;
+width: 100%;
 }
 .custom-card {
-  flex: 1 1 calc(100% - 16px); 
-  padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  color: #fff;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-sizing: border-box; 
+flex: 1 1 calc(100% - 16px); 
+padding: 15px;
+border-radius: 10px;
+margin-bottom: 20px;
+color: #fff;
+transition: transform 0.3s ease, box-shadow 0.3s ease;
+box-sizing: border-box; 
 }
 
 .card {
-    height: 360px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+height: 360px;
+transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 
 }
+@media (max-width: 768px) {
+    
+.main-content1 {
+margin-left: -20%;
+margin-top: 50%;
+width: 140%;
 
+}
+}
 
 @media (max-width: 576px) {
-      .main-content1 {
-        margin-top: 450px;
-        width: 95%;
-        margin-left: auto;
-        margin-right: auto;
-        
-    }
-    .row>* {
-    flex: 1 1 calc(100% - 16px); /* Chaque carte prend 33.33% de la largeur disponible moins l'espace du gap */
-  padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  color: #fff;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-sizing: border-box; 
-  overflow-x: hidden;
+  .main-content1 {
+    margin-top: 450px;
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+    
+}
+.row>* {
+flex: 1 1 calc(100% - 16px); /* Chaque carte prend 33.33% de la largeur disponible moins l'espace du gap */
+padding: 15px;
+border-radius: 10px;
+margin-bottom: 20px;
+color: #fff;
+transition: transform 0.3s ease, box-shadow 0.3s ease;
+box-sizing: border-box; 
+overflow-x: hidden;
 }
 .custom-card {
-  flex: 1 1 calc(50% - 16px); /* Chaque carte prend 33.33% de la largeur disponible moins l'espace du gap */
-  padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  color: #fff;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-sizing: border-box; /* Inclut les marges et les bordures dans la largeur */
+flex: 1 1 calc(50% - 16px); /* Chaque carte prend 33.33% de la largeur disponible moins l'espace du gap */
+padding: 15px;
+border-radius: 10px;
+margin-bottom: 20px;
+color: #fff;
+transition: transform 0.3s ease, box-shadow 0.3s ease;
+box-sizing: border-box; /* Inclut les marges et les bordures dans la largeur */
 }
 }
 @media (max-width: 330px)
 {
-    .main-content1 {
-        margin-top: 700px;
-        
-    }
+.main-content1 {
+    margin-top: 700px;
+    
+}
 }
 </style>

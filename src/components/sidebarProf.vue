@@ -1,5 +1,9 @@
 <template>
-  <div class="sidebar">
+  <div class="burger-menu" @click="toggleSidebar">
+    <Icon icon="mdi:menu" class="burger-icon" />
+  </div>
+
+  <div :class="['sidebar', isSidebarOpen ? 'open' : '']">
     <div class="logo">
       <img src="@/assets/logo_blanc.png" alt="Logo" />
     </div>
@@ -10,7 +14,7 @@
         </router-link>
       </li>
       <li>
-        <router-link to="/gestion_notes" class="menu-link" :class="{ active: isActive('/gestion_notes') || isActive('/notes_classe')  }">
+        <router-link to="/gestion_notes" class="menu-link" :class="{ active: isActive('/gestion_notes') || isActive('/notes_classe') }">
           <Icon icon="clarity:note-line" /> Notes
         </router-link>
       </li>
@@ -39,84 +43,109 @@
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue';
 import { Icon } from '@iconify/vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
-
 const isActive = (path) => {
   return route.path.startsWith(path);
 };
+
+const isSidebarOpen = ref(false);
+
+const handleResize = () => {
+  if (window.innerWidth >= 1000) {
+    isSidebarOpen.value = true;
+  } else {
+    isSidebarOpen.value = false;
+  }
+};
+
+onMounted(() => {
+  handleResize();
+  window.addEventListener('resize', handleResize);
+});
+
+const toggleSidebar = () => {
+  if (window.innerWidth < 1000) {
+    isSidebarOpen.value = !isSidebarOpen.value;
+  }
+};
 </script>
-  
-  <style scoped>
-  .sidebar {
-    width: 250px;
-    background-color: #407CEE;
-    height: 100vh;
-    position: fixed;
-    top: 0;
-    left: 0;
-    padding: 20px;
-  }
-  
-  .logo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .logo img {
-    width: 150px;
-    height: 150px;
-  }
-  
-  .menu {
-    list-style-type: none;
-    padding: 0;
-    margin-left: 2%;
-    margin-top: 50px;
-  }
-  
-  .menu li {
-    margin: 20px 0;
-  }
-  
-  .menu-link {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    color: white;
-    font-size: 18px;
-    padding: 05px;
-    font-family: "Poppins", sans-serif;
-    font-weight: 400;
-    width: 226px;
-  }
-  
-  .menu-link .iconify, .material-symbols-outlined {
-    margin-right: 10px;
-    font-size: 30px;
-  }
-  
-  /* Style pour les liens actifs */
-  .router-link-exact-active {
-    background-color: white;
-    color: #407CEE;
-    width: 226px;
-    border-top-left-radius: 40px;
-    border-bottom-left-radius: 40px;
-  }
-  
-  .router-link-exact-active .iconify, .router-link-exact-active .material-symbols-outlined {
-    color: #407CEE;
-  }
-  
-  /* Hover effect */
-  .menu-link:hover {
-    color: #F7AE00;
-  }
-  .active {
+
+<style scoped>
+.burger-menu {
+  display: none;
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 1000;
+  background-color: #407CEE;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.burger-icon {
+  color: white;
+  font-size: 24px;
+}
+
+.sidebar {
+  position: fixed;
+  left: -250px;
+  top: 0;
+  width: 250px;
+  height: 100vh;
+  background-color: #407CEE;
+  transition: left 0.3s ease-in-out;
+  z-index: 999;
+}
+
+.sidebar.open {
+  left: 0;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo img {
+  width: 150px;
+  height: 150px;
+}
+
+.menu {
+  list-style-type: none;
+  padding: 0;
+  margin-left: 10%;
+  margin-top: 50px;
+}
+
+.menu li {
+  margin: 20px 0;
+}
+
+.menu-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: white;
+  font-size: 18px;
+  padding: 5px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  width: 226px;
+}
+
+.menu-link .iconify {
+  margin-right: 10px;
+  font-size: 30px;
+}
+
+.active {
   background-color: white;
   color: #407CEE;
   width: 226px;
@@ -124,13 +153,26 @@ const isActive = (path) => {
   border-bottom-left-radius: 40px;
 }
 
-.active .iconify, .active .material-symbols-outlined {
+.active .iconify {
   color: #407CEE;
 }
 
-/* Hover effect */
 .menu-link:hover {
   color: #F7AE00;
 }
-  </style>
-  
+
+@media (max-width: 992px) {
+  .burger-menu {
+    display: block;
+    margin-top: -10px;
+  }
+
+  .sidebar {
+    left: -250px;
+  }
+
+  .sidebar.open {
+    left: 0;
+  }
+}
+</style>

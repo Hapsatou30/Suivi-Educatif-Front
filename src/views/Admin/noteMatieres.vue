@@ -212,4 +212,75 @@ p {
     color: #F7AE00;
 
 }
+@media (max-width: 992px) {
+  .main-content {
+width: 135%;
+margin-left: -13%;
+ margin-top: 70px;  
+}
+  .main-content h2 {
+  margin-left: 0px;
+  margin-bottom: 50px;
+  text-align: center;
+  margin-left: -8%;
+}
+.form-container {
+  margin-left: 0px;
+  margin-right: 50px;
+}
+.classes h3 {
+  margin-left: 0px;
+}
+.tableau1 {
+  margin-left: 0px;
+}
+.classes {
+  margin-top: 0px;
+}
+}
+@media (max-width: 768px) {
+  .main-content {
+ width: 130%;
+ margin-left: -10%;
+ margin-top: 150px;
+  
+}
+}
+@media (max-width: 576px) {
+  .main-content {
+width: 85%;
+ margin-left: 12%;
+ margin-top: 200px;
+  
+}
+.main-content h2 {
+  font-size: 18px;
+  text-align: center;
+  width: 90%;
+}
+.search-container input {
+ display: flex;
+ align-items: center;
+ justify-content: center;
+  width: 100%;
+  margin-right: 50px;
+  margin-left: 0;
+}
+}
+@media (max-width: 390px) {
+  .main-content {
+width: 80%;
+ margin-left: 15%;
+ margin-top: 270px;
+  
+}
+}
+@media (max-width: 360px) {
+  .main-content {
+width: 75%;
+margin-left: 17.5%;
+ margin-top: 200px;
+  
+}
+}
 </style>

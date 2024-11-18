@@ -257,8 +257,10 @@ const openModal = (resume) => {
     margin-left: 0;
 }
 
-.head h1{
-    font-size: 20px;
+
+ .head h1{
+    font-size: 18px;
+
     margin-top: 25px;
     margin-left: -50px;
     text-align: center;
@@ -267,11 +269,21 @@ const openModal = (resume) => {
     margin-top: 20px;
 }
 
-  .main-content {
-    overflow-x: hidden;
-    width: 75%;
+
+    .main-content {
+   overflow-x: hidden;
+    width: 70%;
     margin-left: auto !important;
     margin-right: auto !important;
+}
+}
+@media (max-width: 360px) {
+    .main-content {
+   overflow-x: hidden;
+    width: 60%;
+    margin-left: auto !important;
+    margin-right: auto !important;
+   margin-top: 0;
 }
 
 }

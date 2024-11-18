@@ -139,4 +139,10 @@ canvas {
   max-width: 600px; /* Limite la largeur maximale du canvas */
   margin: auto; /* Centre le graphique */
 }
+@media (max-width: 576px) {
+  canvas {
+  max-width: 100%;
+  margin: auto;
+}
+}
 </style>

@@ -1,7 +1,7 @@
 <template>
   <sidebar_admin />
   <topbar_admin />
-  <div class="main-content">
+  <div class="main-content2">
    <div class="lien_boutons">
     <boutons
       title1="Matières" 
@@ -13,6 +13,10 @@
     <h2>Formulaire pour ajouter des Professeurs</h2>
     <div class="form-container mt-4">
       <form @submit.prevent="handleFormSubmit">
+        <div v-if="loading" class="loader">
+          <p>Traitement en cours...</p>
+        </div>
+        <div v-else>
         <div class="row mb-3">
           <div class="col-md-6">
             <label for="nom" class="form-label">Nom :</label>
@@ -70,6 +74,7 @@
             <div v-if="errors.telephone" class="text-danger">{{ errors.telephone }}</div>
           </div>
         </div>
+        </div>
 
         <div class="bouton">
           <button type="submit" class="btn btn-submit" :disabled="!formIsValid">Enregistrer</button>
@@ -80,8 +85,7 @@
     <div class="professeurs">
       <div class="title_recherche" style="display: flex; align-items:  center; justify-content: space-between;">
         <h3>Liste des Professeurs</h3>
-    
-    <!-- Barre de recherche -->
+        
     <div class="search-container">
       <input 
         type="text" 
@@ -154,6 +158,7 @@ import { Icon } from '@iconify/vue';
 import { useRouter } from 'vue-router';
 
 import boutons from '@/components/boutons.vue';
+const loading = ref(false);  //  variable pour gérer l'affichage du loader
 
 const router = useRouter();
 const newProfesseur = ref({
@@ -262,6 +267,7 @@ const handleFormSubmit = async () => {
   if (!formIsValid.value) {
     return; // Arrêter la soumission si le formulaire n'est pas valide
   }
+  loading.value = true;  // Active le loader
 
     try {
         // console.log("Données à envoyer:", newProfesseur.value);
@@ -292,6 +298,9 @@ const handleFormSubmit = async () => {
         errorMessage.value = error.message || 'Une erreur inattendue s\'est produite.';
         successMessage.value = ''; // Réinitialiser le message de succès
     
+    }
+    finally {
+        loading.value = false;  // Désactive le loader, que l'opération soit réussie ou échouée
     }
 };
 
@@ -375,14 +384,14 @@ const redirectToProfMatiere = (id) => {
 onMounted(fetchData);
 </script>
 
-<style>
-.main-content { 
+<style >
+.main-content2 { 
   margin-top: 120px;
 }
 /* .lien_boutons{
   margin-left: 300px;
 } */
-.main-content h2 {
+.main-content2 h2 {
     color: black;
     font-size: 24px;
     font-family: "Poppins", sans-serif;
@@ -390,7 +399,7 @@ onMounted(fetchData);
     text-align: center;
     margin-left: 300px;
 }
-.form-container {
+.main-content2 .form-container {
     max-width: 100%;
     border: 1px solid #F7AE00;
     border-radius: 12px;
@@ -400,7 +409,34 @@ onMounted(fetchData);
     margin-top: 30px;
     padding: 30px;
   }
-  
+  .loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  font-size: 18px;
+}
+
+.loader p {
+  margin: 0;
+  color: #4862C4;
+}
+
+.loader::after {
+  content: '';
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #4862C4;
+  border-radius: 50%;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
   .row {
     display: flex;
     justify-content: space-between;
@@ -435,9 +471,24 @@ onMounted(fetchData);
     color: #ccc;
     font-size: 12px;
   }
- 
- .bouton .btn-submit:hover {
+  .bouton {
+    display: flex;
+    justify-content: end;
+  }
+  .bouton .btn-submit {
     background-color: #407CEE;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    width: 200px;
+    height: 58px;
+    font-size: 24px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+  }
+  .bouton .btn-submit:hover {
+    background-color: #365F9B; /* Change la couleur au survol */
     color: white;
   }
 .professeurs {
@@ -446,6 +497,7 @@ onMounted(fetchData);
   flex-direction: column;
   margin-left: 300px;
   margin-right: 50px;
+
  
 }
 .professeurs h3{
@@ -468,6 +520,7 @@ onMounted(fetchData);
 
 .professeurs .tableau {
   width: 100%;
+  margin-bottom: 50px;
  
 }
 .professeurs .paginate{
@@ -501,6 +554,72 @@ label:hover {
   color: #666666; /* texte grisé */
   cursor: not-allowed; /* curseur modifié pour indiquer qu'il n'est pas cliquable */
   opacity: 0.6; /* rendre le bouton semi-transparent */
+}
+@media (max-width: 992px) {
+ .main-content2{
+  margin-top: 260px;
+ 
+  margin-left: 0;
+ }
+ .main-content2 h2 {
+    font-size: 24px;
+    text-align: center;
+    margin-left: 0px;
+}
+.main-content2 .form-container {
+    max-width: 100%;
+    margin-top: 30px;
+    padding: 30px;
+    margin-left: 10%;
+    margin-right: 10%;
+  }
+  .professeurs {
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+
+}
+@media (max-width: 768px) {
+  .main-content2{
+  margin-top: 550px;
+ }
+}
+@media (max-width: 576px) {
+  .main-content2{
+  margin-top: 720px;
+ }
+ .main-content2 h2{
+  font-size: 18px;
+ }
+ .title_recherche{
+  flex-direction: column
+ }
+ .search-container input{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    border-radius: 12px;
+    width: 300px;
+  }
+  .bouton{
+    display: flex;
+    align-items:center;
+    justify-content: center;
+  }
+}
+@media (max-width: 360px) {
+  .main-content2{
+  margin-top: 720px;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto
+ }
+ .main-content2 h2{
+  font-size: 16px;
+ }
 }
 </style>
 

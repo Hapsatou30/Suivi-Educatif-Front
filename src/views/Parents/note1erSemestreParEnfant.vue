@@ -328,15 +328,16 @@ onMounted(() => {
   }
 
 }
-@media (max-width: 768px) {
+@media (max-width: 992px) {
   .main-content {
     margin-left: 0;
-    margin-top: 580%;
+    margin-top: 540%;
+    width: 100%;
   }
 }
-@media (max-width: 740px) {
+@media (max-width: 768px) {
   .main-content {
-    margin-top: 530%;
+    margin-top: 580%;
   }
 }
 @media (max-width: 576px) {
@@ -397,18 +398,11 @@ onMounted(() => {
 @media (max-width: 360px)
 {
   .main-content {
-    margin-top: 1720%;
+    margin-top: 1760%;
     width: 100%;
    
   }
 }
-@media (max-width: 320px)
-{
-  .main-content {
-    margin-top: 1890%;
-    width: 100%;
-   
-  }
-}
+
 
 </style>

@@ -7,7 +7,7 @@
         </h2>
 
         <!-- Bouton pour ouvrir le modal d'ajout -->
-        <div style="text-align: right; margin-bottom: 20px;">
+        <div style="text-align: right; margin-bottom: 20px;" class="btns">
             <button @click="openAddModal"
                 style="background-color: #F7AE00; color: white; padding: 10px 20px; border: none; border-radius: 12px; cursor: pointer; margin-right: 50px; font-size: 24px;">
                 Ajouter un horaire
@@ -471,7 +471,7 @@ const retour = () => {
 
 
 
-<style>
+<style scoped>
 .modal-enter {
     transform: translateX(100%);
 }
@@ -482,12 +482,15 @@ const retour = () => {
     transition: transform 0.3s ease;
 }
 /* Masquer la colonne ID dans le tableau */
-.horaires .tab-evaluations td:nth-child(5),
-.horaires .tab-evaluations td:nth-child(6) {
+::v-deep  .tableau1  .tab-evaluations td:nth-child(5),
+::v-deep .horaires .tableau1 .tab-evaluations td:nth-child(6) {
     display: none;
 }
 
-
+.btns{
+    display: flex;
+    justify-content: end;
+}
 .main-content {
     margin-top: 120px;
 }
@@ -548,9 +551,15 @@ input::placeholder {
 
 .bouton {
     display: flex;
-    justify-content: end;
-}
+    justify-content: center;
+    align-items: center;
 
+}
+.boutons{
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
 .bouton .btn-submit {
     background-color: #407CEE;
     color: white;
@@ -606,6 +615,7 @@ p {
 .retour {
     display: flex;
     justify-content: end;
+    text-align: center;
     margin-right: 50px;
     margin-bottom: 20px;
     margin-top: 50px;
@@ -616,6 +626,7 @@ p {
     background-color: transparent;
     color: white;
     border: 1px solid #F7AE00;
+    text-align: center;
     border-radius: 12px;
     cursor: pointer;
     width: 200px;
@@ -625,5 +636,79 @@ p {
     font-weight: 500;
     color: #F7AE00;
 
+}
+@media (max-width: 992px) {
+  .main-content {
+width: 130%;
+margin-left: -29%;
+ margin-top: 15%;  
+}
+  .main-content h2 {
+  margin-bottom: 50px;
+  text-align: center;
+}
+.form-container {
+  margin-left: 0px;
+  margin-right: 50px;
+}
+
+.tableau1 {
+  margin-left: 0px;
+}
+.pagination1 {
+    margin-right: 0px;
+    margin-left: 0;
+}
+}
+@media (max-width: 768px) {
+.main-content {
+width: 120%;
+margin-left: -25%; 
+margin-top: 20%; 
+}
+}
+@media (max-width: 576px) {
+  .main-content {
+width: 92%;
+ margin-left: -10%;
+ margin-top: 450px;
+  
+}
+.main-content h2 {
+  font-size: 18px;
+  text-align: center;
+  width: 50%;
+}
+.search-container input {
+ display: flex;
+ align-items: center;
+ justify-content: center;
+  width: 100%;
+  margin-right: 50px;
+  margin-left: 0;
+}
+.btn
+{
+   margin-left: 42%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+}
+@media (max-width: 390px) {
+    .main-content {
+width: 88%;
+ margin-left: -10%;
+ margin-top: 550px;
+  
+}
+}
+@media (max-width: 360px) {
+.main-content {
+width: 85%;
+ margin-left: -8%;
+ margin-top: 550px;
+  
+}
 }
 </style>

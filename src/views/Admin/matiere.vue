@@ -1,13 +1,17 @@
 <template>
   <sidebar_admin />
   <topbar_admin />
-  <div class="main-content">
+  <div class="main-content2">
     <boutons title1="Matières" title2="Professeurs" page1="matiere" page2="professeur" />
 
     <h2>Formulaire pour ajouter des Matières</h2>
 
     <div class="form-container mt-4">
       <form @submit.prevent="handleFormSubmit">
+        <div v-if="loading" class="loader">
+          <p>Traitement en cours...</p>
+        </div>
+        <div v-else>
         <div class="row mb-3">
           <div class="col-md-6">
             <label for="nom" class="form-label">Nom de la matière :</label>
@@ -34,7 +38,7 @@
             <div class="text-muted">{{ 100 - formData.description.length }} caractères.</div>
           </div>
         </div>
-
+      </div>
 
         <div class="bouton">
           <button type="submit" class="btn btn-submit" :disabled="!formIsValid">Enregistrer</button>
@@ -104,6 +108,7 @@ import { getMatieres, ajouterMatiere, modifierMatiere, supprimerMatiere } from '
 import Swal from 'sweetalert2';
 import boutons from '@/components/boutons.vue';
 import { Icon } from '@iconify/vue';
+const loading = ref(false);  //  variable pour gérer l'affichage du loader
 
 const formData = ref({
   nom: '',
@@ -216,6 +221,7 @@ const handleFormSubmit = async () => {
     if (!formIsValid.value) {
         return; // Stop if the form is invalid
     }
+    loading.value = true;  // Active le loader
 
     try {
         const response = await (formData.value.id !== null ? modifierMatiere(formData.value) : ajouterMatiere(formData.value));
@@ -239,6 +245,9 @@ const handleFormSubmit = async () => {
         // Définir le message d'erreur
         errorMessage.value = error.message || 'Une erreur inattendue s\'est produite.';
         successMessage.value = ''; // Réinitialiser le message de succès
+    }
+    finally {
+        loading.value = false;  // Désactive le loader, que l'opération soit réussie ou échouée
     }
 };
 
@@ -298,12 +307,16 @@ const resetForm = () => {
 onMounted(fetchData);
 </script>
 
-<style>
-.main-content {
+<style scoped>
+  ::v-deep .tableau1 td:nth-child(5)  { 
+    display: none; /* Masquer la colonne de l'ID */
+  }
+.main-content2 {
   margin-top: 120px;
+  overflow-x: hidden;
 }
 
-.main-content h2 {
+.main-content2 h2 {
   color: black;
   font-size: 24px;
   font-family: "Poppins", sans-serif;
@@ -331,10 +344,13 @@ onMounted(fetchData);
 }
 
 label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-}
+    display: block;
+    margin-bottom: 5px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-size: 20px;
+
+  }
 
 label:hover {
   cursor: pointer;
@@ -411,5 +427,71 @@ p {
   /* curseur modifié pour indiquer qu'il n'est pas cliquable */
   opacity: 0.6;
   /* rendre le bouton semi-transparent */
+}
+@media (max-width: 992px) {
+ .main-content2{
+  margin-top: 600px;
+  margin-left: 0;
+  overflow: hidden;
+ }
+ .main-content2 h2 {
+    font-size: 24px;
+    text-align: center;
+    margin-left: 0px;
+}
+.main-content2 .form-container {
+    max-width: 100%;
+    margin-top: 30px;
+    padding: 30px;
+    margin-left: 10%;
+    margin-right: 10%;
+  }
+  .matieres {
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+}
+@media (max-width: 768px) {
+  .main-content2{
+  margin-top: 750px;
+
+ }
+}
+@media (max-width: 576px) {
+  .main-content2{
+  margin-top: 950px;
+ }
+ .main-content2 h2{
+  font-size: 18px;
+ }
+ .title_recherche{
+  flex-direction: column
+ }
+ .search-container input{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    border-radius: 12px;
+    width: 300px;
+  }
+  .bouton{
+    display: flex;
+    align-items:center;
+    justify-content: center;
+  }
+}
+@media (max-width: 360px) {
+  .main-content2{
+  margin-top: 1020px;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto
+ }
+ .main-content2 h2{
+  font-size: 16px;
+ }
 }
 </style>

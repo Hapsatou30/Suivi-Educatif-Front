@@ -2,7 +2,7 @@
     <sidebarProf />
     <topBarProf />
     <div class="main-content">
-      <h1 style="text-align: center; margin-left: 300px; margin-bottom: 50px;">Mes Classes </h1>
+      <h1 >Mes Classes </h1>
   
       <div class="classes">
         <div class="tableau1">
@@ -140,7 +140,9 @@
     display: none;
     /* Masquer la colonne de l'ID */
   }
-  
+  h1{
+   text-align: center; margin-left: 300px; margin-bottom: 50px;
+  }
   
   .boutons {
     background-color: transparent;
@@ -220,5 +222,62 @@
     color: red;
     font-family: "Poppins", sans-serif;
   }
+  @media (max-width: 992px) {
+ .main-content{
+  margin-left: -25%;
+  width: 150%;
+  margin-top: -4%;
+ }
+ .main-content  h1{
+    font-size: 24px;
+    text-align: center;
+    margin-left: 0;
+}
+
+  .classes {
+    max-width: 100%;
+}
+.tableau1{
+  margin-left: 0;
+  margin-right: 0;
+}
+
+}
+@media (max-width: 768px) {
+  .main-content{
+  margin-left: -20%;
+  width: 140%;
+  margin-top: 10%;
+ }
+}
+@media (max-width: 576px) {
+  .main-content{
+  margin-top: 300px;
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+ }
+ .main-content h2{
+  font-size: 18px;
+ }
+
+
+  .bouton{
+    display: flex;
+    align-items:center;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 360px) {
+  .main-content{
+  margin-top: 400px;
+  width: 65%;
+  margin-left: auto;
+  margin-right: auto
+ }
+
+}
+
   </style>
   

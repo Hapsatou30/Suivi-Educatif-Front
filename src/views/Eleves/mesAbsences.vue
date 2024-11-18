@@ -11,7 +11,7 @@
                     :headers="['Date d\'absence', 'Matière', 'Motif', 'Justification']" :data="paginatedAbsencesData.map(({ formattedDate, classe_prof: { prof_matiere: { matiere } }, justification, id, motif }) => ({
                         formattedDate,
                         matiere: matiere ? matiere.nom : 'Non spécifié',
-                        justification: justification ? `https://suivieducatifapi.thiamhapstou.simplonfabriques.com/storage//` + justification : 'vide',
+                        justification: justification ? `http://127.0.0.1:8000/storage//` + justification : 'vide',
                         motif: motif || 'vide',  // Affiche 'vide' si motif est vide
                         id,
                     }))">
@@ -133,50 +133,48 @@ onMounted(() => {
 }
 
 
-
-.prenom {
-    color: #FFCD1E;
-}
-
-.retour {
-    font-size: 30px;
-    color: black;
-    margin-left: 300px;
-}
 .head h1{
-    text-align: center; 
-    margin-left: 150px;
-}
+    text-align: center;
+    margin-left: 10%;
+    margin-bottom: 50px;
+    
+ }
 @media (max-width: 992px) {
    .main-content {
-    width: 90%;
-    margin-left: auto !important;
-    margin-right: auto !important;
+    width: 160%;
+    margin-top: -70%;
+    margin-left: -30%;
+    margin-right: auto;
 }
-.head {
-    gap: 15% ;
-}
+
 .head h1{
-    margin-left: 0;
+    margin-left: 30%;
+    text-align: center;
     
  }
  .head h1{
     font-size: 24px;
     margin-top: 25px;
-    margin-left: -48px;
     text-align: center;
 }
-.retour {
-    
-    margin-left: 0;
-}
+
 .tableau-absences {
     margin: 0;
+    width: 100%;
+    margin-top: -8%;
   }
 }
-@media (max-width: 480px) {
+@media (max-width: 768px) {
+   .main-content {
+    width: 130%;
+    margin-top: -60%;
+    margin-left: -15%;
+    margin-right: auto;
+}
+}
+@media (max-width: 576px) {
     .head{
-        margin-top: 20%;
+        
         display: flex;
         align-items: center;
         justify-content: space-around;
@@ -186,14 +184,14 @@ onMounted(() => {
     
     margin-left: 0;
 }
- .head h1{
-    margin-left: -150px;
+.head h1{
+    margin-left: 10%;
+    text-align: center;
     
  }
  .head h1{
-    font-size: 24px;
+    font-size: 18px;
     margin-top: 25px;
-    margin-left: -48px;
     text-align: center;
 }
 .absences{
@@ -204,9 +202,16 @@ onMounted(() => {
     margin: 0;
   }
     .main-content {
-        margin: 0;
+   margin-top: -65%;
     width: 90%;
     margin-left: auto !important;
     margin-right: auto !important;
 }}
+@media (max-width: 360px) {
+    .main-content {
+        width: 85%;
+    margin-top: -50%;
+    margin-right: auto;
+}
+}
 </style>

@@ -107,21 +107,23 @@ const updateNotesChart = (notesData) => {
       datasets: datasets,
     },
     options: {
-      scales: {
-        y: {
-          beginAtZero: true,
-          title: { display: true, text: 'Notes' },
-        },
-        x: {
-          title: { display: true, text: 'Matières' },
-        }
-      },
-      responsive: true,
-      plugins: {
-        legend: { position: 'bottom' },
-        title: { display: true, text: 'Diagramme des Notes par Matière' }
-      }
+  responsive: true,
+  maintainAspectRatio: false, // Désactive la contrainte de ratio
+  scales: {
+    y: {
+      beginAtZero: true,
+      title: { display: true, text: 'Notes' },
+    },
+    x: {
+      title: { display: true, text: 'Matières' },
     }
+  },
+  plugins: {
+    legend: { position: 'bottom' },
+    title: { display: true, text: 'Diagramme des Notes par Matière' }
+  }
+}
+
   });
 };
 
@@ -132,24 +134,15 @@ onMounted(() => {
 
 <style scoped>
 /* Styles pour le canvas */
-canvas {
-  max-width: 100%; /* Permet au canvas de s'adapter à la largeur du conteneur parent */
-  height: auto; /* Ajuste automatiquement la hauteur pour maintenir le ratio */
-  margin: auto; /* Centre le graphique */
-}
-
-@media (max-width: 768px) {
   canvas {
-    max-width: 100%;
-    height: 500px; /* Ajuste la hauteur pour les petits écrans */
+      max-width: 100%; /* Limite la largeur maximale du canvas */
+      margin: auto; /* Centre le graphique */
   }
-}
+  @media (max-width: 576px) {
+    canvas {
+      height: 400px !important;
+    }
+  }
 
-@media (max-width: 480px) {
-  canvas {
-    max-width: 100%;
-    height: 400px; /* Plus petite taille pour les très petits écrans */
-  }
-}
 </style>
 

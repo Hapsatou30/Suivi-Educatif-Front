@@ -93,7 +93,17 @@
   color: #F7AE00;
 }
 
+@media (max-width: 992px) {
+  .btn-group {
+  display: flex;
+  align-items: center;
+  margin-left: 90px;
+  margin-right: 90px;
+  max-width: 100%;
+  gap: 100px;
+}
 
+}
 
 /* Responsivité pour les mobiles */
 @media (max-width: 576px) {

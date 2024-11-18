@@ -284,7 +284,7 @@ onMounted(async () => {
     width: 90%;
     margin-left: auto !important;
     margin-right: auto !important;
-    /* margin-top: 130%; */
+    margin-top: 900px;
   }
 
  
@@ -357,21 +357,21 @@ onMounted(async () => {
   }
 
 }
-@media (max-width:992px) {
+@media (max-width:768px) {
   .main-content {
-    width: 100%;
+    width: 94%;
     margin-left: auto !important;
     margin-right: auto !important;
-    margin-top: 85%;
+    margin-top: 1000px;
   }
 
 }
 @media (max-width: 576px) {
   .main-content {
-    width: 100%;
+    width: 90%;
     margin-left: auto !important;
     margin-right: auto !important;
-    /* margin-top: 155%; */
+    margin-top: 300%;
   }
 
   .header {
@@ -413,6 +413,12 @@ onMounted(async () => {
     font-size: 18px;
     text-align: center;
   }
+  .widgets-container {
+width: 90%;
+margin-left: 10%;
+
+
+}
 
   .chart-container1 {
     margin-left: 0;
@@ -434,5 +440,13 @@ onMounted(async () => {
     margin-right: auto;
 
   }
-}
+  
+} @media (max-width: 390px) {
+  .main-content {
+    width: 90%;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    margin-top: 380%;
+  }
+  }
 </style>

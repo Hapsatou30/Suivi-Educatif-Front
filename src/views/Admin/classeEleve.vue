@@ -183,7 +183,6 @@ onMounted(() => {
     padding-top: 150px;
     margin-top: 0;
     overflow-x: hidden;
-
 }
 
 .button-container {
@@ -223,5 +222,38 @@ onMounted(() => {
     font-family: "Poppins", sans-serif;
     font-weight: 500;
     color: #F7AE00;
+}
+@media (max-width: 992px) {
+    .main-content{
+    width: 133%;
+    margin-left: -30%;
+ }
+   .main-content h2{
+    font-size: 24px;
+    text-align: center;
+}
+}
+@media (max-width: 768px) {
+    .main-content{
+    width: 135%;
+    margin-left: -33%;
+ }
+}
+@media (max-width: 576px) {
+    .main-content{
+    width: 148%;
+    margin-left: -50%;
+ }
+ .main-content h2{
+    font-size: 20px;
+    text-align: center;
+    width: 50%;
+}
+ .button-container {
+    margin-left: 54%;
+    display: flex;
+    flex-direction: column;
+    justify-content:center;
+}
 }
 </style>

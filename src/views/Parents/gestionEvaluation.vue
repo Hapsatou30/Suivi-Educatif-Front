@@ -58,7 +58,7 @@ const fetchElevesParParent = async () => {
                 id: index + 1,  // Générer un id pour chaque carte
                 prenomNom: `${eleve.prenom} ${eleve.nom}`,
                 classe: eleve.annee_classe[0]?.classe || 'Classe non définie',
-                photo: eleve.photo ? `https://suivieducatifapi.thiamhapstou.simplonfabriques.com/storage/${eleve.photo}` : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZv5fMEw3s3nvP0sxLIG8bO6RzCLmqgzW5ww&s',
+                photo: eleve.photo ? `http://127.0.0.1:8000/storage/${eleve.photo}` : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZv5fMEw3s3nvP0sxLIG8bO6RzCLmqgzW5ww&s',
                 classeEleve_id: eleve.annee_classe[0]?.classeEleve_id
             }));
         }
@@ -191,8 +191,11 @@ h1 {
 
 .main-content1 {
 margin-left: 0%;
-margin-top: 40%;
-width: 100%;
+margin-top: 30%;
+width: 95%;
+
+margin-left: auto;
+    margin-right: auto;
 
 }
 .main-content1 .row {
@@ -229,7 +232,15 @@ transition: transform 0.3s ease, box-shadow 0.3s ease;
 
 
 }
-
+@media (max-width: 768px) {
+    
+    .main-content1 {
+    margin-left: 5%;
+    margin-top: 50%;
+    width: 90%;
+    
+    }
+}
 
 @media (max-width: 576px) {
   .main-content1 {

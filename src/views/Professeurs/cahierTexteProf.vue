@@ -344,16 +344,17 @@ const handlePageChange = (newPage) => {
 
 <style scoped>
 .cahier-text{
-  margin-left: 290px;
+  width: 100%;
+  margin-left: 300px;
   margin-right: 50px;
-  width: 90%;
 }
 .image-container {
   position: relative;
+  width: 95%;
 }
 
 .image-background {
-  width: 98%;
+  width: 100%;
   height: auto;
   border-radius: 12px;
 }
@@ -417,6 +418,7 @@ label{
 }
 .main-content {
   margin-top: 120px;
+  overflow-x: hidden;
 }
 
 .main-content h2 {
@@ -449,6 +451,7 @@ label{
 .cahiers{
   margin-right: 50px;
   width: 100%;
+  margin-top: 100px;
 }
 ::v-deep .cahiers .tableau .tab-cahiers td:nth-child(5) {
  display: none;
@@ -489,4 +492,129 @@ p {
  display: flex;
  justify-content: end;
 }
+@media (max-width: 992px) {
+ .main-content{
+ 
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20%;
+ }
+ .image-background {
+  display: none;
+ }
+ .col-md-6{
+  width: 100%;
+ }
+ .cahier-text{
+  margin-right: 0px;
+  width: 100%;
+  margin-left: -4%;
+}
+input[type="text"],
+input[type="date"],
+textarea {
+  width: 100%;
+}
+form{
+  width: 120%;
+  margin-left: 0;
+  margin-top: 0;
+}
+ .main-content  h2{
+    font-size: 24px;
+    text-align: center;
+    margin-left: 0;
+}
+.overlay-text {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  padding: 20px;
+  border-radius: 12px;
+}
+.tab-cahiers {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+.bouton {
+    display: block;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0;
+    margin-left: 38%;
+  }
+
+}
+@media (max-width: 768px) {
+  .main-content{
+ width: 100%;
+ margin-left: auto;
+ margin-right: auto;
+ margin-top: 35%;
+}
+.cahier-text{
+  margin-right: 0px;
+  width: 100%;
+  margin-left: 0;
+}
+}
+@media (max-width: 576px) {
+  .main-content{
+  margin-top: 120%;
+  width: 90%;
+  margin-right: auto;
+ }
+ .main-content h2{
+  font-size: 18px;
+ }
+
+ .bouton {
+    display: block;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0;
+    margin-left: 30%;
+    width: 100%;
+  }
+  .retour .btn-secondary,
+.retour .btn-secondary:hover {
+ 
+  width: 120px;
+  height: 50px;
+  font-size: 20px;
+}
+.cahier-text{
+  margin-right: 0px;
+  width: 100%;
+  margin-left: -8%;
+}
+}
+@media (max-width: 390px) {
+  .main-content{
+  width: 85%;
+  margin-left: auto;
+  margin-right: auto
+ }
+}
+@media (max-width: 360px) {
+  .main-content{
+    margin-top: 130%;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto
+ }
+ .main-content h2{
+ text-align: center;
+ margin-left: 9%;
+ }
+}
+
 </style>

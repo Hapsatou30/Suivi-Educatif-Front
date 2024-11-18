@@ -46,7 +46,7 @@
                     :headers="['Prénom & Nom', 'Date d\'absence', 'Motif','Justification']" :data="paginatedAbsencesData.map(({ classe_eleve: { eleve }, date_absence, justification, motif,id }) => ({
                         eleve: `${eleve.prenom} ${eleve.nom}`,
                         date_absence,
-                        justification: justification ? `https://suivieducatifapi.thiamhapstou.simplonfabriques.com/storage//` + justification : 'vide',
+                        justification: justification ? `http://127.0.0.1:8000/storage//` + justification : 'vide',
                         motif: motif || 'vide', 
                         id
                     }))">
@@ -134,7 +134,7 @@ const fetchData = async () => {
                     nom: eleve.nom,
                     matricule: eleve.matricule,
                     date_naissance: eleve.date_naissance,
-                    photo: eleve.photo ? `https://suivieducatifapi.thiamhapstou.simplonfabriques.com/storage/${eleve.photo}` : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZv5fMEw3s3nvP0sxLIG8bO6RzCLmqgzW5ww&s',
+                    photo: eleve.photo ? `http://127.0.0.1:8000/storage/${eleve.photo}` : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZv5fMEw3s3nvP0sxLIG8bO6RzCLmqgzW5ww&s',
                     absent: isAbsentToday, // Si l'élève est absent aujourd'hui, cocher la case
                     absenceId: isAbsentToday ? absence.id : null, // Stocker l'ID de l'absence pour la suppression
                 });
@@ -266,8 +266,6 @@ onMounted(() => {
 
 </script>
 
-
-
 <style>
 /* Masquer la colonne ID dans le tableau */
 .eleves .tableau .tab-eleves td:nth-child(2) {
@@ -345,4 +343,80 @@ p {
     color: #F7AE00;
 
 }
+@media (max-width: 992px) {
+ .main-content{
+  width: 185%;
+  margin-left: -43%;
+  margin-top: -20%;
+ }
+ .main-content  h2{
+    font-size: 24px;
+    text-align: center;
+    margin-left: 0;
+}
+
+.tableau-absences, .absences{
+ width: 93%;
+  margin-left: auto;
+  margin-right: auto
+}
+p{
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto
+}
+}
+@media (max-width: 768px) {
+    .main-content{
+  width: 175%;
+  margin-left: -38%;
+  margin-top: -10%;
+ }
+}
+@media (max-width: 576px) {
+    .main-content{
+  width: 110%;
+  margin-left: -5%;
+  margin-top: 28%;
+ }
+ .main-content h2{
+  font-size: 18px;
+ }
+
+ .tableau-absences, .absences{
+ width: 90%;
+  margin-left: auto;
+  margin-right: auto
+}
+
+
+.retour .btn-secondary,
+.retour .btn-secondary:hover {
+ 
+  width: 120px;
+  height: 50px;
+  font-size: 20px;
+}
+}
+@media (max-width: 390px) {
+    .main-content {
+
+ margin-top: 50%;
+  
+}
+}
+
+@media (max-width: 360px) {
+    .main-content{
+  width: 110%;
+  margin-left: -5%;
+  margin-top: 80%;
+ }
+ .main-content h2{
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto
+ }
+}
+
 </style>

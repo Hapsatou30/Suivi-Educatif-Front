@@ -50,7 +50,7 @@
   <div class="col-6">
     <div class="diagramme mb-5">
       <div class="chart-container1">
-        <h5 style="text-align: center; margin-bottom: 5px;">Performances de l'élève</h5>
+        <h5 style="text-align: center; margin-bottom: 5px;">Mes moyennes par semestre</h5>
         <ChildPerformanceChart :subjects="subjects" :scores="scores" />
       </div>
       </div>
@@ -222,7 +222,7 @@ const fetchNotesEleve = async () => {
 
       // Préparer les données pour le diagramme
       subjects.value = Object.keys(moyennes).flatMap(matiere => 
-        Object.keys(moyennes[matiere]).map(periode => `${matiere} (${periode})`)
+        Object.keys(moyennes[matiere]).map(periode => `${matiere}`)
       );
       scores.value = Object.values(moyennes).flatMap(matiere => 
         Object.values(matiere).map(p => p.moyenne)
@@ -240,15 +240,19 @@ const fetchNotesEleve = async () => {
 // Fonction pour obtenir la couleur associée à une matière
 const getMatiereColor = (matiere) => {
   const colorsFromStorage = JSON.parse(localStorage.getItem('classeColors')) || {};
-  console.log('Couleurs stockées:', colorsFromStorage);  // Ajout du log pour vérifier les couleurs stockées
+  console.log('Couleurs stockées:', colorsFromStorage);
 
+  // Vérification de la présence de la couleur pour la matière
   if (colorsFromStorage[matiere]) {
     return colorsFromStorage[matiere];
+ 
   }
 
-  // Si la couleur n'existe pas dans le localStorage, renvoyer une couleur par défaut
-  return '#ffffff'; // Couleur par défaut
+  // Retourner une couleur de remplacement si la couleur est introuvable
+  console.warn(`Pas de couleur trouvée pour la matière: ${matiere}`);
+  return '#FF0000';  // Couleur rouge pour indiquer un problème
 };
+
 
 // Appels aux fonctions lors du montage du composant
 onMounted(async () => {
@@ -365,37 +369,50 @@ onMounted(() => {
     margin-left: auto;
     margin-right: auto;
   }
-
-  .head h1 {
-    font-size: 24px;
-    margin-top: 25px;
-    margin-left: 0;
-    text-align: center;
-  }
+  .card-container {
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 40px;
+}
+.card-container h2 {
+  text-align: center;
+  margin-left: 0;
+}
 
   .matiere-card {
     flex: 1 1 calc(50% - 16px);
     /* Passe à 2 cartes par ligne sur des écrans plus petits */
   }
+  .row {
+  margin-top: 50px;
+  margin-left: 0px;
+}
+.row .col-6 h2 {
+  text-align: center;
+  margin-left: 0;
+}
 }
 
-@media (max-width: 480px) {
+@media (max-width: 567px) {
   .main-content {
     width: 90%;
     margin-left: auto;
     margin-right: auto;
+    margin-top: 110%;
   }
 
-  .head h1 {
-    font-size: 24px;
-    margin-top: 25px;
-    margin-left: -48px;
-    text-align: center;
-  }
-
+ 
   .matiere-card {
     flex: 1 1 calc(100% - 16px);
     /* Passe à 1 carte par ligne sur des petits écrans */
   }
+  .row {
+ display: flex;
+ flex-direction: column;
+ width: 100%;
+}
+.row .col-6  {
+width: 100%;
+}
 }
 </style>

@@ -179,7 +179,7 @@ onMounted(async () => {
   margin-top: 120px;
   overflow-x: hidden;
   background-color: #FAFAF7;
-  height: 100vh;
+  /* height: 100vh; */
 }
 
 

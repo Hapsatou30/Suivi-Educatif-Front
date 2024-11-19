@@ -235,7 +235,7 @@ onMounted(() => {
 }
 @media (max-width: 992px) {
   .main-content{
-    height: 100vh;
+    /* height: 100vh; */
   }
   .main-content h2{
    margin-left: 0%;

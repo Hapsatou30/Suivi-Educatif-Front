@@ -387,6 +387,7 @@ onMounted(fetchData);
 <style >
 .main-content2 { 
   margin-top: 120px;
+  background-color: #FAFAF7;
 }
 /* .lien_boutons{
   margin-left: 300px;
@@ -403,7 +404,6 @@ onMounted(fetchData);
     max-width: 100%;
     border: 1px solid #F7AE00;
     border-radius: 12px;
-    background-color: white;
     margin-left: 300px;
     margin-right: 50px;
     margin-top: 30px;

@@ -185,6 +185,7 @@ const redirectToStudentsList = (id) => {
 
 .main-content {
   margin-top: 120px;
+  background-color: #FAFAF7;
 }
 
 .main-content h2 {

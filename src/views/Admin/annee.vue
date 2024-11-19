@@ -390,6 +390,7 @@ onMounted(fetchData);
 .main-content2 { 
     margin-top: 120px;
     background-color: #FAFAF7;
+    height: 100vh;
   }
   .main-content2 h2 {
     color: black;

@@ -155,6 +155,8 @@ onMounted(() => {
 <style scoped>
 .main-content {
     margin-top: 120px;
+    background-color: #FAFAF7;
+    height: 100vh;
 }
 
 .main-content h2 {

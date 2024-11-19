@@ -475,6 +475,8 @@ onMounted(async () => {
 
 .main-content {
     padding: 20px;
+    background-color: #FAFAF7;
+    height: 100vh;
 }
 .planning .row1{
     margin-left: 265px;

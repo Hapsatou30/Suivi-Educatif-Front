@@ -77,6 +77,8 @@ onMounted(async () => {
     margin-right: 50px;
     width: 81%;
     overflow-x: hidden;
+    background-color: #FAFAF7;
+  height: 100vh;
    
 }
 

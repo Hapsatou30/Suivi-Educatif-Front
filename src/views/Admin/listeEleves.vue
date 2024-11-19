@@ -720,6 +720,7 @@ onMounted(fetchElevesAvecClasse); // Appeler la méthode pour récupérer les é
 }
 .main-content3 {
   margin-top: 120px;
+  background-color: #FAFAF7;
 }
 
 .main-content3 h2 {

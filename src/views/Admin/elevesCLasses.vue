@@ -172,6 +172,7 @@ onMounted(() => {
     padding-top: 150px;
     margin-top: 0;
     overflow-x: hidden;
+    background-color: #FAFAF7;
 
 }
 

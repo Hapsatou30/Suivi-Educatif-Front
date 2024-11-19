@@ -246,7 +246,7 @@ onMounted(fetchNotifications);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: 30px;
+  margin-left: 300px;
 }
 
 .right-section {

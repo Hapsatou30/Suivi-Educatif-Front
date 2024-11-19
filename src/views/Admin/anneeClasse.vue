@@ -3,7 +3,7 @@
   <topbar_admin />
   <div class="main-content">
     <h2>
-      Attibution des Classes pour l’année :  {{ anneeScolaire }}
+      Attibution des Classes pour l’année : {{ anneeScolaire }}
     </h2>
     <div class="check">
       <!-- Écoute de l'événement d'items sélectionnés depuis le composant checkbox -->
@@ -15,16 +15,16 @@
     </div>
   </div>
 </template>
-  
-  <script setup>
+
+<script setup>
 import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import sidebar_admin from '@/components/sidebarAdmin.vue';
 import topbar_admin from '@/components/topbarAdmin.vue';
 import checkbox from '@/components/checkbox.vue';
-import {  getAnneeDetails } from '@/services/AnneeScolaireService';
-import { getClasses } from '@/services/ClasseService'; 
-import { ajouterAnneClasses, getAnneClasses } from '@/services/AnneeClasseService'; 
+import { getAnneeDetails } from '@/services/AnneeScolaireService';
+import { getClasses } from '@/services/ClasseService';
+import { ajouterAnneClasses, getAnneClasses } from '@/services/AnneeClasseService';
 import Swal from 'sweetalert2';
 import imageSource from '@/assets/annee_classes.png';
 
@@ -46,7 +46,7 @@ const fetchAnneeClasses = async (id) => {
 
     if (response?.données) {
       const idAsNumber = Number(id); // Convertir l'ID en nombre si nécessaire
-      const annee = response.données.find(an => an.id === idAsNumber); 
+      const annee = response.données.find(an => an.id === idAsNumber);
 
       if (annee) {
         // Stocker les classes attribuées pour utilisation dans fetchClasses
@@ -195,88 +195,99 @@ onMounted(() => {
   detailsAnnee(anneeId);
   fetchAnneeClasses(anneeId).then(fetchClasses);
 });
-  </script>
-  
-  <style scoped>
- .main-content {
-  background-color: #FAFAF7;
-  min-height: 100vh;  /* S'assure que la section couvre au moins 100% de la hauteur de la fenêtre */
+</script>
+
+<style scoped>
+.main-content {
+  background-color: #ffffff;
+  min-height: 100vh;
+  /* S'assure que la section couvre au moins 100% de la hauteur de la fenêtre */
   padding-top: 150px;
   margin-top: 0;
   overflow-x: hidden;
-  
+
 }
 
 .button-container {
-    margin-left: 300px;
-    margin-right: 50px;
-    display: flex;
-    justify-content: space-between; /* Centrer les boutons */
-    margin-top: 20px;       /* Espacement au-dessus des boutons */
+  margin-left: 300px;
+  margin-right: 50px;
+  display: flex;
+  justify-content: space-between;
+  /* Centrer les boutons */
+  margin-top: 20px;
+  /* Espacement au-dessus des boutons */
 }
 
 .button-container .btn-custom {
-    background-color: #407CEE;
-    color: white;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    width: 200px;
-    height: 58px;
-    font-size: 24px;
-    font-family: "Poppins", sans-serif;
-    font-weight: 500;
-    margin-bottom: 30px;
+  background-color: #407CEE;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  width: 200px;
+  height: 58px;
+  font-size: 24px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  margin-bottom: 30px;
 }
 
-.button-container .btn-secondary, .button-container .btn-secondary:hover {
-    background-color: transparent;
-    color: white;
-    border: 1px solid #F7AE00;
-    border-radius: 12px;
-    cursor: pointer;
-    width: 200px;
-    height: 58px;
-    font-size: 24px;
-    font-family: "Poppins", sans-serif;
-    font-weight: 500;
-    color: #F7AE00;
+.button-container .btn-secondary,
+.button-container .btn-secondary:hover {
+  background-color: transparent;
+  color: white;
+  border: 1px solid #F7AE00;
+  border-radius: 12px;
+  cursor: pointer;
+  width: 200px;
+  height: 58px;
+  font-size: 24px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  color: #F7AE00;
 }
+
 @media (max-width: 992px) {
-  .main-content{
+  .main-content {
     height: 100vh;
     width: 107%;
     margin-left: -4%;
   }
-  .main-content h2{
-   margin-left: 0%;
-}
-.button-container {
+
+  .main-content h2 {
+    margin-left: 0%;
+  }
+
+  .button-container {
     margin-left: 50px;
     margin-right: 50px;
     display: flex;
-    justify-content: space-between; 
-    margin-top: 20px;      
-}
-}
-@media (max-width: 576px) {
-  .main-content{
-   margin-top: -20%;
+    justify-content: space-between;
+    margin-top: 20px;
   }
-  .main-content h2{
-   margin-left: 10%;
-   font-size: 20px;
-   width: 75%;
 }
-.button-container {
+
+@media (max-width: 576px) {
+  .main-content {
+    margin-top: -20%;
+  }
+
+  .main-content h2 {
+    margin-left: 10%;
+    font-size: 20px;
+    width: 75%;
+  }
+
+  .button-container {
     margin-left: 15%;
     display: flex;
     flex-direction: column;
-    justify-content: center; 
-    align-items: center;    
+    justify-content: center;
+    align-items: center;
+  }
+
+  .check {
+    width: 150%;
+  }
 }
-.check{
-  width: 150%;
-}
-}
-  </style>
+</style>

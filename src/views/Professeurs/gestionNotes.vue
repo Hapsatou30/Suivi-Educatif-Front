@@ -156,6 +156,8 @@ const seeClasse = (classeProf_id, annee_classe_id, nom_classe) => {
 
 .main-content {
   margin-top: 120px;
+  background-color: #FAFAF7;
+  height: 100vh;
 }
 
 .main-content h1 {
